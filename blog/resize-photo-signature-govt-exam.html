@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <title>How to Resize Photo & Signature for Govt Exam Forms (SSC, UPSC, IBPS) | IMG Tool.in</title>
+
+    <meta name="description" content="Facing 'File Too Large' errors? Learn how to reduce photo size to 20KB and signature to 10KB for SSC, UPSC, and Railway forms. Free online tool guide.">
+    
+    <link rel="canonical" href="https://imgtool.in/blog/resize-photo-signature-govt-exam.html">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "How to Resize Images for Government Exam Forms",
+      "description": "Step-by-step guide to reducing photo and signature size to under 20KB or 50KB for online applications like SSC and UPSC.",
+      "image": "https://imgtool.in/image/resize-govt-exam-forms.webp",
+      "totalTime": "PT2M",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "name": "Crop Image",
+          "text": "Crop the extra background from your photo or signature."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Upload to Compressor",
+          "text": "Upload the file to the IMG Tool.in compressor tool."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Set Target Size",
+          "text": "Adjust the compression level to reach 20KB - 50KB."
+        },
+        {
+          "@type": "HowToStep",
+          "name": "Download",
+          "text": "Download the optimized JPG file."
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #f8fafc;
+            margin: 0;
+            padding: 2rem 1rem;
+            color: #334155;
+        }
+
+        article {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08);
+        }
+
+        h1 { font-size: 2.2rem; font-weight: 700; color: #0f172a; line-height: 1.3; }
+        h2 { color: #2563eb; border-bottom: 2px solid #7c3aed; padding-bottom: .4rem; margin-top: 2.5rem; font-size: 1.6rem; }
+        h3 { font-size: 1.3rem; font-weight: 600; margin-top: 1.8rem; color: #1e293b; }
+        p { font-size: 1.08rem; line-height: 1.8; margin-bottom: 1.2rem; }
+
+        /* FEATURED IMAGE STYLES */
+        .featured-image-container {
+            display: block;
+            position: relative;
+            margin: 1.8rem 0;
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .featured-image-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
+        }
+        .featured-image {
+            width: 100%;
+            display: block;
+            max-height: 450px;
+            object-fit: cover;
+        }
+        .cta-overlay {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            pointer-events: none; /* Let the link handle the click */
+        }
+
+        /* IN-ARTICLE IMAGES */
+        figure { margin: 2.5rem 0; text-align: center; }
+        .article-img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        figcaption {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-top: 0.8rem;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* TOC & BOXES */
+        .toc { background: #f1f5f9; padding: 1.5rem; border-radius: .8rem; margin: 1.5rem 0 2.5rem; border-left: 5px solid #7c3aed; }
+        .toc strong { display: block; margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .toc a { display: block; margin-bottom: .6rem; color: #4b5563; text-decoration: none; transition: color 0.2s; }
+        .toc a:hover { color: #7c3aed; }
+
+        .alert-box { background-color: #fef2f2; border: 1px solid #fecaca; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; display: flex; align-items: start; gap: 10px; }
+        .success-box { background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; }
+
+        /* TABLE STYLES */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin: 2rem 0; min-width: 500px; }
+        th, td { border: 1px solid #e2e8f0; padding: 14px; text-align: left; }
+        th { background-color: #f8fafc; color: #1e293b; font-weight: 600; }
+        tr:nth-child(even) { background-color: #fcfcfc; }
+        
+        /* BUTTONS */
+        .btn-primary {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #1d4ed8; }
+        
+        ul li, ol li { margin-bottom: .8rem; }
+    </style>
+</head>
+
+<body>
+
+<div id="header"></div>
+
+<article>
+
+    <h1>How to Resize Photo & Signature for Govt Exam Forms (20KB - 50KB Guide)</h1>
+
+    <a href="https://imgtool.in/image-compressor" class="featured-image-container" title="Open Image Compressor Tool">
+        <img src="/image/resize-govt-exam-forms.webp"
+             alt="Student trying to upload photo to exam portal with size error"
+             class="featured-image">
+        <div class="cta-overlay">Try Free Compressor Tool ↗</div>
+    </a>
+
+    <div class="toc">
+        <strong>Table of Contents</strong>
+        <a href="#intro">1. The "File Too Large" Problem</a>
+        <a href="#requirements">2. Standard Exam Requirements (SSC, UPSC)</a>
+        <a href="#step-by-step">3. Step-by-Step Guide (With Screenshots)</a>
+        <a href="#mistakes">4. Common Mistakes: The Black Box Signature</a>
+        <a href="#privacy">5. Is it Safe to Upload Documents?</a>
+        <a href="#faq">6. Frequently Asked Questions</a>
+    </div>
+
+    <p id="intro">We have all been there. You are filling out a crucial application form for SSC CGL, UPSC, or NEET. You spend 30 minutes entering your details, reach the final step to upload your photo, and suddenly—</p>
+    
+    <figure>
+        <img src="/image/error-screenshot.webp" alt="Screenshot of 'Image size must be between 20KB and 50KB' error message" class="article-img">
+        <figcaption>Fig 1. The frustrating error message that blocks your application.</figcaption>
+    </figure>
+
+    <div class="alert-box">
+        <span>⚠️</span>
+        <div>
+            <strong>The Problem:</strong> Most smartphone photos are <strong>3MB to 5MB</strong>. <br>
+            <strong>The Requirement:</strong> Government portals need files under <strong>50KB</strong>.
+        </div>
+    </div>
+
+    <p>Government servers handle millions of applicants, so they enforce strict limits to prevent crashes. If you don’t have Photoshop, don’t worry. This guide will show you how to resize your documents in seconds using your phone or laptop.</p>
+
+    <h2 id="requirements">Standard Requirements for Indian Exam Forms (2025)</h2>
+    <p>Before you start resizing, you must know the rules. While every exam notification is different, 90% follow this standard pattern:</p>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Exam / Body</th>
+                    <th>Photo Size (KB)</th>
+                    <th>Signature Size (KB)</th>
+                    <th>Required Format</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>SSC (CGL, CHSL, MTS)</strong></td>
+                    <td>20 KB – 50 KB</td>
+                    <td>10 KB – 20 KB</td>
+                    <td>JPEG / JPG</td>
+                </tr>
+                <tr>
+                    <td><strong>UPSC (Civil Services)</strong></td>
+                    <td>20 KB – 300 KB</td>
+                    <td>20 KB – 300 KB</td>
+                    <td>JPG</td>
+                </tr>
+                <tr>
+                    <td><strong>IBPS (Bank PO/Clerk)</strong></td>
+                    <td>20 KB – 50 KB</td>
+                    <td>10 KB – 20 KB</td>
+                    <td>JPG</td>
+                </tr>
+                <tr>
+                    <td><strong>RRB (Railways)</strong></td>
+                    <td>15 KB – 40 KB</td>
+                    <td>10 KB – 20 KB</td>
+                    <td>JPG</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <p><em>Note: Always refer to the official notification PDF for your specific exam to be 100% sure.</em></p>
+
+    <h2 id="step-by-step">Step-by-Step: How to Reduce Image Size</h2>
+    <p>You do not need to download heavy apps. You can do this directly in your browser using our secure tool.</p>
+
+    <h3>Step 1: Crop the Extra Background</h3>
+    <p>This is the most common mistake. Don't upload a photo of your entire table. Use your phone gallery's edit function to <strong>crop strictly around the photo</strong>.</p>
+
+    <figure>
+        <img src="/image/correct-cropping.webp" alt="Comparison: Bad cropping with background vs Good tight cropping" class="article-img">
+        <figcaption>Fig 2. Left: Wrong (Too much background). Right: Correct (Tightly cropped).</figcaption>
+    </figure>
+
+    <h3>Step 2: Compress the Image</h3>
+    <ol>
+        <li>Go to our <a href="https://imgtool.in/image-compressor"><strong>Online Image Compressor</strong></a>.</li>
+        <li>Upload your cropped photo or signature.</li>
+        <li>Enter your target size (e.g., if the limit is 50KB, aim for 45KB to be safe).</li>
+        <li>Click <strong>Download</strong>.</li>
+    </ol>
+
+    <figure>
+        <img src="/image/upload-interface.webp" alt="IMG Tool.in tool interface showing file size reduction" class="article-img">
+        <figcaption>Fig 3. Simply upload and reduce the size without losing clarity.</figcaption>
+    </figure>
+
+    <h2 id="mistakes">Common Mistakes: The "Black Box" Signature</h2>
+    <p>Have you ever uploaded a signature and it appeared as a black box? Or was it rejected for being blurry?</p>
+
+    <ul>
+        <li><strong>The Black Box Issue:</strong> This happens if you use a PNG with a transparent background. Government portals do not understand transparency; they turn it black. Always convert PNG to JPG first.</li>
+        <li><strong>The Blur Issue:</strong> If you compress a file <em>too</em> much (e.g., from 5MB down to 10KB directly), it will become pixelated.</li>
+    </ul>
+
+    <figure>
+        <img src="/image/signature-comparison.webp" alt="Blurry pixelated signature vs Clear high-contrast signature" class="article-img">
+        <figcaption>Fig 4. Ensure your signature is done with a black pen on plain white paper for best contrast.</figcaption>
+    </figure>
+
+    <h2 id="privacy">Is It Safe to Upload My Documents Online?</h2>
+    <p>Security is a valid concern when uploading personal identity documents. Here is how we handle it:</p>
+    <ul>
+        <li><strong>No Human Access:</strong> The compression process is fully automated. No human ever sees your photos.</li>
+        <li><strong>Auto-Deletion:</strong> Files are automatically deleted from the server shortly after processing.</li>
+        <li><strong>Client-Side Speed:</strong> For many operations, the processing happens quickly to ensure you can get back to your application form immediately.</li>
+    </ul>
+
+    <h2 id="faq">Frequently Asked Questions</h2>
+    
+    <p><strong>Q: My photo is 20.5KB. Will it be accepted if the minimum is 20KB?</strong><br>
+    A: It is risky. If the requirement is 20KB–50KB, try to keep your file around <strong>35KB</strong>. Being on the edge limits often causes upload errors.</p>
+
+    <p><strong>Q: The form asks for 3.5cm x 4.5cm. How do I measure that on a screen?</strong><br>
+    A: Don't worry about measuring centimeters on a screen. Focus on the <strong>Aspect Ratio</strong> (vertical rectangle) and the <strong>File Size (KB)</strong>. If these two are correct, the form software will usually accept it.</p>
+    
+    <p><strong>Q: Can I use a selfie?</strong><br>
+    A: <strong>Never.</strong> Selfies have bad angles and shadows. Ask a friend to take a photo of you standing against a plain light-colored wall, or scan a physical passport photo.</p>
+
+    <h2 id="conclusion">Final Thoughts</h2>
+    <p>Filling out government forms is stressful enough without technical errors blocking your way. The key formula for success is:</p>
+    <p style="font-size: 1.2rem; text-align: center; margin: 2rem 0; font-weight: 600; color: #2563eb;">
+        JPG Format + Correct KB Size = Success
+    </p>
+
+    <p>Don't wait until the server crashes on the last day. Fix your files now.</p>
+
+    <div style="text-align: center; margin-top: 3rem; margin-bottom: 2rem;">
+        <a href="https://imgtool.in/image-compressor" class="btn-primary">Resize My Photo to 20KB Now →</a>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: #64748b;">Free • Fast • No Signup Required</p>
+    </div>
+
+</article>
+
+<div id="footer"></div>
+
+<script src="../include/common.js"></script>
+
+</body>
+</html>
