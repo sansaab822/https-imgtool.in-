@@ -1,10 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/((?!api|tools|pages|blog|image|include|assets).*)", "destination": "/tools/$1.html" },
-    { "source": "/about", "destination": "/pages/about.html" },
-    { "source": "/contact", "destination": "/pages/contact.html" },
-    { "source": "/blog", "destination": "/blog/index.html" }
-  ],
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/:tool(webp-to-jpg|webp-to-png|webp-to-ico|webp-to-bmp|webp-to-tiff|avif-to-jpg|avif-to-png|png-to-jpg|png-to-webp|jpg-to-png|pdf-to-word|pdf-to-excel)", "destination": "/tools/:tool.html" },
+    { "source": "/:page(about|contact|privacy|terms|disclaimer)", "destination": "/pages/:page.html" },
+    { "source": "/blog/:slug*", "destination": "/blog/:slug*.html" }
+  ]
 }
