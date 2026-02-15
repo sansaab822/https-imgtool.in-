@@ -1,0 +1,31 @@
+# Disable MultiViews (prevents conflict between /blog dir and blog.html)
+Options -MultiViews
+RewriteEngine On
+RewriteBase /
+
+# 1. Domain Redirect (imageconvert.in -> imgtool.in)
+RewriteCond %{HTTP_HOST} ^imageconvert\.in$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.imageconvert\.in$
+RewriteRule ^(.*)$ https://imgtool.in/$1 [R=301,L]
+
+# 2. Remove Trailing Slash (Canonicalization)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [L,R=301]
+
+# 3. Handle Static Pages located in /pages/ directory
+# Maps: /about-us -> pages/about-us.html
+RewriteRule ^(about-us|contact-us|privacy-policy|terms-of-service)$ pages/$1.html [L,NC]
+
+# 4. Handle Blog (Allow /blog.html access directly)
+# Note: Linking to /blog might conflict with 'blog' directory, so we prefer /blog.html in links.
+# No rule needed if linking to /blog.html directly.
+
+# 5. Handle Tools (Catch-all for "Pretty URLs")
+# This rule checks if the request isn't a file or directory
+# Maps: /any-tool-name -> tools/any-tool-name.html
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)$ tools/$1.html [L,NC]
+
+# 6. Error Document (Optional)
+ErrorDocument 404 /index.html
