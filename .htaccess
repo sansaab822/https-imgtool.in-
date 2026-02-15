@@ -1,31 +1,28 @@
-# Disable MultiViews (prevents conflict between /blog dir and blog.html)
-Options -MultiViews
 RewriteEngine On
 RewriteBase /
 
-# 1. Domain Redirect (imageconvert.in -> imgtool.in)
-RewriteCond %{HTTP_HOST} ^imageconvert\.in$ [OR]
-RewriteCond %{HTTP_HOST} ^www\.imageconvert\.in$
-RewriteRule ^(.*)$ https://imgtool.in/$1 [R=301,L]
+# 1. Remove .html extension from URL
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.html [NC]
+RewriteRule ^ %1 [R=301,L]
 
-# 2. Remove Trailing Slash (Canonicalization)
+# 2. Internally redirect clean URL to actual file
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)/$ /$1 [L,R=301]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]
 
-# 3. Handle Static Pages located in /pages/ directory
-# Maps: /about-us -> pages/about-us.html
-RewriteRule ^(about-us|contact-us|privacy-policy|terms-of-service)$ pages/$1.html [L,NC]
-
-# 4. Handle Blog (Allow /blog.html access directly)
-# Note: Linking to /blog might conflict with 'blog' directory, so we prefer /blog.html in links.
-# No rule needed if linking to /blog.html directly.
-
-# 5. Handle Tools (Catch-all for "Pretty URLs")
-# This rule checks if the request isn't a file or directory
-# Maps: /any-tool-name -> tools/any-tool-name.html
-RewriteCond %{REQUEST_FILENAME} !-d
+# 3. Tools folder ke liye - /avif-to-jpg => /tools/avif-to-jpg.html
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([^/]+)$ tools/$1.html [L,NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9-]+)/?$ tools/$1.html [L]
 
-# 6. Error Document (Optional)
-ErrorDocument 404 /index.html
+# 4. WWW se non-WWW redirect (optional, SEO ke liye achha)
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# 5. Force HTTPS (agar SSL hai to)
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# 6. Trailing slash handle karna
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)/$ /$1 [L,R=301]
