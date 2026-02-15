@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Professional SVG to JPG Converter (Batch & Free) | IMG Tool.in</title>
+    <meta name="description"
+        content="Convert SVG to JPG online free with batch processing. High-quality raster conversion with custom quality and dimensions. Smaller file sizes, faster loading. Commercial use allowed. 100% private and secure, works in your browser." />
+    <meta name="keywords"
+        content="SVG to JPG, convert SVG to JPG, batch SVG to JPG, vector to JPG, svg2jpg, image converter, free converter, online tool, scalable graphics, rasterize SVG, privacy-first converter, commercial use, SVG to JPEG" />
+
+    <!-- Open Graph, Canonical, Fonts, Libraries -->
+    <meta property="og:title" content="The Ultimate SVG to JPG Converter (Batch & Free) | IMG Tool.in" />
+    <meta property="og:description"
+        content="Convert SVG vector graphics to high-quality JPG images. Our pro tool offers custom resolution, quality control, batch processing, commercial use rights, is 100% private, and processes all files directly in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://imgtool.in/image/og-svg-to-jpg-ultimate.webp" />
+    <meta property="og:url" content="https://imgtool.in/svg-to-jpg" />
+    <link rel="canonical" href="https://imgtool.in/svg-to-jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "breadcrumb": { "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://imgtool.in/" }, { "@type": "ListItem", "position": 2, "name": "SVG to JPG Converter" } ] },
+            "mainEntity": [
+                { "@type": "HowTo", "name": "How to Convert SVG to JPG in Batches", "totalTime": "PT1M", "step": [ { "@type": "HowToStep", "name": "Upload Files", "text": "Drag and drop up to 20 SVG files, or click to select them." }, { "@type": "HowToStep", "name": "Configure Settings", "text": "Choose JPG quality, scale factor, and background color options." }, { "@type": "HowToStep", "name": "Convert", "text": "Click 'Convert All'. All processing happens securely in your browser." }, { "@type": "HowToStep", "name": "Download", "text": "Download files individually or all at once in a ZIP archive." } ] },
+                { "@type": "FAQPage", "mainEntity": [
+                    { "@type": "Question", "name": "Does converting SVG to JPG reduce quality?", "acceptedAnswer": { "@type": "Answer", "text": "SVG is vector-based and infinitely scalable. When converting to JPG (raster), you choose the output resolution and quality. At high settings (85-92% quality, 2x-3x scale), JPG quality is excellent for most use cases with sharp edges and vibrant colors." } },
+                    { "@type": "Question", "name": "What happens to transparency during conversion?", "acceptedAnswer": { "@type": "Answer", "text": "JPG does not support transparency. When converting SVG to JPG, transparent areas will be filled with a solid background color of your choice (white is default). You can select any custom color to match your intended use." } },
+                    { "@type": "Question", "name": "Why convert SVG to JPG instead of PNG?", "acceptedAnswer": { "@type": "Answer", "text": "Convert to JPG for dramatically smaller file sizes (60-80% smaller than PNG), faster website loading, reduced bandwidth costs, and universal compatibility. JPG is ideal when transparency is not needed and file size optimization is a priority." } },
+                    { "@type": "Question", "name": "Is this SVG to JPG converter free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, this tool is completely free with unlimited conversions, no watermarks, and no restrictions. Commercial use is fully allowed without attribution requirements." } },
+                    { "@type": "Question", "name": "How long are my files stored?", "acceptedAnswer": { "@type": "Answer", "text": "Your privacy is our priority. This tool processes files in your browser, so your images are never uploaded to our servers. They are not stored anywhere but on your own device." } },
+                    { "@type": "Question", "name": "Can I choose custom dimensions for JPG output?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! You can set scale factors from 1x to 4x. Our tool supports standard (1x), high-resolution (2x), and ultra HD (3x-4x) scaling for different display types and use cases." } },
+                    { "@type": "Question", "name": "Can I use converted JPGs commercially?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! All conversions are yours to use commercially without restrictions. Our tool simply converts formats—you retain full rights to your images for any personal or commercial purpose including products, websites, marketing, and distribution." } }
+                ] }
+            ]
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --secondary: #2563eb;
+            --accent: #10b981;
+            --base: #0f172a;
+            --surface: #ffffff;
+            --muted: #475569;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: var(--base);
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .drop-zone.dragover {
+            background-color: #eff6ff;
+            border-color: var(--secondary);
+        }
+
+        .prose h2,
+        .prose h3 {
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+        }
+
+        .prose a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .prose a:hover {
+            text-decoration: underline;
+        }
+
+        .prose ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--base);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+        }
+
+        .faq-answer {
+            color: var(--muted);
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding-bottom: 1.25rem;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .btn-all-tools {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 1.125rem;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-all-tools:hover {
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-all-tools i {
+            margin-left: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-all-tools:hover i {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50">
+    <div id="header"></div>
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+        <!-- Tool Section -->
+        <section id="converter-tool" class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-800">SVG to <span class="gradient-text">JPG</span>
+                    Converter</h1>
+                <p class="mt-3 max-w-3xl mx-auto text-lg text-slate-600">Batch convert SVG vectors to optimized JPG
+                    images. Smaller file sizes with high quality. 100% private & secure.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div id="drop-zone"
+                    class="drop-zone border-3 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer transition-all">
+                    <i class="fas fa-cloud-upload-alt text-5xl text-violet-500 mb-4"></i>
+                    <p class="text-xl font-semibold text-slate-700">Drag & drop your SVG files here</p>
+                    <p class="text-slate-500 mt-1">(Up to 20 files at once)</p>
+                    <button id="select-files-btn"
+                        class="mt-4 cta-btn bg-violet-600 text-white font-bold py-3 px-8 rounded-lg text-lg">or Select
+                        Files</button>
+                    <input type="file" id="file-input" class="hidden" multiple accept=".svg,image/svg+xml">
+                </div>
+                <div id="file-processing-area" class="hidden">
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4">Advanced Options</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="quality-level" class="block text-sm font-medium">JPG Quality</label>
+                                <select id="quality-level" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="0.92">High (92%)</option>
+                                    <option value="0.85" selected>Medium (85%)</option>
+                                    <option value="0.75">Low (75%)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="scale-factor" class="block text-sm font-medium">Scale Factor</label>
+                                <select id="scale-factor" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="1" selected>1x (Standard)</option>
+                                    <option value="2">2x (Retina)</option>
+                                    <option value="3">3x (High-DPI)</option>
+                                    <option value="4">4x (Ultra HD)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="background-color" class="block text-sm font-medium">Background Color</label>
+                                <input type="color" id="background-color" value="#ffffff" class="w-full h-10 p-1 rounded-md border border-gray-300">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="file-list-wrapper" class="mt-6">
+                        <div id="file-list" class="space-y-2"></div>
+                    </div>
+                </div>
+                <div id="action-buttons" class="mt-8 text-center hidden">
+                    <button id="convert-btn"
+                        class="w-full md:w-auto cta-btn bg-violet-600 text-white font-bold py-4 px-12 rounded-lg text-xl">Convert
+                        All to JPG</button>
+                    <div id="download-actions"
+                        class="hidden mt-4 flex flex-col md:flex-row justify-center items-center gap-4">
+                        <button id="download-all-btn"
+                            class="action-btn w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg">Download
+                            All (.zip)</button>
+                        <button id="reset-btn"
+                            class="action-btn w-full md:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg">Convert
+                            More</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4 flex items-center justify-center gap-2 text-green-700">
+                <i class="fas fa-shield-halved"></i>
+                <p class="text-sm font-medium">Privacy First: Your files are processed in your browser. Commercial use
+                    allowed.</p>
+            </div>
+        </section>
+
+        <!-- Feedback Section (Initially Hidden) -->
+        <section id="feedback-widget" class="mt-12 max-w-xl mx-auto text-center p-4 bg-slate-100 rounded-lg hidden">
+            <p id="feedback-question" class="font-semibold">Was this tool helpful?</p>
+            <div id="feedback-buttons" class="mt-2 space-x-4">
+                <button id="feedback-yes"
+                    class="px-6 py-2 rounded-lg bg-white border border-green-500 text-green-600 hover:bg-green-50">Yes</button>
+                <button id="feedback-no"
+                    class="px-6 py-2 rounded-lg bg-white border border-red-500 text-red-600 hover:bg-red-50">No</button>
+            </div>
+            <p id="feedback-thanks" class="hidden font-semibold text-green-700">Thank you for your feedback!</p>
+        </section>
+
+        <!-- SEO Content Section -->
+        <section id="seo-content" class="mt-16 md:mt-20">
+            <div class="prose lg:prose-lg mx-auto text-slate-600 max-w-4xl">
+                <div class="flex justify-between items-center flex-wrap border-b pb-2 border-slate-200 mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 m-0">About SVG to JPG Conversion</h2>
+                    <span class="text-sm text-slate-500 w-full sm:w-auto text-left sm:text-right mt-2 sm:mt-0">Last
+                        Updated: <span id="last-updated-date"></span></span>
+                </div>
+                <p>Convert Scalable Vector Graphics (SVG) to optimized JPG images with our professional converter.
+                    Rasterize vector graphics at custom resolutions with adjustable quality settings for perfect balance
+                    between file size and visual quality. JPG files are 60-80% smaller than PNG, making them ideal for
+                    faster website loading, reduced bandwidth costs, social media, and email marketing. All processing
+                    happens 100% in your browser, ensuring complete privacy and security. Your files never leave your
+                    computer. Commercial use is fully allowed without restrictions.</p>
+
+                <h3>How to Convert SVG to JPG</h3>
+                <ol>
+                    <li>Drag & drop or select up to 20 SVG vector files from your device.</li>
+                    <li>Choose JPG quality: High (92%), Medium (85%), or Low (75%) based on your needs.</li>
+                    <li>Select scale factor: 1x (standard), 2x (Retina/high-DPI), 3x, or 4x (ultra HD displays).</li>
+                    <li>Pick background color to replace transparent areas (white is default).</li>
+                    <li>Click 'Convert All' to rasterize SVG files instantly in your browser.</li>
+                    <li>Download files individually or get all converted JPG images in a single ZIP archive.</li>
+                </ol>
+
+                <h3>SVG vs. JPG: Complete Comparison</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="border-b-2 p-2">Feature</th>
+                                <th class="border-b-2 p-2">SVG (Source)</th>
+                                <th class="border-b-2 p-2">JPG (Target)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border-b p-2"><strong>Image Type</strong></td>
+                                <td class="border-b p-2">Vector (XML-based mathematical paths)</td>
+                                <td class="border-b p-2">Raster (pixel-based bitmap)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Scalability</strong></td>
+                                <td class="border-b p-2">Infinite scalability without quality loss</td>
+                                <td class="border-b p-2">Fixed resolution (degrades when scaled)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>File Size</strong></td>
+                                <td class="border-b p-2">Small for simple graphics, large for complex</td>
+                                <td class="border-b p-2">60-80% smaller (excellent compression)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Compression</strong></td>
+                                <td class="border-b p-2">Text-based (gzip compression)</td>
+                                <td class="border-b p-2">Lossy (DCT compression, highly efficient)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Transparency</strong></td>
+                                <td class="border-b p-2">Full alpha channel transparency</td>
+                                <td class="border-b p-2">No transparency (solid backgrounds only)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Loading Speed</strong></td>
+                                <td class="border-b p-2">Varies (complex SVGs can be slow)</td>
+                                <td class="border-b p-2">Very fast (highly optimized compression)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Browser Support</strong></td>
+                                <td class="border-b p-2">Modern browsers (95%+), limited on old browsers</td>
+                                <td class="border-b p-2">Universal (100% of browsers and devices)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Editability</strong></td>
+                                <td class="border-b p-2">Code-editable (CSS, JavaScript, vector editors)</td>
+                                <td class="border-b p-2">Pixel editing only (Photoshop, GIMP)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Best Use Case</strong></td>
+                                <td class="border-b p-2">Logos, icons, responsive graphics, animations</td>
+                                <td class="border-b p-2">Photos, web images, social media, email</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Why Convert SVG to JPG?</h3>
+                <ul>
+                    <li><strong>Dramatically Smaller File Sizes:</strong> JPG files are typically 60-80% smaller than
+                        PNG equivalents and often smaller than complex SVG files. This means faster loading, reduced
+                        bandwidth costs, and better web performance.</li>
+                    <li><strong>Faster Website Loading:</strong> Smaller JPG files load significantly faster than large
+                        vector SVG files, improving Core Web Vitals scores, SEO rankings, and user experience. Every
+                        millisecond counts for page speed.</li>
+                    <li><strong>Universal Compatibility:</strong> JPG works everywhere—100% of browsers, email clients,
+                        social media platforms, messaging apps, and legacy systems. SVG support is limited on older
+                        browsers and many applications.</li>
+                    <li><strong>Social Media Ready:</strong> Facebook, Instagram, Twitter, LinkedIn, Pinterest, and most
+                        social platforms require raster images. JPG is the standard format for profile pictures, posts,
+                        covers, and graphics.</li>
+                    <li><strong>Email Marketing:</strong> Many email clients (Outlook, older Gmail versions) don't
+                        render SVG images properly. JPG ensures your graphics display consistently across all email
+                        platforms without fallback issues.</li>
+                    <li><strong>Reduced Bandwidth Costs:</strong> For high-traffic websites and CDN delivery, smaller
+                        JPG files can significantly reduce bandwidth bills and data transfer costs compared to serving
+                        large SVG or PNG files.</li>
+                    <li><strong>Code Protection:</strong> SVG source code is visible and editable by anyone viewing your
+                        page. Converting to JPG protects your design work and prevents unauthorized modifications or
+                        copying of vector paths.</li>
+                    <li><strong>Mobile Performance:</strong> Smaller JPG files are crucial for mobile users on limited
+                        data plans or slower connections. They reduce data consumption and improve loading times on
+                        mobile devices.</li>
+                    <li><strong>SEO Benefits:</strong> Faster page loading (from smaller images) directly improves
+                        search engine rankings. Google's PageSpeed Insights and Core Web Vitals favor optimized JPG
+                        images over large SVG or PNG files.</li>
+                </ul>
+
+                <h3>Understanding SVG Format</h3>
+                <p>SVG (Scalable Vector Graphics) is an XML-based vector image format developed by the W3C. Unlike
+                    raster formats (JPG, PNG, GIF) that store images as grids of pixels, SVG describes images using
+                    mathematical paths, shapes, curves, and coordinates. This makes SVG files infinitely scalable—you
+                    can enlarge them to any size without quality degradation, pixelation, or blurriness.</p>
+                <p>SVG excels for logos, icons, illustrations, diagrams, and UI elements that need to scale across
+                    different screen sizes and resolutions. The format also supports CSS styling, JavaScript
+                    interactivity, animation, and dynamic modifications. However, this flexibility comes with
+                    trade-offs: complex SVG files with many paths, gradients, or filters can have large file sizes and
+                    slow rendering performance. Additionally, older browsers don't support SVG, and many applications
+                    (email clients, social media platforms, some design tools) can't import or display vector formats
+                    properly.</p>
+
+                <h3>Pro Tips for SVG to JPG Conversion</h3>
+                <ul>
+                    <li><strong>Quality Selection:</strong> Use 85% quality for optimal balance between file size and
+                        visual quality. Choose 92% for high-quality graphics or printing, and 75% for maximum
+                        compression when visual perfection isn't critical.</li>
+                    <li><strong>Scale Factor Strategy:</strong> Use 1x for standard web displays, 2x for Retina/high-DPI
+                        screens (MacBook, iPhone), 3x for high-resolution tablets, and 4x for 4K monitors or large print
+                        applications.</li>
+                    <li><strong>Background Color Selection:</strong> Since JPG doesn't support transparency, choose a
+                        background color that matches your intended use. White works for most applications, but consider
+                        custom colors for dark-themed websites or specific design contexts.</li>
+                    <li><strong>File Size Optimization:</strong> JPG quality of 85% typically provides excellent results
+                        at 50-70% smaller file sizes than 92%. Test different quality levels to find your perfect
+                        balance for each use case.</li>
+                    <li><strong>Batch Processing:</strong> Convert entire icon sets, logo variations, or illustration
+                        libraries simultaneously using batch mode. Perfect for exporting multiple SVG assets from design
+                        tools like Figma, Adobe Illustrator, or Sketch.</li>
+                    <li><strong>Resolution Planning:</strong> SVG files don't have fixed dimensions. Choose scale
+                        factors based on display context—1x for thumbnails, 2x for primary website graphics, 3x-4x for
+                        hero images or high-resolution displays.</li>
+                    <li><strong>Web Performance:</strong> For web use, always prioritize smaller file sizes. A 85%
+                        quality JPG at 1x-2x scale loads much faster than a 92% quality image, improving user experience
+                        and SEO without noticeable quality difference.</li>
+                    <li><strong>Commercial Use:</strong> All converted images are yours to use commercially without
+                        restrictions, watermarks, or attribution requirements. Use them in products, websites, marketing
+                        materials, or any commercial project freely.</li>
+                </ul>
+
+                <h3>Common Use Cases</h3>
+                <ul>
+                    <li><strong>Social Media Marketing:</strong> Convert logo and graphic SVGs to JPG for Facebook ads,
+                        Instagram posts, Twitter headers, LinkedIn banners, and Pinterest pins that require raster
+                        formats with optimized file sizes.</li>
+                    <li><strong>Email Campaigns:</strong> Rasterize SVG graphics to JPG for email newsletters, marketing
+                        campaigns, and email signatures that need to display reliably across all email clients including
+                        Outlook and Gmail.</li>
+                    <li><strong>Website Optimization:</strong> Convert complex SVG illustrations to JPG for faster page
+                        loading, improved Core Web Vitals scores, and better SEO performance. Ideal for hero images,
+                        blog graphics, and content images.</li>
+                    <li><strong>E-commerce Product Images:</strong> Export product icon SVGs as JPG for marketplace
+                        listings on Amazon, eBay, Etsy, Shopify, and WooCommerce where smaller file sizes improve
+                        listing performance and customer experience.</li>
+                    <li><strong>Blog Content:</strong> Convert diagram and infographic SVGs to JPG for blog posts,
+                        articles, tutorials, and content marketing where fast loading and broad compatibility are
+                        essential.</li>
+                    <li><strong>Mobile Apps:</strong> Export app graphic SVGs as JPG at multiple resolutions (@1x, @2x,
+                        @3x) for iOS and Android app resources where smaller file sizes improve app performance and
+                        reduce app download size.</li>
+                    <li><strong>Presentations:</strong> Convert chart and diagram SVGs to JPG for PowerPoint, Keynote,
+                        Google Slides, and PDF presentations where vector import is unreliable and file size matters for
+                        sharing.</li>
+                    <li><strong>Print Materials:</strong> Convert logo SVGs to high-resolution JPG (2x-4x scale at 92%
+                        quality) for business cards, flyers, posters, and promotional materials sent to print services
+                        that require raster formats.</li>
+                    <li><strong>WhatsApp & Messaging:</strong> Export graphics as JPG for sharing on WhatsApp, Telegram,
+                        Signal, and other messaging apps where smaller file sizes enable faster sending and receiving on
+                        mobile networks.</li>
+                </ul>
+
+                <h3>JPG Format Advantages</h3>
+                <ul>
+                    <li><strong>Superior Compression:</strong> JPG offers the best compression ratio among all image
+                        formats, reducing file sizes by 60-80% compared to PNG while maintaining good visual quality at
+                        85%+ settings.</li>
+                    <li><strong>Small File Sizes:</strong> Ideal for websites, email, and mobile applications where
+                        bandwidth, storage, and loading speed are critical factors for user experience and performance.
+                    </li>
+                    <li><strong>Universal Support:</strong> JPG is supported by 100% of browsers, operating systems,
+                        email clients, social media platforms, and applications—no compatibility worries anywhere.</li>
+                    <li><strong>Optimized for Photos:</strong> JPG compression is specifically designed for photographs
+                        and complex images with gradients, making it the best choice for photographic-quality graphics
+                        and realistic illustrations.</li>
+                    <li><strong>Adjustable Quality:</strong> Control the balance between file size and visual quality by
+                        adjusting JPG quality from 60% (maximum compression) to 100% (minimal compression) based on your
+                        specific needs.</li>
+                </ul>
+
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-container">
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Does converting SVG to JPG reduce image quality?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">SVG is infinitely scalable vector format. When converting to JPG
+                            (raster), you choose the output resolution and quality. At high settings (85-92% quality,
+                            2x-3x scale), JPG quality is excellent with sharp edges and vibrant colors. The lossy
+                            compression removes imperceptible data while dramatically reducing file size.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">What happens to transparency when converting SVG to JPG?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">JPG format does not support transparency. When converting SVG to JPG,
+                            all transparent areas will be filled with a solid background color of your choice. White is
+                            the default, but you can select any custom color to match your website, design, or intended
+                            use case.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Why convert SVG to JPG instead of PNG?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Convert to JPG for dramatically smaller file sizes (60-80% smaller than
+                            PNG), faster website loading times, reduced bandwidth and CDN costs, and improved SEO
+                            performance. JPG is ideal when transparency is not needed and file size optimization is a
+                            priority for web performance.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Is this SVG to JPG converter free to use?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes, absolutely! Our converter is 100% free with unlimited conversions.
+                            No watermarks, no sign-ups, no hidden fees, and no restrictions on file size or quantity.
+                            Use as much as you need for personal or commercial projects.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Are my files secure? How long are they stored?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Your files are 100% secure. All processing happens directly in your
+                            browser using client-side JavaScript. Your images are never uploaded to our servers, so they
+                            are never stored by us. Complete privacy guaranteed—your files never leave your computer.
+                        </div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I choose custom dimensions for JPG output?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes! You can set scale factors from 1x to 4x, and adjust JPG quality
+                            from 75% to 92%. Our tool supports standard displays (1x), Retina/high-DPI screens (2x),
+                            high-resolution displays (3x), and ultra HD/4K (4x) based on where you'll use the JPG image.
+                        </div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I use converted JPGs commercially?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes! All conversions are yours to use commercially without any
+                            restrictions. Our tool simply converts formats—you retain full rights to your images for any
+                            personal or commercial purpose including products, websites, marketing, resale,
+                            distribution, and any business application.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- "All Converters" Button -->
+        <section id="all-tools-link" class="text-center mt-20">
+            <a href="https://www.imgtool.in/all-image-converters" class="btn-all-tools">
+                Explore All Our IMG Toolers
+                <i class="fas fa-tools"></i>
+            </a>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+    <script src="/include/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Date update ---
+            const lastUpdatedSpan = document.getElementById('last-updated-date');
+            if (lastUpdatedSpan) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                lastUpdatedSpan.textContent = today.toLocaleDateString('en-US', options);
+            }
+
+            // --- Accordion FAQ ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const trigger = item;
+                trigger.addEventListener('click', (e) => {
+                    if (!item.contains(e.target) || e.target.tagName === 'A') return;
+                    item.classList.toggle('active');
+                });
+                trigger.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.classList.toggle('active'); } });
+            });
+
+            // --- Core Tool Logic ---
+            const dropZone = document.getElementById('drop-zone'), fileInput = document.getElementById('file-input'), fileProcessingArea = document.getElementById('file-processing-area');
+            const fileList = document.getElementById('file-list');
+            const actionButtons = document.getElementById('action-buttons'), convertBtn = document.getElementById('convert-btn'), downloadActions = document.getElementById('download-actions');
+            const downloadAllBtn = document.getElementById('download-all-btn'), resetBtn = document.getElementById('reset-btn');
+            const qualityLevelSelect = document.getElementById('quality-level');
+            const scaleFactorSelect = document.getElementById('scale-factor');
+            const backgroundColorInput = document.getElementById('background-color');
+            const feedbackWidget = document.getElementById('feedback-widget'), feedbackQuestion = document.getElementById('feedback-question'), feedbackButtons = document.getElementById('feedback-buttons'), feedbackThanks = document.getElementById('feedback-thanks');
+            let filesToProcess = [];
+
+            // --- Event Listeners ---
+            document.getElementById('select-files-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+
+            dropZone.addEventListener('click', (e) => {
+                if (e.target.id === 'drop-zone' || e.target.parentElement.id === 'drop-zone') {
+                    fileInput.click();
+                }
+            });
+
+            ['dragover', 'dragleave', 'drop'].forEach(eventName => dropZone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }));
+            dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+            dropZone.addEventListener('drop', (e) => { dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+            fileInput.addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
+
+            convertBtn.addEventListener('click', processConversion);
+            resetBtn.addEventListener('click', resetConverter);
+            downloadAllBtn.addEventListener('click', downloadAllAsZip);
+            document.getElementById('feedback-yes').addEventListener('click', handleFeedback);
+            document.getElementById('feedback-no').addEventListener('click', handleFeedback);
+
+            function handleFiles(files) {
+                const newFiles = Array.from(files).filter(file => (file.name.toLowerCase().endsWith('.svg') || file.type === 'image/svg+xml') && !filesToProcess.some(f => f.file.name === file.name && f.file.size === file.size) && filesToProcess.length < 20);
+                if (newFiles.length > 0) {
+                    newFiles.forEach(file => filesToProcess.push({ file, id: `f-${Date.now()}-${Math.random()}`, status: 'queued', originalSize: file.size }));
+                    updateUI(true);
+                }
+            }
+
+            function updateUI(filesAdded) {
+                if (filesAdded) { fileList.innerHTML = ''; filesToProcess.forEach(createFilePreview); }
+                const hasFiles = filesToProcess.length > 0;
+                dropZone.classList.toggle('hidden', hasFiles);
+                fileProcessingArea.classList.toggle('hidden', !hasFiles);
+                actionButtons.classList.toggle('hidden', !hasFiles);
+                convertBtn.classList.remove('hidden');
+                downloadActions.classList.add('hidden');
+                if (!hasFiles) { feedbackWidget.classList.add('hidden'); }
+            }
+
+            function createFilePreview({ file, id, originalSize }) {
+                const fileItemHTML = `<div id="${id}" class="p-3 bg-slate-50 rounded-lg grid grid-cols-[auto_1fr_auto] items-center gap-3"><div class="w-12 h-12 bg-slate-200 rounded-md flex items-center justify-center"><i class="fas fa-vector-square text-slate-500 text-2xl"></i></div><div class="overflow-hidden"><p class="font-semibold truncate">${file.name}</p><p class="text-sm text-slate-500">${formatFileSize(originalSize)}</p></div><button class="remove-btn text-red-500 hover:text-red-700 p-2 rounded-full" data-fileid="${id}" aria-label="Remove ${file.name}"><i class="fas fa-trash-alt fa-lg"></i></button></div>`;
+                fileList.insertAdjacentHTML('beforeend', fileItemHTML);
+                document.querySelector(`.remove-btn[data-fileid="${id}"]`).addEventListener('click', (e) => { e.stopPropagation(); filesToProcess = filesToProcess.filter(f => f.id !== id); document.getElementById(id).remove(); updateUI(false); });
+            }
+
+            async function processConversion() {
+                convertBtn.disabled = true; convertBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Converting...`;
+                document.querySelectorAll('.remove-btn').forEach(btn => btn.style.display = 'none');
+                const quality = parseFloat(qualityLevelSelect.value);
+                const scaleFactor = parseFloat(scaleFactorSelect.value);
+                const backgroundColor = backgroundColorInput.value;
+
+                for (const fileObj of filesToProcess) {
+                    updateFileStatus(fileObj.id, 'processing');
+                    try {
+                        const { jpgUrl, newSize } = await convertFileToJpg(fileObj.file, quality, scaleFactor, backgroundColor);
+                        Object.assign(fileObj, { status: 'converted', newUrl: jpgUrl, newName: fileObj.file.name.replace(/\.svg$/i, "") + ".jpg", newSize });
+                        updateFileStatus(fileObj.id, 'converted', fileObj);
+                    } catch (error) { console.error('Conversion error:', error); Object.assign(fileObj, { status: 'error' }); updateFileStatus(fileObj.id, 'error'); }
+                }
+                conversionFinished();
+            }
+
+            function updateFileStatus(fileId, status, fileObj = null) {
+                const el = document.getElementById(fileId);
+                if (!el) return;
+                let statusArea = el.querySelector('button, .status-area');
+                if (!statusArea) {
+                    statusArea = document.createElement('div');
+                    statusArea.className = 'status-area justify-self-end';
+                    el.appendChild(statusArea);
+                }
+
+                if (status === 'processing') { statusArea.innerHTML = `<i class="fas fa-spinner fa-spin text-blue-500"></i>`; }
+                else if (status === 'converted') {
+                    const reduction = ((fileObj.originalSize - fileObj.newSize) / fileObj.originalSize) * 100;
+                    el.innerHTML = `<img src="${fileObj.newUrl}" loading="lazy" class="w-12 h-12 object-cover rounded-md"><p class="font-semibold truncate">${fileObj.newName}</p><div class="text-right"><p class="font-semibold text-sm">${formatFileSize(fileObj.newSize)}</p><p class="text-xs ${reduction >= 0 ? 'text-green-600' : 'text-red-600'} font-semibold">${reduction >= 0 ? `▼${reduction.toFixed(1)}%` : `▲${Math.abs(reduction).toFixed(1)}%`}</p></div><a href="${fileObj.newUrl}" download="${fileObj.newName}" class="ml-2 bg-black text-white font-bold py-2 px-3 rounded-lg text-xs hover:bg-gray-800 transition-colors">Download</a>`;
+                    el.className = el.className.replace('grid-cols-[auto_1fr_auto]', 'grid-cols-[auto_1fr_auto_auto]');
+                } else if (status === 'error') { statusArea.innerHTML = `<span class="text-red-500 text-sm font-semibold">Error</span>`; }
+            }
+
+            function convertFileToJpg(file, quality, scaleFactor, backgroundColor) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const c = document.createElement('canvas');
+                            c.width = img.width * scaleFactor;
+                            c.height = img.height * scaleFactor;
+                            const ctx = c.getContext('2d');
+                            ctx.fillStyle = backgroundColor;
+                            ctx.fillRect(0, 0, c.width, c.height);
+                            ctx.scale(scaleFactor, scaleFactor);
+                            ctx.drawImage(img, 0, 0);
+                            c.toBlob(b => b ? resolve({ jpgUrl: URL.createObjectURL(b), newSize: b.size }) : reject(new Error('Canvas toBlob failed.')), 'image/jpeg', quality);
+                        };
+                        img.onerror = reject;
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            function downloadAllAsZip() { const zip = new JSZip(), files = filesToProcess.filter(f => f.status === 'converted'); if (files.length === 0) return; files.forEach(f => zip.file(f.newName, fetch(f.newUrl).then(res => res.blob()))); zip.generateAsync({ type: "blob" }).then(content => { const a = document.createElement('a'), d = new Date().toISOString().slice(0, 10); a.href = URL.createObjectURL(content); a.download = `imgtool.in_jpg_${d}.zip`; document.body.appendChild(a); a.click(); document.body.removeChild(a); }); }
+
+            function conversionFinished() { convertBtn.classList.add('hidden'); downloadActions.classList.remove('hidden'); feedbackWidget.classList.remove('hidden'); }
+            function resetConverter() { filesToProcess.forEach(file => { if (file.newUrl) URL.revokeObjectURL(file.newUrl); }); filesToProcess = []; fileList.innerHTML = ''; fileInput.value = ''; updateUI(false); convertBtn.disabled = false; convertBtn.innerHTML = `Convert All to JPG`; }
+            function formatFileSize(bytes) { if (bytes === 0) return '0 B'; const k = 1024, i = Math.floor(Math.log(bytes) / Math.log(k)); return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${['B', 'KB', 'MB', 'GB'][i]}`; }
+            function handleFeedback() { feedbackQuestion.classList.add('hidden'); feedbackButtons.classList.add('hidden'); feedbackThanks.classList.remove('hidden'); }
+        });
+    </script>
+</body>
+
+</html>

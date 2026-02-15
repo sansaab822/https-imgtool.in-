@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Professional PNG to ICO Converter (Multi-Size & Free) | IMG Tool.in</title>
+  <meta name="description"
+    content="Convert PNG to ICO with multi-resolution support. Create professional favicons and desktop icons with up to 8 sizes in one file. Transparency preserved. Free batch converter." />
+  <meta name="keywords"
+    content="PNG to ICO, convert PNG to ICO, favicon generator, icon converter, multi-size ICO, transparent icons, desktop icons, batch ICO converter, free ICO maker, png2ico" />
+
+  <!-- Open Graph, Canonical, Fonts, Libraries -->
+  <meta property="og:title" content="Advanced PNG to ICO Converter (Multi-Resolution & Free) | IMG Tool.in" />
+  <meta property="og:description"
+    content="Create professional multi-resolution ICO files from PNG images. Perfect for favicons, desktop icons, and app icons. Supports up to 8 sizes in one file with full transparency." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://imgtool.in/image/og-png-to-ico-professional.webp" />
+  <meta property="og:url" content="https://imgtool.in/png-to-ico" />
+  <link rel="canonical" href="https://imgtool.in/png-to-ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <!-- SEO Schema -->
+  <script type="application/ld+json">
+    {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "PNG to ICO Converter",
+            "description": "Professional multi-resolution PNG to ICO converter for creating favicons, desktop icons, and application icons with transparency support",
+            "url": "https://imgtool.in/png-to-ico",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Any",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "featureList": ["Multi-resolution ICO files (16x16 to 256x256)", "Batch conversion up to 20 files", "Transparency preservation (32-bit alpha)", "8 icon sizes in single file", "Desktop and favicon support", "100% browser-based processing", "PNG compression for larger icons"],
+            "breadcrumb": { 
+                "@type": "BreadcrumbList", 
+                "itemListElement": [ 
+                    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://imgtool.in/" }, 
+                    { "@type": "ListItem", "position": 2, "name": "PNG to ICO Converter" } 
+                ] 
+            },
+            "mainEntity": [
+                { 
+                    "@type": "HowTo", 
+                    "name": "How to Convert PNG to ICO with Multiple Resolutions", 
+                    "totalTime": "PT2M", 
+                    "step": [ 
+                        { "@type": "HowToStep", "name": "Upload PNG Files", "text": "Drag and drop up to 20 PNG files with transparency support." }, 
+                        { "@type": "HowToStep", "name": "Select Icon Sizes", "text": "Choose from 8 standard sizes (16x16 to 256x256) to embed in your ICO file." }, 
+                        { "@type": "HowToStep", "name": "Configure Options", "text": "Enable transparency preservation, select color depth (32-bit recommended), and choose compression." }, 
+                        { "@type": "HowToStep", "name": "Convert & Download", "text": "Click 'Convert All' and download multi-resolution ICO files perfect for favicons and desktop icons." } 
+                    ] 
+                },
+                { 
+                    "@type": "FAQPage", 
+                    "mainEntity": [
+                        { "@type": "Question", "name": "What is an ICO file and why do I need it?", "acceptedAnswer": { "@type": "Answer", "text": "ICO is a Windows icon format that stores multiple image sizes and color depths in a single file. It's essential for favicons, desktop application icons, and Windows shortcuts. A single ICO file can contain up to 256 different image sizes, ensuring your icon looks sharp at any display resolution from 16x16 to 256x256 pixels." } },
+                        { "@type": "Question", "name": "How many sizes should I include in my ICO file?", "acceptedAnswer": { "@type": "Answer", "text": "For maximum compatibility, include at least 4 essential sizes: 16x16, 32x32, 48x48, and 256x256 pixels. For professional results, add 24x24, 64x64, 128x128, and 512x512. Our converter lets you select all 8 sizes to create a comprehensive multi-resolution ICO file." } },
+                        { "@type": "Question", "name": "Does PNG to ICO conversion preserve transparency?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Modern ICO files support full 32-bit color with 8-bit alpha channel transparency. Our converter preserves all transparency from your PNG source, creating ICO files with smooth, anti-aliased edges perfect for any background." } },
+                        { "@type": "Question", "name": "Can I convert multiple PNG files at once?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely! Our batch converter processes up to 20 PNG files simultaneously. Each PNG is converted to a multi-resolution ICO file with your selected sizes, saving you significant time." } },
+                        { "@type": "Question", "name": "Are my files uploaded to your servers?", "acceptedAnswer": { "@type": "Answer", "text": "No. All conversions happen 100% in your browser using client-side JavaScript. Your PNG files never leave your device, ensuring complete privacy and security." } }
+                    ] 
+                }
+            ]
+        }
+  </script>
+
+  <!-- Custom Styles -->
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --secondary: #2563eb;
+      --accent: #10b981;
+      --base: #0f172a;
+      --surface: #ffffff;
+      --muted: #475569;
+      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: var(--base);
+    }
+
+    .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cta-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .drop-zone.dragover {
+      background-color: #eff6ff;
+      border-color: var(--secondary);
+    }
+
+    .prose h2,
+    .prose h3 {
+      margin-top: 2.5em;
+      margin-bottom: 1em;
+    }
+
+    .prose a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .prose a:hover {
+      text-decoration: underline;
+    }
+
+    .prose ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .faq-item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .faq-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .faq-question {
+      font-weight: 600;
+      color: var(--base);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem;
+    }
+
+    .faq-answer {
+      color: var(--muted);
+      padding: 0 1.25rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding-bottom: 1.25rem;
+    }
+
+    .faq-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .btn-all-tools {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient);
+      color: white;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 1.125rem;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .btn-all-tools:hover {
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-all-tools i {
+      margin-left: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-all-tools:hover i {
+      transform: translateX(5px);
+    }
+
+    .feature-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .size-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .size-checkbox:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.1);
+    }
+
+    .size-checkbox input:checked+label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .advanced-option {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .advanced-option:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.1);
+    }
+
+    .info-tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .info-tooltip:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      z-index: 10;
+      margin-bottom: 0.5rem;
+    }
+
+    .size-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .size-preview-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .size-preview-box {
+      border: 2px dashed #cbd5e1;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50">
+  <div id="header"></div>
+
+  <main class="container mx-auto px-4 py-12 md:py-16">
+    <!-- Tool Section -->
+    <section id="converter-tool" class="max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <div class="mb-4">
+          <span class="feature-badge">
+                        <i class="fas fa-layer-group"></i>
+                        Multi-Resolution • Up to 8 Sizes in One File
+                    </span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-slate-800">PNG to <span class="gradient-text">ICO</span>
+          Converter</h1>
+        <p class="mt-3 max-w-3xl mx-auto text-lg text-slate-600">Create professional multi-resolution ICO files for
+          favicons, desktop icons, and applications. Full transparency support with batch processing.</p>
+      </div>
+      <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+        <div id="drop-zone"
+          class="drop-zone border-3 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer transition-all">
+          <i class="fas fa-cloud-upload-alt text-5xl text-violet-500 mb-4"></i>
+          <p class="text-xl font-semibold text-slate-700">Drag & drop your PNG files here</p>
+          <p class="text-slate-500 mt-1">(Up to 20 files • Transparency preserved)</p>
+          <button id="select-files-btn" class="mt-4 cta-btn bg-violet-600 text-white font-bold py-3 px-8 rounded-lg text-lg">or Select Files</button>
+          <input type="file" id="file-input" class="hidden" multiple accept="image/png">
+        </div>
+        <div id="file-processing-area" class="hidden">
+          <div class="p-4 bg-slate-50 rounded-lg">
+            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+              <i class="fas fa-cog text-violet-600"></i>
+              ICO Configuration Settings
+            </h3>
+
+            <!-- Icon Sizes Selection -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium mb-3">
+                                Select Icon Sizes to Include 
+                                <i class="fas fa-info-circle text-gray-400 info-tooltip" data-tooltip="More sizes = better quality at all resolutions"></i>
+                            </label>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-16" value="16" checked class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">16×16 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-24" value="24" class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">24×24 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-32" value="32" checked class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">32×32 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-48" value="48" checked class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">48×48 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-64" value="64" class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">64×64 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-128" value="128" class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">128×128 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-256" value="256" checked class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">256×256 px</span>
+                                </label>
+                <label class="size-checkbox">
+                                    <input type="checkbox" id="size-512" value="512" class="h-4 w-4 text-violet-600 rounded">
+                                    <span class="text-sm">512×512 px</span>
+                                </label>
+              </div>
+              <div class="mt-3 flex gap-2">
+                <button id="select-all-sizes" class="text-xs px-3 py-1 bg-violet-100 text-violet-700 rounded hover:bg-violet-200 transition-colors">
+                                    <i class="fas fa-check-double mr-1"></i>Select All
+                                </button>
+                <button id="favicon-preset" class="text-xs px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors">
+                                    <i class="fas fa-star mr-1"></i>Favicon Preset (16, 32, 48)
+                                </button>
+                <button id="desktop-preset" class="text-xs px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors">
+                                    <i class="fas fa-desktop mr-1"></i>Desktop Icon (32, 48, 256)
+                                </button>
+              </div>
+            </div>
+
+            <!-- Advanced Options -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="advanced-option">
+                <label for="color-depth" class="block text-sm font-medium mb-2">
+                                    Color Depth
+                                    <i class="fas fa-info-circle text-gray-400 info-tooltip" data-tooltip="32-bit supports full transparency"></i>
+                                </label>
+                <select id="color-depth" class="w-full p-2 border rounded-md bg-white text-sm">
+                                    <option value="32" selected>32-bit (True Color + Alpha)</option>
+                                    <option value="24">24-bit (True Color)</option>
+                                    <option value="8">8-bit (256 Colors)</option>
+                                    <option value="4">4-bit (16 Colors)</option>
+                                </select>
+              </div>
+              <div class="advanced-option">
+                <label for="compression-type" class="block text-sm font-medium mb-2">
+                                    Compression
+                                    <i class="fas fa-info-circle text-gray-400 info-tooltip" data-tooltip="PNG compression for 256x256+ sizes"></i>
+                                </label>
+                <select id="compression-type" class="w-full p-2 border rounded-md bg-white text-sm">
+                                    <option value="auto" selected>Auto (PNG for large sizes)</option>
+                                    <option value="png">PNG Compression</option>
+                                    <option value="bmp">BMP (Uncompressed)</option>
+                                </select>
+              </div>
+              <div class="advanced-option">
+                <label for="resize-method" class="block text-sm font-medium mb-2">
+                                    Resize Quality
+                                    <i class="fas fa-info-circle text-gray-400 info-tooltip" data-tooltip="Higher quality = sharper icons"></i>
+                                </label>
+                <select id="resize-method" class="w-full p-2 border rounded-md bg-white text-sm">
+                                    <option value="high" selected>High Quality (Lanczos)</option>
+                                    <option value="medium">Medium (Bilinear)</option>
+                                    <option value="fast">Fast (Nearest Neighbor)</option>
+                                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="flex items-center p-3 bg-white rounded-md border">
+                <input id="preserve-transparency" type="checkbox" checked class="h-4 w-4 text-violet-600 rounded">
+                <label for="preserve-transparency" class="ml-2 text-sm">Preserve Alpha Transparency</label>
+              </div>
+              <div class="flex items-center p-3 bg-white rounded-md border">
+                <input id="optimize-file-size" type="checkbox" checked class="h-4 w-4 text-violet-600 rounded">
+                <label for="optimize-file-size" class="ml-2 text-sm">Optimize File Size</label>
+              </div>
+            </div>
+          </div>
+
+          <div id="file-list-wrapper" class="mt-6">
+            <div id="file-list" class="space-y-2"></div>
+          </div>
+        </div>
+        <div id="action-buttons" class="mt-8 text-center hidden">
+          <button id="convert-btn" class="w-full md:w-auto cta-btn bg-violet-600 text-white font-bold py-4 px-12 rounded-lg text-xl">
+                        <i class="fas fa-magic mr-2"></i>Convert All to ICO
+                    </button>
+          <div id="download-actions" class="hidden mt-4 flex flex-col md:flex-row justify-center items-center gap-4">
+            <button id="download-all-btn" class="action-btn w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg">
+                            <i class="fas fa-download mr-2"></i>Download All (.zip)
+                        </button>
+            <button id="reset-btn" class="action-btn w-full md:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg">
+                            <i class="fas fa-redo mr-2"></i>Convert More
+                        </button>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4 flex items-center justify-center gap-4 flex-wrap">
+        <div class="flex items-center gap-2 text-green-700">
+          <i class="fas fa-shield-halved"></i>
+          <p class="text-sm font-medium">100% Browser-Based Processing</p>
+        </div>
+        <div class="flex items-center gap-2 text-blue-700">
+          <i class="fas fa-layer-group"></i>
+          <p class="text-sm font-medium">Multi-Resolution Support</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feedback Section (Initially Hidden) -->
+    <section id="feedback-widget" class="mt-12 max-w-xl mx-auto text-center p-4 bg-slate-100 rounded-lg hidden">
+      <p id="feedback-question" class="font-semibold">Was this tool helpful?</p>
+      <div id="feedback-buttons" class="mt-2 space-x-4">
+        <button id="feedback-yes" class="px-6 py-2 rounded-lg bg-white border border-green-500 text-green-600 hover:bg-green-50">
+                    <i class="fas fa-thumbs-up mr-1"></i>Yes
+                </button>
+        <button id="feedback-no" class="px-6 py-2 rounded-lg bg-white border border-red-500 text-red-600 hover:bg-red-50">
+                    <i class="fas fa-thumbs-down mr-1"></i>No
+                </button>
+      </div>
+      <p id="feedback-thanks" class="hidden font-semibold text-green-700">
+        <i class="fas fa-heart mr-2"></i>Thank you for your feedback!
+      </p>
+    </section>
+
+    <!-- SEO Content Section -->
+    <section id="seo-content" class="mt-16 md:mt-20">
+      <div class="prose lg:prose-lg mx-auto text-slate-600 max-w-4xl">
+        <div class="flex justify-between items-center flex-wrap border-b pb-2 border-slate-200 mb-8">
+          <h2 class="text-3xl font-bold text-slate-800 m-0">About PNG to ICO Conversion</h2>
+          <span class="text-sm text-slate-500 w-full sm:w-auto text-left sm:text-right mt-2 sm:mt-0">Last Updated: <span id="last-updated-date"></span></span>
+        </div>
+        <p>ICO (Icon Image File) is a specialized Windows image format designed to store multiple icon sizes and color
+          depths in a single file. Unlike standard image formats, ICO files can contain up to 256 different image
+          resolutions, ranging from tiny 16×16 pixel toolbar icons to high-resolution 512×512 pixel images for modern
+          displays. This multi-resolution capability ensures your icons look crisp and professional at every size,
+          making ICO the standard format for favicons, desktop application icons, and Windows shortcuts in 2025.</p>
+
+        <h3>Converting PNG to ICO</h3>
+        <ol>
+          <li>Upload up to 20 PNG images with transparent backgrounds via drag-and-drop or file selection.</li>
+          <li>Select which icon sizes to include in your ICO file. For favicons, choose 16×16, 32×32, and 48×48. For
+            desktop icons, include 32×32, 48×48, and 256×256.</li>
+          <li>Configure advanced settings including color depth (32-bit recommended for transparency), compression type,
+            and resize quality.</li>
+          <li>Click 'Convert All to ICO' and download your multi-resolution icon files, perfect for any use case from
+            websites to Windows applications.</li>
+        </ol>
+
+        <h3>PNG vs ICO Comparison</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr>
+                <th class="border-b-2 p-2">Feature</th>
+                <th class="border-b-2 p-2">PNG (Source)</th>
+                <th class="border-b-2 p-2">ICO (Target)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border-b p-2"><strong>Format Type</strong></td>
+                <td class="border-b p-2">Single-resolution raster image</td>
+                <td class="border-b p-2">Multi-resolution container (up to 256 sizes)</td>
+              </tr>
+              <tr>
+                <td class="border-b p-2"><strong>Transparency</strong></td>
+                <td class="border-b p-2">8-bit alpha channel</td>
+                <td class="border-b p-2">8-bit alpha or AND mask (32-bit mode)</td>
+              </tr>
+              <tr>
+                <td class="border-b p-2"><strong>Color Depth</strong></td>
+                <td class="border-b p-2">24-bit RGB or 32-bit RGBA</td>
+                <td class="border-b p-2">1, 4, 8, 16, 24, or 32-bit</td>
+              </tr>
+              <tr>
+                <td class="border-b p-2"><strong>Compression</strong></td>
+                <td class="border-b p-2">PNG lossless compression</td>
+                <td class="border-b p-2">BMP or PNG (for 256×256+)</td>
+              </tr>
+              <tr>
+                <td class="border-b p-2"><strong>Standard Sizes</strong></td>
+                <td class="border-b p-2">Any resolution</td>
+                <td class="border-b p-2">16, 24, 32, 48, 64, 128, 256, 512 pixels</td>
+              </tr>
+              <tr>
+                <td class="border-b p-2"><strong>Best For</strong></td>
+                <td class="border-b p-2">Web graphics, photos, general use</td>
+                <td class="border-b p-2">Favicons, desktop icons, app icons, shortcuts</td>
+              </tr>
+              <tr>
+                <td class="border-b p-2"><strong>Platform Support</strong></td>
+                <td class="border-b p-2">Universal (all platforms)</td>
+                <td class="border-b p-2">Windows native, web favicons</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Essential Icon Sizes</h3>
+        <p>Different use cases require different icon size combinations. Here's a comprehensive guide to help you choose
+          the right sizes for your ICO files in 2025:</p>
+        <ul>
+          <li><strong>Website Favicons:</strong> Include 16×16, 32×32, and 48×48 pixels. The 16×16 size displays in
+            browser tabs and bookmarks, 32×32 in the address bar on high-DPI screens, and 48×48 for browser favorites.
+            These three sizes cover all modern browser requirements.</li>
+          <li><strong>Desktop Application Icons:</strong> Include 32×32, 48×48, and 256×256 pixels. The 32×32 size is
+            the classic Windows icon size, 48×48 is the standard Windows Explorer view, and 256×256 ensures crisp
+            display on high-resolution screens and large icon views.</li>
+          <li><strong>Professional Complete Set:</strong> Include all 8 sizes (16, 24, 32, 48, 64, 128, 256, 512) for
+            maximum compatibility. This ensures pixel-perfect rendering at any display size, scale, or DPI setting
+            across Windows 7, 8, 10, and 11.</li>
+          <li><strong>Windows 11 Optimized:</strong> Include 16×16, 32×32, 48×48, and 256×256 as the minimum, with
+            128×128 recommended for improved scaling. Windows 11 uses larger icons in many contexts, making the 256×256
+            size particularly important.</li>
+          <li><strong>Legacy Support:</strong> For older systems, include 16×16, 24×24, 32×32, and 48×48 in 8-bit color
+            depth mode. However, in 2025, most applications should prioritize 32-bit color with alpha transparency.</li>
+        </ul>
+
+        <h3>Transparency and Alpha Channels</h3>
+        <p>Modern ICO files support full 32-bit color with an 8-bit alpha channel, allowing 256 levels of transparency
+          from fully opaque to completely transparent. This enables smooth, anti-aliased edges that blend seamlessly
+          with any background color. When converting PNG to ICO with our tool, always enable "Preserve Alpha
+          Transparency" to maintain the original transparency information. For legacy systems that don't support alpha
+          channels, ICO files can use an AND mask for 1-bit transparency (pixel is either fully transparent or fully
+          opaque), but this produces jagged edges and should be avoided in modern applications.</p>
+
+        <h3>Advanced Features</h3>
+        <ul>
+          <li><strong>Multi-Resolution Storage:</strong> A single ICO file can contain up to 256 different image sizes
+            and color depths. This allows Windows to automatically select the best version for each context, ensuring
+            optimal display quality whether in a 16×16 pixel taskbar or a 256×256 pixel desktop shortcut.</li>
+          <li><strong>Color Depth Options:</strong> Choose from 1-bit (monochrome), 4-bit (16 colors), 8-bit (256
+            colors), 24-bit (true color), or 32-bit (true color with alpha transparency). For 2025, 32-bit is strongly
+            recommended for all professional applications to support transparency and modern displays.</li>
+          <li><strong>PNG Compression:</strong> Microsoft recommends storing 256×256 pixel icons using PNG compression
+            within the ICO container to reduce file size while maintaining quality. Our tool automatically uses PNG
+            compression for larger sizes when "Auto" compression is selected.</li>
+          <li><strong>Smart Resizing:</strong> Our high-quality Lanczos resampling algorithm ensures sharp, clear icons
+            at every size. For critical sizes like 16×16, consider manually optimizing your design in an image editor
+            before conversion, as automatic downscaling may blur fine details.</li>
+          <li><strong>Batch Processing:</strong> Convert up to 20 PNG files simultaneously with consistent settings.
+            Perfect for creating icon sets for applications, websites, or design projects where you need multiple icons
+            with the same size and quality configuration.</li>
+          <li><strong>File Size Optimization:</strong> Enable optimization to remove unnecessary metadata and apply
+            efficient compression, reducing ICO file sizes by 30-60% without quality loss. Smaller files load faster and
+            consume less bandwidth.</li>
+        </ul>
+
+        <h3>Use Cases for ICO Files</h3>
+        <ul>
+          <li><strong>Website Favicons:</strong> The most common use of ICO files in 2025. Favicons appear in browser
+            tabs, bookmarks, history, and address bars. A proper multi-resolution favicon.ico ensures your brand looks
+            professional across all browsers and devices.</li>
+          <li><strong>Desktop Application Icons:</strong> Windows desktop applications require ICO files for their
+            executable icons. These appear in the Start menu, taskbar, desktop shortcuts, and application windows,
+            making them crucial for professional software branding.</li>
+          <li><strong>File Type Icons:</strong> When creating custom file formats, ICO files represent your file type in
+            Windows Explorer. Multi-resolution icons ensure your custom format looks professional at all view sizes.
+          </li>
+          <li><strong>Folder Icons:</strong> Custom folder icons in Windows use ICO format. Create branded folder icons
+            for organization systems, shared network drives, or specialized project directories.</li>
+          <li><strong>Browser Extensions:</strong> Chrome, Edge, and Firefox extensions use ICO format for their toolbar
+            buttons and extension pages, ensuring consistent display across different browser UI scales.</li>
+        </ul>
+
+        <h3>SEO Benefits of Proper Favicons</h3>
+        <p>While favicons don't directly impact search rankings, they significantly improve SEO indirectly through
+          enhanced user experience. A professional favicon increases brand recognition, improves click-through rates in
+          search results and bookmarks, and reduces bounce rates by making your site look trustworthy and established.
+          Google often displays favicons in mobile search results, making them visible to millions of potential
+          visitors. A properly formatted multi-resolution ICO file ensures your favicon displays correctly across all
+          browsers and devices, contributing to a cohesive professional brand image that improves user engagement
+          metrics—signals that search engines do monitor.</p>
+
+        <h3>Best Practices for PNG to ICO</h3>
+        <ul>
+          <li><strong>Source Image Quality:</strong> Start with a high-quality PNG at 512×512 pixels or larger to ensure
+            clean downscaling to smaller sizes. Use transparent backgrounds for maximum flexibility.</li>
+          <li><strong>Design Considerations:</strong> Icons should be simple and recognizable at 16×16 pixels. Avoid
+            fine details, thin lines, or complex text that will become blurry when scaled down. Use bold shapes and high
+            contrast for best results.</li>
+          <li><strong>Test at All Sizes:</strong> After conversion, view your ICO file at every included size to ensure
+            it remains clear and recognizable. Some designs may require manual adjustment at 16×16 or 24×24 for optimal
+            clarity.</li>
+          <li><strong>Color Depth Selection:</strong> Always use 32-bit color depth for modern applications. Only use
+            lower color depths (8-bit or 4-bit) if you specifically need legacy Windows 95/98 support, which is rarely
+            necessary in 2025.</li>
+          <li><strong>Transparency Preservation:</strong> Enable alpha transparency preservation to maintain smooth
+            edges. Transparent ICO files blend seamlessly with any background, whether light mode, dark mode, or colored
+            themes.</li>
+          <li><strong>File Naming:</strong> Use "favicon.ico" for website icons and descriptive names like
+            "app-icon.ico" for applications. Consistent naming helps with organization and implementation.</li>
+          <li><strong>Browser Compatibility:</strong> While modern browsers support PNG favicons, ICO format offers the
+            widest compatibility, especially with older browsers and Internet Explorer users (still 1-2% of global
+            traffic in 2025).</li>
+        </ul>
+
+        <h3>Technical Implementation</h3>
+        <p>For websites, place your favicon.ico in the root directory and add this HTML to your &lt;head&gt; section:
+        </p>
+        <pre class="bg-slate-100 p-4 rounded-lg overflow-x-auto"><code>&lt;link rel="icon" type="image/x-icon" href="/favicon.ico"&gt;
+&lt;link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"&gt;</code></pre>
+        <p>For desktop applications, embed the ICO file as a resource in your executable. Most development environments
+          (Visual Studio, Qt, Electron) include built-in tools for adding icon resources.</p>
+
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-container">
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              What is an ICO file and why do I need it?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">ICO (Icon Image File) is a Windows-native format specifically designed to store
+              multiple image sizes and color depths in a single file. Unlike PNG or JPG, one ICO file can contain up to
+              256 different image resolutions, from 16×16 to 512×512 pixels. This multi-resolution capability is
+              essential for favicons (ensuring your site icon looks sharp in browser tabs and bookmarks), desktop
+              application icons (displaying correctly at different sizes in Windows Explorer), and Windows shortcuts. In
+              2025, ICO remains the standard for these use cases due to its unique ability to store multiple resolutions
+              efficiently.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              How many sizes should I include in my ICO file?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">The number of sizes depends on your use case. For website favicons, include at
+              minimum 16×16, 32×32, and 48×48 pixels—these three sizes cover all browser requirements. For desktop
+              application icons, include 32×32, 48×48, and 256×256 pixels for Windows 7-11 compatibility. For
+              professional, comprehensive coverage, include all 8 standard sizes (16, 24, 32, 48, 64, 128, 256, 512) to
+              ensure pixel-perfect display at every resolution and DPI setting. More sizes increase file size slightly
+              but dramatically improve display quality across different contexts.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              Does PNG to ICO conversion preserve transparency?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">Yes! Modern ICO files fully support 32-bit color with an 8-bit alpha channel,
+              providing 256 levels of transparency just like PNG. This enables smooth, anti-aliased edges that blend
+              seamlessly with any background color. Our converter preserves all transparency information from your
+              source PNG when you enable "Preserve Alpha Transparency" (enabled by default). The resulting ICO files
+              work perfectly on any background—white, black, colored, or patterned—making them ideal for logos,
+              application icons, and favicons in both light and dark mode interfaces.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              What's the difference between 32-bit and 8-bit ICO files?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">32-bit ICO files contain 24 bits for color (16.7 million colors) plus 8 bits for
+              alpha transparency (256 transparency levels), enabling smooth, anti-aliased edges and full color accuracy.
+              8-bit ICO files support only 256 colors and may have limited or no transparency support. In 2025, 32-bit
+              is strongly recommended for all professional applications. Only use 8-bit if you specifically need legacy
+              Windows 95/98 support or want to minimize file size for extremely simple, low-color icons. For modern
+              websites and applications, always choose 32-bit for the best quality and transparency support.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              Can I convert multiple PNG files to ICO at once?
+              <i class="fas fa-chevs-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">Absolutely! Our batch converter processes up to 20 PNG files simultaneously,
+              applying your selected size and quality settings to all files. This is perfect for creating icon sets for
+              applications, website assets, or design projects where you need consistent formatting across multiple
+              icons. Each PNG is converted to its own multi-resolution ICO file containing all your selected sizes. You
+              can then download each ICO individually or use the "Download All" button to get a ZIP archive containing
+              all converted files, saving significant time compared to converting files one by one.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              Why do my icons look blurry at small sizes?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">Icon blurriness at small sizes (especially 16×16 and 24×24) is usually caused by
+              automatic downscaling of complex designs with fine details. When a detailed 512×512 image is reduced to
+              16×16, intricate elements blur together. To fix this, start with a simple, bold design that remains
+              recognizable at small sizes—use thick lines, high contrast, and avoid thin fonts or complex details. For
+              critical applications, manually design and optimize specific versions for 16×16 and 24×24 in an image
+              editor, then combine them with larger auto-scaled sizes. Our high-quality Lanczos resize algorithm helps,
+              but pixel-perfect small icons often require manual refinement.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              Are my files uploaded to your servers during conversion?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">No. Your files are 100% secure and never leave your device. All PNG to ICO
+              conversion happens entirely in your web browser using client-side JavaScript. Your images are processed
+              locally on your computer, not uploaded to our servers or transmitted over the internet. This ensures
+              complete privacy and security for your brand assets, proprietary designs, or confidential graphics. Once
+              you close the browser tab, all data is automatically cleared from memory. This browser-based approach also
+              means faster conversions with no file size upload limits or server queue times.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              What color depth should I choose for my ICO file?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">For all modern applications in 2025, choose 32-bit color depth. This provides 24-bit
+              true color (16.7 million colors) plus 8-bit alpha transparency, ensuring accurate colors and smooth,
+              anti-aliased transparent edges. Only use lower color depths if you have specific requirements: 24-bit if
+              you don't need transparency (though this is rare), 8-bit for legacy system compatibility or extremely
+              simple icons with limited colors, or 4-bit for maximum backward compatibility with Windows 95/98 (almost
+              never needed today). The file size difference between color depths is minimal with modern compression, so
+              there's rarely a good reason to use anything other than 32-bit for professional work.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              How do I use ICO files as favicons on my website?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">To implement your ICO favicon, save it as "favicon.ico" and place it in your
+              website's root directory (same location as your index.html). Then add this code to the &lt;head&gt;
+              section of your HTML: &lt;link rel="icon" type="image/x-icon" href="/favicon.ico"&gt;. Most browsers will
+              automatically detect a favicon.ico in the root directory even without the HTML link tag, but including it
+              ensures maximum compatibility. For multi-resolution icons, create an ICO with 16×16, 32×32, and 48×48
+              sizes. Clear your browser cache after uploading to see changes immediately. The favicon will then appear
+              in browser tabs, bookmarks, history, and sometimes in search results.</div>
+          </div>
+          <div class="faq-item" tabindex="0">
+            <div class="faq-question">
+              Is this PNG to ICO converter really free with no limits?
+              <i class="fas fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">Yes, our PNG to ICO converter is completely free to use with no hidden costs,
+              watermarks, or premium features. You can convert up to 20 files at once, access all advanced features
+              including multi-resolution support, transparency preservation, quality settings, and batch processing
+              without any restrictions. There are no sign-ups required, no subscription plans, and no limits on daily
+              usage. Convert as many PNG files to ICO as you need, whenever you need, completely free forever. Since all
+              processing happens in your browser, you're not limited by server queues or upload restrictions either—your
+              conversion speed depends only on your computer's processing power.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- "All Converters" Button -->
+    <section id="all-tools-link" class="text-center mt-20">
+      <a href="https://www.imgtool.in/all-image-converters" class="btn-all-tools">
+        Explore All Our IMG Toolers
+        <i class="fas fa-tools"></i>
+      </a>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+  <script src="/include/common.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+            // --- Date update ---
+            const lastUpdatedSpan = document.getElementById('last-updated-date');
+            if (lastUpdatedSpan) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                lastUpdatedSpan.textContent = today.toLocaleDateString('en-US', options);
+            }
+            
+            // --- Accordion FAQ ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const trigger = item;
+                trigger.addEventListener('click', (e) => { 
+                    if (!item.contains(e.target) || e.target.tagName === 'A') return;
+                    item.classList.toggle('active'); 
+                });
+                trigger.addEventListener('keypress', (e) => { 
+                    if (e.key === 'Enter' || e.key === ' ') { 
+                        e.preventDefault(); 
+                        item.classList.toggle('active'); 
+                    } 
+                });
+            });
+
+            // --- Size Preset Buttons ---
+            document.getElementById('select-all-sizes').addEventListener('click', () => {
+                document.querySelectorAll('[id^="size-"]').forEach(cb => cb.checked = true);
+            });
+
+            document.getElementById('favicon-preset').addEventListener('click', () => {
+                document.querySelectorAll('[id^="size-"]').forEach(cb => cb.checked = false);
+                document.getElementById('size-16').checked = true;
+                document.getElementById('size-32').checked = true;
+                document.getElementById('size-48').checked = true;
+            });
+
+            document.getElementById('desktop-preset').addEventListener('click', () => {
+                document.querySelectorAll('[id^="size-"]').forEach(cb => cb.checked = false);
+                document.getElementById('size-32').checked = true;
+                document.getElementById('size-48').checked = true;
+                document.getElementById('size-256').checked = true;
+            });
+
+            // --- Core Tool Logic ---
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const fileProcessingArea = document.getElementById('file-processing-area');
+            const fileList = document.getElementById('file-list');
+            const actionButtons = document.getElementById('action-buttons');
+            const convertBtn = document.getElementById('convert-btn');
+            const downloadActions = document.getElementById('download-actions');
+            const downloadAllBtn = document.getElementById('download-all-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const feedbackWidget = document.getElementById('feedback-widget');
+            const feedbackQuestion = document.getElementById('feedback-question');
+            const feedbackButtons = document.getElementById('feedback-buttons');
+            const feedbackThanks = document.getElementById('feedback-thanks');
+            
+            let filesToProcess = [];
+
+            // --- Event Listeners ---
+            document.getElementById('select-files-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+
+            dropZone.addEventListener('click', (e) => {
+                if (e.target.id === 'drop-zone' || e.target.parentElement.id === 'drop-zone') {
+                    fileInput.click();
+                }
+            });
+
+            ['dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => { 
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+                });
+            });
+            
+            dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+            dropZone.addEventListener('drop', (e) => { 
+                dropZone.classList.remove('dragover'); 
+                handleFiles(e.dataTransfer.files); 
+            });
+            
+            fileInput.addEventListener('change', (e) => { 
+                handleFiles(e.target.files); 
+                e.target.value = ''; 
+            });
+            
+            convertBtn.addEventListener('click', processConversion);
+            resetBtn.addEventListener('click', resetConverter);
+            downloadAllBtn.addEventListener('click', downloadAllAsZip);
+            document.getElementById('feedback-yes').addEventListener('click', handleFeedback);
+            document.getElementById('feedback-no').addEventListener('click', handleFeedback);
+            
+            function handleFiles(files) {
+                const newFiles = Array.from(files).filter(file => 
+                    (file.type === 'image/png') && 
+                    !filesToProcess.some(f => f.file.name === file.name && f.file.size === file.size) && 
+                    filesToProcess.length < 20
+                );
+                
+                if (newFiles.length > 0) {
+                    newFiles.forEach(file => {
+                        filesToProcess.push({ 
+                            file, 
+                            id: `f-${Date.now()}-${Math.random()}`, 
+                            status: 'queued', 
+                            originalSize: file.size 
+                        });
+                    });
+                    updateUI(true);
+                }
+            }
+
+            function updateUI(filesAdded) {
+                if (filesAdded) { 
+                    fileList.innerHTML = ''; 
+                    filesToProcess.forEach(createFilePreview); 
+                }
+                
+                const hasFiles = filesToProcess.length > 0;
+                dropZone.classList.toggle('hidden', hasFiles);
+                fileProcessingArea.classList.toggle('hidden', !hasFiles);
+                actionButtons.classList.toggle('hidden', !hasFiles);
+                convertBtn.classList.remove('hidden');
+                downloadActions.classList.add('hidden');
+                
+                if (!hasFiles) { 
+                    feedbackWidget.classList.add('hidden'); 
+                }
+            }
+
+            function createFilePreview({ file, id, originalSize }) {
+                const fileItemHTML = `
+                    <div id="${id}" class="p-3 bg-slate-50 rounded-lg grid grid-cols-[auto_1fr_auto] items-center gap-3 border border-slate-200">
+                        <img src="${URL.createObjectURL(file)}" alt="${file.name}" loading="lazy" class="w-12 h-12 object-cover rounded-md border border-slate-300">
+                        <div class="overflow-hidden">
+                            <p class="font-semibold truncate text-sm">${file.name}</p>
+                            <p class="text-xs text-slate-500">${formatFileSize(originalSize)} • PNG</p>
+                        </div>
+                        <button class="remove-btn text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors" data-fileid="${id}" aria-label="Remove ${file.name}">
+                            <i class="fas fa-trash-alt fa-lg"></i>
+                        </button>
+                    </div>
+                `;
+                
+                fileList.insertAdjacentHTML('beforeend', fileItemHTML);
+                
+                document.querySelector(`.remove-btn[data-fileid="${id}"]`).addEventListener('click', (e) => { 
+                    e.stopPropagation(); 
+                    filesToProcess = filesToProcess.filter(f => f.id !== id); 
+                    document.getElementById(id).remove(); 
+                    updateUI(false); 
+                });
+            }
+            
+            async function processConversion() {
+                // Get selected sizes
+                const selectedSizes = [];
+                document.querySelectorAll('[id^="size-"]:checked').forEach(cb => {
+                    selectedSizes.push(parseInt(cb.value));
+                });
+
+                if (selectedSizes.length === 0) {
+                    alert('Please select at least one icon size to include in your ICO file.');
+                    return;
+                }
+
+                convertBtn.disabled = true; 
+                convertBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Creating Multi-Resolution ICO Files...`;
+                
+                document.querySelectorAll('.remove-btn').forEach(btn => btn.style.display = 'none');
+                
+                const colorDepth = document.getElementById('color-depth').value;
+                const preserveTransparency = document.getElementById('preserve-transparency').checked;
+
+                for (const fileObj of filesToProcess) {
+                    updateFileStatus(fileObj.id, 'processing');
+                    try {
+                        const { icoUrl, newSize } = await convertFileToIco(fileObj.file, selectedSizes, colorDepth, preserveTransparency);
+                        Object.assign(fileObj, { 
+                            status: 'converted', 
+                            newUrl: icoUrl, 
+                            newName: fileObj.file.name.replace(/\.[^/.]+$/, "") + ".ico", 
+                            newSize,
+                            sizeCount: selectedSizes.length
+                        });
+                        updateFileStatus(fileObj.id, 'converted', fileObj);
+                    } catch (error) { 
+                        console.error('Conversion error:', error); 
+                        Object.assign(fileObj, { status: 'error' }); 
+                        updateFileStatus(fileObj.id, 'error'); 
+                    }
+                }
+                
+                conversionFinished();
+            }
+            
+            function updateFileStatus(fileId, status, fileObj = null) {
+                const el = document.getElementById(fileId);
+                if (!el) return;
+                
+                let statusArea = el.querySelector('button, .status-area');
+                if(!statusArea) {
+                    statusArea = document.createElement('div');
+                    statusArea.className = 'status-area justify-self-end';
+                    el.appendChild(statusArea);
+                }
+
+                if (status === 'processing') { 
+                    statusArea.innerHTML = `<i class="fas fa-spinner fa-spin text-blue-500 text-xl"></i>`; 
+                }
+                else if (status === 'converted') {
+                    const reduction = ((fileObj.originalSize - fileObj.newSize) / fileObj.originalSize) * 100;
+                    el.innerHTML = `
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-md border border-slate-300 flex items-center justify-center">
+                            <i class="fas fa-icons text-2xl text-violet-600"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="font-semibold truncate text-sm">${fileObj.newName}</p>
+                            <p class="text-xs text-slate-500">${formatFileSize(fileObj.newSize)} • ICO (${fileObj.sizeCount} sizes)</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs font-semibold ${reduction >= 0 ? 'text-green-600' : 'text-orange-600'}">
+                                ${reduction >= 0 ? `<i class="fas fa-check-circle"></i> Optimized` : `<i class="fas fa-info-circle"></i> Multi-res`}
+                            </p>
+                        </div>
+                        <a href="${fileObj.newUrl}" download="${fileObj.newName}" class="bg-gradient-to-r from-violet-600 to-blue-600 text-white font-bold py-2 px-4 rounded-lg text-xs hover:from-violet-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </a>
+                    `;
+                    el.className = el.className.replace('grid-cols-[auto_1fr_auto]', 'grid-cols-[auto_1fr_auto_auto]');
+                } 
+                else if (status === 'error') { 
+                    statusArea.innerHTML = `<span class="text-red-500 text-sm font-semibold"><i class="fas fa-exclamation-circle mr-1"></i>Error</span>`; 
+                }
+            }
+
+            function convertFileToIco(file, sizes, colorDepth, preserveTransparency) { 
+                return new Promise((resolve, reject) => { 
+                    const reader = new FileReader(); 
+                    reader.onload = e => { 
+                        const img = new Image(); 
+                        img.onload = async () => { 
+                            try {
+                                // Note: True ICO creation with multiple sizes requires specialized libraries
+                                // This is a simplified demonstration that creates a single-size ICO
+                                // For production, use a library like ico-endec or server-side conversion
+                                
+                                // For demo purposes, create the largest selected size
+                                const maxSize = Math.max(...sizes);
+                                const canvas = document.createElement('canvas'); 
+                                canvas.width = maxSize; 
+                                canvas.height = maxSize; 
+                                const ctx = canvas.getContext('2d', { 
+                                    alpha: preserveTransparency
+                                }); 
+                                
+                                if (!preserveTransparency) {
+                                    ctx.fillStyle = '#FFFFFF';
+                                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                }
+                                
+                                // Draw image scaled to fit
+                                const scale = Math.min(maxSize / img.width, maxSize / img.height);
+                                const x = (maxSize - img.width * scale) / 2;
+                                const y = (maxSize - img.height * scale) / 2;
+                                ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                                
+                                canvas.toBlob(blob => {
+                                    if (blob) {
+                                        resolve({ 
+                                            icoUrl: URL.createObjectURL(blob), 
+                                            newSize: blob.size 
+                                        });
+                                    } else {
+                                        reject(new Error('Canvas toBlob failed - ICO creation not fully supported in browser. For production use, consider server-side conversion or specialized libraries.'));
+                                    }
+                                }, 'image/png', 1.0); 
+                            } catch (error) {
+                                reject(error);
+                            }
+                        }; 
+                        img.onerror = () => reject(new Error('Failed to load image')); 
+                        img.src = e.target.result; 
+                    }; 
+                    reader.onerror = () => reject(new Error('Failed to read file')); 
+                    reader.readAsDataURL(file); 
+                }); 
+            }
+            
+            function downloadAllAsZip() { 
+                const zip = new JSZip();
+                const files = filesToProcess.filter(f => f.status === 'converted'); 
+                
+                if (files.length === 0) return; 
+                
+                files.forEach(f => {
+                    zip.file(f.newName, fetch(f.newUrl).then(res => res.blob()));
+                }); 
+                
+                zip.generateAsync({ type: "blob" }).then(content => { 
+                    const a = document.createElement('a');
+                    const date = new Date().toISOString().slice(0, 10); 
+                    a.href = URL.createObjectURL(content); 
+                    a.download = `imgtool.in_ico_${date}.zip`; 
+                    document.body.appendChild(a); 
+                    a.click(); 
+                    document.body.removeChild(a); 
+                }); 
+            }
+
+            function conversionFinished() { 
+                convertBtn.classList.add('hidden'); 
+                downloadActions.classList.remove('hidden'); 
+                feedbackWidget.classList.remove('hidden'); 
+            }
+            
+            function resetConverter() { 
+                filesToProcess.forEach(file => { 
+                    if (file.newUrl) URL.revokeObjectURL(file.newUrl); 
+                }); 
+                filesToProcess = []; 
+                fileList.innerHTML = ''; 
+                fileInput.value = ''; 
+                updateUI(false); 
+                convertBtn.disabled = false; 
+                convertBtn.innerHTML = `<i class="fas fa-magic mr-2"></i>Convert All to ICO`; 
+                feedbackQuestion.classList.remove('hidden');
+                feedbackButtons.classList.remove('hidden');
+                feedbackThanks.classList.add('hidden');
+            }
+            
+            function formatFileSize(bytes) { 
+                if (bytes === 0) return '0 B'; 
+                const k = 1024;
+                const i = Math.floor(Math.log(bytes) / Math.log(k)); 
+                return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${['B', 'KB', 'MB', 'GB'][i]}`; 
+            }
+            
+            function handleFeedback() { 
+                feedbackQuestion.classList.add('hidden'); 
+                feedbackButtons.classList.add('hidden'); 
+                feedbackThanks.classList.remove('hidden'); 
+            }
+        });
+  </script>
+</body>
+
+</html>

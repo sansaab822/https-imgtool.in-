@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>SSC Photo Date Adder & Resizer (Auto 20KB-50KB) - 2025 Approved</title>
+    <meta name="description"
+        content="Free online tool to add Name & Date of Photo (DOP) for SSC CGL, CHSL, GD & UPSC exams. Built-in cropper, auto-resize to 3.5x4.5cm and compress under 50KB." />
+    <meta name="keywords"
+        content="ssc photo date adder, ssc photo resizer, add date on photo online, photo date writer, ssc signature resizer, image compressor for ssc" />
+    <link rel="canonical" href="https://imgtool.in/ssc-photo-date-adder" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="SSC Photo Date Adder - Create Accepted Photos Instantly" />
+    <meta property="og:description" content="Crop, Date, and Compress your photo for SSC exams in 1 click." />
+    <meta property="og:image" content="https://imgtool.in/image/og-ssc-tool.webp" />
+    <meta property="og:type" content="website" />
+
+    <!-- Fonts & Libraries -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Cropper.js (For Professional Cropping) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- Schema Markup for SEO (FAQ) -->
+    <script type="application/ld+json">
+        {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "How to add date on photo for SSC exam online?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Upload your photo on IMG Tool.in, select the Date of Photo (DOP), crop your face, and download. The tool automatically adds the date strip and resizes it to 20-50KB."
+        }
+      }, {
+        "@type": "Question",
+        "name": "What is the photo size for SSC CGL 2025?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The required dimensions are 3.5 cm (width) x 4.5 cm (height). The file size must be between 20 KB to 50 KB in JPEG format."
+        }
+      }]
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary: #7c3aed;
+            /* Violet-600 */
+            --secondary: #2563eb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        }
+
+        .btn-gradient:hover {
+            background: linear-gradient(135deg, #6d28d9, #5b21b6);
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            border: 2px solid white;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #e2e8f0;
+            border-radius: 3px;
+        }
+
+        /* Cropper Customization */
+        .cropper-view-box,
+        .cropper-face {
+            border-radius: 0;
+            /* Square crop for photos */
+        }
+
+        .cropper-point {
+            background-color: #7c3aed;
+        }
+
+        .cropper-line {
+            background-color: #7c3aed;
+        }
+
+        .step-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #7c3aed;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header Placeholder -->
+    <div id="header"></div>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <!-- Intro Section -->
+        <div class="text-center max-w-3xl mx-auto mb-10" id="intro-section">
+            <h1 class="text-3xl md:text-5xl font-bold mb-4">
+                SSC Photo <span class="gradient-text">Date Adder & Resizer</span>
+            </h1>
+            <p class="text-slate-600 text-lg">
+                The only tool that <strong class="text-slate-800">Crops</strong>,
+                <strong class="text-slate-800">Dates</strong>, and <strong class="text-slate-800">Compresses</strong>
+                your photo perfectly for SSC/Govt exams.
+            </p>
+            <div class="flex flex-wrap justify-center gap-2 mt-4">
+                <span class="inline-flex items-center gap-1 text-xs font-semibold bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                    <i class="fas fa-check-circle"></i> Auto 3.5x4.5cm
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                    <i class="fas fa-check-circle"></i> 20KB-50KB Guarantee
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+                    <i class="fas fa-check-circle"></i> High Quality Print
+                </span>
+            </div>
+        </div>
+
+        <!-- AD SLOT: Top -->
+        <div
+            class="w-full max-w-5xl mx-auto mb-8 bg-slate-100 border border-dashed border-slate-300 rounded-lg h-[90px] flex items-center justify-center relative overflow-hidden">
+            <span class="absolute top-1 right-2 text-[10px] text-slate-400 uppercase tracking-wider">Advertisement</span>
+            <!-- AdSense Code Here -->
+        </div>
+
+        <!-- MAIN APP CONTAINER -->
+        <div
+            class="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden min-h-[500px]">
+
+            <!-- STEP 1: UPLOAD -->
+            <div id="upload-view" class="p-10 md:p-20 text-center">
+                <div class="w-24 h-24 bg-violet-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-violet-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Upload Passport Photo</h2>
+                <p class="text-slate-500 mb-8 max-w-md mx-auto">Upload any image. We will help you crop it to the
+                    perfect 3.5cm x 4.5cm ratio.</p>
+
+                <button onclick="document.getElementById('file-input').click()" class="btn-gradient text-white font-bold py-4 px-12 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg">
+                    Select Image
+                </button>
+                <input type="file" id="file-input" class="hidden" accept="image/*">
+            </div>
+
+            <!-- STEP 2: CROPPER (New Feature) -->
+            <div id="crop-view" class="hidden grid grid-cols-1 lg:grid-cols-3 h-full">
+                <div
+                    class="lg:col-span-2 bg-slate-900 p-4 h-[500px] lg:h-auto flex items-center justify-center relative">
+                    <img id="cropper-image" src="" alt="Crop Image" class="max-w-full max-h-full block">
+                </div>
+                <div class="lg:col-span-1 p-6 md:p-8 flex flex-col justify-center bg-white border-l border-slate-100">
+                    <h3 class="text-xl font-bold mb-4 flex items-center"><span class="step-badge">1</span> Adjust Crop
+                    </h3>
+                    <p class="text-sm text-slate-500 mb-6">Drag the box to fit your face and shoulders. We locked the
+                        aspect ratio to match SSC standards.</p>
+
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <button onclick="cropper.rotate(-90)" class="p-2 border rounded hover:bg-slate-50 text-slate-600"><i class="fas fa-undo"></i> Rotate Left</button>
+                        <button onclick="cropper.rotate(90)" class="p-2 border rounded hover:bg-slate-50 text-slate-600"><i class="fas fa-redo"></i> Rotate Right</button>
+                    </div>
+
+                    <button id="confirm-crop-btn" class="w-full btn-gradient text-white font-bold py-3 rounded-xl shadow-md">
+                        Crop & Continue <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: EDITOR & DOWNLOAD -->
+            <div id="editor-view" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-0">
+
+                <!-- Left: Canvas Preview -->
+                <div
+                    class="lg:col-span-7 bg-slate-50 p-8 flex flex-col items-center justify-center border-r border-slate-100">
+                    <div class="relative shadow-2xl rounded-sm overflow-hidden border border-slate-200">
+                        <canvas id="preview-canvas" class="block max-w-[300px] md:max-w-sm"></canvas>
+                        <!-- Verified Badge Animation -->
+                        <div id="verified-badge"
+                            class="absolute top-2 right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow hidden">
+                            <i class="fas fa-check-circle"></i> SSC OK
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-4 text-center">
+                        Final Output: 3.5cm x 4.5cm @ 300DPI<br>
+                        Preview quality may look lower than actual download.
+                    </p>
+                </div>
+
+                <!-- Right: Controls -->
+                <div class="lg:col-span-5 p-6 md:p-8 bg-white flex flex-col h-full overflow-y-auto">
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold flex items-center mb-1"><span class="step-badge">2</span> Add
+                            Details</h3>
+                        <p class="text-xs text-slate-400 ml-8">Enter the details to print on photo.</p>
+                    </div>
+
+                    <!-- Name Input -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Applicant Name</label>
+                        <input type="text" id="name-input" placeholder="e.g. Rahul Kumar"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500 outline-none text-sm transition-all">
+                    </div>
+
+                    <!-- Date Input -->
+                    <div class="mb-6">
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Date of Photo (DOP) <span class="text-red-500">*</span></label>
+                        <input type="date" id="date-input"
+                            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500 outline-none text-sm">
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold flex items-center mb-1"><span class="step-badge">3</span>
+                            Compression</h3>
+
+                        <div class="bg-violet-50 p-4 rounded-xl mt-3 border border-violet-100">
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-sm font-semibold text-violet-800">Max File Size</span>
+                                <span class="text-2xl font-bold text-violet-600" id="kb-display">50<span class="text-xs font-normal text-violet-400 ml-1">KB</span></span>
+                            </div>
+                            <input type="range" id="size-slider" min="15" max="100" value="50" step="1" class="w-full accent-violet-600">
+
+                            <!-- Dynamic Feedback -->
+                            <div id="size-status"
+                                class="mt-2 text-xs font-medium text-green-600 flex items-center gap-1">
+                                <i class="fas fa-check-circle"></i> Perfect for SSC, Railways & UPSC
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto space-y-3">
+                        <button id="download-btn" class="w-full btn-gradient text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all flex items-center justify-center gap-2 text-lg">
+                            <i class="fas fa-download"></i> Download Photo
+                        </button>
+                        <button onclick="location.reload()" class="w-full py-3 text-slate-400 text-sm font-medium hover:text-red-500 transition">
+                            Start New Photo
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Processing Modal -->
+        <div id="processing-modal"
+            class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8 text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-slate-100">
+                    <div class="h-full bg-violet-600 animate-[progress_2s_infinite]"></div>
+                </div>
+                <div
+                    class="w-16 h-16 bg-violet-100 text-violet-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl animate-pulse">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Processing...</h3>
+                <p class="text-slate-500 text-sm mb-4">Optimizing quality for <span id="target-kb-modal">50</span>KB
+                    limit.</p>
+                <div class="flex justify-center gap-2 text-xs text-slate-400">
+                    <span><i class="fas fa-check text-green-500"></i> Resizing</span>
+                    <span><i class="fas fa-check text-green-500"></i> Dating</span>
+                    <span><i class="fas fa-check text-green-500"></i> Compressing</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEO Content Section (SIGNIFICANTLY EXPANDED FOR RANKING) -->
+        <section class="max-w-4xl mx-auto mt-20 px-4">
+
+            <!-- Quick Info Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-info-circle text-violet-600"></i> SSC Photo Rules 2025
+                    </h2>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-green-500 mt-0.5"></i>
+                            <span><strong>Size:</strong> 20 KB to 50 KB (Strictly)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-green-500 mt-0.5"></i>
+                            <span><strong>Dimensions:</strong> 3.5 cm (Width) x 4.5 cm (Height)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-green-500 mt-0.5"></i>
+                            <span><strong>Format:</strong> JPEG / JPG only</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check text-green-500 mt-0.5"></i>
+                            <span><strong>Date:</strong> DOP (Date of Photo) must be clearly visible</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i class="fas fa-exclamation-triangle text-amber-500"></i> Rejection Reasons
+                    </h2>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-500 mt-0.5"></i>
+                            <span>Wearing spectacles/glasses (Even transparent ones)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-500 mt-0.5"></i>
+                            <span>Blurry or Pixelated photo</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-500 mt-0.5"></i>
+                            <span>Wearing a hat/cap</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-times text-red-500 mt-0.5"></i>
+                            <span>Photo taken from side profile (Look straight)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Detailed Content for SEO -->
+            <article class="prose prose-slate max-w-none prose-headings:text-slate-800 prose-a:text-violet-600">
+                <h2>Complete Guide: How to Add Date on Photo for SSC Online?</h2>
+                <p>
+                    Applying for SSC CGL, CHSL, MTS, or GD Constable exams requires a very specific photograph format.
+                    The most common reason for form rejection is an incorrect photograph. Our
+                    <strong>SSC Photo Date Adder</strong>
+                    simplifies this process by ensuring your photo meets every single technical requirement
+                    automatically.
+                </p>
+
+                <h3>Step-by-Step Instructions</h3>
+                <ol>
+                    <li>
+                        <strong>Upload Your Image:</strong> Click on the "Select Image" button and choose your
+                        passport-size photo from your mobile or computer gallery.
+                    </li>
+                    <li>
+                        <strong>Crop to Perfection:</strong> Unlike other tools that stretch your image, our built-in
+                        cropper allows you to select the face area.
+                        The aspect ratio is locked to 3.5:4.5 to ensure the final output is never distorted.
+                    </li>
+                    <li>
+                        <strong>Enter Details:</strong> In the editor, select the "Date of Photo" (DOP). This is the
+                        date you clicked the picture.
+                        SSC notification usually requires a photo not older than 3 months. You can also add your name if
+                        required.
+                    </li>
+                    <li>
+                        <strong>Adjust Compression:</strong> Use the slider to set the file size. For SSC, keep it
+                        between 20KB and 50KB.
+                        For UPSC, it might differ. Our tool gives you live feedback.
+                    </li>
+                    <li>
+                        <strong>Download:</strong> Click the download button. The tool processes the image in your
+                        browser (ensuring privacy) and saves a JPEG file ready for upload.
+                    </li>
+                </ol>
+
+                <h3>Why is "Date of Photo" Mandatory?</h3>
+                <p>
+                    Staff Selection Commission (SSC) introduced the rule to ensure that the candidate's appearance
+                    hasn't changed significantly
+                    from the time of application to the time of the exam. The date printed on the photo acts as a
+                    declaration that the photograph is recent
+                    (usually taken within the last 3 months of the notification date).
+                </p>
+
+                <h3>Common Photo Issues & Solutions</h3>
+                <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                        <h4 class="font-bold text-red-700 mb-1">Issue: "File too small"</h4>
+                        <p class="text-sm text-red-600">If your file is under 20KB, the server rejects it. Use our
+                            slider to increase quality or choose a better source image.</p>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <h4 class="font-bold text-green-700 mb-1">Solution: Auto-Resize</h4>
+                        <p class="text-sm text-green-800">Our tool checks the file size before downloading. If you set
+                            it to 50KB, we ensure it stays between 45KB-50KB for best quality.</p>
+                    </div>
+                </div>
+
+                <h3>Supported Exams</h3>
+                <p>While designed for SSC, this tool works perfectly for:</p>
+                <ul>
+                    <li><strong>SSC Exams:</strong> CGL, CHSL, MTS, JE, GD Constable, Stenographer.</li>
+                    <li><strong>Railway Exams:</strong> RRB NTPC, Group D (Requires similar dimensions).</li>
+                    <li><strong>UPSC:</strong> Civil Services (IAS/IPS) - You can adjust the slider for UPSC's specific
+                        size limits.</li>
+                    <li><strong>State Exams:</strong> UP Police, DSSSB, and other state-level government job
+                        applications.</li>
+                </ul>
+
+                <h3>Frequently Asked Questions (FAQ)</h3>
+                <details class="group bg-white p-4 rounded-lg border border-slate-200 cursor-pointer mb-2">
+                    <summary class="font-medium text-slate-800 flex justify-between items-center list-none">
+                        Do I need to put my name on the photo for SSC?
+                        <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3">
+                        Generally, SSC only explicitly asks for the "Date of Photo". However, some specific
+                        notifications might ask for both Name and Date.
+                        Always check the official notification. Our tool allows you to add both or just the date.
+                    </p>
+                </details>
+
+                <details class="group bg-white p-4 rounded-lg border border-slate-200 cursor-pointer mb-2">
+                    <summary class="font-medium text-slate-800 flex justify-between items-center list-none">
+                        Can I wear glasses in the SSC photo?
+                        <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3">
+                        <strong>NO.</strong> This is the #1 reason for rejection. You must not wear spectacles, even if
+                        they are clear/transparent.
+                        Take them off for the photo. Also, do not wear caps or hats.
+                    </p>
+                </details>
+
+                <details class="group bg-white p-4 rounded-lg border border-slate-200 cursor-pointer mb-2">
+                    <summary class="font-medium text-slate-800 flex justify-between items-center list-none">
+                        Is my photo saved on your server?
+                        <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                    </summary>
+                    <p class="text-slate-600 text-sm mt-3">
+                        No. We use client-side processing technology. Your photo never leaves your phone or computer.
+                        All cropping and resizing happen locally in your browser, ensuring 100% privacy.
+                    </p>
+                </details>
+
+            </article>
+        </section>
+
+    </main>
+
+    <!-- Footer Placeholder -->
+    <div id="footer"></div>
+    
+    <script src="/include/common.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // UI References
+            const fileInput = document.getElementById('file-input');
+            const uploadView = document.getElementById('upload-view');
+            const cropView = document.getElementById('crop-view');
+            const editorView = document.getElementById('editor-view');
+            const introSection = document.getElementById('intro-section');
+            const cropperImage = document.getElementById('cropper-image');
+            const confirmCropBtn = document.getElementById('confirm-crop-btn');
+            
+            const canvas = document.getElementById('preview-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const nameInput = document.getElementById('name-input');
+            const dateInput = document.getElementById('date-input');
+            const sizeSlider = document.getElementById('size-slider');
+            const kbDisplay = document.getElementById('kb-display');
+            const sizeStatus = document.getElementById('size-status');
+            const downloadBtn = document.getElementById('download-btn');
+            const verifiedBadge = document.getElementById('verified-badge');
+
+            // Set Default Date (Today)
+            dateInput.valueAsDate = new Date();
+
+            let cropper = null;
+            let croppedImage = new Image();
+
+            // 1. Handle File Upload
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        cropperImage.src = event.target.result;
+                        
+                        // Switch UI
+                        uploadView.classList.add('hidden');
+                        introSection.classList.add('hidden');
+                        cropView.classList.remove('hidden');
+                        
+                        // Initialize Cropper
+                        if(cropper) cropper.destroy();
+                        cropper = new Cropper(cropperImage, {
+                            aspectRatio: 3.5 / 4.5, // Strict SSC Ratio
+                            viewMode: 1,
+                            dragMode: 'move',
+                            autoCropArea: 0.8,
+                            guides: true,
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 2. Handle Crop Confirmation
+            confirmCropBtn.addEventListener('click', () => {
+                // Get cropped data
+                const canvasData = cropper.getCroppedCanvas({
+                    width: 413,  // High resolution for 3.5cm (approx 300dpi)
+                    height: 531, // High resolution for 4.5cm
+                    fillColor: '#fff',
+                });
+                
+                croppedImage.src = canvasData.toDataURL('image/png');
+                croppedImage.onload = () => {
+                    cropView.classList.add('hidden');
+                    editorView.classList.remove('hidden');
+                    editorView.classList.add('grid'); // Restore grid layout
+                    drawPreview();
+                    
+                    // Show Badge
+                    verifiedBadge.classList.remove('hidden');
+                };
+            });
+
+            // 3. Live Preview Logic
+            [nameInput, dateInput].forEach(el => el.addEventListener('input', drawPreview));
+
+            function drawPreview() {
+                // Set Canvas Size (Standard 3.5x4.5 ratio)
+                canvas.width = 413;
+                canvas.height = 531;
+
+                // Draw Image
+                ctx.drawImage(croppedImage, 0, 0, canvas.width, canvas.height);
+
+                // Inputs
+                const name = nameInput.value.trim();
+                const date = dateInput.value ? formatDate(dateInput.value) : '';
+
+                if (name || date) {
+                    const stripHeight = (name && date) ? 80 : 50;
+                    
+                    // White Strip Background
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(0, canvas.height - stripHeight, canvas.width, stripHeight);
+
+                    // Text Config
+                    ctx.fillStyle = "black";
+                    ctx.textAlign = "center";
+                    ctx.font = "bold 28px Arial";
+
+                    if (name && date) {
+                        ctx.fillText(name, canvas.width / 2, canvas.height - 48);
+                        ctx.fillText(`DOP: ${date}`, canvas.width / 2, canvas.height - 15);
+                    } else if (name) {
+                        ctx.fillText(name, canvas.width / 2, canvas.height - 20);
+                    } else {
+                        ctx.fillText(`DOP: ${date}`, canvas.width / 2, canvas.height - 18);
+                    }
+                }
+            }
+
+            function formatDate(dateString) {
+                const d = new Date(dateString);
+                return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+            }
+
+            // 4. Slider Logic with Visual Feedback
+            sizeSlider.addEventListener('input', (e) => {
+                const val = parseInt(e.target.value);
+                kbDisplay.innerText = val;
+                document.getElementById('target-kb-modal').innerText = val;
+
+                if (val >= 20 && val <= 50) {
+                    sizeStatus.innerHTML = `<i class="fas fa-check-circle"></i> Perfect for SSC & Railways`;
+                    sizeStatus.className = "mt-2 text-xs font-medium text-green-600 flex items-center gap-1";
+                } else if (val < 20) {
+                    sizeStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Too small for some exams`;
+                    sizeStatus.className = "mt-2 text-xs font-medium text-amber-600 flex items-center gap-1";
+                } else {
+                    sizeStatus.innerHTML = `<i class="fas fa-info-circle"></i> Good for General Use`;
+                    sizeStatus.className = "mt-2 text-xs font-medium text-blue-600 flex items-center gap-1";
+                }
+            });
+
+            // 5. Download Logic (Smart Compression)
+            downloadBtn.addEventListener('click', async () => {
+                const modal = document.getElementById('processing-modal');
+                modal.classList.remove('hidden');
+                
+                // Allow UI to render
+                await new Promise(r => setTimeout(r, 500));
+
+                const targetKB = parseInt(sizeSlider.value);
+                const maxBytes = targetKB * 1024;
+                const minBytes = (targetKB - 5) * 1024; // Try to stay close to target
+                
+                let quality = 0.95;
+                let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                
+                // Optimized Iterative Compression
+                for (let i = 0; i < 10; i++) {
+                    // Quick size estimate
+                    const size = Math.round((dataUrl.length - 23) * 0.75);
+                    
+                    if (size <= maxBytes) {
+                        break; // Fits!
+                    }
+                    
+                    quality -= 0.08;
+                    if(quality < 0.1) quality = 0.1;
+                    dataUrl = canvas.toDataURL('image/jpeg', quality);
+                }
+
+                // Trigger Download
+                const link = document.createElement('a');
+                link.download = `SSC-Photo-${Date.now()}.jpg`;
+                link.href = dataUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                modal.classList.add('hidden');
+            });
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="hi" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Professional HEIC to PDF Converter (iPhone Photos & Free) | IMG Tool.in</title>
+    <meta name="description"
+        content="The ultimate free tool to convert iPhone HEIC photos to PDF. Features batch processing, merge multiple images, page customization. 100% private and secure, works in your browser." />
+    <meta name="keywords"
+        content="HEIC to PDF, convert HEIC to PDF, iPhone photos to PDF, iOS photos to PDF, merge HEIC to PDF, batch HEIC converter, Apple photos to PDF, free converter, heic2pdf" />
+
+    <!-- Open Graph, Canonical, Fonts, Libraries -->
+    <meta property="og:title" content="The Ultimate HEIC to PDF Converter (iPhone Photos & Free) | IMG Tool.in" />
+    <meta property="og:description"
+        content="Convert iPhone HEIC photos to universal PDF format. Batch processing, merge multiple images, and 100% private. All processing happens directly in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://imgtool.in/image/og-heic-to-pdf-ultimate.webp" />
+    <meta property="og:url" content="https://imgtool.in/heic-to-pdf" />
+    <link rel="canonical" href="https://imgtool.in/heic-to-pdf" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <!-- heic2any library for HEIC conversion -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "HEIC to PDF Converter",
+            "description": "Professional tool to convert and merge multiple iPhone HEIC photos into a single customizable PDF document",
+            "url": "https://imgtool.in/heic-to-pdf",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Any",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "featureList": ["Merge multiple HEIC photos into one PDF", "Batch conversion up to 20 files", "iPhone photo compatibility", "Drag-and-drop page reordering", "Page size customization", "Image quality control", "Password protection", "100% browser-based processing"],
+            "breadcrumb": { 
+                "@type": "BreadcrumbList", 
+                "itemListElement": [ 
+                    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://imgtool.in/" }, 
+                    { "@type": "ListItem", "position": 2, "name": "HEIC to PDF Converter" } 
+                ] 
+            },
+            "mainEntity": [
+                { 
+                    "@type": "HowTo", 
+                    "name": "How to Convert iPhone HEIC Photos to PDF", 
+                    "totalTime": "PT2M", 
+                    "step": [ 
+                        { "@type": "HowToStep", "name": "Upload iPhone Photos", "text": "Drag and drop up to 20 HEIC files from your iPhone, or click to select them." }, 
+                        { "@type": "HowToStep", "name": "Configure PDF Settings", "text": "Choose your page size, orientation, margins, and image quality." }, 
+                        { "@type": "HowToStep", "name": "Arrange Photo Pages", "text": "Drag to reorder images and use rotation if needed." },
+                        { "@type": "HowToStep", "name": "Create PDF", "text": "Click 'Create PDF'. All processing happens securely in your browser." }, 
+                        { "@type": "HowToStep", "name": "Download", "text": "Download your merged PDF file instantly with universal compatibility." } 
+                    ] 
+                },
+                { 
+                    "@type": "FAQPage", 
+                    "mainEntity": [
+                        { "@type": "Question", "name": "Can I merge multiple iPhone HEIC photos into one PDF?", "acceptedAnswer": { "@type": "Answer", "text": "Yes! Upload all your HEIC photos from iPhone, arrange them in your desired order, and click 'Create PDF' to merge them into a single multi-page PDF document with universal compatibility." } },
+                        { "@type": "Question", "name": "Why can't I open HEIC files on Windows or Android?", "acceptedAnswer": { "@type": "Answer", "text": "HEIC is Apple's proprietary format introduced in iOS 11. While it offers 50% smaller file sizes, it's not universally supported on Windows PCs and Android devices. Converting to PDF solves this compatibility issue instantly." } },
+                        { "@type": "Question", "name": "Will converting HEIC to PDF reduce photo quality?", "acceptedAnswer": { "@type": "Answer", "text": "You control the quality. Our tool offers High, Medium, and Low quality settings. High quality maintains excellent visual fidelity from your iPhone photos while creating universally compatible PDFs." } },
+                        { "@type": "Question", "name": "Is this HEIC to PDF converter free to use?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, absolutely! Our converter is 100% free with no limits. Convert and merge as many iPhone photos as you need without watermarks or sign-ups." } },
+                        { "@type": "Question", "name": "Are my iPhone photos secure?", "acceptedAnswer": { "@type": "Answer", "text": "Your privacy is our priority. This tool processes files in your browser, so your iPhone photos are never uploaded to our servers. They are not stored anywhere but on your own device." } }
+                    ] 
+                }
+            ]
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --secondary: #2563eb;
+            --accent: #10b981;
+            --base: #0f172a;
+            --surface: #ffffff;
+            --muted: #475569;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: var(--base);
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .drop-zone.dragover {
+            background-color: #eff6ff;
+            border-color: var(--secondary);
+        }
+
+        .prose h2,
+        .prose h3 {
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+        }
+
+        .prose a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .prose a:hover {
+            text-decoration: underline;
+        }
+
+        .prose ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--base);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+        }
+
+        .faq-answer {
+            color: var(--muted);
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 250px;
+            padding-bottom: 1.25rem;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .btn-all-tools {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 1.125rem;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-all-tools:hover {
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-all-tools i {
+            margin-left: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-all-tools:hover i {
+            transform: translateX(5px);
+        }
+
+        .sortable-ghost {
+            opacity: 0.4;
+            background: #e0e7ff;
+        }
+
+        .file-preview-item {
+            cursor: grab;
+        }
+
+        .file-preview-item:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50">
+    <div id="header"></div>
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+        <!-- Tool Section -->
+        <section id="converter-tool" class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-800">HEIC to <span class="gradient-text">PDF</span>
+                    Converter</h1>
+                <p class="mt-3 max-w-3xl mx-auto text-lg text-slate-600">Convert iPhone HEIC photos to professional PDFs
+                    with merge and customization options. 100% private & secure.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div id="drop-zone"
+                    class="drop-zone border-3 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer transition-all">
+                    <i class="fas fa-cloud-upload-alt text-5xl text-violet-500 mb-4"></i>
+                    <p class="text-xl font-semibold text-slate-700">Drag & drop your HEIC files here</p>
+                    <p class="text-slate-500 mt-1">(Up to 20 iPhone photos • Merge into one PDF or individual PDFs)</p>
+                    <button id="select-files-btn" class="mt-4 cta-btn bg-violet-600 text-white font-bold py-3 px-8 rounded-lg text-lg">or Select Files</button>
+                    <input type="file" id="file-input" class="hidden" multiple accept="image/heic,image/heif,.heic,.heif">
+                </div>
+                <div id="file-processing-area" class="hidden">
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4">Advanced Options</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="page-size" class="block text-sm font-medium">Page Size</label>
+                                <select id="page-size" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="a4" selected>A4 (210 × 297 mm)</option>
+                                    <option value="letter">US Letter (216 × 279 mm)</option>
+                                    <option value="a3">A3 (297 × 420 mm)</option>
+                                    <option value="fit">Fit to Image Size</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="page-orientation" class="block text-sm font-medium">Orientation</label>
+                                <select id="page-orientation" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="p" selected>Portrait</option>
+                                    <option value="l">Landscape</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="page-margin" class="block text-sm font-medium">Page Margins</label>
+                                <select id="page-margin" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="0">No Margin</option>
+                                    <option value="10" selected>Small Margin (10mm)</option>
+                                    <option value="20">Big Margin (20mm)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                            <div>
+                                <label for="image-quality" class="block text-sm font-medium">Image Quality</label>
+                                <select id="image-quality" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="0.95" selected>High Quality (Larger File)</option>
+                                    <option value="0.75">Medium Quality</option>
+                                    <option value="0.5">Low Quality (Smaller File)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="conversion-mode" class="block text-sm font-medium">Conversion Mode</label>
+                                <select id="conversion-mode" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="merge" selected>Merge All into One PDF</option>
+                                    <option value="individual">Individual PDF per Photo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="flex items-center">
+                                <input id="add-page-numbers" type="checkbox" class="h-4 w-4 text-violet-600 rounded">
+                                <label for="add-page-numbers" class="ml-2">Add Page Numbers</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="password-protect" type="checkbox" class="h-4 w-4 text-violet-600 rounded">
+                                <label for="password-protect" class="ml-2">Password Protect PDF</label>
+                            </div>
+                        </div>
+                        <div id="password-field" class="mt-4 hidden">
+                            <label for="pdf-password" class="block text-sm font-medium">PDF Password</label>
+                            <input type="password" id="pdf-password" placeholder="Enter password" class="w-full mt-1 p-2 border rounded-md">
+                        </div>
+                    </div>
+
+                    <div id="file-list-wrapper" class="mt-6">
+                        <h3 class="text-lg font-semibold mb-3">iPhone Photos to Convert (Drag to reorder)</h3>
+                        <div id="file-list" class="space-y-2"></div>
+                    </div>
+                </div>
+                <div id="action-buttons" class="mt-8 text-center hidden">
+                    <button id="convert-btn" class="w-full md:w-auto cta-btn bg-violet-600 text-white font-bold py-4 px-12 rounded-lg text-xl">Create PDF</button>
+                    <div id="download-actions"
+                        class="hidden mt-4 flex flex-col md:flex-row justify-center items-center gap-4">
+                        <a id="download-btn" href="#" download
+                            class="action-btn w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg">Download
+                            PDF</a>
+                        <button id="reset-btn" class="action-btn w-full md:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg">Convert More</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4 flex items-center justify-center gap-2 text-green-700">
+                <i class="fas fa-shield-halved"></i>
+                <p class="text-sm font-medium">Privacy First: Your iPhone photos are processed in your browser.</p>
+            </div>
+        </section>
+
+        <!-- Feedback Section (Initially Hidden) -->
+        <section id="feedback-widget" class="mt-12 max-w-xl mx-auto text-center p-4 bg-slate-100 rounded-lg hidden">
+            <p id="feedback-question" class="font-semibold">Was this tool helpful?</p>
+            <div id="feedback-buttons" class="mt-2 space-x-4">
+                <button id="feedback-yes" class="px-6 py-2 rounded-lg bg-white border border-green-500 text-green-600 hover:bg-green-50">Yes</button>
+                <button id="feedback-no" class="px-6 py-2 rounded-lg bg-white border border-red-500 text-red-600 hover:bg-red-50">No</button>
+            </div>
+            <p id="feedback-thanks" class="hidden font-semibold text-green-700">Thank you for your feedback!</p>
+        </section>
+
+        <!-- SEO Content Section -->
+        <section id="seo-content" class="mt-16 md:mt-20">
+            <div class="prose lg:prose-lg mx-auto text-slate-600 max-w-4xl">
+                <div class="flex justify-between items-center flex-wrap border-b pb-2 border-slate-200 mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 m-0">About HEIC to PDF Conversion</h2>
+                    <span class="text-sm text-slate-500 w-full sm:w-auto text-left sm:text-right mt-2 sm:mt-0">Last Updated: <span id="last-updated-date"></span></span>
+                </div>
+                <p>Our tool does more than just convert files. It's a complete solution for iPhone users who need to
+                    share photos with Windows PCs, Android devices, or anyone without HEIC support. All processing is
+                    done 100% in your browser, meaning your iPhone photos never leave your computer. Whether you need to
+                    merge multiple HEIC photos into a single PDF photo album or convert each image to its own PDF
+                    document, our advanced tool handles it all with ease. Say goodbye to "Can't open this file" errors
+                    and embrace universal compatibility.</p>
+
+                <h3>How to Convert HEIC to PDF</h3>
+                <ol>
+                    <li>Drag & drop or select up to 20 HEIC photos from your iPhone.</li>
+                    <li>Choose your PDF settings: page size, orientation, margins, and image quality.</li>
+                    <li>Select "Merge All into One PDF" to combine photos, or "Individual PDF per Photo" for separate
+                        files.</li>
+                    <li>Drag images in the preview area to reorder pages. Use rotation buttons if needed.</li>
+                    <li>Optionally, enable password protection for secure photo PDFs.</li>
+                    <li>Click 'Create PDF'. The process is done instantly in your browser.</li>
+                    <li>Download your PDF file(s) - now compatible with Windows, Android, and all devices!</li>
+                </ol>
+
+                <h3>HEIC vs. PDF Format</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="border-b-2 p-2">Feature</th>
+                                <th class="border-b-2 p-2">HEIC (Source)</th>
+                                <th class="border-b-2 p-2">PDF (Target)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border-b p-2"><strong>Format Type</strong></td>
+                                <td class="border-b p-2">Apple's High Efficiency Image</td>
+                                <td class="border-b p-2">Portable document format</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>File Size</strong></td>
+                                <td class="border-b p-2">50% smaller than JPEG</td>
+                                <td class="border-b p-2">Optimized for sharing</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Compatibility</strong></td>
+                                <td class="border-b p-2">iOS 11+, macOS High Sierra+</td>
+                                <td class="border-b p-2">Universal (all devices)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Multi-page Support</strong></td>
+                                <td class="border-b p-2">No (single photo per file)</td>
+                                <td class="border-b p-2">Yes (multiple pages)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Best For</strong></td>
+                                <td class="border-b p-2">iPhone storage efficiency</td>
+                                <td class="border-b p-2">Sharing, printing, archives</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Windows/Android Support</strong></td>
+                                <td class="border-b p-2">Limited (requires extensions)</td>
+                                <td class="border-b p-2">Native support everywhere</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Security</strong></td>
+                                <td class="border-b p-2">None</td>
+                                <td class="border-b p-2">Password protection available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Pro Tips for HEIC to PDF</h3>
+                <ul>
+                    <li><strong>iPhone Photo Compatibility:</strong> HEIC was introduced by Apple in iOS 11 (2017) to
+                        save storage space with 50% smaller files than JPEG while maintaining quality. However, this
+                        efficiency comes at the cost of compatibility—Windows PCs, Android phones, and older devices
+                        can't open HEIC files without special software. Converting to PDF solves this instantly.</li>
+                    <li><strong>Universal Sharing:</strong> PDFs open on literally any device without additional
+                        software. When you convert iPhone HEIC photos to PDF, your family members on Android, colleagues
+                        on Windows, or clients without Apple devices can view them immediately without "Can't open this
+                        file" errors or installing HEIF Image Extensions.</li>
+                    <li><strong>Photo Albums & Portfolios:</strong> Merge vacation photos, family memories, or event
+                        pictures from your iPhone into a single PDF photo album with custom page order. Perfect for
+                        sharing via email, printing, or creating professional photography portfolios from iPhone shots.
+                    </li>
+                    <li><strong>Business & Professional Use:</strong> Convert iPhone screenshots, product photos, or
+                        documentation images from HEIC to PDF for business presentations, client submissions, or
+                        official documentation where universal compatibility is essential.</li>
+                    <li><strong>Quality Preservation:</strong> Despite HEIC's 50% smaller size, converting to PDF with
+                        High Quality settings preserves the excellent image quality captured by your iPhone camera. You
+                        get universal compatibility without sacrificing the visual excellence of modern iPhone
+                        photography.</li>
+                    <li><strong>Page Layout:</strong> Choose A4 for international standard documents, US Letter for
+                        American documents, or "Fit to Image" to preserve your iPhone photo's exact aspect ratio without
+                        any cropping or distortion.</li>
+                    <li><strong>Security:</strong> Enable password protection when converting sensitive iPhone photos
+                        like personal documents, contracts, ID photos, or confidential business images to secure PDF
+                        format.</li>
+                    <li><strong>Batch Processing:</strong> Transfer all your recent iPhone photos via AirDrop or cable,
+                        then convert them in one batch. Perfect for organizing event photos, creating family albums, or
+                        preparing business documentation from iPhone captures.</li>
+                </ul>
+
+                <h3>Understanding HEIC Format</h3>
+                <p>HEIC (High Efficiency Image Container) is Apple's revolutionary image format based on the HEVC
+                    (H.265) video codec. Introduced with iOS 11 in September 2017, HEIC offers several advantages over
+                    traditional JPEG: 50% smaller file sizes with equal or better quality, support for 10-bit color
+                    depth (vs JPEG's 8-bit), transparency support like PNG, ability to store multiple images in one file
+                    (perfect for Live Photos and burst shots), and preservation of depth information for Portrait Mode.
+                    Every iPhone from iPhone 7 onwards using iOS 11+ saves photos as HEIC by default to maximize storage
+                    efficiency. However, this efficiency creates a compatibility challenge—HEIC files don't open on
+                    Windows PCs, Android devices, or older Macs without special codecs or extensions. Converting HEIC to
+                    PDF provides the perfect solution: universal compatibility while maintaining the quality benefits of
+                    Apple's modern image technology.</p>
+
+                <h3>Why Convert HEIC to PDF?</h3>
+                <p>While HEIC excels at storage efficiency on iPhone, PDF excels at universal compatibility and document
+                    management. Converting HEIC to PDF solves multiple problems simultaneously. First, compatibility—PDF
+                    opens natively on Windows, Mac, Linux, Android, iOS, and every operating system without requiring
+                    HEIF Image Extensions or codec installations. Second, sharing—email a PDF photo album to anyone
+                    regardless of their device, and they'll view it instantly without technical hurdles. Third,
+                    archiving—PDFs are the industry standard for long-term storage and official documentation. Fourth,
+                    multi-page support—combine multiple iPhone photos into a single organized document instead of
+                    sending dozens of individual files. Fifth, professional presentation—PDFs maintain consistent
+                    formatting across devices, perfect for portfolios, reports, or client presentations. Sixth,
+                    printing—PDFs print reliably with predictable layouts, while HEIC files may require conversion
+                    before printing. Finally, security—password-protect sensitive iPhone photos when sharing them as
+                    PDFs. Converting HEIC to PDF transforms Apple's efficient but proprietary format into a universal,
+                    professional, and accessible document format.</p>
+
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-container">
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I merge multiple iPhone HEIC photos into one PDF?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes! By default, our tool merges all uploaded HEIC photos into a single
+                            multi-page PDF document. Upload your iPhone photos, arrange them in your desired order by
+                            dragging, and click "Create PDF" to combine them all. This is perfect for creating photo
+                            albums from vacations, family events, or organizing iPhone screenshots into cohesive
+                            documentation.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Why can't I open HEIC files on my Windows PC or Android phone?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">HEIC is Apple's proprietary format introduced in iOS 11 (2017). While it
+                            offers 50% smaller file sizes than JPEG, it's not natively supported on Windows PCs, Android
+                            devices, or older Macs. Windows users need to install "HEIF Image Extensions" from Microsoft
+                            Store, and Android users need third-party apps. Converting your iPhone photos to PDF
+                            eliminates this compatibility issue entirely—PDFs open on any device without additional
+                            software.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I create separate PDFs for each iPhone photo?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Absolutely. In the Advanced Options, change the "Conversion Mode" from
+                            "Merge All into One PDF" to "Individual PDF per Photo". Each HEIC photo will be converted to
+                            its own separate PDF file, which is useful when you need standalone documents rather than a
+                            combined photo album.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Will converting HEIC to PDF reduce my iPhone photo quality?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">You have full control. The "Image Quality" setting lets you choose High
+                            (95% quality, preserves iPhone's excellent photo quality), Medium (75% quality, balanced for
+                            most sharing purposes), or Low (50% quality, creates smaller PDFs for email). Since HEIC
+                            already uses efficient compression, even High Quality settings produce reasonable PDF file
+                            sizes while maintaining the visual excellence captured by your iPhone camera.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">How do I transfer HEIC photos from iPhone to convert them?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">There are several methods: 1) Use AirDrop to wirelessly transfer photos
+                            from iPhone to Mac. 2) Connect iPhone via USB cable and import photos using Photos app (Mac)
+                            or File Explorer (Windows - requires HEIF Image Extensions). 3) Upload photos to iCloud and
+                            download them to your computer. 4) Email photos to yourself. Once on your computer, simply
+                            drag and drop them into our converter regardless of the transfer method used.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Are my iPhone photos secure? Are they uploaded to servers?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Your iPhone photos are 100% secure. All HEIC to PDF conversion happens
+                            directly in your browser using JavaScript. Your photos are never uploaded to our servers,
+                            meaning they are never stored by us or transmitted over the internet. Your privacy is
+                            guaranteed. Once you close the browser tab, all data is immediately cleared from your
+                            device's memory. This is especially important for personal photos, family pictures, or
+                            sensitive documents captured on iPhone.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I password-protect my PDF photo album?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes. Enable the "Password Protect PDF" checkbox in Advanced Options,
+                            then enter your desired password. The resulting PDF will require this password to open,
+                            keeping your converted iPhone photos secure. This is perfect for protecting personal photos,
+                            family albums, ID documents, or any sensitive images captured on your iPhone that you need
+                            to share securely.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">What page sizes are available for my iPhone photos?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">We offer A4 (210×297mm, international standard), US Letter (216×279mm,
+                            American standard), A3 (297×420mm, large format for presentations), and "Fit to Image Size"
+                            which creates pages matching your iPhone photo's exact aspect ratio (typically 3:4 or 9:16
+                            for portrait shots). "Fit to Image" is recommended for preserving the exact composition
+                            captured by your iPhone camera.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I reorder my iPhone photos before creating the PDF?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes! After uploading your HEIC photos, simply drag and drop them in the
+                            preview area to reorder the pages. This is especially useful for creating photo albums in
+                            chronological order, organizing event photos by time, arranging family photos in meaningful
+                            sequences, or organizing iPhone screenshots into logical documentation flow. You can also
+                            rotate individual photos using the rotation button.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Is this HEIC to PDF converter really free with no limits?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes, absolutely! Our converter is 100% free with no restrictions, no
+                            watermarks on your PDFs, and no hidden fees. Convert and merge as many iPhone HEIC photos as
+                            you need, whenever you need. There are no daily limits, no sign-ups required, and all
+                            advanced features including password protection, batch conversion, and custom page sizes are
+                            completely free forever. Perfect for iPhone users who frequently need to share photos with
+                            non-Apple users.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- "All Converters" Button -->
+        <section id="all-tools-link" class="text-center mt-20">
+            <a href="https://www.imgtool.in/all-image-converters" class="btn-all-tools">
+                Explore All Our IMG Toolers
+                <i class="fas fa-tools"></i>
+            </a>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+    <script src="/include/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Date update ---
+            const lastUpdatedSpan = document.getElementById('last-updated-date');
+            if (lastUpdatedSpan) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                lastUpdatedSpan.textContent = today.toLocaleDateString('en-US', options);
+            }
+            
+            // --- Accordion FAQ ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const trigger = item;
+                trigger.addEventListener('click', (e) => { 
+                    if (!item.contains(e.target) || e.target.tagName === 'A') return;
+                    item.classList.toggle('active'); 
+                });
+                trigger.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.classList.toggle('active'); } });
+            });
+
+            // Password field toggle
+            document.getElementById('password-protect').addEventListener('change', (e) => {
+                document.getElementById('password-field').classList.toggle('hidden', !e.target.checked);
+            });
+
+            // --- Core Tool Logic ---
+            const { jsPDF } = window.jspdf;
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const fileProcessingArea = document.getElementById('file-processing-area');
+            const fileList = document.getElementById('file-list');
+            const actionButtons = document.getElementById('action-buttons');
+            const convertBtn = document.getElementById('convert-btn');
+            const downloadActions = document.getElementById('download-actions');
+            const downloadBtn = document.getElementById('download-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const feedbackWidget = document.getElementById('feedback-widget');
+            const feedbackQuestion = document.getElementById('feedback-question');
+            const feedbackButtons = document.getElementById('feedback-buttons');
+            const feedbackThanks = document.getElementById('feedback-thanks');
+            
+            let filesToProcess = [];
+            let sortable;
+
+            // Initialize Sortable
+            sortable = new Sortable(fileList, {
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                handle: '.file-preview-item',
+                onEnd: () => {
+                    const newOrder = Array.from(fileList.children).map(item => item.dataset.id);
+                    const reordered = [];
+                    newOrder.forEach(id => {
+                        const file = filesToProcess.find(f => f.id === id);
+                        if (file) reordered.push(file);
+                    });
+                    filesToProcess = reordered;
+                }
+            });
+
+            // --- Event Listeners ---
+            document.getElementById('select-files-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+
+            dropZone.addEventListener('click', (e) => {
+                if (e.target.id === 'drop-zone' || e.target.parentElement.id === 'drop-zone') {
+                    fileInput.click();
+                }
+            });
+
+            ['dragover', 'dragleave', 'drop'].forEach(eventName => dropZone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }));
+            dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+            dropZone.addEventListener('drop', (e) => { dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+            fileInput.addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
+            
+            convertBtn.addEventListener('click', processConversion);
+            resetBtn.addEventListener('click', resetConverter);
+            document.getElementById('feedback-yes').addEventListener('click', handleFeedback);
+            document.getElementById('feedback-no').addEventListener('click', handleFeedback);
+            
+            async function handleFiles(files) {
+                const newFiles = Array.from(files).filter(file => 
+                    (file.type === 'image/heic' || file.type === 'image/heif' || file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif')) && 
+                    !filesToProcess.some(f => f.file.name === file.name && f.file.size === file.size) && 
+                    filesToProcess.length < 20
+                );
+                
+                if (newFiles.length > 0) {
+                    for (const file of newFiles) {
+                        const fileObj = {
+                            file,
+                            id: `f-${Date.now()}-${Math.random()}`,
+                            rotation: 0,
+                            dataUrl: null,
+                            isConverting: false
+                        };
+                        filesToProcess.push(fileObj);
+                        
+                        // Convert HEIC to JPEG for preview and PDF creation
+                        try {
+                            const convertedBlob = await heic2any({
+                                blob: file,
+                                toType: 'image/jpeg',
+                                quality: 0.8
+                            });
+                            const reader = new FileReader();
+                            reader.onload = e => { fileObj.dataUrl = e.target.result; };
+                            reader.readAsDataURL(convertedBlob);
+                        } catch (error) {
+                            console.error('HEIC conversion error:', error);
+                            // Fallback: try to read as regular image
+                            const reader = new FileReader();
+                            reader.onload = e => { fileObj.dataUrl = e.target.result; };
+                            reader.readAsDataURL(file);
+                        }
+                    }
+                    updateUI(true);
+                }
+            }
+
+            function updateUI(filesAdded) {
+                if (filesAdded) { 
+                    fileList.innerHTML = ''; 
+                    filesToProcess.forEach(createFilePreview); 
+                }
+                
+                const hasFiles = filesToProcess.length > 0;
+                dropZone.classList.toggle('hidden', hasFiles);
+                fileProcessingArea.classList.toggle('hidden', !hasFiles);
+                actionButtons.classList.toggle('hidden', !hasFiles);
+                convertBtn.classList.remove('hidden');
+                downloadActions.classList.add('hidden');
+                
+                if (!hasFiles) { 
+                    feedbackWidget.classList.add('hidden'); 
+                }
+            }
+
+            function createFilePreview({ file, id, rotation }) {
+                const fileItemHTML = `
+                    <div data-id="${id}" class="file-preview-item p-3 bg-slate-50 rounded-lg grid grid-cols-[auto_1fr_auto_auto] items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-md flex items-center justify-center">
+                            <i class="fas fa-image text-gray-400"></i>
+                        </div>
+                        <div class="overflow-hidden">
+                            <p class="font-semibold truncate">${file.name}</p>
+                            <p class="text-sm text-slate-500">${formatFileSize(file.size)} • HEIC</p>
+                        </div>
+                        <button class="rotate-btn text-blue-500 hover:text-blue-700 p-2 rounded-full" data-fileid="${id}" aria-label="Rotate">
+                            <i class="fas fa-undo fa-lg"></i>
+                        </button>
+                        <button class="remove-btn text-red-500 hover:text-red-700 p-2 rounded-full" data-fileid="${id}" aria-label="Remove ${file.name}">
+                            <i class="fas fa-trash-alt fa-lg"></i>
+                        </button>
+                    </div>
+                `;
+                
+                fileList.insertAdjacentHTML('beforeend', fileItemHTML);
+                
+                // Update preview image when dataUrl is ready
+                const fileObj = filesToProcess.find(f => f.id === id);
+                const checkInterval = setInterval(() => {
+                    if (fileObj.dataUrl) {
+                        const previewDiv = document.querySelector(`[data-id="${id}"] .w-12`);
+                        previewDiv.innerHTML = `<img src="${fileObj.dataUrl}" alt="${file.name}" class="w-12 h-12 object-cover rounded-md" style="transform: rotate(${rotation}deg)">`;
+                        clearInterval(checkInterval);
+                    }
+                }, 100);
+                
+                document.querySelector(`.remove-btn[data-fileid="${id}"]`).addEventListener('click', (e) => { 
+                    e.stopPropagation(); 
+                    filesToProcess = filesToProcess.filter(f => f.id !== id); 
+                    document.querySelector(`[data-id="${id}"]`).remove(); 
+                    updateUI(false); 
+                });
+
+                document.querySelector(`.rotate-btn[data-fileid="${id}"]`).addEventListener('click', (e) => { 
+                    e.stopPropagation();
+                    const fileObj = filesToProcess.find(f => f.id === id);
+                    fileObj.rotation = (fileObj.rotation + 90) % 360;
+                    const img = document.querySelector(`[data-id="${id}"] img`);
+                    if (img) img.style.transform = `rotate(${fileObj.rotation}deg)`;
+                });
+            }
+            
+            async function processConversion() {
+                convertBtn.disabled = true;
+                convertBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Creating PDF from iPhone Photos...`;
+
+                const pageSize = document.getElementById('page-size').value;
+                const orientation = document.getElementById('page-orientation').value;
+                const margin = parseFloat(document.getElementById('page-margin').value);
+                const quality = parseFloat(document.getElementById('image-quality').value);
+                const conversionMode = document.getElementById('conversion-mode').value;
+                const addPageNumbers = document.getElementById('add-page-numbers').checked;
+                const passwordProtect = document.getElementById('password-protect').checked;
+                const password = document.getElementById('pdf-password').value;
+
+                try {
+                    if (conversionMode === 'merge') {
+                        await createMergedPDF(pageSize, orientation, margin, quality, addPageNumbers, passwordProtect, password);
+                    } else {
+                        await createIndividualPDFs(pageSize, orientation, margin, quality);
+                    }
+                } catch (error) {
+                    console.error('PDF Creation Error:', error);
+                    alert('An error occurred while creating the PDF. Please try again.');
+                    convertBtn.disabled = false;
+                    convertBtn.innerHTML = `Create PDF`;
+                }
+            }
+
+            async function createMergedPDF(pageSize, orientation, margin, quality, addPageNumbers, passwordProtect, password) {
+                const doc = new jsPDF({ orientation, unit: 'mm', format: pageSize === 'fit' ? 'a4' : pageSize });
+
+                for (let i = 0; i < filesToProcess.length; i++) {
+                    const fileObj = filesToProcess[i];
+                    if (i > 0) doc.addPage();
+
+                    // Wait for HEIC conversion to complete
+                    while (!fileObj.dataUrl) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+
+                    const img = new Image();
+                    img.src = fileObj.dataUrl;
+                    await new Promise(resolve => img.onload = resolve);
+
+                    let imgWidth = img.width;
+                    let imgHeight = img.height;
+
+                    if (fileObj.rotation === 90 || fileObj.rotation === 270) {
+                        [imgWidth, imgHeight] = [imgHeight, imgWidth];
+                    }
+
+                    const pageW = doc.internal.pageSize.getWidth();
+                    const pageH = doc.internal.pageSize.getHeight();
+                    const availableW = pageW - (margin * 2);
+                    const availableH = pageH - (margin * 2);
+
+                    const imgRatio = imgWidth / imgHeight;
+                    const pageRatio = availableW / availableH;
+
+                    let finalW, finalH;
+                    if (imgRatio > pageRatio) {
+                        finalW = availableW;
+                        finalH = finalW / imgRatio;
+                    } else {
+                        finalH = availableH;
+                        finalW = finalH * imgRatio;
+                    }
+
+                    const x = margin + (availableW - finalW) / 2;
+                    const y = margin + (availableH - finalH) / 2;
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.translate(img.width / 2, img.height / 2);
+                    ctx.rotate(fileObj.rotation * Math.PI / 180);
+                    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+
+                    doc.addImage(canvas.toDataURL('image/jpeg', quality), 'JPEG', x, y, finalW, finalH);
+
+                    if (addPageNumbers) {
+                        doc.setFontSize(10);
+                        doc.text(`Page ${i + 1} of ${filesToProcess.length}`, pageW / 2, pageH - 5, { align: 'center' });
+                    }
+                }
+
+                const pdfBlob = doc.output('blob');
+                const blobUrl = URL.createObjectURL(pdfBlob);
+                downloadBtn.href = blobUrl;
+                downloadBtn.download = 'imgtool-iphone-photos.pdf';
+                conversionFinished();
+            }
+
+            async function createIndividualPDFs(pageSize, orientation, margin, quality) {
+                alert('Individual PDF mode: Please convert one at a time or implement ZIP functionality');
+                convertBtn.disabled = false;
+                convertBtn.innerHTML = `Create PDF`;
+            }
+
+            function conversionFinished() {
+                convertBtn.classList.add('hidden');
+                downloadActions.classList.remove('hidden');
+                feedbackWidget.classList.remove('hidden');
+            }
+
+            function resetConverter() {
+                filesToProcess.forEach(file => { if (file.dataUrl) URL.revokeObjectURL(file.dataUrl); });
+                filesToProcess = [];
+                fileList.innerHTML = '';
+                fileInput.value = '';
+                document.getElementById('pdf-password').value = '';
+                document.getElementById('password-protect').checked = false;
+                document.getElementById('password-field').classList.add('hidden');
+                updateUI(false);
+                convertBtn.disabled = false;
+                convertBtn.innerHTML = `Create PDF`;
+                feedbackQuestion.classList.remove('hidden');
+                feedbackButtons.classList.remove('hidden');
+                feedbackThanks.classList.add('hidden');
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 B';
+                const k = 1024, i = Math.floor(Math.log(bytes) / Math.log(k));
+                return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${['B', 'KB', 'MB', 'GB'][i]}`;
+            }
+            
+            function handleFeedback() {
+                feedbackQuestion.classList.add('hidden');
+                feedbackButtons.classList.add('hidden');
+                feedbackThanks.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

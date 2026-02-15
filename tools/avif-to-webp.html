@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>AVIF to WebP Converter - Fast, Free & Secure | IMG Tool.in</title>
+    <meta name="description" content="Convert AVIF to WebP online with transparency support. Better compression than PNG and wider support than AVIF. Batch convert unlimited files securely in your browser." />
+    <meta name="keywords" content="AVIF to WebP, convert avif to webp, avif converter, webp converter, free image converter, batch avif to webp, transparent webp" />
+    <link rel="canonical" href="https://imgtool.in/avif-to-webp" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Professional AVIF to WebP Converter" />
+    <meta property="og:description" content="Convert AVIF to Google's WebP format. Faster loading, smaller size, and transparency support." />
+    <meta property="og:image" content="https://imgtool.in/image/og-avif-to-webp.webp" />
+    <meta property="og:url" content="https://imgtool.in/avif-to-webp" />
+    <meta property="og:type" content="website" />
+
+    <!-- Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "AVIF to WebP Converter",
+            "operatingSystem": "Web Browser",
+            "applicationCategory": "MultimediaApplication",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "featureList": "Batch processing, Transparency support, Client-side security"
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .drop-zone { transition: all 0.3s ease; border-width: 2px; }
+        .drop-zone.dragover { border-color: #4f46e5; background-color: #eef2ff; transform: scale(1.01); }
+        .gradient-text { background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Switch Toggle */
+        .toggle-checkbox:checked { right: 0; border-color: #10b981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10b981; }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased">
+
+    <!-- Header Placeholder -->
+    <div id="header"></div>
+
+    <!-- Main Tool Section -->
+    <main class="pt-32 pb-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Title Area -->
+            <div class="text-center mb-10">
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+                    AVIF to <span class="gradient-text">WebP</span>
+                </h1>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Convert next-gen AVIF files to Google's high-performance WebP format. <br class="hidden md:block" />
+                    Better browser support with transparency and small file sizes.
+                </p>
+            </div>
+
+            <!-- Converter Card -->
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                
+                <!-- 1. Drop Zone -->
+                <div id="drop-zone" class="p-10 md:p-16 text-center cursor-pointer border-b border-slate-100 hover:bg-slate-50 transition-colors group relative">
+                    <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" multiple accept=".avif,image/avif">
+                    
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-50 text-green-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-globe text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Drag & Drop AVIF Files</h3>
+                    <p class="text-slate-500">or click to browse (Supports Transparency)</p>
+                </div>
+
+                <!-- 2. Settings & Processing Area (Hidden initially) -->
+                <div id="processing-area" class="hidden bg-slate-50/50">
+                    
+                    <!-- Settings Toolbar -->
+                    <div class="p-6 border-b border-slate-200 bg-white flex flex-col md:flex-row gap-6 items-center justify-between sticky top-0 z-20">
+                        <div class="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
+                            
+                            <!-- Quality Select -->
+                            <div class="relative w-full md:w-48">
+                                <label class="text-xs font-bold text-slate-500 uppercase mb-1 block">WebP Quality</label>
+                                <select id="quality-level" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:ring-2 focus:ring-green-500 outline-none">
+                                    <option value="0.90">High (90%) - Recommended</option>
+                                    <option value="0.80" selected>Medium (80%) - Balanced</option>
+                                    <option value="0.60">Low (60%) - Smallest Size</option>
+                                </select>
+                            </div>
+
+                            <!-- Transparency Toggle -->
+                            <div class="flex items-center gap-3 pt-4 md:pt-0">
+                                <div class="relative inline-block w-10 h-6 align-middle select-none transition duration-200 ease-in">
+                                    <input type="checkbox" name="toggle" id="transparency-toggle" checked class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 transition-all duration-300"/>
+                                    <label for="transparency-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-colors duration-300"></label>
+                                </div>
+                                <label for="transparency-toggle" class="text-sm font-bold text-slate-700 cursor-pointer">Keep Transparency</label>
+                            </div>
+
+                        </div>
+                        
+                        <div class="flex gap-3 w-full md:w-auto">
+                            <button id="convert-btn" class="flex-1 md:flex-none bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-green-500/30 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                                <i class="fas fa-bolt mr-2"></i> Convert to WebP
+                            </button>
+                            <button id="reset-btn" class="px-4 py-3 text-slate-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors" title="Clear All">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- File List -->
+                    <div id="file-list" class="p-6 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar">
+                        <!-- Files injected here -->
+                    </div>
+
+                    <!-- Bulk Download -->
+                    <div id="download-area" class="hidden p-6 bg-green-50 border-t border-green-100 text-center">
+                        <div class="flex flex-col items-center animate-fade-in">
+                            <div class="text-green-900 font-bold text-lg mb-3">🎉 Conversion Complete!</div>
+                            <button id="download-zip-btn" class="bg-slate-800 hover:bg-slate-900 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center">
+                                <i class="fas fa-download mr-2"></i> Download All as ZIP
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800">Tiny File Sizes</h3>
+                    <p class="text-sm text-slate-500 mt-2">WebP images are 25-35% smaller than PNGs with the same quality.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fab fa-chrome"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800">Browser Friendly</h3>
+                    <p class="text-sm text-slate-500 mt-2">Supported by Chrome, Safari, Firefox, and Edge natively.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800">Transparency</h3>
+                    <p class="text-sm text-slate-500 mt-2">Supports alpha transparency just like PNG, but much smaller.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Content Section -->
+    <section class="bg-white border-t border-slate-200 py-16 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            <!-- Main Article -->
+            <article class="lg:col-span-2 prose prose-slate max-w-none">
+                <h2 class="text-3xl font-bold text-slate-800">Why Convert AVIF to WebP?</h2>
+                <p>
+                    While AVIF offers incredible compression, <strong>WebP</strong> is currently the king of web compatibility. 
+                    Developed by Google, WebP images load instantly on almost every device and browser, making them the perfect choice for faster websites and better SEO.
+                </p>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-6">WebP Advantages:</h3>
+                <ul class="list-disc pl-5 space-y-2 text-slate-600">
+                    <li><strong>Universal Support:</strong> Works flawlessly on older Android phones and browser versions where AVIF might fail.</li>
+                    <li><strong>Faster Decoding:</strong> WebP images decode quicker than AVIF on mobile devices, saving battery life.</li>
+                    <li><strong>Best of Both Worlds:</strong> You get the transparency of PNG and the small size of JPG in one format.</li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-8">How to use:</h3>
+                <ol class="list-decimal pl-5 space-y-2 text-slate-600">
+                    <li>Upload your <strong>.avif</strong> files.</li>
+                    <li>Select Quality (80% is a sweet spot for the web).</li>
+                    <li>Keep <strong>"Keep Transparency"</strong> ON if your image has no background.</li>
+                    <li>Click <strong>Convert</strong> and download.</li>
+                </ol>
+                
+                <!-- FAQ -->
+                <div class="mt-10 space-y-4">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Common Questions</h3>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <details class="group bg-slate-50 p-4 cursor-pointer">
+                            <summary class="flex justify-between items-center font-semibold text-slate-700 list-none">
+                                Is WebP better than AVIF?
+                                <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                            </summary>
+                            <p class="text-slate-600 mt-3 text-sm">For raw compression, AVIF wins. But for <strong>compatibility and speed</strong>, WebP is currently the better choice for live websites.</p>
+                        </details>
+                    </div>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <details class="group bg-slate-50 p-4 cursor-pointer">
+                            <summary class="flex justify-between items-center font-semibold text-slate-700 list-none">
+                                Do I need to upload files?
+                                <span class="transition group-open:rotate-180"><i class="fas fa-chevron-down"></i></span>
+                            </summary>
+                            <p class="text-slate-600 mt-3 text-sm">No! Our converter runs entirely in your browser. Your images never leave your computer.</p>
+                        </details>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Sidebar: Related Tools -->
+            <aside class="lg:col-span-1">
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 sticky top-24">
+                    <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                        <i class="fas fa-exchange-alt text-green-500 mr-2"></i> Other Converters
+                    </h3>
+                    <nav class="space-y-2">
+                        <a href="/avif-to-jpg" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-indigo-500 hover:text-indigo-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">AVIF to JPG</span>
+                            <i class="fas fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-500"></i>
+                        </a>
+                        <a href="/avif-to-png" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-cyan-500 hover:text-cyan-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">AVIF to PNG</span>
+                            <i class="fas fa-chevron-right text-xs text-slate-300 group-hover:text-cyan-500"></i>
+                        </a>
+                        <a href="/webp-to-png" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-blue-500 hover:text-blue-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">WebP to PNG</span>
+                            <i class="fas fa-chevron-right text-xs text-slate-300 group-hover:text-blue-500"></i>
+                        </a>
+                        <hr class="border-slate-200 my-2">
+                        <a href="/image-compressor" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-purple-500 hover:text-purple-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">Compress WebP</span>
+                            <i class="fas fa-compress-arrows-alt text-xs text-slate-300 group-hover:text-purple-500"></i>
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer"></div>
+
+    <!-- Scripts -->
+    <script src="/include/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const processingArea = document.getElementById('processing-area');
+            const fileList = document.getElementById('file-list');
+            const convertBtn = document.getElementById('convert-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const downloadArea = document.getElementById('download-area');
+            const downloadZipBtn = document.getElementById('download-zip-btn');
+            const transparencyToggle = document.getElementById('transparency-toggle');
+            const qualitySelect = document.getElementById('quality-level');
+            
+            let files = [];
+            let convertedFiles = [];
+
+            // UI Helpers
+            const preventDefaults = e => { e.preventDefault(); e.stopPropagation(); };
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, preventDefaults));
+            ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.add('dragover')));
+            ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.remove('dragover')));
+
+            // File Handling
+            dropZone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+            fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+            function handleFiles(fileListObj) {
+                const newFiles = [...fileListObj].filter(f => f.type === 'image/avif' || f.name.toLowerCase().endsWith('.avif'));
+                if (newFiles.length) {
+                    processingArea.classList.remove('hidden');
+                    dropZone.classList.add('hidden');
+                    newFiles.forEach(file => {
+                        if(!files.some(f => f.name === file.name && f.size === file.size)) {
+                            const id = Math.random().toString(36).substr(2, 9);
+                            files.push({ file, id });
+                            renderFile(file, id);
+                        }
+                    });
+                }
+            }
+
+            function renderFile(file, id) {
+                const html = `
+                    <div id="file-${id}" class="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 shadow-sm animate-fade-in">
+                        <div class="flex items-center gap-4 overflow-hidden">
+                            <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-medium text-slate-700 truncate text-sm">${file.name}</p>
+                                <p class="text-xs text-slate-400">${(file.size/1024).toFixed(1)} KB</p>
+                            </div>
+                        </div>
+                        <div class="status-area">
+                            <button onclick="removeFile('${id}')" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>`;
+                fileList.insertAdjacentHTML('beforeend', html);
+            }
+
+            window.removeFile = (id) => {
+                files = files.filter(f => f.id !== id);
+                document.getElementById(`file-${id}`).remove();
+                if (!files.length) resetApp();
+            };
+
+            function resetApp() {
+                files = []; convertedFiles = [];
+                fileList.innerHTML = '';
+                processingArea.classList.add('hidden');
+                downloadArea.classList.add('hidden');
+                dropZone.classList.remove('hidden');
+                fileInput.value = '';
+                convertBtn.disabled = false;
+                convertBtn.innerHTML = '<i class="fas fa-bolt mr-2"></i> Convert to WebP';
+            }
+
+            resetBtn.addEventListener('click', resetApp);
+
+            // Conversion Process
+            convertBtn.addEventListener('click', async () => {
+                if (!files.length) return;
+                convertBtn.disabled = true;
+                convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+                convertedFiles = [];
+                const preserveTrans = transparencyToggle.checked;
+                const quality = parseFloat(qualitySelect.value);
+
+                for (const item of files) {
+                    const statusEl = document.querySelector(`#file-${item.id} .status-area`);
+                    statusEl.innerHTML = '<span class="text-xs font-bold text-green-600 animate-pulse">Optimizing...</span>';
+                    
+                    try {
+                        const blob = await convertToWebP(item.file, quality, preserveTrans);
+                        const url = URL.createObjectURL(blob);
+                        const name = item.file.name.replace(/\.[^/.]+$/, "") + ".webp";
+                        convertedFiles.push({ name, blob });
+                        
+                        statusEl.innerHTML = `
+                            <div class="text-right mr-2 flex items-center gap-3">
+                                <div>
+                                    <span class="block text-xs font-bold text-green-600">Done</span>
+                                    <span class="block text-[10px] text-slate-400">${(blob.size/1024).toFixed(1)} KB</span>
+                                </div>
+                                <a href="${url}" download="${name}" class="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-xs font-bold hover:bg-green-200">Save</a>
+                            </div>`;
+                    } catch (e) {
+                        console.error(e);
+                        statusEl.innerHTML = '<span class="text-xs font-bold text-red-500">Error</span>';
+                    }
+                }
+                
+                convertBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Finished';
+                if (convertedFiles.length) downloadArea.classList.remove('hidden');
+            });
+
+            function convertToWebP(file, quality, transparent) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        
+                        if (!transparent) {
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        }
+                        
+                        ctx.drawImage(img, 0, 0);
+                        // Conversion specific to WebP
+                        canvas.toBlob(blob => blob ? resolve(blob) : reject(), 'image/webp', quality);
+                    };
+                    img.onerror = reject;
+                    img.src = URL.createObjectURL(file);
+                });
+            }
+
+            downloadZipBtn.addEventListener('click', () => {
+                const zip = new JSZip();
+                convertedFiles.forEach(f => zip.file(f.name, f.blob));
+                zip.generateAsync({type:"blob"}).then(content => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(content);
+                    a.download = "converted_webp.zip";
+                    a.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

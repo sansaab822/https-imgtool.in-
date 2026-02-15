@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>Image Resizer - Resize JPG, PNG & WebP Online (Free) | IMG Tool.in</title>
+    <meta name="description"
+        content="Resize images online by pixels or percentage. Lock aspect ratio, change formats, and batch process multiple images for free. Fast, secure, and high-quality." />
+    <meta name="keywords"
+        content="image resizer, resize image, change image size, photo resizer, batch resize, resize jpg, resize png, online image tool, aspect ratio calculator" />
+    <link rel="canonical" href="https://imgtool.in/image-resizer" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Free Online Image Resizer - Batch & Fast" />
+    <meta property="og:description" content="Resize unlimited images securely in your browser. Maintain quality and aspect ratio." />
+    <meta property="og:image" content="https://imgtool.in/image/og-resizer.webp" />
+    <meta property="og:url" content="https://imgtool.in/image-resizer" />
+    <meta property="og:type" content="website" />
+
+    <!-- Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Image Resizer",
+            "operatingSystem": "Web Browser",
+            "applicationCategory": "UtilitiesApplication",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "featureList": "Pixel resizing, Percentage scaling, Aspect ratio lock, Batch processing"
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Theme Colors: Violet */
+        .drop-zone { transition: all 0.3s ease; border-width: 2px; }
+        .drop-zone.dragover { border-color: #7c3aed; background-color: #f5f3ff; transform: scale(1.01); }
+        .gradient-text { background: linear-gradient(135deg, #7c3aed, #4f46e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Custom Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 2px 6px rgba(124, 58, 237, 0.3);
+            transition: transform 0.1s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #ddd6fe;
+            border-radius: 2px;
+        }
+
+        /* Lock Icon State */
+        .lock-btn.locked { color: #7c3aed; background-color: #f3e8ff; border-color: #d8b4fe; }
+        .lock-btn.unlocked { color: #94a3b8; background-color: #f8fafc; border-color: #e2e8f0; }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #a78bfa; }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased">
+
+    <!-- Header Placeholder -->
+    <div id="header"></div>
+
+    <!-- Main Tool Section -->
+    <main class="pt-32 pb-20 px-4">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Title Area -->
+            <div class="text-center mb-10">
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
+                    Advanced <span class="gradient-text">Image Resizer</span>
+                </h1>
+                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Resize images by pixel dimensions or percentage. <br class="hidden md:block" />
+                    Maintain quality and aspect ratio automatically.
+                </p>
+            </div>
+
+            <!-- Resizer Card -->
+            <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                
+                <!-- 1. Drop Zone -->
+                <div id="drop-zone" class="p-10 md:p-16 text-center cursor-pointer border-b border-slate-100 hover:bg-slate-50 transition-colors group relative">
+                    <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" multiple accept="image/jpeg, image/png, image/webp">
+                    
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-violet-50 text-violet-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-expand text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-2">Drag & Drop Images</h3>
+                    <p class="text-slate-500">JPG, PNG or WebP (Max 20 files)</p>
+                </div>
+
+                <!-- 2. Settings & Processing Area (Hidden initially) -->
+                <div id="processing-area" class="hidden bg-slate-50/50">
+                    
+                    <!-- Settings Toolbar -->
+                    <div class="p-6 border-b border-slate-200 bg-white sticky top-0 z-20">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            
+                            <!-- Dimensions Control -->
+                            <div>
+                                <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">Resize by Pixels</label>
+                                <div class="flex items-center gap-2">
+                                    <div class="relative flex-1">
+                                        <input type="number" id="width-input" placeholder="Width" class="w-full p-2.5 pl-9 border border-slate-200 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition outline-none text-sm font-bold text-slate-700" min="1">
+                                        <span class="absolute left-3 top-2.5 text-slate-400 text-xs font-bold">W</span>
+                                    </div>
+                                    
+                                    <button id="aspect-ratio-lock" class="lock-btn locked w-10 h-10 rounded-lg border flex items-center justify-center transition-all" title="Lock Aspect Ratio">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    
+                                    <div class="relative flex-1">
+                                        <input type="number" id="height-input" placeholder="Height" class="w-full p-2.5 pl-9 border border-slate-200 rounded-xl focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition outline-none text-sm font-bold text-slate-700" min="1">
+                                        <span class="absolute left-3 top-2.5 text-slate-400 text-xs font-bold">H</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Percentage & Format -->
+                            <div class="flex flex-col gap-4">
+                                <div>
+                                    <div class="flex justify-between mb-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase">Or Resize by Percentage</label>
+                                        <span id="percentage-value" class="text-xs font-bold text-violet-700 bg-violet-100 px-2 py-1 rounded">100%</span>
+                                    </div>
+                                    <input type="range" id="percentage-slider" min="1" max="200" value="100" class="w-full">
+                                </div>
+                                
+                                <div class="flex gap-3">
+                                    <div class="flex-1">
+                                        <select id="format-select" class="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-violet-500 outline-none text-sm font-bold text-slate-700 bg-white cursor-pointer">
+                                            <option value="original">Keep Original Format</option>
+                                            <option value="image/jpeg">Convert to JPG</option>
+                                            <option value="image/png">Convert to PNG</option>
+                                            <option value="image/webp">Convert to WebP</option>
+                                        </select>
+                                    </div>
+                                    <button id="resize-btn" class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-violet-500/30 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                                        <i class="fas fa-compress mr-2"></i> Resize All
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- File List -->
+                    <div id="file-list" class="p-6 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar">
+                        <!-- Files injected here -->
+                    </div>
+
+                    <!-- Bulk Download -->
+                    <div id="download-area" class="hidden p-6 bg-violet-50 border-t border-violet-100 text-center">
+                        <div class="flex flex-col items-center animate-fade-in">
+                            <div class="text-violet-900 font-bold text-lg mb-3">🎉 All Images Resized!</div>
+                            <div class="flex gap-3">
+                                <button id="download-zip-btn" class="bg-slate-900 hover:bg-slate-800 text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center">
+                                    <i class="fas fa-file-archive mr-2"></i> Download ZIP
+                                </button>
+                                <button id="reset-btn" class="bg-white border border-slate-200 text-slate-600 hover:text-red-500 hover:border-red-200 px-6 py-3 rounded-xl font-bold transition-all">
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-ruler-combined"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800">Precision Control</h3>
+                    <p class="text-sm text-slate-500 mt-2">Resize by exact pixels or percentage scale with ease.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                    <div class="w-12 h-12 bg-violet-100 text-violet-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800">Aspect Ratio Lock</h3>
+                    <p class="text-sm text-slate-500 mt-2">Automatically calculates dimensions to prevent distortion.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-all">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mx-auto mb-4 text-xl">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-800">Batch Processing</h3>
+                    <p class="text-sm text-slate-500 mt-2">Resize multiple images at once in seconds.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Content Section -->
+    <section class="bg-white border-t border-slate-200 py-16 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+            
+            <!-- Main Article -->
+            <article class="lg:col-span-2 prose prose-slate max-w-none">
+                <h2 class="text-3xl font-bold text-slate-800">Resize Images for Web & Social Media</h2>
+                <p>
+                    Whether you need a 1080x1080 image for Instagram or a lightweight thumbnail for your website, our <strong>Online Image Resizer</strong> makes it simple.
+                    Adjust dimensions precisely without installing heavy software.
+                </p>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-6">Key Features</h3>
+                <ul class="list-disc pl-5 space-y-2 text-slate-600">
+                    <li><strong>Pixel Perfect:</strong> Enter exact width and height values.</li>
+                    <li><strong>Percentage Scaling:</strong> Quickly reduce size by 50%, 25% etc.</li>
+                    <li><strong>Format Conversion:</strong> Save resized images as JPG, PNG, or WebP.</li>
+                    <li><strong>No Quality Loss:</strong> Our smart algorithms maintain sharpness during resizing.</li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-8">Common Sizes Guide</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <strong class="block text-violet-700 mb-1">Social Media</strong>
+                        <ul class="text-sm text-slate-600 space-y-1">
+                            <li>Instagram Post: 1080 x 1080</li>
+                            <li>Instagram Story: 1080 x 1920</li>
+                            <li>Facebook Cover: 820 x 312</li>
+                            <li>Twitter Header: 1500 x 500</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <strong class="block text-blue-700 mb-1">Web Standard</strong>
+                        <ul class="text-sm text-slate-600 space-y-1">
+                            <li>Full HD (1080p): 1920 x 1080</li>
+                            <li>HD (720p): 1280 x 720</li>
+                            <li>Blog Featured: 1200 x 630</li>
+                            <li>Email Header: 600 x 200</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Sidebar -->
+            <aside class="lg:col-span-1">
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 sticky top-24">
+                    <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                        <i class="fas fa-link text-violet-500 mr-2"></i> Related Tools
+                    </h3>
+                    <nav class="space-y-2">
+                        <a href="/image-compressor" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-violet-500 hover:text-violet-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">Compress Images</span>
+                            <i class="fas fa-compress-arrows-alt text-xs text-slate-300 group-hover:text-violet-500"></i>
+                        </a>
+                        <a href="/crop-image" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-green-500 hover:text-green-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">Crop Image</span>
+                            <i class="fas fa-crop-alt text-xs text-slate-300 group-hover:text-green-500"></i>
+                        </a>
+                        <a href="/bg-remover" class="block p-3 bg-white rounded-lg border border-slate-100 hover:border-pink-500 hover:text-pink-600 transition-all shadow-sm flex justify-between items-center group">
+                            <span class="text-sm font-medium">Remove Background</span>
+                            <i class="fas fa-eraser text-xs text-slate-300 group-hover:text-pink-500"></i>
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+        </div>
+    </section>
+
+    <!-- Footer Placeholder -->
+    <div id="footer"></div>
+
+    <!-- Scripts -->
+    <script src="/include/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const processingArea = document.getElementById('processing-area');
+            const fileList = document.getElementById('file-list');
+            const resizeBtn = document.getElementById('resize-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const downloadArea = document.getElementById('download-area');
+            const downloadZipBtn = document.getElementById('download-zip-btn');
+            
+            // Inputs
+            const widthInput = document.getElementById('width-input');
+            const heightInput = document.getElementById('height-input');
+            const lockBtn = document.getElementById('aspect-ratio-lock');
+            const percentSlider = document.getElementById('percentage-slider');
+            const percentValue = document.getElementById('percentage-value');
+            const formatSelect = document.getElementById('format-select');
+
+            let files = [];
+            let resizedFiles = [];
+            let originalRatios = {}; // Store aspect ratios
+            let isLocked = true;
+
+            // UI Helpers
+            const preventDefaults = e => { e.preventDefault(); e.stopPropagation(); };
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, preventDefaults));
+            ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.add('dragover')));
+            ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, () => dropZone.classList.remove('dragover')));
+
+            dropZone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+            fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+            // Logic: Lock Toggle
+            lockBtn.addEventListener('click', () => {
+                isLocked = !isLocked;
+                lockBtn.classList.toggle('locked', isLocked);
+                lockBtn.classList.toggle('unlocked', !isLocked);
+                lockBtn.innerHTML = isLocked ? '<i class="fas fa-link"></i>' : '<i class="fas fa-unlink"></i>';
+                // Recalculate if locked enabled
+                if (isLocked && widthInput.value && files.length > 0) {
+                    updateHeightFromWidth(widthInput.value);
+                }
+            });
+
+            // Logic: Dimension Inputs
+            widthInput.addEventListener('input', (e) => {
+                if (!e.target.value) return;
+                percentSlider.value = 100; percentValue.innerText = '100%'; // Reset percentage
+                if (isLocked && files.length > 0) updateHeightFromWidth(e.target.value);
+            });
+
+            heightInput.addEventListener('input', (e) => {
+                if (!e.target.value) return;
+                percentSlider.value = 100; percentValue.innerText = '100%';
+                if (isLocked && files.length > 0) updateWidthFromHeight(e.target.value);
+            });
+
+            // Logic: Percentage Slider
+            percentSlider.addEventListener('input', (e) => {
+                percentValue.innerText = e.target.value + '%';
+                // Clear fixed pixels to indicate percentage mode
+                widthInput.value = '';
+                heightInput.value = '';
+            });
+
+            function updateHeightFromWidth(w) {
+                // Use ratio of the FIRST file as reference for UI
+                if (files.length > 0) {
+                    const ratio = originalRatios[files[0].id];
+                    heightInput.value = Math.round(w / ratio);
+                }
+            }
+
+            function updateWidthFromHeight(h) {
+                if (files.length > 0) {
+                    const ratio = originalRatios[files[0].id];
+                    widthInput.value = Math.round(h * ratio);
+                }
+            }
+
+            function handleFiles(fileListObj) {
+                const newFiles = [...fileListObj].filter(f => f.type.startsWith('image/'));
+                if (newFiles.length) {
+                    processingArea.classList.remove('hidden');
+                    dropZone.classList.add('hidden');
+                    
+                    newFiles.forEach(file => {
+                        if(!files.some(f => f.name === file.name && f.size === file.size)) {
+                            const id = Math.random().toString(36).substr(2, 9);
+                            files.push({ file, id });
+                            
+                            // Read image for ratio
+                            const img = new Image();
+                            img.onload = () => {
+                                originalRatios[id] = img.width / img.height;
+                                // If this is first file, populate inputs
+                                if (files.length === 1) {
+                                    widthInput.value = img.width;
+                                    heightInput.value = img.height;
+                                }
+                                renderFile(file, id, img.width, img.height);
+                            };
+                            img.src = URL.createObjectURL(file);
+                        }
+                    });
+                }
+            }
+
+            function renderFile(file, id, w, h) {
+                const html = `
+                    <div id="file-${id}" class="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 shadow-sm animate-fade-in">
+                        <div class="flex items-center gap-4 overflow-hidden">
+                            <div class="w-10 h-10 rounded-lg bg-violet-50 text-violet-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-medium text-slate-700 truncate text-sm">${file.name}</p>
+                                <p class="text-xs text-slate-400">${w} x ${h} px • ${(file.size/1024).toFixed(1)} KB</p>
+                            </div>
+                        </div>
+                        <div class="status-area">
+                            <button onclick="removeFile('${id}')" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>`;
+                fileList.insertAdjacentHTML('beforeend', html);
+            }
+
+            window.removeFile = (id) => {
+                files = files.filter(f => f.id !== id);
+                delete originalRatios[id];
+                document.getElementById(`file-${id}`).remove();
+                if (!files.length) resetApp();
+            };
+
+            function resetApp() {
+                files = []; resizedFiles = []; originalRatios = {};
+                fileList.innerHTML = '';
+                processingArea.classList.add('hidden');
+                downloadArea.classList.add('hidden');
+                dropZone.classList.remove('hidden');
+                fileInput.value = '';
+                resizeBtn.disabled = false;
+                resizeBtn.innerHTML = '<i class="fas fa-compress mr-2"></i> Resize All';
+            }
+
+            resetBtn.addEventListener('click', resetApp);
+
+            // Resizing Logic
+            resizeBtn.addEventListener('click', async () => {
+                if (!files.length) return;
+                resizeBtn.disabled = true;
+                resizeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+                resizedFiles = [];
+
+                const targetFormat = formatSelect.value;
+                const usePercentage = widthInput.value === '' && heightInput.value === '';
+                const scale = parseInt(percentSlider.value) / 100;
+                const targetW = parseInt(widthInput.value);
+                const targetH = parseInt(heightInput.value);
+
+                for (const item of files) {
+                    const statusEl = document.querySelector(`#file-${item.id} .status-area`);
+                    statusEl.innerHTML = '<span class="text-xs font-bold text-violet-600 animate-pulse">Resizing...</span>';
+                    
+                    try {
+                        const blob = await resizeImage(item.file, item.id, usePercentage, scale, targetW, targetH, targetFormat);
+                        const url = URL.createObjectURL(blob);
+                        
+                        // Determine extension
+                        let ext = "jpg";
+                        if (targetFormat === 'image/png') ext = "png";
+                        if (targetFormat === 'image/webp') ext = "webp";
+                        if (targetFormat === 'original') ext = item.file.name.split('.').pop();
+
+                        const name = item.file.name.replace(/\.[^/.]+$/, "") + `_resized.${ext}`;
+                        resizedFiles.push({ name, blob });
+                        
+                        statusEl.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-bold text-green-600">Done</span>
+                                <a href="${url}" download="${name}" class="bg-violet-100 text-violet-700 px-3 py-1 rounded-lg text-xs font-bold hover:bg-violet-200">Save</a>
+                            </div>`;
+                    } catch (e) {
+                        console.error(e);
+                        statusEl.innerHTML = '<span class="text-xs font-bold text-red-500">Error</span>';
+                    }
+                }
+                
+                resizeBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Finished';
+                if (resizedFiles.length) downloadArea.classList.remove('hidden');
+            });
+
+            function resizeImage(file, id, usePercentage, scale, targetW, targetH, format) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let w, h;
+
+                        if (usePercentage) {
+                            w = Math.round(img.width * scale);
+                            h = Math.round(img.height * scale);
+                        } else {
+                            // Pixel logic
+                            if (targetW && targetH && !isLocked) {
+                                w = targetW; h = targetH;
+                            } else if (targetW) {
+                                w = targetW;
+                                h = Math.round(targetW / (img.width / img.height));
+                            } else if (targetH) {
+                                h = targetH;
+                                w = Math.round(targetH * (img.width / img.height));
+                            } else {
+                                // Fallback if empty inputs
+                                w = img.width; h = img.height;
+                            }
+                        }
+
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        
+                        // Quality Resizing (Bicubic-ish via browser)
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        ctx.drawImage(img, 0, 0, w, h);
+                        
+                        let mime = format === 'original' ? file.type : format;
+                        canvas.toBlob(blob => blob ? resolve(blob) : reject(), mime, 0.92);
+                    };
+                    img.onerror = reject;
+                    img.src = URL.createObjectURL(file);
+                });
+            }
+
+            downloadZipBtn.addEventListener('click', () => {
+                const zip = new JSZip();
+                resizedFiles.forEach(f => zip.file(f.name, f.blob));
+                zip.generateAsync({type:"blob"}).then(content => {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(content);
+                    a.download = "resized_images.zip";
+                    a.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

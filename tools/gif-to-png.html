@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Professional GIF to PNG Converter (Batch & Free) | IMG Tool.in</title>
+    <meta name="description"
+        content="The ultimate free tool to convert GIF to PNG. Features batch processing, frame extraction, lossless quality, transparency preservation, and advanced options. 100% private and secure, works in your browser." />
+    <meta name="keywords"
+        content="GIF to PNG, convert GIF to PNG, extract GIF frame, batch GIF to PNG, animated GIF converter, lossless PNG, image converter, free converter, online tool, gif2png, frame extraction, transparency preservation, privacy-first converter" />
+
+    <!-- Open Graph, Canonical, Fonts, Libraries -->
+    <meta property="og:title" content="The Ultimate GIF to PNG Converter (Batch & Free) | IMG Tool.in" />
+    <meta property="og:description"
+        content="Experience the next generation of image conversion. Our pro tool offers batch processing, is 100% private, and processes all files directly in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://imgtool.in/image/og-gif-to-png-ultimate.webp" />
+    <meta property="og:url" content="https://imgtool.in/gif-to-png" />
+    <link rel="canonical" href="https://imgtool.in/gif-to-png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "breadcrumb": { "@type": "BreadcrumbList", "itemListElement": [ { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://imgtool.in/" }, { "@type": "ListItem", "position": 2, "name": "GIF to PNG Converter" } ] },
+            "mainEntity": [
+                { "@type": "HowTo", "name": "How to Convert GIF to PNG in Batches", "totalTime": "PT1M", "step": [ { "@type": "HowToStep", "name": "Upload Files", "text": "Drag and drop up to 20 GIF files, or click to select them." }, { "@type": "HowToStep", "name": "Configure Settings", "text": "Choose your PNG compression level and transparency preservation options." }, { "@type": "HowToStep", "name": "Convert", "text": "Click 'Convert All'. All processing happens securely in your browser." }, { "@type": "HowToStep", "name": "Download", "text": "Download files individually or all at once in a ZIP archive." } ] },
+                { "@type": "FAQPage", "mainEntity": [
+                    { "@type": "Question", "name": "Will transparency be preserved when converting GIF to PNG?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. PNG format fully supports alpha channel transparency. When you extract a frame from your GIF, any transparent areas will be perfectly preserved in the final PNG file with superior alpha channel support compared to GIF's binary transparency." } },
+                    { "@type": "Question", "name": "Will quality improve converting GIF to PNG?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. PNG supports millions of colors versus GIF's 256-color limitation. PNG uses lossless compression preserving image clarity, detail, and sharpness. Converting GIF to PNG dramatically improves quality for images with complex gradients and subtle color transitions." } },
+                    { "@type": "Question", "name": "Can I convert multiple files at once?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, you can upload up to 20 files at once for batch conversion." } },
+                    { "@type": "Question", "name": "Is this tool free to use?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, this tool is completely free, with no restrictions or watermarks." } },
+                    { "@type": "Question", "name": "How long are my files stored?", "acceptedAnswer": { "@type": "Answer", "text": "Your privacy is our priority. This tool processes files in your browser, so your images are never uploaded to our servers. They are not stored anywhere but on your own device." } }
+                ] }
+            ]
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --primary: #7c3aed;
+            --secondary: #2563eb;
+            --accent: #10b981;
+            --base: #0f172a;
+            --surface: #ffffff;
+            --muted: #475569;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: var(--base);
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .drop-zone.dragover {
+            background-color: #eff6ff;
+            border-color: var(--secondary);
+        }
+
+        .prose h2,
+        .prose h3 {
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+        }
+
+        .prose a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .prose a:hover {
+            text-decoration: underline;
+        }
+
+        .prose ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--base);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem;
+        }
+
+        .faq-answer {
+            color: var(--muted);
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 250px;
+            padding-bottom: 1.25rem;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .btn-all-tools {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: white;
+            font-weight: 600;
+            padding: 14px 28px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 1.125rem;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-all-tools:hover {
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-all-tools i {
+            margin-left: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-all-tools:hover i {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50">
+    <div id="header"></div>
+
+    <main class="container mx-auto px-4 py-12 md:py-16">
+        <!-- Tool Section -->
+        <section id="converter-tool" class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-800">GIF to <span class="gradient-text">PNG</span>
+                    Converter</h1>
+                <p class="mt-3 max-w-3xl mx-auto text-lg text-slate-600">Batch convert GIF images to lossless PNG format
+                    with advanced options. 100% private & secure.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
+                <div id="drop-zone"
+                    class="drop-zone border-3 border-dashed border-slate-300 rounded-xl p-8 text-center cursor-pointer transition-all">
+                    <i class="fas fa-cloud-upload-alt text-5xl text-violet-500 mb-4"></i>
+                    <p class="text-xl font-semibold text-slate-700">Drag & drop your GIF files here</p>
+                    <p class="text-slate-500 mt-1">(Up to 20 files at once)</p>
+                    <button id="select-files-btn" class="mt-4 cta-btn bg-violet-600 text-white font-bold py-3 px-8 rounded-lg text-lg">or Select Files</button>
+                    <input type="file" id="file-input" class="hidden" multiple accept="image/gif">
+                </div>
+                <div id="file-processing-area" class="hidden">
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4">Advanced Options</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label for="compression-level" class="block text-sm font-medium">PNG Compression</label>
+                                <select id="compression-level" class="w-full mt-1 p-2 border rounded-md bg-white">
+                                    <option value="maximum">Maximum (Slower)</option>
+                                    <option value="balanced" selected>Balanced (Recommended)</option>
+                                    <option value="fast">Fast (Larger Files)</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center mt-4 md:mt-6">
+                                <input id="preserve-transparency" type="checkbox" checked class="h-4 w-4 text-violet-600 rounded"><label for="preserve-transparency" class="ml-2">Preserve Transparency</label>
+                            </div>
+                            <div class="flex items-center mt-4 md:mt-6">
+                                <input id="remove-metadata" type="checkbox" checked class="h-4 w-4 text-violet-600 rounded"><label for="remove-metadata" class="ml-2">Remove Metadata</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="file-list-wrapper" class="mt-6">
+                        <div id="file-list" class="space-y-2"></div>
+                    </div>
+                </div>
+                <div id="action-buttons" class="mt-8 text-center hidden">
+                    <button id="convert-btn" class="w-full md:w-auto cta-btn bg-violet-600 text-white font-bold py-4 px-12 rounded-lg text-xl">Convert All to PNG</button>
+                    <div id="download-actions"
+                        class="hidden mt-4 flex flex-col md:flex-row justify-center items-center gap-4">
+                        <button id="download-all-btn" class="action-btn w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg">Download All (.zip)</button>
+                        <button id="reset-btn" class="action-btn w-full md:w-auto bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg">Convert More</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4 flex items-center justify-center gap-2 text-green-700">
+                <i class="fas fa-shield-halved"></i>
+                <p class="text-sm font-medium">Privacy First: Your files are processed in your browser.</p>
+            </div>
+        </section>
+
+        <!-- Feedback Section (Initially Hidden) -->
+        <section id="feedback-widget" class="mt-12 max-w-xl mx-auto text-center p-4 bg-slate-100 rounded-lg hidden">
+            <p id="feedback-question" class="font-semibold">Was this tool helpful?</p>
+            <div id="feedback-buttons" class="mt-2 space-x-4">
+                <button id="feedback-yes" class="px-6 py-2 rounded-lg bg-white border border-green-500 text-green-600 hover:bg-green-50">Yes</button>
+                <button id="feedback-no" class="px-6 py-2 rounded-lg bg-white border border-red-500 text-red-600 hover:bg-red-50">No</button>
+            </div>
+            <p id="feedback-thanks" class="hidden font-semibold text-green-700">Thank you for your feedback!</p>
+        </section>
+
+        <!-- SEO Content Section -->
+        <section id="seo-content" class="mt-16 md:mt-20">
+            <div class="prose lg:prose-lg mx-auto text-slate-600 max-w-4xl">
+                <div class="flex justify-between items-center flex-wrap border-b pb-2 border-slate-200 mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 m-0">About GIF to PNG Conversion</h2>
+                    <span class="text-sm text-slate-500 w-full sm:w-auto text-left sm:text-right mt-2 sm:mt-0">Last Updated: <span id="last-updated-date"></span></span>
+                </div>
+                <p>Our tool does more than just convert files. It's a complete solution for extracting frames from
+                    animated GIFs, preserving transparency with superior alpha channels, improving color depth, and
+                    ensuring privacy. All processing is done 100% in your browser, meaning your files never leave your
+                    computer.</p>
+                <h3>How to Convert GIF to PNG in 4 Easy Steps</h3>
+                <ol>
+                    <li>Drag & drop or select up to 20 GIF images (animated or static).</li>
+                    <li>Choose your preferred PNG compression level and transparency options.</li>
+                    <li>Click 'Convert All'. The process is done instantly in your browser.</li>
+                    <li>Download files individually or all at once in a ZIP archive.</li>
+                </ol>
+                <h3>GIF vs. PNG: Why Make the Switch?</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="border-b-2 p-2">Feature</th>
+                                <th class="border-b-2 p-2">GIF (Source)</th>
+                                <th class="border-b-2 p-2">PNG (Target)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border-b p-2"><strong>Color Depth</strong></td>
+                                <td class="border-b p-2">256 colors (8-bit)</td>
+                                <td class="border-b p-2">16.7 million colors (24-bit)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Compression</strong></td>
+                                <td class="border-b p-2">Lossless but limited</td>
+                                <td class="border-b p-2">Lossless with full color range</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Transparency</strong></td>
+                                <td class="border-b p-2">Binary (on/off only)</td>
+                                <td class="border-b p-2">Alpha channel (0-255 levels)</td>
+                            </tr>
+                            <tr>
+                                <td class="border-b p-2"><strong>Best For</strong></td>
+                                <td class="border-b p-2">Simple animations</td>
+                                <td class="border-b p-2">Logos, icons, graphics with transparency</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Pro Tips for GIF to PNG Conversion</h3>
+                <ul>
+                    <li><strong>Superior Transparency Support:</strong> PNG features alpha channel transparency with 256
+                        levels of opacity per pixel, compared to GIF's binary on/off transparency. Converting GIF to PNG
+                        enables smooth edges, soft shadows, and gradual transparency effects impossible in GIF format.
+                    </li>
+                    <li><strong>Millions of Colors:</strong> PNG supports 16.7 million colors versus GIF's 256-color
+                        limitation. Converting photographs or complex graphics from GIF to PNG dramatically improves
+                        quality by revealing subtle gradients, color transitions, and tonal variations that GIF cannot
+                        display.</li>
+                    <li><strong>Lossless Quality:</strong> Both formats use lossless compression, but PNG's full color
+                        support means you get perfect quality preservation without GIF's color palette restrictions.
+                        Ideal for logos, icons, graphics, and any image requiring precise color accuracy and editing
+                        flexibility.</li>
+                    <li><strong>Extract Perfect Frames:</strong> Convert animated GIFs to PNG to capture high-quality
+                        still frames. Our tool automatically extracts the first frame with full color depth and superior
+                        transparency, perfect for creating thumbnails, social media posts, or preserving key animation
+                        moments.</li>
+                    <li><strong>Professional Graphics:</strong> PNG is the standard for web graphics, icons, and logos
+                        requiring transparency. Converting GIF to PNG ensures your graphics display with crisp edges,
+                        smooth transparency gradients, and full color fidelity across all modern browsers and platforms.
+                    </li>
+                </ul>
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-container">
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Will transparency be preserved when converting GIF to PNG?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes, and it will be significantly improved. PNG format fully supports
+                            alpha channel transparency with 256 levels of opacity per pixel, compared to GIF's binary
+                            on/off transparency. When you extract a frame from your GIF, transparent areas will be
+                            perfectly preserved in the final PNG file with superior alpha channel support for smooth
+                            edges and gradual transparency.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Will quality improve when converting from GIF to PNG?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes, dramatically. PNG supports 16.7 million colors versus GIF's
+                            256-color limitation. PNG uses lossless compression that preserves image clarity, detail,
+                            and sharpness across the full color spectrum. Converting GIF to PNG reveals subtle
+                            gradients, color transitions, and tonal variations that GIF's limited palette cannot
+                            display, especially beneficial for photographs or complex graphics incorrectly saved as GIF.
+                        </div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Is this GIF to PNG converter free to use?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes, absolutely! Our converter is 100% free with no limits. Convert as
+                            many images as you need without watermarks or sign-ups.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Can I convert multiple files at once?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Yes. Our tool is built for efficiency. You can drag and drop or select
+                            up to 20 GIF files to convert into a single batch.</div>
+                    </div>
+                    <div class="faq-item" tabindex="0">
+                        <div class="faq-question">Are my files secure? How long are they stored?
+                            <i class="fas fa-chevron-down faq-icon"></i>
+                        </div>
+                        <div class="faq-answer">Your files are 100% secure. All processing happens directly in your
+                            browser, meaning your images are never uploaded to our servers. Because of this, they are
+                            never stored by us.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- "All Converters" Button -->
+        <section id="all-tools-link" class="text-center mt-20">
+            <a href="https://www.imgtool.in/all-image-converters" class="btn-all-tools">
+                Explore All Our IMG Toolers
+                <i class="fas fa-tools"></i>
+            </a>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+    <script src="/include/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Date update ---
+            const lastUpdatedSpan = document.getElementById('last-updated-date');
+            if (lastUpdatedSpan) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                lastUpdatedSpan.textContent = today.toLocaleDateString('en-US', options);
+            }
+            
+            // --- Accordion FAQ ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const trigger = item;
+                trigger.addEventListener('click', (e) => { 
+                    if (!item.contains(e.target) || e.target.tagName === 'A') return;
+                    item.classList.toggle('active'); 
+                });
+                trigger.addEventListener('keypress', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.classList.toggle('active'); } });
+            });
+
+            // --- Core Tool Logic ---
+            const dropZone = document.getElementById('drop-zone'), fileInput = document.getElementById('file-input'), fileProcessingArea = document.getElementById('file-processing-area');
+            const fileList = document.getElementById('file-list');
+            const actionButtons = document.getElementById('action-buttons'), convertBtn = document.getElementById('convert-btn'), downloadActions = document.getElementById('download-actions');
+            const downloadAllBtn = document.getElementById('download-all-btn'), resetBtn = document.getElementById('reset-btn');
+            const compressionLevelSelect = document.getElementById('compression-level');
+            const preserveTransparencyCheckbox = document.getElementById('preserve-transparency');
+            const removeMetadataCheckbox = document.getElementById('remove-metadata');
+            const feedbackWidget = document.getElementById('feedback-widget'), feedbackQuestion = document.getElementById('feedback-question'), feedbackButtons = document.getElementById('feedback-buttons'), feedbackThanks = document.getElementById('feedback-thanks');
+            let filesToProcess = [];
+
+            // --- FIXED Event Listeners ---
+            document.getElementById('select-files-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                fileInput.click();
+            });
+
+            dropZone.addEventListener('click', (e) => {
+                if (e.target.id === 'drop-zone' || e.target.parentElement.id === 'drop-zone') {
+                    fileInput.click();
+                }
+            });
+
+            ['dragover', 'dragleave', 'drop'].forEach(eventName => dropZone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }));
+            dropZone.addEventListener('dragover', () => dropZone.classList.add('dragover'));
+            dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+            dropZone.addEventListener('drop', (e) => { dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+            fileInput.addEventListener('change', (e) => { handleFiles(e.target.files); e.target.value = ''; });
+            
+            convertBtn.addEventListener('click', processConversion);
+            resetBtn.addEventListener('click', resetConverter);
+            downloadAllBtn.addEventListener('click', downloadAllAsZip);
+            document.getElementById('feedback-yes').addEventListener('click', handleFeedback);
+            document.getElementById('feedback-no').addEventListener('click', handleFeedback);
+            
+            function handleFiles(files) {
+                const newFiles = Array.from(files).filter(file => (file.type === 'image/gif') && !filesToProcess.some(f => f.file.name === file.name && f.file.size === file.size) && filesToProcess.length < 20);
+                if (newFiles.length > 0) {
+                    newFiles.forEach(file => filesToProcess.push({ file, id: `f-${Date.now()}-${Math.random()}`, status: 'queued', originalSize: file.size }));
+                    updateUI(true);
+                }
+            }
+
+            function updateUI(filesAdded) {
+                if (filesAdded) { fileList.innerHTML = ''; filesToProcess.forEach(createFilePreview); }
+                const hasFiles = filesToProcess.length > 0;
+                dropZone.classList.toggle('hidden', hasFiles);
+                fileProcessingArea.classList.toggle('hidden', !hasFiles);
+                actionButtons.classList.toggle('hidden', !hasFiles);
+                convertBtn.classList.remove('hidden');
+                downloadActions.classList.add('hidden');
+                if (!hasFiles) { feedbackWidget.classList.add('hidden'); }
+            }
+
+            function createFilePreview({ file, id, originalSize }) {
+                const fileItemHTML = `<div id="${id}" class="p-3 bg-slate-50 rounded-lg grid grid-cols-[auto_1fr_auto] items-center gap-3"><img src="${URL.createObjectURL(file)}" alt="${file.name}" loading="lazy" class="w-12 h-12 object-cover rounded-md"><div class="overflow-hidden"><p class="font-semibold truncate">${file.name}</p><p class="text-sm text-slate-500">${formatFileSize(originalSize)}</p></div><button class="remove-btn text-red-500 hover:text-red-700 p-2 rounded-full" data-fileid="${id}" aria-label="Remove ${file.name}"><i class="fas fa-trash-alt fa-lg"></i></button></div>`;
+                fileList.insertAdjacentHTML('beforeend', fileItemHTML);
+                document.querySelector(`.remove-btn[data-fileid="${id}"]`).addEventListener('click', (e) => { e.stopPropagation(); filesToProcess = filesToProcess.filter(f => f.id !== id); document.getElementById(id).remove(); updateUI(false); });
+            }
+            
+            async function processConversion() {
+                convertBtn.disabled = true; convertBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Converting...`;
+                document.querySelectorAll('.remove-btn').forEach(btn => btn.style.display = 'none');
+                const compressionLevel = compressionLevelSelect.value;
+
+                for (const fileObj of filesToProcess) {
+                    updateFileStatus(fileObj.id, 'processing');
+                    try {
+                        const { pngUrl, newSize } = await convertFileToPng(fileObj.file, compressionLevel);
+                        Object.assign(fileObj, { status: 'converted', newUrl: pngUrl, newName: fileObj.file.name.replace(/\.[^/.]+$/, "") + ".png", newSize });
+                        updateFileStatus(fileObj.id, 'converted', fileObj);
+                    } catch (error) { console.error('Conversion error:', error); Object.assign(fileObj, { status: 'error' }); updateFileStatus(fileObj.id, 'error'); }
+                }
+                conversionFinished();
+            }
+            
+            function updateFileStatus(fileId, status, fileObj = null) {
+                const el = document.getElementById(fileId);
+                if (!el) return;
+                let statusArea = el.querySelector('button, .status-area');
+                if(!statusArea) {
+                     statusArea = document.createElement('div');
+                     statusArea.className = 'status-area justify-self-end';
+                     el.appendChild(statusArea);
+                }
+
+                if (status === 'processing') { statusArea.innerHTML = `<i class="fas fa-spinner fa-spin text-blue-500"></i>`; }
+                else if (status === 'converted') {
+                    const reduction = ((fileObj.originalSize - fileObj.newSize) / fileObj.originalSize) * 100;
+                    el.innerHTML = `<img src="${fileObj.newUrl}" loading="lazy" class="w-12 h-12 object-cover rounded-md"><p class="font-semibold truncate">${fileObj.newName}</p><div class="text-right"><p class="font-semibold text-sm">${formatFileSize(fileObj.newSize)}</p><p class="text-xs ${reduction >= 0 ? 'text-green-600' : 'text-red-600'} font-semibold">${reduction >= 0 ? `&#9660;${reduction.toFixed(1)}%` : `&#9650;${Math.abs(reduction).toFixed(1)}%`}</p></div><a href="${fileObj.newUrl}" download="${fileObj.newName}" class="ml-2 bg-black text-white font-bold py-2 px-3 rounded-lg text-xs hover:bg-gray-800 transition-colors">Download</a>`;
+                    el.className = el.className.replace('grid-cols-[auto_1fr_auto]', 'grid-cols-[auto_1fr_auto_auto]');
+                } else if (status === 'error') { statusArea.innerHTML = `<span class="text-red-500 text-sm font-semibold">Error</span>`; }
+            }
+
+            function convertFileToPng(file, compressionLevel) { 
+                return new Promise((resolve, reject) => { 
+                    const reader = new FileReader(); 
+                    reader.onload = e => { 
+                        const img = new Image(); 
+                        img.onload = () => { 
+                            const c = document.createElement('canvas'); 
+                            c.width = img.width; 
+                            c.height = img.height; 
+                            const ctx = c.getContext('2d'); 
+                            ctx.drawImage(img, 0, 0); 
+                            c.toBlob(b => b ? resolve({ pngUrl: URL.createObjectURL(b), newSize: b.size }) : reject(new Error('Canvas toBlob failed.')), 'image/png'); 
+                        }; 
+                        img.onerror = reject; 
+                        img.src = e.target.result; 
+                    }; 
+                    reader.onerror = reject; 
+                    reader.readAsDataURL(file); 
+                }); 
+            }
+            
+            function downloadAllAsZip() { const zip = new JSZip(), files = filesToProcess.filter(f => f.status === 'converted'); if (files.length === 0) return; files.forEach(f => zip.file(f.newName, fetch(f.newUrl).then(res => res.blob()))); zip.generateAsync({ type: "blob" }).then(content => { const a = document.createElement('a'), d = new Date().toISOString().slice(0, 10); a.href = URL.createObjectURL(content); a.download = `imgtool.in_png_${d}.zip`; document.body.appendChild(a); a.click(); document.body.removeChild(a); }); }
+
+            function conversionFinished() { convertBtn.classList.add('hidden'); downloadActions.classList.remove('hidden'); feedbackWidget.classList.remove('hidden'); }
+            function resetConverter() { filesToProcess.forEach(file => { if (file.newUrl) URL.revokeObjectURL(file.newUrl); }); filesToProcess = []; fileList.innerHTML = ''; fileInput.value = ''; updateUI(false); convertBtn.disabled = false; convertBtn.innerHTML = `Convert All to PNG`; }
+            function formatFileSize(bytes) { if (bytes === 0) return '0 B'; const k = 1024, i = Math.floor(Math.log(bytes) / Math.log(k)); return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${['B', 'KB', 'MB', 'GB'][i]}`; }
+            function handleFeedback() { feedbackQuestion.classList.add('hidden'); feedbackButtons.classList.add('hidden'); feedbackThanks.classList.remove('hidden'); }
+        });
+    </script>
+</body>
+
+</html>
