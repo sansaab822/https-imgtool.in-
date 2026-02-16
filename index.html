@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>IMG Tool - Free Online Image Converter & Editor Tools (100% Secure)</title>
+    <meta name="description"
+        content="Free online image tools to convert AVIF, HEIC, WebP, PNG, JPG, PDF and more. Resize, crop, compress images instantly in your browser. No server upload - 100% secure and private." />
+    <meta name="keywords"
+        content="image converter, online image tools, pdf converter, avif to jpg, heic to jpg, webp to jpg, image resizer, image compressor, free online tools, imgtool.in" />
+    <meta name="author" content="IMG Tool" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://imgtool.in/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="IMG Tool - Free Online Image Converter & Editor Tools" />
+    <meta property="og:description"
+        content="Free, fast, and secure online image tools. Convert, resize, compress and edit images locally in your browser. No upload needed." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://imgtool.in/" />
+    <meta property="og:image" content="https://imgtool.in/image/og-home.webp" />
+    <meta property="og:site_name" content="IMG Tool" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="IMG Tool - Free Online Image Converter & Editor Tools" />
+    <meta name="twitter:description"
+        content="Free, fast, and secure online image tools. Convert, resize, compress and edit images locally in your browser." />
+    <meta name="twitter:image" content="https://imgtool.in/image/og-home.webp" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "IMG Tool",
+        "url": "https://imgtool.in/",
+        "description": "Free online image converter and editor tools. Convert AVIF, HEIC, WebP, PNG, JPG, PDF and more.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://imgtool.in/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "IMG Tool",
+            "url": "https://imgtool.in/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://imgtool.in/image/logo.png"
+            }
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "IMG Tool",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1250"
+        }
+    }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Search highlight */
+        .highlight {
+            background-color: rgba(79, 70, 229, 0.2);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header Container (Loads from include/header-content.html via common.js) -->
+    <div id="header"></div>
+
+    <!-- Hero Section -->
+    <section class="relative bg-white border-b border-slate-200 pt-20 pb-24 overflow-hidden">
+        <div
+            class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] bg-[length:20px_20px]">
+        </div>
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <span
+                class="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-6">100%
+                Free & Secure • Client-Side Processing</span>
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
+                Your All-in-One <br /><span class="gradient-text">Image Toolkit</span>
+            </h1>
+            <p class="text-xl text-slate-600 max-w-2xl mx-auto mb-10">
+                Convert, Resize, Compress, and Edit images instantly. <br class="hidden md:block">
+                We support AVIF, HEIC, WebP, PDF, and 50+ other formats.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-xl mx-auto relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-slate-400 text-lg"></i>
+                </div>
+                <input type="text" id="tool-search"
+                    class="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 outline-none shadow-lg text-lg transition-all"
+                    placeholder="Search tools (e.g., 'avif to jpg' or 'resize')..." autocomplete="off">
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Grid Section -->
+    <main class="container mx-auto px-4 py-16">
+
+        <!-- Category: Modern Formats -->
+        <div class="tool-category mb-16" data-category="modern-formats">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fas fa-bolt text-yellow-500 mr-3"></i> Modern Image Formats
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="tools-container-1">
+                <a href="/avif-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mr-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">AVIF to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert AVIF images to universal JPG format.</p>
+                </a>
+                <a href="/avif-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mr-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">AVIF to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert AVIF to lossless PNG format.</p>
+                </a>
+                <a href="/avif-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl mr-4 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">AVIF to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert AVIF to Google's WebP format.</p>
+                </a>
+                <a href="/heic-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xl mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">HEIC to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert iPhone photos to JPG instantly.</p>
+                </a>
+                <a href="/heic-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xl mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">HEIC to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert HEIC to transparent PNG.</p>
+                </a>
+                <a href="/heic-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xl mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">HEIC to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Optimize iPhone images for the web.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Category: Core Converters -->
+        <div class="tool-category mb-16" data-category="converters">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fas fa-exchange-alt text-indigo-500 mr-3"></i> Standard Converters
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- WEBP Group -->
+                <a href="/webp-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl mr-4 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">WebP to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert WebP to JPG format.</p>
+                </a>
+                <a href="/webp-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl mr-4 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">WebP to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert WebP to PNG format.</p>
+                </a>
+                <a href="/webp-to-ico" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl mr-4 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">WebP to ICO</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert WebP to ICO format.</p>
+                </a>
+                <a href="/webp-to-bmp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl mr-4 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">WebP to BMP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert WebP to BMP format.</p>
+                </a>
+                <a href="/webp-to-tiff" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 text-green-600 flex items-center justify-center text-xl mr-4 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">WebP to TIFF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert WebP to TIFF format.</p>
+                </a>
+
+                <!-- PNG Group -->
+                <a href="/png-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to JPG format.</p>
+                </a>
+                <a href="/png-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to WebP format.</p>
+                </a>
+                <a href="/png-to-ico" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to ICO</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to ICO format.</p>
+                </a>
+                <a href="/png-to-svg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to SVG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to SVG format.</p>
+                </a>
+                <a href="/png-to-bmp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to BMP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to BMP format.</p>
+                </a>
+                <a href="/png-to-gif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to GIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to GIF format.</p>
+                </a>
+                <a href="/png-to-tiff" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to TIFF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to TIFF format.</p>
+                </a>
+                <a href="/png-to-avif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to AVIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PNG to AVIF format.</p>
+                </a>
+
+                <!-- JPG Group -->
+                <a href="/jpg-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to PNG format.</p>
+                </a>
+                <a href="/jpg-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to WebP format.</p>
+                </a>
+                <a href="/jpg-to-ico" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to ICO</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to ICO format.</p>
+                </a>
+                <a href="/jpg-to-svg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to SVG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to SVG format.</p>
+                </a>
+                <a href="/jpg-to-bmp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to BMP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to BMP format.</p>
+                </a>
+                <a href="/jpg-to-gif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to GIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to GIF format.</p>
+                </a>
+                <a href="/jpg-to-tiff" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to TIFF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to TIFF format.</p>
+                </a>
+                <a href="/jpg-to-avif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-image"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to AVIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert JPG to AVIF format.</p>
+                </a>
+
+                <!-- Other Formats -->
+                <a href="/bmp-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl mr-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">BMP to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert BMP to JPG format.</p>
+                </a>
+                <a href="/bmp-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl mr-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">BMP to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert BMP to PNG format.</p>
+                </a>
+                <a href="/bmp-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl mr-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">BMP to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert BMP to WebP format.</p>
+                </a>
+                <a href="/bmp-to-gif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl mr-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">BMP to GIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert BMP to GIF format.</p>
+                </a>
+
+                <a href="/gif-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">GIF to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert GIF to JPG format.</p>
+                </a>
+                <a href="/gif-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">GIF to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert GIF to PNG format.</p>
+                </a>
+                <a href="/gif-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">GIF to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert GIF to WebP format.</p>
+                </a>
+                <a href="/gif-to-ico" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">GIF to ICO</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert GIF to ICO format.</p>
+                </a>
+                <a href="/gif-to-bmp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">GIF to BMP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert GIF to BMP format.</p>
+                </a>
+
+                <a href="/ico-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl mr-4 group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-icons"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">ICO to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert ICO to PNG format.</p>
+                </a>
+                <a href="/ico-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl mr-4 group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-icons"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">ICO to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert ICO to JPG format.</p>
+                </a>
+                <a href="/ico-to-gif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl mr-4 group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-icons"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">ICO to GIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert ICO to GIF format.</p>
+                </a>
+
+                <a href="/svg-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-bezier-curve"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">SVG to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert SVG to PNG format.</p>
+                </a>
+                <a href="/svg-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-bezier-curve"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">SVG to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert SVG to JPG format.</p>
+                </a>
+                <a href="/svg-to-pdf" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-bezier-curve"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">SVG to PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert SVG to PDF format.</p>
+                </a>
+
+                <a href="/tiff-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-xl mr-4 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">TIFF to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert TIFF to JPG format.</p>
+                </a>
+                <a href="/tiff-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-xl mr-4 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">TIFF to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert TIFF to PNG format.</p>
+                </a>
+                <a href="/tiff-to-webp" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-xl mr-4 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">TIFF to WebP</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert TIFF to WebP format.</p>
+                </a>
+
+                <a href="/raw-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center text-xl mr-4 group-hover:bg-gray-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">RAW to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert RAW to JPG format.</p>
+                </a>
+                <a href="/cr2-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center text-xl mr-4 group-hover:bg-gray-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">CR2 to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert Canon CR2 to JPG format.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Category: PDF Tools -->
+        <div class="tool-category mb-16" data-category="pdf-tools">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fas fa-file-pdf text-red-500 mr-3"></i> PDF Tools
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <a href="/pdf-to-jpg" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PDF to JPG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PDF pages to JPG images.</p>
+                </a>
+                <a href="/pdf-to-png" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PDF to PNG</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PDF pages to PNG images.</p>
+                </a>
+                <a href="/pdf-to-gif" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PDF to GIF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert PDF pages to GIF images.</p>
+                </a>
+                <a href="/jpg-to-pdf" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">JPG to PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Combine JPG images into PDF.</p>
+                </a>
+                <a href="/png-to-pdf" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">PNG to PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Combine PNG images into PDF.</p>
+                </a>
+                <a href="/webp-to-pdf" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">WebP to PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Combine WebP images into PDF.</p>
+                </a>
+                <a href="/heic-to-pdf" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">HEIC to PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert HEIC images to PDF.</p>
+                </a>
+                <a href="/gif-to-pdf" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">GIF to PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert GIF images to PDF.</p>
+                </a>
+                <a href="/pdf-crop" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xl mr-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-crop"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Crop PDF</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Crop PDF pages easily.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Category: Image Editing & Utilities -->
+        <div class="tool-category mb-16" data-category="editors">
+            <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fas fa-wand-magic-sparkles text-purple-500 mr-3"></i> Editors & Utilities
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <a href="/bg-remover"
+                    class="tool-card bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-xl border border-indigo-100 block group relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="flex items-center mb-4">
+                            <div
+                                class="w-10 h-10 rounded-lg bg-white text-indigo-600 flex items-center justify-center text-xl mr-4 shadow-sm">
+                                <i class="fas fa-eraser"></i>
+                            </div>
+                            <h3 class="font-bold text-lg">Background Remover</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm">Remove image backgrounds automatically with AI.</p>
+                    </div>
+                </a>
+
+                <a href="/image-compressor"
+                    class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xl mr-4 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-compress-arrows-alt"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Image Compressor</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Reduce file size without losing quality.</p>
+                </a>
+
+                <a href="/image-resizer" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-cyan-100 text-cyan-600 flex items-center justify-center text-xl mr-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-expand"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Image Resizer</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Resize dimensions by pixel or percentage.</p>
+                </a>
+
+                <a href="/crop-image" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xl mr-4 group-hover:bg-pink-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-crop"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Crop Image</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Trim and crop images to custom aspect ratios.</p>
+                </a>
+
+                <a href="/passport-size-photo"
+                    class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xl mr-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Passport Photo</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Create passport size photos instantly.</p>
+                </a>
+
+                <a href="/image-enhancer" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center text-xl mr-4 group-hover:bg-yellow-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Image Enhancer</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Improve image quality and colors.</p>
+                </a>
+
+                <a href="/image-to-art" class="tool-card bg-white p-6 rounded-xl border border-slate-200 block group">
+                    <div class="flex items-center mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xl mr-4 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3 class="font-bold text-lg">Image to Art</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm">Convert photos to artistic sketches.</p>
+                </a>
+
+                <!-- Generic Catch-all -->
+                <a href="/all-image-converters"
+                    class="tool-card bg-slate-100 p-6 rounded-xl border border-slate-200 block group text-center flex flex-col items-center justify-center">
+                    <div
+                        class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xl mb-2">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                    <h3 class="font-bold text-lg">View All Tools</h3>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- SEO Content / About Section -->
+    <section class="bg-white border-t border-slate-200 py-16">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <h2 class="text-3xl font-bold mb-6">Why Choose IMG Tool?</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="p-4">
+                    <div class="text-indigo-600 text-2xl mb-3"><i class="fas fa-shield-alt"></i></div>
+                    <h4 class="font-bold text-lg mb-2">Privacy First</h4>
+                    <p class="text-slate-600 text-sm">We process images in your browser. Your files are never uploaded
+                        to our servers.</p>
+                </div>
+                <div class="p-4">
+                    <div class="text-indigo-600 text-2xl mb-3"><i class="fas fa-bolt"></i></div>
+                    <h4 class="font-bold text-lg mb-2">Lightning Fast</h4>
+                    <p class="text-slate-600 text-sm">No waiting for uploads or downloads. Instant conversion powered by
+                        your device.</p>
+                </div>
+                <div class="p-4">
+                    <div class="text-indigo-600 text-2xl mb-3"><i class="fas fa-check-circle"></i></div>
+                    <h4 class="font-bold text-lg mb-2">High Quality</h4>
+                    <p class="text-slate-600 text-sm">We use advanced algorithms to ensure the best balance between file
+                        size and quality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional SEO Content -->
+    <section class="bg-slate-50 border-t border-slate-200 py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <article class="prose prose-slate max-w-none">
+                <h2 class="text-2xl font-bold mb-4 text-slate-800">Free Online Image Converter Tools</h2>
+                <p class="text-slate-600 mb-4">
+                    IMG Tool provides a comprehensive suite of free online image conversion and editing tools. 
+                    Whether you need to convert <strong>AVIF to JPG</strong>, <strong>HEIC to JPG</strong>, 
+                    <strong>WebP to PNG</strong>, or any other format conversion, our tools work directly 
+                    in your browser without uploading files to any server.
+                </p>
+                <p class="text-slate-600 mb-4">
+                    Our image converter supports 50+ formats including modern formats like AVIF, HEIC, and WebP, 
+                    as well as traditional formats like JPG, PNG, GIF, BMP, TIFF, and ICO. All conversions are 
+                    performed locally on your device, ensuring complete privacy and security.
+                </p>
+                <h3 class="text-xl font-semibold mb-3 text-slate-800">Popular Conversions</h3>
+                <ul class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-slate-600 mb-6">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>AVIF to JPG Converter</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>HEIC to JPG Converter</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>WebP to JPG Converter</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>PNG to JPG Converter</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>JPG to PNG Converter</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>PDF to JPG Converter</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <!-- Footer Container (Loads from include/footer-content.html via common.js) -->
+    <div id="footer"></div>
+
+    <script src="/include/common.js"></script>
+
+    <!-- Live Search Script -->
+    <script>
+        document.getElementById('tool-search').addEventListener('input', function (e) {
+            const term = e.target.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.tool-card');
+            const categories = document.querySelectorAll('.tool-category');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+                if (title.includes(term) || desc.includes(term)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Hide empty categories
+            categories.forEach(cat => {
+                const visibleCards = cat.querySelectorAll('.tool-card[style="display: block;"], .tool-card:not([style*="display: none"])');
+                if (visibleCards.length === 0 && term !== '') {
+                    cat.style.display = 'none';
+                } else {
+                    cat.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
