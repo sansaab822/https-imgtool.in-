@@ -1,4 +1,7 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
     { "source": "/(webp-to-jpg|webp-to-png|webp-to-ico|webp-to-bmp|webp-to-tiff|avif-to-jpg|png-to-jpg|pdf-to-word)", "destination": "/tools/$1.html" },
     { "source": "/about", "destination": "/pages/about.html" },
@@ -8,16 +11,11 @@
     { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/blog/:slug", "destination": "/blog/:slug.html" }
   ],
-  "cleanUrls": true,
-  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
   ]
