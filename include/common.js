@@ -4,9 +4,9 @@
 const basePath = '/include';
 
 // 1. Load Header
-fetch(`${basePath}/header.html`)
+fetch(`${basePath}/header-content.html`)
   .then(response => {
-    if (!response.ok) throw new Error(`Failed to load header from ${basePath}/header.html`);
+    if (!response.ok) throw new Error(`Failed to load header from ${basePath}/header-content.html`);
     return response.text();
   })
   .then(data => {
@@ -21,9 +21,9 @@ fetch(`${basePath}/header.html`)
   .catch(err => console.error('Header load error:', err));
 
 // 2. Load Footer
-fetch(`${basePath}/footer.html`)
+fetch(`${basePath}/footer-content.html`)
   .then(response => {
-    if (!response.ok) throw new Error(`Failed to load footer from ${basePath}/footer.html`);
+    if (!response.ok) throw new Error(`Failed to load footer from ${basePath}/footer-content.html`);
     return response.text();
   })
   .then(data => {
