@@ -1,10 +1,4 @@
-{
-  "version": 2,
-  "name": "imgtool",
-  "public": true,
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
+"rewrites": [
     { "source": "/avif-to-jpg", "destination": "/tools/avif-to-jpg.html" },
     { "source": "/avif-to-png", "destination": "/tools/avif-to-png.html" },
     { "source": "/avif-to-webp", "destination": "/tools/avif-to-webp.html" },
