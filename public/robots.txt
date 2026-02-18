@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://imgtool.in/sitemap.xml
+
+# Disallow search pages
+Disallow: /search?q=*
+
+# Crawl delay
+Crawl-delay: 1
