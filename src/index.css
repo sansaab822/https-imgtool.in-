@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .tool-card {
+    @apply transition-all duration-300 cursor-pointer;
+  }
+  .tool-card:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #4f46e5, #9333ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .btn-primary {
+    @apply px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:shadow-blue-500/50 transition-all duration-300;
+  }
+  .drop-zone {
+    @apply border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center transition-all duration-200 cursor-pointer;
+  }
+  .drop-zone:hover, .drop-zone.active {
+    @apply border-blue-500 bg-blue-50;
+  }
+  .slider-range {
+    @apply w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer;
+  }
+  .slider-range::-webkit-slider-thumb {
+    @apply appearance-none w-5 h-5 rounded-full bg-blue-600 cursor-pointer shadow-md;
+  }
+}
+
+/* Scrollbar hide utility */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Custom comparison slider */
+.compare-slider {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
