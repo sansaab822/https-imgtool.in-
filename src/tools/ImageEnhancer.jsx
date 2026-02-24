@@ -2,17 +2,22 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
 
-// ── Luminance & blur analysis ──────────────────────────────────────────────
 function analyzeImage(data, w, h) {
     let lumSum = 0
-    // Laplacian for blur detection
-    let lapSum = 0, lapCount = 0
-    const n = data.length / 4
+    let lapSum = 0
+    let lapCount = 0
+    let minLum = 255
+    let maxLum = 0
+    const hist = new Array(256).fill(0)
 
     for (let i = 0; i < data.length; i += 4) {
-        lumSum += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
+        const lum = Math.round(0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2])
+        lumSum += lum
+        hist[lum]++
+        if (lum < minLum) minLum = lum
+        if (lum > maxLum) maxLum = lum
     }
-    // Sample Laplacian on a grid (fast, not every pixel)
+
     for (let y = 1; y < h - 1; y += 4) {
         for (let x = 1; x < w - 1; x += 4) {
             const c = (y * w + x) * 4
@@ -31,97 +36,219 @@ function analyzeImage(data, w, h) {
         }
     }
 
+    const n = data.length / 4
     return {
         luminance: lumSum / n,
-        blurScore: lapCount > 0 ? lapSum / lapCount : 999,
+        blurScore: lapCount ? lapSum / lapCount : 999,
+        dynamicRange: maxLum - minLum,
+        histogram: hist,
     }
 }
 
-// ── Smart enhancement using ctx.filter (100% reliable — no pixel math) ─────
-async function runAIEnhancement(imgEl, onStep) {
-    const W = imgEl.naturalWidth
-    const H = imgEl.naturalHeight
-
-    // ① Analyse original
-    onStep('🔍 Analysing image quality...', 10)
-    const aCanvas = document.createElement('canvas')
-    aCanvas.width = W; aCanvas.height = H
-    const aC = aCanvas.getContext('2d')
-    aC.drawImage(imgEl, 0, 0)
-    const raw = aC.getImageData(0, 0, W, H)
-    const { luminance, blurScore } = analyzeImage(raw.data, W, H)
-
-    const isBlurry = blurScore < 200
-    const isVeryBlurry = blurScore < 40
-    const isDark = luminance < 90
-    const isOverExp = luminance > 175
-
-    // ② Calculate smart filter values
-    const brightnessVal = isDark ? 125 : isOverExp ? 88 : 108
-    const contrastVal = isVeryBlurry ? 108 : 118
-    const saturateVal = 118
-    const sharpPasses = isVeryBlurry ? 4 : isBlurry ? 3 : 2
-    const sharpAmt = isVeryBlurry ? 2.5 : isBlurry ? 1.8 : 1.1
-
-    // ③ Primary enhancement via CSS filter on canvas (browser-native, never black)
-    onStep(`⚙️ Applying smart corrections... (${isDark ? 'dark' : isOverExp ? 'overexposed' : 'normal'} image)`, 25)
-    await tick()
-
-    const canvas = document.createElement('canvas')
-    canvas.width = W; canvas.height = H
-    const ctx = canvas.getContext('2d')
-    ctx.filter = `brightness(${brightnessVal}%) contrast(${contrastVal}%) saturate(${saturateVal}%)`
-    ctx.drawImage(imgEl, 0, 0)
-    ctx.filter = 'none'
-
-    // ④ Multi-pass unsharp mask using ctx.filter blur (reliable, no pixel-math overflow)
-    const blurLabel = isVeryBlurry ? 'very blurry' : isBlurry ? 'blurry' : 'sharp'
-    onStep(`🔧 Deblurring (${blurLabel}, ${sharpPasses} passes)...`, 40)
-    await tick()
-
-    for (let pass = 0; pass < sharpPasses; pass++) {
-        onStep(`🔧 Sharpening pass ${pass + 1}/${sharpPasses}...`, 40 + pass * 12)
-        await tick()
-        await unsharpPass(ctx, canvas, W, H, sharpAmt, pass === 0 ? 1.5 : 1)
-        await tick()
+function histogramPercentile(histogram, percentile) {
+    const total = histogram.reduce((s, v) => s + v, 0)
+    const threshold = total * percentile
+    let acc = 0
+    for (let i = 0; i < histogram.length; i++) {
+        acc += histogram[i]
+        if (acc >= threshold) return i
     }
-
-    // ⑤ Final clarity micro-boost
-    onStep('✨ Final clarity polish...', 88)
-    await tick()
-    await unsharpPass(ctx, canvas, W, H, 0.6, 0.5)
-
-    // ⑥ Encode
-    onStep('💾 Encoding result...', 96)
-    await tick()
-    return new Promise(resolve =>
-        canvas.toBlob(b => resolve(URL.createObjectURL(b)), 'image/jpeg', 0.97)
-    )
+    return histogram.length - 1
 }
 
-// Unsharp mask using browser's blur filter (zero risk of blackout)
-async function unsharpPass(ctx, srcCanvas, W, H, amount, blurRadius) {
-    // Get current painted pixels
-    const origData = ctx.getImageData(0, 0, W, H)
+function getAdaptiveSize(w, h, blurScore) {
+    const maxDim = Math.max(w, h)
+    const shouldUpscale = maxDim < 1500 && blurScore < 240
+    const upscale = shouldUpscale ? (blurScore < 50 ? 2 : blurScore < 100 ? 1.6 : 1.35) : 1
+    const downscale = maxDim > 2600 ? 2600 / maxDim : 1
+    const scale = Math.min(2, upscale) * downscale
 
-    // Create blurred copy using ctx.filter = blur (browser handles this perfectly)
+    return {
+        width: Math.max(1, Math.round(w * scale)),
+        height: Math.max(1, Math.round(h * scale)),
+    }
+}
+
+function applyAutoLevels(imageData, blackPoint, whitePoint, gamma = 1) {
+    const d = imageData.data
+    const inv = 1 / Math.max(1, whitePoint - blackPoint)
+
+    for (let i = 0; i < d.length; i += 4) {
+        for (let c = 0; c < 3; c++) {
+            let v = (d[i + c] - blackPoint) * inv
+            v = Math.max(0, Math.min(1, v))
+            v = Math.pow(v, gamma)
+            d[i + c] = Math.round(v * 255)
+        }
+    }
+}
+
+function applyVibrance(imageData, amount) {
+    const d = imageData.data
+    for (let i = 0; i < d.length; i += 4) {
+        const r = d[i]
+        const g = d[i + 1]
+        const b = d[i + 2]
+        const max = Math.max(r, g, b)
+        const avg = (r + g + b) / 3
+        const sat = max - avg
+        const boost = 1 + amount * (1 - Math.min(1, sat / 128))
+
+        d[i] = Math.max(0, Math.min(255, r * boost))
+        d[i + 1] = Math.max(0, Math.min(255, g * boost))
+        d[i + 2] = Math.max(0, Math.min(255, b * boost))
+    }
+}
+
+async function edgeProtectedDenoise(ctx, canvas, w, h, strength = 0.22, blurRadius = 0.8) {
+    const base = ctx.getImageData(0, 0, w, h)
+
     const blurCanvas = document.createElement('canvas')
-    blurCanvas.width = W; blurCanvas.height = H
+    blurCanvas.width = w
+    blurCanvas.height = h
+    const bCtx = blurCanvas.getContext('2d')
+    bCtx.filter = `blur(${blurRadius}px)`
+    bCtx.drawImage(canvas, 0, 0)
+    bCtx.filter = 'none'
+
+    const blur = bCtx.getImageData(0, 0, w, h)
+    const d = base.data
+    const bd = blur.data
+
+    for (let i = 0; i < d.length; i += 4) {
+        const edge = Math.abs(d[i] - bd[i]) + Math.abs(d[i + 1] - bd[i + 1]) + Math.abs(d[i + 2] - bd[i + 2])
+        const protect = Math.min(1, edge / 50)
+        const mix = strength * (1 - protect)
+        d[i] = d[i] * (1 - mix) + bd[i] * mix
+        d[i + 1] = d[i + 1] * (1 - mix) + bd[i + 1] * mix
+        d[i + 2] = d[i + 2] * (1 - mix) + bd[i + 2] * mix
+    }
+
+    ctx.putImageData(base, 0, 0)
+}
+
+async function localContrastBoost(ctx, canvas, w, h, amount = 0.22, radius = 12) {
+    const base = ctx.getImageData(0, 0, w, h)
+
+    const blurCanvas = document.createElement('canvas')
+    blurCanvas.width = w
+    blurCanvas.height = h
+    const bCtx = blurCanvas.getContext('2d')
+    bCtx.filter = `blur(${radius}px)`
+    bCtx.drawImage(canvas, 0, 0)
+    bCtx.filter = 'none'
+    const blur = bCtx.getImageData(0, 0, w, h)
+
+    const d = base.data
+    const bd = blur.data
+    for (let i = 0; i < d.length; i += 4) {
+        for (let c = 0; c < 3; c++) {
+            const detail = d[i + c] - bd[i + c]
+            d[i + c] = Math.max(0, Math.min(255, d[i + c] + detail * amount))
+        }
+    }
+
+    ctx.putImageData(base, 0, 0)
+}
+
+async function unsharpPass(ctx, srcCanvas, w, h, amount, blurRadius, threshold = 0) {
+    const origData = ctx.getImageData(0, 0, w, h)
+
+    const blurCanvas = document.createElement('canvas')
+    blurCanvas.width = w
+    blurCanvas.height = h
     const bCtx = blurCanvas.getContext('2d')
     bCtx.filter = `blur(${blurRadius}px)`
     bCtx.drawImage(srcCanvas, 0, 0)
     bCtx.filter = 'none'
-    const blurData = bCtx.getImageData(0, 0, W, H)
+    const blurData = bCtx.getImageData(0, 0, w, h)
 
-    // USM: result = original + amount * (original − blur)
     const d = origData.data
     const b = blurData.data
     for (let i = 0; i < d.length; i += 4) {
-        d[i] = Math.min(255, Math.max(0, d[i] + amount * (d[i] - b[i])))
-        d[i + 1] = Math.min(255, Math.max(0, d[i + 1] + amount * (d[i + 1] - b[i + 1])))
-        d[i + 2] = Math.min(255, Math.max(0, d[i + 2] + amount * (d[i + 2] - b[i + 2])))
+        for (let c = 0; c < 3; c++) {
+            const diff = d[i + c] - b[i + c]
+            if (Math.abs(diff) < threshold) continue
+            d[i + c] = Math.min(255, Math.max(0, d[i + c] + amount * diff))
+        }
     }
     ctx.putImageData(origData, 0, 0)
+}
+
+async function runAIEnhancement(imgEl, onStep) {
+    onStep('🔍 Analysing image quality...', 8)
+    const probe = document.createElement('canvas')
+    probe.width = Math.min(imgEl.naturalWidth, 512)
+    probe.height = Math.min(imgEl.naturalHeight, 512)
+    const pCtx = probe.getContext('2d')
+    pCtx.drawImage(imgEl, 0, 0, probe.width, probe.height)
+    const stats = analyzeImage(pCtx.getImageData(0, 0, probe.width, probe.height).data, probe.width, probe.height)
+
+    const target = getAdaptiveSize(imgEl.naturalWidth, imgEl.naturalHeight, stats.blurScore)
+    onStep('🧠 AI upscale and base reconstruction...', 20)
+    await tick()
+
+    const canvas = document.createElement('canvas')
+    canvas.width = target.width
+    canvas.height = target.height
+    const ctx = canvas.getContext('2d')
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(imgEl, 0, 0, target.width, target.height)
+
+    onStep('🎚️ Smart tone remapping...', 35)
+    await tick()
+
+    const base = ctx.getImageData(0, 0, target.width, target.height)
+    const p1 = histogramPercentile(stats.histogram, 0.01)
+    const p99 = histogramPercentile(stats.histogram, 0.99)
+    const blackPoint = Math.max(0, Math.min(20, p1 - 4))
+    const whitePoint = Math.min(255, Math.max(235, p99 + 2))
+    const gamma = stats.luminance < 90 ? 0.9 : stats.luminance > 170 ? 1.05 : 0.97
+
+    applyAutoLevels(base, blackPoint, whitePoint, gamma)
+    applyVibrance(base, stats.dynamicRange < 95 ? 0.22 : 0.12)
+    ctx.putImageData(base, 0, 0)
+
+    onStep('🧹 Cleaning noise and compression artifacts...', 50)
+    await tick()
+    await edgeProtectedDenoise(ctx, canvas, target.width, target.height, stats.blurScore < 90 ? 0.3 : 0.22, 1)
+
+    onStep('📈 Enhancing local contrast...', 60)
+    await tick()
+    await localContrastBoost(ctx, canvas, target.width, target.height, stats.dynamicRange < 90 ? 0.3 : 0.2, 10)
+
+    const heavyBlur = stats.blurScore < 50
+    const mildBlur = stats.blurScore < 190
+    const passes = heavyBlur
+        ? [
+            { amount: 1.05, radius: 2.4, threshold: 5 },
+            { amount: 0.85, radius: 1.4, threshold: 4 },
+            { amount: 0.6, radius: 0.8, threshold: 3 },
+        ]
+        : mildBlur
+            ? [
+                { amount: 0.8, radius: 1.6, threshold: 4 },
+                { amount: 0.55, radius: 0.9, threshold: 3 },
+            ]
+            : [{ amount: 0.4, radius: 0.85, threshold: 2 }]
+
+    for (let i = 0; i < passes.length; i++) {
+        onStep(`🔧 Detail recovery ${i + 1}/${passes.length}...`, 68 + i * 9)
+        await tick()
+        const pass = passes[i]
+        await unsharpPass(ctx, canvas, target.width, target.height, pass.amount, pass.radius, pass.threshold)
+    }
+
+    onStep('✨ Final clarity polish...', 90)
+    await tick()
+    await unsharpPass(ctx, canvas, target.width, target.height, 0.25, 0.55, 2)
+
+    onStep('💾 Encoding result...', 97)
+    await tick()
+    return new Promise(resolve =>
+        canvas.toBlob(b => resolve(URL.createObjectURL(b)), 'image/jpeg', 0.98)
+    )
 }
 
 const tick = () => new Promise(r => setTimeout(r, 0))
