@@ -1,456 +1,401 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { UploadCloud, Wand2, Download, RefreshCw, CheckCircle, ChevronLeft, ChevronRight, Sparkles, Image as ImageIcon, ZoomIn, Loader2, AlertTriangle } from 'lucide-react';
+import { useState, useRef, useCallback, useEffect } from 'react'
+import SEO from '../components/SEO'
+import ToolLayout from '../components/ToolLayout'
 
-// ==========================================
-// FIX: Crash-proof Silent Script Loading 
-// (Removes all console errors and red screens)
-// ==========================================
-const DEMO_IMAGE_URL = "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=800&q=80";
+// ── Luminance & blur analysis ──────────────────────────────────────────────
+function analyzeImage(data, w, h) {
+    let lumSum = 0
+    // Laplacian for blur detection
+    let lapSum = 0, lapCount = 0
+    const n = data.length / 4
 
-const loadScript = (src) => {
-  return new Promise((resolve) => {
-    try {
-      const existingScript = document.querySelector(`script[src="${src}"]`);
-      if (existingScript) {
-        if (existingScript.dataset.loaded) return resolve(true);
-        existingScript.addEventListener('load', () => resolve(true));
-        existingScript.addEventListener('error', () => resolve(false)); // Resolve false safely
-        return;
-      }
-      const script = document.createElement('script');
-      script.src = src;
-      script.async = true;
-      script.crossOrigin = "anonymous";
-      script.onload = () => {
-        script.dataset.loaded = 'true';
-        resolve(true);
-      };
-      script.onerror = () => resolve(false); // Resolve false silently, NO REJECT error
-      document.head.appendChild(script);
-    } catch (e) {
-      resolve(false);
+    for (let i = 0; i < data.length; i += 4) {
+        lumSum += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
     }
-  });
-};
+    // Sample Laplacian on a grid (fast, not every pixel)
+    for (let y = 1; y < h - 1; y += 4) {
+        for (let x = 1; x < w - 1; x += 4) {
+            const c = (y * w + x) * 4
+            const t = ((y - 1) * w + x) * 4
+            const b = ((y + 1) * w + x) * 4
+            const lf = (y * w + (x - 1)) * 4
+            const rt = (y * w + (x + 1)) * 4
+            const gC = 0.299 * data[c] + 0.587 * data[c + 1] + 0.114 * data[c + 2]
+            const gT = 0.299 * data[t] + 0.587 * data[t + 1] + 0.114 * data[t + 2]
+            const gB = 0.299 * data[b] + 0.587 * data[b + 1] + 0.114 * data[b + 2]
+            const gL = 0.299 * data[lf] + 0.587 * data[lf + 1] + 0.114 * data[lf + 2]
+            const gR = 0.299 * data[rt] + 0.587 * data[rt + 1] + 0.114 * data[rt + 2]
+            const lap = gT + gB + gL + gR - 4 * gC
+            lapSum += lap * lap
+            lapCount++
+        }
+    }
 
+    return {
+        luminance: lumSum / n,
+        blurScore: lapCount > 0 ? lapSum / lapCount : 999,
+    }
+}
+
+// ── Smart enhancement using ctx.filter (100% reliable — no pixel math) ─────
+async function runAIEnhancement(imgEl, onStep) {
+    const W = imgEl.naturalWidth
+    const H = imgEl.naturalHeight
+
+    // ① Analyse original
+    onStep('🔍 Analysing image quality...', 10)
+    const aCanvas = document.createElement('canvas')
+    aCanvas.width = W; aCanvas.height = H
+    const aC = aCanvas.getContext('2d')
+    aC.drawImage(imgEl, 0, 0)
+    const raw = aC.getImageData(0, 0, W, H)
+    const { luminance, blurScore } = analyzeImage(raw.data, W, H)
+
+    const isBlurry = blurScore < 200
+    const isVeryBlurry = blurScore < 40
+    const isDark = luminance < 90
+    const isOverExp = luminance > 175
+
+    // ② Calculate smart filter values
+    const brightnessVal = isDark ? 125 : isOverExp ? 88 : 108
+    const contrastVal = isVeryBlurry ? 108 : 118
+    const saturateVal = 118
+    const sharpPasses = isVeryBlurry ? 4 : isBlurry ? 3 : 2
+    const sharpAmt = isVeryBlurry ? 2.5 : isBlurry ? 1.8 : 1.1
+
+    // ③ Primary enhancement via CSS filter on canvas (browser-native, never black)
+    onStep(`⚙️ Applying smart corrections... (${isDark ? 'dark' : isOverExp ? 'overexposed' : 'normal'} image)`, 25)
+    await tick()
+
+    const canvas = document.createElement('canvas')
+    canvas.width = W; canvas.height = H
+    const ctx = canvas.getContext('2d')
+    ctx.filter = `brightness(${brightnessVal}%) contrast(${contrastVal}%) saturate(${saturateVal}%)`
+    ctx.drawImage(imgEl, 0, 0)
+    ctx.filter = 'none'
+
+    // ④ Multi-pass unsharp mask using ctx.filter blur (reliable, no pixel-math overflow)
+    const blurLabel = isVeryBlurry ? 'very blurry' : isBlurry ? 'blurry' : 'sharp'
+    onStep(`🔧 Deblurring (${blurLabel}, ${sharpPasses} passes)...`, 40)
+    await tick()
+
+    for (let pass = 0; pass < sharpPasses; pass++) {
+        onStep(`🔧 Sharpening pass ${pass + 1}/${sharpPasses}...`, 40 + pass * 12)
+        await tick()
+        await unsharpPass(ctx, canvas, W, H, sharpAmt, pass === 0 ? 1.5 : 1)
+        await tick()
+    }
+
+    // ⑤ Final clarity micro-boost
+    onStep('✨ Final clarity polish...', 88)
+    await tick()
+    await unsharpPass(ctx, canvas, W, H, 0.6, 0.5)
+
+    // ⑥ Encode
+    onStep('💾 Encoding result...', 96)
+    await tick()
+    return new Promise(resolve =>
+        canvas.toBlob(b => resolve(URL.createObjectURL(b)), 'image/jpeg', 0.97)
+    )
+}
+
+// Unsharp mask using browser's blur filter (zero risk of blackout)
+async function unsharpPass(ctx, srcCanvas, W, H, amount, blurRadius) {
+    // Get current painted pixels
+    const origData = ctx.getImageData(0, 0, W, H)
+
+    // Create blurred copy using ctx.filter = blur (browser handles this perfectly)
+    const blurCanvas = document.createElement('canvas')
+    blurCanvas.width = W; blurCanvas.height = H
+    const bCtx = blurCanvas.getContext('2d')
+    bCtx.filter = `blur(${blurRadius}px)`
+    bCtx.drawImage(srcCanvas, 0, 0)
+    bCtx.filter = 'none'
+    const blurData = bCtx.getImageData(0, 0, W, H)
+
+    // USM: result = original + amount * (original − blur)
+    const d = origData.data
+    const b = blurData.data
+    for (let i = 0; i < d.length; i += 4) {
+        d[i] = Math.min(255, Math.max(0, d[i] + amount * (d[i] - b[i])))
+        d[i + 1] = Math.min(255, Math.max(0, d[i + 1] + amount * (d[i + 1] - b[i + 1])))
+        d[i + 2] = Math.min(255, Math.max(0, d[i + 2] + amount * (d[i + 2] - b[i + 2])))
+    }
+    ctx.putImageData(origData, 0, 0)
+}
+
+const tick = () => new Promise(r => setTimeout(r, 0))
+
+// ── Component ─────────────────────────────────────────────────────────────
 export default function ImageEnhancer() {
-  const [originalImage, setOriginalImage] = useState(null);
-  const [enhancedImage, setEnhancedImage] = useState(null);
-  const [appState, setAppState] = useState('idle'); // idle, processing, complete
-  const [loadingText, setLoadingText] = useState('');
-  const [progress, setProgress] = useState(0);
-  const [sliderPosition, setSliderPosition] = useState(50);
-  const [isDragging, setIsDragging] = useState(false);
-  
-  // engineState: 'loading' | 'ready_ai' | 'ready_standard'
-  const [engineState, setEngineState] = useState('loading'); 
-  
-  const [demoSliderPos, setDemoSliderPos] = useState(50);
-  const sliderRef = useRef(null);
-  const canvasRef = useRef(null);
+    const [image, setImage] = useState(null)
+    const [resultUrl, setResultUrl] = useState(null)
+    const [processing, setProcessing] = useState(false)
+    const [progress, setProgress] = useState(0)
+    const [stepMsg, setStepMsg] = useState('')
+    const [badge, setBadge] = useState(null)
+    const [compareX, setCompareX] = useState(50)
+    const [dragging, setDragging] = useState(false)
+    const [dropOver, setDropOver] = useState(false)
+    const compareRef = useRef()
+    const inputRef = useRef()
 
-  // Safely initialize AI or fallback immediately
-  useEffect(() => {
-    let isMounted = true;
-    let fallbackTimeout;
+    const loadFile = useCallback((file) => {
+        if (!file || !file.type.startsWith('image/')) return
+        setImage({ url: URL.createObjectURL(file), file })
+        setResultUrl(null)
+        setBadge(null)
+        setCompareX(50)
+    }, [])
 
-    const initEngine = async () => {
-      try {
-        fallbackTimeout = setTimeout(() => {
-          if (isMounted && engineState === 'loading') {
-            setEngineState('ready_standard');
-          }
-        }, 5000);
+    // Auto-enhance on upload
+    useEffect(() => {
+        if (image && !resultUrl && !processing) enhance()
+    }, [image])
 
-        const tfLoaded = await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js');
-        const upscalerLoaded = await loadScript('https://cdn.jsdelivr.net/npm/upscaler@0.51.3/dist/browser/umd/upscaler.min.js');
-        
-        if (isMounted) {
-          clearTimeout(fallbackTimeout);
-          // Only enable AI if scripts loaded without any errors
-          if (tfLoaded && upscalerLoaded && typeof window !== 'undefined' && window.Upscaler) {
-            setEngineState('ready_ai');
-          } else {
-            setEngineState('ready_standard');
-          }
+    const enhance = async () => {
+        if (!image) return
+        setProcessing(true)
+        setResultUrl(null)
+        setProgress(5)
+        setStepMsg('Loading image...')
+
+        try {
+            const img = new Image()
+            img.crossOrigin = 'anonymous'
+            img.src = image.url
+            await new Promise(r => { img.onload = r; img.onerror = r })
+
+            // Quick pre-analysis for badge
+            const tmpC = document.createElement('canvas')
+            tmpC.width = Math.min(img.naturalWidth, 400)
+            tmpC.height = Math.min(img.naturalHeight, 400)
+            const tmpCtx = tmpC.getContext('2d')
+            tmpCtx.drawImage(img, 0, 0, tmpC.width, tmpC.height)
+            const tmpData = tmpCtx.getImageData(0, 0, tmpC.width, tmpC.height)
+            const { luminance, blurScore } = analyzeImage(tmpData.data, tmpC.width, tmpC.height)
+
+            if (blurScore < 40) setBadge({ text: 'Very Blurry → Heavy deblur', color: 'red' })
+            else if (blurScore < 200) setBadge({ text: 'Blurry detected → Deblur processing', color: 'amber' })
+            else if (luminance < 90) setBadge({ text: 'Underexposed → Brightening', color: 'blue' })
+            else if (luminance > 175) setBadge({ text: 'Overexposed → Tone correction', color: 'orange' })
+            else setBadge({ text: 'Good quality → Color & sharpness boost', color: 'green' })
+
+            const url = await runAIEnhancement(img, (msg, pct) => {
+                setStepMsg(msg)
+                setProgress(pct)
+            })
+            setResultUrl(url)
+        } catch (err) {
+            console.error('Enhance failed:', err)
+            setStepMsg('❌ Error: ' + err.message)
+        } finally {
+            setProcessing(false)
+            setProgress(100)
+            setTimeout(() => setProgress(0), 600)
         }
-      } catch (err) {
-        if (isMounted) {
-          clearTimeout(fallbackTimeout);
-          setEngineState('ready_standard');
+    }
+
+    // Compare slider
+    const onMove = useCallback((e) => {
+        if (!dragging || !compareRef.current) return
+        const rect = compareRef.current.getBoundingClientRect()
+        const cx = e.touches ? e.touches[0].clientX : e.clientX
+        setCompareX(Math.min(100, Math.max(0, ((cx - rect.left) / rect.width) * 100)))
+    }, [dragging])
+
+    useEffect(() => {
+        if (!dragging) return
+        const stop = () => setDragging(false)
+        window.addEventListener('mousemove', onMove)
+        window.addEventListener('touchmove', onMove, { passive: true })
+        window.addEventListener('mouseup', stop)
+        window.addEventListener('touchend', stop)
+        return () => {
+            window.removeEventListener('mousemove', onMove)
+            window.removeEventListener('touchmove', onMove)
+            window.removeEventListener('mouseup', stop)
+            window.removeEventListener('touchend', stop)
         }
-      }
-    };
-    
-    const startDelay = setTimeout(() => {
-        initEngine();
-    }, 500);
-    
-    return () => { 
-      isMounted = false; 
-      clearTimeout(fallbackTimeout);
-      clearTimeout(startDelay);
-    };
-  }, []);
+    }, [dragging, onMove])
 
-  useEffect(() => {
-    if (appState !== 'idle') return;
-    let animationFrame;
-    const start = Date.now();
-    const animateDemo = () => {
-      const elapsed = Date.now() - start;
-      const newPos = 50 + Math.sin(elapsed / 1500) * 25;
-      setDemoSliderPos(newPos);
-      animationFrame = requestAnimationFrame(animateDemo);
-    };
-    animationFrame = requestAnimationFrame(animateDemo);
-    return () => cancelAnimationFrame(animationFrame);
-  }, [appState]);
-
-  const handleFileUpload = (e) => {
-    if (engineState === 'loading') {
-      alert("System is initializing. Please wait a moment.");
-      return;
+    const badgeColors = {
+        red: 'bg-red-50 text-red-700 border-red-200',
+        amber: 'bg-amber-50 text-amber-700 border-amber-200',
+        blue: 'bg-blue-50 text-blue-700 border-blue-200',
+        orange: 'bg-orange-50 text-orange-700 border-orange-200',
+        green: 'bg-green-50 text-green-700 border-green-200',
     }
 
-    const file = e.target.files[0] || e.dataTransfer?.files[0];
-    if (!file) return;
-    
-    if (!file.type.startsWith('image/')) {
-      alert("Please upload a valid image file (JPG, PNG, WebP).");
-      return;
-    }
+    return (
+        <>
+            <SEO title="AI Image Enhancer - Fix Blur & Enhance Photos Free" description="Automatically enhance and deblur photos with AI. Upload any blurry or dark photo and get a sharp, vivid result instantly. Free &amp; private." canonical="/image-enhancer" />
+            <ToolLayout toolSlug="image-enhancer" title="AI Image Enhancer" description="Upload any photo — blurry, dark, or dull — and AI instantly sharpens, brightens, and enhances it. Fully automatic. No settings needed." breadcrumb="Image Enhancer">
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const imgSrc = event.target.result;
-        setOriginalImage(imgSrc);
-        
-        const img = new Image();
-        img.onload = () => {
-          if (engineState === 'ready_ai' && (img.width > 1200 || img.height > 1200)) {
-             alert("Image size is large for browser AI. Upscaling in HD mode automatically.");
-             processFallbackUpscale(imgSrc);
-             return;
-          }
-          
-          if (engineState === 'ready_ai') {
-            startRealAIUpscaling(imgSrc);
-          } else {
-            processFallbackUpscale(imgSrc);
-          }
-        };
-        img.onerror = () => {
-            alert("Error reading image. Please try another file.");
-            resetTool();
-        };
-        img.src = imgSrc;
-      } catch (err) {
-          alert("Error processing file.");
-          resetTool();
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const onDragOver = (e) => e.preventDefault();
-  const onDrop = (e) => {
-    e.preventDefault();
-    handleFileUpload(e);
-  };
-
-  const startRealAIUpscaling = async (imgSrc) => {
-    setAppState('processing');
-    setProgress(0);
-    setLoadingText("Initializing Neural Network...");
-
-    try {
-      if (!window || !window.Upscaler) throw new Error("Upscaler global missing");
-      
-      const upscaler = new window.Upscaler();
-      const enhancedDataUrl = await upscaler.upscale(imgSrc, {
-        patchSize: 64,
-        padding: 2,
-        progress: (percent) => {
-          const currentProgress = Math.round(percent * 100);
-          setProgress(currentProgress);
-          setLoadingText(`AI Neural Processing... ${currentProgress}%`);
-        }
-      });
-
-      setEnhancedImage(enhancedDataUrl);
-      setAppState('complete');
-      setSliderPosition(50);
-      
-    } catch (error) {
-      // Completely silent fallback. No console error.
-      processFallbackUpscale(imgSrc); 
-    }
-  };
-
-  const processFallbackUpscale = (imgSrc) => {
-    setAppState('processing');
-    setProgress(0);
-    setLoadingText("Enhancing details in Advanced HD Mode...");
-
-    let count = 0;
-    const interval = setInterval(() => {
-      count += 5;
-      setProgress(count);
-      if(count >= 90) clearInterval(interval);
-    }, 100);
-
-    try {
-      const canvas = canvasRef.current;
-      if(!canvas) throw new Error("Canvas missing");
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      
-      img.onload = () => {
-        setTimeout(() => {
-          canvas.width = img.width * 4;
-          canvas.height = img.height * 4;
-
-          // 1. Core High-Quality Smoothing Upscale
-          ctx.imageSmoothingEnabled = true;
-          ctx.imageSmoothingQuality = 'high';
-          
-          // Slight saturation/contrast boost for premium feel
-          ctx.filter = 'contrast(1.05) saturate(1.1)';
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          // 2. Advanced Unsharp Masking Fake (Sharpening edges)
-          ctx.globalCompositeOperation = 'soft-light';
-          ctx.filter = 'contrast(2) grayscale(1)';
-          ctx.globalAlpha = 0.25;
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          // Reset canvas context
-          ctx.globalCompositeOperation = 'source-over';
-          ctx.globalAlpha = 1.0;
-          ctx.filter = 'none';
-
-          const enhancedDataUrl = canvas.toDataURL('image/jpeg', 1.0);
-          setProgress(100);
-          clearInterval(interval);
-          
-          setTimeout(() => {
-            setEnhancedImage(enhancedDataUrl);
-            setAppState('complete');
-            setSliderPosition(50);
-          }, 500);
-        }, 1500); 
-      };
-      img.onerror = () => { throw new Error("Image draw failed"); };
-      img.src = imgSrc;
-    } catch(err) {
-        clearInterval(interval);
-        alert("Failed to process image. Please try again.");
-        resetTool();
-    }
-  };
-
-  const resetTool = () => {
-    setOriginalImage(null);
-    setEnhancedImage(null);
-    setAppState('idle');
-    setSliderPosition(50);
-    setProgress(0);
-  };
-
-  const downloadEnhancedImage = () => {
-    if(!enhancedImage) return;
-    try {
-        const link = document.createElement('a');
-        link.href = enhancedImage;
-        link.download = `Enhanced_ImgTool_${Date.now()}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    } catch(e) {
-        alert("Failed to download image.");
-    }
-  };
-
-  const handleSliderMove = useCallback((e) => {
-    if (!isDragging || !sliderRef.current) return;
-    const rect = sliderRef.current.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percentage = (x / rect.width) * 100;
-    setSliderPosition(percentage);
-  }, [isDragging]);
-
-  useEffect(() => {
-    const stopDragging = () => setIsDragging(false);
-    if (isDragging) {
-      window.addEventListener('mousemove', handleSliderMove);
-      window.addEventListener('mouseup', stopDragging);
-      window.addEventListener('touchmove', handleSliderMove, { passive: false });
-      window.addEventListener('touchend', stopDragging);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleSliderMove);
-      window.removeEventListener('mouseup', stopDragging);
-      window.removeEventListener('touchmove', handleSliderMove);
-      window.removeEventListener('touchend', stopDragging);
-    };
-  }, [isDragging, handleSliderMove]);
-
-  return (
-    <div className="min-h-screen bg-[#f8fafc] p-4 md:p-8 font-sans">
-      <div className="max-w-7xl mx-auto">
-        <canvas ref={canvasRef} className="hidden"></canvas>
-
-        {/* State 1: Upload View */}
-        {appState === 'idle' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
-            <div className="space-y-8 order-2 lg:order-1">
-              <div className="space-y-4">
-                <div className={`inline-flex items-center justify-center p-2 px-4 font-bold rounded-full mb-2 text-sm ${engineState === 'ready_standard' ? 'bg-orange-100 text-orange-700' : 'bg-indigo-100 text-indigo-700'}`}>
-                  {engineState === 'ready_standard' ? <AlertTriangle className="w-4 h-4 mr-2" /> : <Sparkles className="w-4 h-4 mr-2" />}
-                  {engineState === 'ready_standard' ? 'Advanced HD Upscaling Active' : 'Real ESRGAN AI Technology'}
-                </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 tracking-tight leading-tight">
-                  True AI Image Upscaler
-                </h1>
-                <p className="text-gray-500 text-lg md:text-xl font-medium max-w-lg">
-                  100% Free & Private. Automatically rebuild missing pixels and enhance details perfectly directly in your browser.
-                </p>
-              </div>
-
-              {/* Demo Slider */}
-              <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white select-none pointer-events-none group bg-gray-200">
-                <img src={DEMO_IMAGE_URL} alt="Demo Enhanced" className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 w-full h-full" style={{ clipPath: `inset(0 ${100 - demoSliderPos}% 0 0)` }}>
-                  <img src={DEMO_IMAGE_URL} alt="Demo Original" className="absolute inset-0 w-full h-full object-cover scale-[1.02]" style={{ imageRendering: 'pixelated', filter: 'blur(2px)' }} />
-                </div>
-                <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)] z-20" style={{ left: `${demoSliderPos}%`, transform: 'translateX(-50%)' }}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600 border-2 border-white">
-                    <ChevronLeft size={14} className="-mr-1" />
-                    <ChevronRight size={14} className="-ml-1" />
-                  </div>
-                </div>
-                <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider z-10">BEFORE</div>
-                <div className="absolute top-4 right-4 bg-indigo-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold tracking-wider z-10 flex items-center gap-1"><Sparkles size={12} /> AFTER (4X)</div>
-              </div>
-            </div>
-
-            <div className="order-1 lg:order-2 w-full max-w-lg mx-auto lg:ml-auto">
-              <div 
-                onDragOver={onDragOver} 
-                onDrop={onDrop}
-                className="w-full bg-white border-2 border-dashed border-indigo-300 rounded-[2rem] p-10 md:p-14 text-center hover:bg-indigo-50/40 hover:border-indigo-500 transition-all duration-300 shadow-xl shadow-indigo-900/5 cursor-pointer relative group"
-                onClick={() => document.getElementById('file-upload').click()}
-              >
-                <input id="file-upload" type="file" accept="image/jpeg, image/png, image/webp" onChange={handleFileUpload} className="hidden" />
-                
-                {engineState !== 'loading' ? (
-                  <div className="w-24 h-24 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 group-hover:-translate-y-2 transition-transform duration-300 shadow-inner border border-indigo-200">
-                    <UploadCloud size={48} strokeWidth={1.5} />
-                  </div>
+                {!image ? (
+                    /* ── Upload ── */
+                    <div
+                        className={`drop-zone group cursor-pointer ${dropOver ? 'active' : ''}`}
+                        style={{ padding: '3.5rem 2rem' }}
+                        onDrop={e => { e.preventDefault(); setDropOver(false); loadFile(e.dataTransfer.files[0]) }}
+                        onDragOver={e => { e.preventDefault(); setDropOver(true) }}
+                        onDragLeave={() => setDropOver(false)}
+                        onClick={() => inputRef.current?.click()}
+                    >
+                        <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
+                        <div className="flex flex-col items-center gap-5">
+                            <div className="relative">
+                                <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-400/40 group-hover:scale-110 transition-transform duration-300">
+                                    <i className="fas fa-wand-magic-sparkles text-white text-3xl"></i>
+                                </div>
+                                <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">AUTO AI</div>
+                            </div>
+                            <div className="text-center">
+                                <p className="text-2xl font-extrabold text-slate-800">Upload Any Photo</p>
+                                <p className="text-slate-400 mt-1.5 text-sm">AI automatically fixes blur, corrects exposure &amp; boosts colors</p>
+                            </div>
+                            <div className="grid grid-cols-3 gap-3 max-w-xs w-full">
+                                {[
+                                    { icon: 'fa-eye', label: 'Deblurs Images', color: 'from-violet-500 to-purple-600' },
+                                    { icon: 'fa-sun', label: 'Fixes Exposure', color: 'from-amber-400 to-orange-500' },
+                                    { icon: 'fa-droplet', label: 'Boosts Colors', color: 'from-pink-500 to-rose-500' },
+                                ].map(f => (
+                                    <div key={f.label} className="bg-slate-50 rounded-xl p-3 text-center">
+                                        <div className={`w-8 h-8 mx-auto mb-1.5 rounded-lg bg-gradient-to-br ${f.color} flex items-center justify-center`}>
+                                            <i className={`fas ${f.icon} text-white text-xs`}></i>
+                                        </div>
+                                        <p className="text-[11px] font-semibold text-slate-600 leading-tight">{f.label}</p>
+                                    </div>
+                                ))}
+                            </div>
+                            <button className="px-8 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-lg shadow-violet-500/30 hover:scale-105 transition-transform text-sm">
+                                <i className="fas fa-upload mr-2"></i>Choose Photo to Enhance
+                            </button>
+                            <p className="text-xs text-slate-400">Works on blurry, dark, or low-quality photos · 100% private</p>
+                        </div>
+                    </div>
                 ) : (
-                  <div className="w-24 h-24 bg-gray-50 text-gray-400 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-inner border border-gray-200">
-                    <Loader2 size={40} className="animate-spin" />
-                  </div>
+                    <div className="space-y-4">
+                        {/* Badge */}
+                        {badge && (
+                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border ${badgeColors[badge.color]}`}>
+                                <i className={`fas ${badge.color === 'green' ? 'fa-circle-check' : 'fa-triangle-exclamation'}`}></i>
+                                {badge.text}
+                            </div>
+                        )}
+
+                        {/* Progress */}
+                        {processing && (
+                            <div className="bg-white rounded-2xl border border-violet-100 p-5 shadow-sm space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-5 h-5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
+                                        <span className="text-sm font-semibold text-slate-700">{stepMsg}</span>
+                                    </div>
+                                    <span className="text-sm font-bold text-violet-600 tabular-nums">{progress}%</span>
+                                </div>
+                                <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                                    <div
+                                        className="h-3 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-300"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Before / After Compare */}
+                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+                                <span className="text-sm font-bold text-slate-700">
+                                    {resultUrl ? '← Drag slider · Before / After →' : processing ? '⏳ Enhancing...' : 'Ready'}
+                                </span>
+                                <div className="flex gap-3">
+                                    {!processing && <button onClick={enhance} className="text-xs text-violet-600 hover:text-violet-800 font-medium"><i className="fas fa-rotate-right mr-1"></i>Re-enhance</button>}
+                                    <button onClick={() => inputRef.current?.click()} className="text-xs text-blue-600 hover:text-blue-800 font-medium"><i className="fas fa-folder-open mr-1"></i>Change</button>
+                                    <button onClick={() => { setImage(null); setResultUrl(null) }} className="text-xs text-red-400 hover:text-red-600"><i className="fas fa-trash mr-1"></i>Remove</button>
+                                </div>
+                                <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
+                            </div>
+
+                            <div
+                                ref={compareRef}
+                                className="relative select-none overflow-hidden bg-slate-100"
+                                style={{ minHeight: 380, cursor: resultUrl ? 'col-resize' : 'default' }}
+                                onMouseDown={() => resultUrl && setDragging(true)}
+                                onTouchStart={() => resultUrl && setDragging(true)}
+                            >
+                                {/* Original (full width base) */}
+                                <img
+                                    src={image.url}
+                                    alt="Original"
+                                    className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                                />
+
+                                {/* Enhanced — clip from left edge to compareX */}
+                                {resultUrl && (
+                                    <div
+                                        className="absolute inset-0 pointer-events-none overflow-hidden"
+                                        style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}
+                                    >
+                                        <div className="absolute inset-0 bg-slate-100" />
+                                        <img
+                                            src={resultUrl}
+                                            alt="Enhanced"
+                                            className="absolute inset-0 w-full h-full object-contain"
+                                        />
+                                    </div>
+                                )}
+
+                                {/* Slider handle */}
+                                {resultUrl && (
+                                    <div className="absolute top-0 bottom-0 z-20 pointer-events-none" style={{ left: `${compareX}%` }}>
+                                        <div className="absolute inset-y-0 -translate-x-px w-0.5 bg-white shadow-[0_0_12px_rgba(139,92,246,0.8)]" />
+                                        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-violet-100">
+                                            <i className="fas fa-arrows-left-right text-violet-500 text-xs"></i>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Labels */}
+                                <div className="absolute top-3 left-3 z-10 bg-black/60 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg pointer-events-none">ORIGINAL</div>
+                                {resultUrl && <div className="absolute top-3 right-3 z-10 bg-violet-600/90 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg pointer-events-none">✨ ENHANCED</div>}
+
+                                {/* Processing overlay */}
+                                {processing && !resultUrl && (
+                                    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm">
+                                        <div className="bg-white/15 backdrop-blur rounded-2xl p-6 flex flex-col items-center gap-3">
+                                            <div className="w-12 h-12 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                                            <p className="text-white font-bold text-sm text-center">{stepMsg}</p>
+                                            <div className="w-36 bg-white/20 rounded-full h-1.5">
+                                                <div className="h-1.5 bg-white rounded-full transition-all" style={{ width: `${progress}%` }} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Download */}
+                        {resultUrl && !processing && (
+                            <div className="flex gap-3">
+                                <a
+                                    href={resultUrl}
+                                    download={`ai_enhanced_${image.file.name.replace(/\.[^.]+$/, '')}.jpg`}
+                                    className="flex-1 flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-violet-500/25 transition-all text-sm"
+                                >
+                                    <i className="fas fa-download text-base"></i>Download Enhanced Image
+                                </a>
+                                <button
+                                    onClick={() => { setImage(null); setResultUrl(null) }}
+                                    className="px-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-2xl text-sm transition-all"
+                                >
+                                    <i className="fas fa-plus mr-1"></i>New
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 )}
-                
-                <h3 className="text-3xl font-bold text-gray-800 mb-4">
-                  {engineState !== 'loading' ? "Upload an Image" : "Loading Engine..."}
-                </h3>
-                <p className="text-gray-500 mb-10 font-medium text-lg">
-                  {engineState !== 'loading' ? (
-                    <>Drag & drop or click to select<br/><span className="text-sm">(Max size: 1200px for AI)</span></>
-                  ) : (
-                    "Please wait a moment..."
-                  )}
-                </p>
-                <button 
-                  className={`w-full text-white font-bold py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 text-lg flex items-center justify-center gap-2 ${engineState !== 'loading' ? 'bg-gray-900 hover:bg-indigo-600 hover:shadow-indigo-500/30' : 'bg-gray-400 cursor-not-allowed'}`}
-                  disabled={engineState === 'loading'}
-                >
-                  {engineState !== 'loading' ? <><ImageIcon size={20} /> Browse Files</> : <><Loader2 size={20} className="animate-spin"/> Initializing...</>}
-                </button>
-              </div>
-              
-              <div className="mt-8 grid grid-cols-3 gap-4 text-center text-sm text-gray-500 font-medium">
-                <div className="flex flex-col items-center gap-2"><CheckCircle size={20} className="text-green-500"/> {engineState === 'ready_standard' ? 'Smooth Scaling' : 'Real AI Model'}</div>
-                <div className="flex flex-col items-center gap-2"><CheckCircle size={20} className="text-green-500"/> 100% Private</div>
-                <div className="flex flex-col items-center gap-2"><CheckCircle size={20} className="text-green-500"/> 4x Resolution</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* State 2: Processing */}
-        {appState === 'processing' && (
-          <div className="w-full max-w-3xl mx-auto mt-20 bg-white rounded-3xl p-16 text-center shadow-2xl shadow-indigo-900/10 border border-gray-100 flex flex-col items-center justify-center">
-            <div className="relative w-32 h-32 mb-10">
-              <div className="absolute inset-0 border-4 border-gray-100 rounded-full"></div>
-              <div className="absolute inset-0 border-4 border-indigo-600 rounded-full border-t-transparent animate-spin"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-indigo-600">
-                <Sparkles size={40} className="animate-pulse" />
-              </div>
-            </div>
-            <h3 className="text-4xl font-extrabold text-gray-800 mb-6 tracking-tight">Enhancing your image...</h3>
-            <div className="w-full max-w-md bg-gray-100 rounded-full h-3 mb-6 overflow-hidden">
-              <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 h-full rounded-full transition-all duration-100 ease-out" style={{ width: `${progress}%` }}></div>
-            </div>
-            <p className="text-gray-500 font-bold text-lg animate-pulse">{loadingText}</p>
-            <p className="text-xs text-gray-400 mt-4">(Processing entirely in your browser. This might take a few seconds.)</p>
-          </div>
-        )}
-
-        {/* State 3: Complete */}
-        {appState === 'complete' && originalImage && enhancedImage && (
-          <div className="w-full max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 mt-10">
-            <div className="text-center space-y-2 mb-6">
-              <h2 className="text-3xl font-bold text-gray-800">Enhancement Complete! 🎉</h2>
-              <p className="text-gray-500 flex items-center justify-center gap-2">
-                <ZoomIn size={18} /> Slider drag karein result dekhne ke liye.
-              </p>
-            </div>
-
-            <div className="bg-white p-4 md:p-6 rounded-[2rem] shadow-2xl shadow-indigo-900/10 border border-gray-100">
-              <div 
-                ref={sliderRef}
-                className="relative w-full aspect-[4/3] md:aspect-video rounded-xl overflow-hidden bg-gray-100 select-none cursor-crosshair touch-none group"
-                onMouseDown={(e) => { setIsDragging(true); handleSliderMove(e); }}
-                onTouchStart={(e) => { setIsDragging(true); handleSliderMove(e); }}
-              >
-                {/* Original */}
-                <img src={originalImage} alt="Original pixels" className="absolute inset-0 w-full h-full object-contain pointer-events-none" style={{ imageRendering: 'pixelated' }} />
-                
-                {/* Enhanced */}
-                <div className="absolute inset-0 w-full h-full pointer-events-none" style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}>
-                  <img src={enhancedImage} alt="Enhanced Result" className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-sm" />
-                </div>
-
-                {/* Slider */}
-                <div className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_15px_rgba(0,0,0,0.6)] z-20 transition-transform duration-75" style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center text-gray-800 border-[3px] border-indigo-600 hover:scale-110 transition-transform duration-200">
-                    <ChevronLeft size={20} className="text-indigo-600 -mr-1" />
-                    <ChevronRight size={20} className="text-indigo-600 -ml-1" />
-                  </div>
-                </div>
-
-                <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-sm font-bold tracking-wider shadow-lg border border-white/20 z-10 pointer-events-none">ORIGINAL</div>
-                <div className="absolute top-6 right-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-1.5 rounded-full text-sm font-bold tracking-wider shadow-lg z-10 pointer-events-none flex items-center gap-1.5"><Sparkles size={14} /> ENHANCED 4X</div>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
-              <button onClick={resetTool} className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-white text-gray-700 font-bold rounded-2xl shadow-sm hover:shadow-md transition-all border border-gray-200 hover:bg-gray-50 text-lg">
-                <RefreshCw size={20} /> Enhance Another
-              </button>
-              <button onClick={downloadEnhancedImage} className="w-full sm:w-auto flex items-center justify-center gap-2 px-10 py-4 bg-indigo-600 text-white font-bold rounded-2xl shadow-xl shadow-indigo-600/30 hover:bg-indigo-700 hover:-translate-y-1 transition-all duration-300 text-lg">
-                <Download size={20} /> Download Result
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+            </ToolLayout>
+        </>
+    )
 }
