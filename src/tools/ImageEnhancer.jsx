@@ -41,7 +41,7 @@ export default function ImageEnhancer() {
     });
   };
 
-  // Dynamically load AI with Timeout Fallback
+  // Dynamically load AI with Timeout Fallback (Vercel Strict Mode Fixed)
   useEffect(() => {
     let isMounted = true;
     let fallbackTimeout;
@@ -50,7 +50,7 @@ export default function ImageEnhancer() {
       try {
         // Fallback timer: Agar 8 sec me load nahi hua toh Standard mode de do
         fallbackTimeout = setTimeout(() => {
-          if (isMounted && engineState === 'loading') {
+          if (isMounted) {
             console.warn("AI Loading timeout. Switching to Standard HD Mode.");
             setEngineState('ready_standard');
           }
@@ -67,7 +67,7 @@ export default function ImageEnhancer() {
         console.error("AI scripts loading error:", err);
         if (isMounted) {
           clearTimeout(fallbackTimeout);
-          setEngineState('ready_standard'); // Network error pe atke na, standard mode on ho jaye
+          setEngineState('ready_standard');
         }
       }
     };
@@ -78,7 +78,7 @@ export default function ImageEnhancer() {
       isMounted = false; 
       clearTimeout(fallbackTimeout);
     };
-  }, []);
+  }, []); // Clean dependency array to prevent Vercel build warnings
 
   // Auto-animate demo slider
   useEffect(() => {
