@@ -1,6 +1,32 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { UploadCloud, Wand2, Download, RefreshCw, CheckCircle, ChevronLeft, ChevronRight, Sparkles, Image as ImageIcon, ZoomIn, Loader2, AlertTriangle } from 'lucide-react';
 
+// ==========================================
+// VERCEL FIX: Moved static constants and helpers outside component
+// ==========================================
+const DEMO_IMAGE_URL = "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=800&q=80";
+
+const loadScript = (src) => {
+  return new Promise((resolve, reject) => {
+    const existingScript = document.querySelector(`script[src="${src}"]`);
+    if (existingScript) {
+      if (existingScript.dataset.loaded) return resolve();
+      existingScript.addEventListener('load', resolve);
+      existingScript.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)));
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve();
+    };
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+  });
+};
+
 export default function ImageEnhancer() {
   const [originalImage, setOriginalImage] = useState(null);
   const [enhancedImage, setEnhancedImage] = useState(null);
@@ -17,56 +43,35 @@ export default function ImageEnhancer() {
   const sliderRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const demoImageUrl = "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=800&q=80";
-
-  // Robust Script Loader with Error Handling
-  const loadScript = (src) => {
-    return new Promise((resolve, reject) => {
-      const existingScript = document.querySelector(`script[src="${src}"]`);
-      if (existingScript) {
-        if (existingScript.dataset.loaded) return resolve();
-        existingScript.addEventListener('load', resolve);
-        existingScript.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)));
-        return;
-      }
-      const script = document.createElement('script');
-      script.src = src;
-      script.async = true;
-      script.onload = () => {
-        script.dataset.loaded = true;
-        resolve();
-      };
-      script.onerror = () => reject(new Error(`Failed to load ${src}`));
-      document.head.appendChild(script);
-    });
-  };
-
-  // Dynamically load AI with Timeout Fallback and highly reliable JSdelivr CDN
+  // VERCEL FIX: Dependency array perfectly clean for strict ESLint checks
   useEffect(() => {
     let isMounted = true;
     let fallbackTimeout;
 
     const loadAI = async () => {
       try {
-        // Fallback timer: Agar 8 sec me load nahi hua toh Standard mode de do
+        // Fallback timer using functional state update (no missing dependencies)
         fallbackTimeout = setTimeout(() => {
-          if (isMounted && engineState === 'loading') {
-            console.warn("AI Loading timeout. Switching gracefully to Standard HD Mode.");
-            setEngineState('ready_standard');
+          if (isMounted) {
+            setEngineState((prev) => {
+              if (prev === 'loading') {
+                console.warn("AI Loading timeout. Switching gracefully to Standard HD Mode.");
+                return 'ready_standard';
+              }
+              return prev;
+            });
           }
         }, 8000);
 
-        // Changed from unpkg to jsdelivr for better global availability and uptime
         await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js');
         await loadScript('https://cdn.jsdelivr.net/npm/upscaler@0.51.3/dist/browser/umd/upscaler.min.js');
         
         if (isMounted) {
           clearTimeout(fallbackTimeout);
-          setEngineState('ready_ai');
+          setEngineState((prev) => (prev === 'loading' ? 'ready_ai' : prev));
         }
       } catch (err) {
-        // Use warn instead of error to avoid red flags in console when fallback is working fine
-        console.warn("AI script CDN network issue detected. Safely falling back to Standard HD Mode.", err.message);
+        console.warn("AI script CDN network issue detected. Safely falling back.", err.message);
         if (isMounted) {
           clearTimeout(fallbackTimeout);
           setEngineState('ready_standard');
@@ -169,7 +174,7 @@ export default function ImageEnhancer() {
       
     } catch (error) {
       console.warn("AI Upscaling Failed, using safe fallback: ", error.message);
-      processFallbackUpscale(imgSrc); // Agar AI fail ho jaye toh canvas mode chal jaye
+      processFallbackUpscale(imgSrc); 
     }
   };
 
@@ -181,7 +186,6 @@ export default function ImageEnhancer() {
     setProgress(0);
     setLoadingText("Enhancing details in HD Mode...");
 
-    // Fake progress for standard mode
     let count = 0;
     const interval = setInterval(() => {
       count += 5;
@@ -211,7 +215,7 @@ export default function ImageEnhancer() {
           setAppState('complete');
           setSliderPosition(50);
         }, 500);
-      }, 1500); // 1.5s delay for smooth UI transition
+      }, 1500); 
     };
     img.src = imgSrc;
   };
@@ -282,9 +286,9 @@ export default function ImageEnhancer() {
 
               {/* Demo Slider */}
               <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border-4 border-white select-none pointer-events-none group bg-gray-200">
-                <img src={demoImageUrl} alt="Demo Enhanced" className="absolute inset-0 w-full h-full object-cover" />
+                <img src={DEMO_IMAGE_URL} alt="Demo Enhanced" className="absolute inset-0 w-full h-full object-cover" />
                 <div className="absolute inset-0 w-full h-full" style={{ clipPath: `inset(0 ${100 - demoSliderPos}% 0 0)` }}>
-                  <img src={demoImageUrl} alt="Demo Original" className="absolute inset-0 w-full h-full object-cover scale-[1.02]" style={{ imageRendering: 'pixelated', filter: 'blur(2px)' }} />
+                  <img src={DEMO_IMAGE_URL} alt="Demo Original" className="absolute inset-0 w-full h-full object-cover scale-[1.02]" style={{ imageRendering: 'pixelated', filter: 'blur(2px)' }} />
                 </div>
                 <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)] z-20" style={{ left: `${demoSliderPos}%`, transform: 'translateX(-50%)' }}>
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center text-indigo-600 border-2 border-white">
