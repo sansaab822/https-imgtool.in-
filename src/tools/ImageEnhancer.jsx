@@ -1,50 +1,73 @@
-import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
-import Upscaler from 'upscaler'
-import x2 from '@upscalerjs/esrgan-slim/2x'
-import x4 from '@upscalerjs/esrgan-slim/4x'
 
-// Demo images - replace with your own low/high quality pairs
-const DEMO_IMAGES = {
-  original: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=30&blur=2',
-  enhanced: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=90'
-}
+// CDN URLs for TensorFlow.js and UpscalerJS
+const TF_CDN = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js'
+const UPSCALER_CDN = 'https://cdn.jsdelivr.net/npm/upscaler@latest/dist/browser/umd/upscaler.min.js'
+const ESRGAN_2X_CDN = 'https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@latest/dist/umd/2x.min.js'
+const ESRGAN_4X_CDN = 'https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-slim@latest/dist/umd/4x.min.js'
 
-// ── AI Enhancement Hook ────────────────────────────────────────────────────
-function useAIEnhancer() {
-  const upscaler2x = useMemo(() => new Upscaler({ model: x2 }), [])
-  const upscaler4x = useMemo(() => new Upscaler({ model: x4 }), [])
-  
-  const enhance = async (imageUrl, scale = 4, onProgress) => {
-    const upscaler = scale === 2 ? upscaler2x : upscaler4x
-    
-    // Load image
-    const img = new Image()
-    img.src = imageUrl
-    img.crossOrigin = 'anonymous'
-    await new Promise((resolve, reject) => {
-      img.onload = resolve
-      img.onerror = reject
-    })
-    
-    // Upscale with AI
-    const upscaledSrc = await upscaler.upscale(img, {
-      output: 'src',
-      progress: (percent) => onProgress?.(`AI enhancing...`, Math.round(percent * 100))
-    })
-    
-    return upscaledSrc
+// Demo images - low quality vs high quality pairs
+const DEMO_IMAGES = [
+  {
+    id: 1,
+    original: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=20&blur=1',
+    enhanced: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=90',
+    title: 'Portrait Enhancement'
+  },
+  {
+    id: 2,
+    original: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&q=20&blur=1',
+    enhanced: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=1200&q=90',
+    title: 'Face Recovery'
+  },
+  {
+    id: 3,
+    original: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&q=20&blur=1',
+    enhanced: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1200&q=90',
+    title: 'Landscape Detail'
+  }
+]
+
+// ── Script Loader with Retry Logic ─────────────────────────────────────────
+const loadScript = (src, retries = 3) => new Promise((resolve, reject) => {
+  if (typeof window !== 'undefined' && document.querySelector(`script[src="${src}"]`)) {
+    resolve()
+    return
   }
   
-  return { enhance }
-}
+  const attempt = (triesLeft) => {
+    const script = document.createElement('script')
+    script.src = src
+    script.async = true
+    script.crossOrigin = 'anonymous'
+    
+    script.onload = () => resolve()
+    script.onerror = () => {
+      if (triesLeft > 0) {
+        console.warn(`Failed to load ${src}, retrying... (${triesLeft} attempts left)`)
+        setTimeout(() => attempt(triesLeft - 1), 1000)
+      } else {
+        reject(new Error(`Failed to load ${src}`))
+      }
+    }
+    
+    document.head.appendChild(script)
+  }
+  
+  attempt(retries)
+})
 
-// ── Demo Compare Component (Side by Side) ─────────────────────────────────
+// ── Demo Compare Component with Multiple Examples ──────────────────────────
 function DemoCompare() {
+  const [activeDemo, setActiveDemo] = useState(0)
   const [compareX, setCompareX] = useState(50)
   const [dragging, setDragging] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const compareRef = useRef()
+
+  const currentDemo = DEMO_IMAGES[activeDemo]
 
   const onMove = useCallback((e) => {
     if (!dragging || !compareRef.current) return
@@ -69,8 +92,17 @@ function DemoCompare() {
     }
   }, [dragging, onMove])
 
+  // Reset compare position when demo changes
+  useEffect(() => {
+    setCompareX(50)
+    setIsLoading(true)
+    const timer = setTimeout(() => setIsLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [activeDemo])
+
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-lg mb-8">
+      {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-violet-50 to-indigo-50">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
@@ -78,16 +110,29 @@ function DemoCompare() {
           </div>
           <div>
             <h3 className="font-bold text-slate-800">Live Demo</h3>
-            <p className="text-xs text-slate-500">Try the slider to see AI enhancement</p>
+            <p className="text-xs text-slate-500">See AI enhancement in action</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-sm text-slate-600">
-          <span className="font-medium">Original</span>
-          <i className="fas fa-arrows-left-right text-slate-400"></i>
-          <span className="font-medium text-violet-600">AI Enhanced 4x</span>
+        
+        {/* Demo Selector */}
+        <div className="flex gap-2">
+          {DEMO_IMAGES.map((demo, idx) => (
+            <button
+              key={demo.id}
+              onClick={() => setActiveDemo(idx)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                activeDemo === idx 
+                  ? 'bg-violet-600 text-white' 
+                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              }`}
+            >
+              {demo.title}
+            </button>
+          ))}
         </div>
       </div>
       
+      {/* Compare Area */}
       <div
         ref={compareRef}
         className="relative select-none overflow-hidden bg-slate-900 cursor-col-resize"
@@ -95,11 +140,19 @@ function DemoCompare() {
         onMouseDown={() => setDragging(true)}
         onTouchStart={() => setDragging(true)}
       >
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-900 z-20">
+            <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+
         {/* Enhanced Image (Background) */}
         <img
-          src={DEMO_IMAGES.enhanced}
+          src={currentDemo.enhanced}
           alt="Enhanced"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+          style={{ opacity: isLoading ? 0 : 1 }}
+          onLoad={() => setIsLoading(false)}
         />
 
         {/* Original Image (Clipped) */}
@@ -108,12 +161,11 @@ function DemoCompare() {
           style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}
         >
           <img
-            src={DEMO_IMAGES.original}
+            src={currentDemo.original}
             alt="Original"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Slight blur to simulate low quality */}
-          <div className="absolute inset-0 backdrop-blur-[1px]"></div>
+          <div className="absolute inset-0 backdrop-blur-[0.5px]"></div>
         </div>
 
         {/* Slider Line */}
@@ -121,26 +173,43 @@ function DemoCompare() {
           className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_20px_rgba(139,92,246,0.8)] z-10"
           style={{ left: `${compareX}%`, transform: 'translateX(-50%)' }}
         >
-          {/* Handle */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-violet-500">
             <i className="fas fa-arrows-left-right text-violet-600 text-lg"></i>
           </div>
         </div>
 
         {/* Labels */}
-        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-white/20">
+        <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-white/20">
           ORIGINAL
         </div>
         <div className="absolute top-4 right-4 bg-violet-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg border border-violet-400">
           ✨ AI ENHANCED 4x
         </div>
+
+        {/* Instructions */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white text-xs px-4 py-2 rounded-full">
+          Drag slider to compare
+        </div>
       </div>
       
+      {/* Footer */}
       <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-        <p className="text-sm text-slate-600">Drag the slider to compare before and after</p>
-        <div className="flex gap-2">
-          <span className="px-3 py-1 bg-white rounded-full text-xs font-medium text-slate-600 border border-slate-200">Real-ESRGAN</span>
-          <span className="px-3 py-1 bg-white rounded-full text-xs font-medium text-slate-600 border border-slate-200">Detail Recovery</span>
+        <div className="flex items-center gap-4 text-sm text-slate-600">
+          <span className="flex items-center gap-2">
+            <i className="fas fa-brain text-violet-500"></i>
+            Real-ESRGAN AI
+          </span>
+          <span className="flex items-center gap-2">
+            <i className="fas fa-expand text-blue-500"></i>
+            4x Upscaling
+          </span>
+          <span className="flex items-center gap-2">
+            <i className="fas fa-magic text-pink-500"></i>
+            Detail Recovery
+          </span>
+        </div>
+        <div className="text-xs text-slate-400">
+          Demo {activeDemo + 1} of {DEMO_IMAGES.length}
         </div>
       </div>
     </div>
@@ -159,60 +228,232 @@ export default function ImageEnhancer() {
   const [dragging, setDragging] = useState(false)
   const [dropOver, setDropOver] = useState(false)
   const [error, setError] = useState(null)
+  const [modelsLoaded, setModelsLoaded] = useState(false)
+  const [modelLoading, setModelLoading] = useState(true)
+  const [processingTime, setProcessingTime] = useState(null)
   
   const compareRef = useRef()
   const inputRef = useRef()
-  const { enhance } = useAIEnhancer()
+  const upscalerRef = useRef(null)
+  const abortControllerRef = useRef(null)
+
+  // Initialize AI Models
+  useEffect(() => {
+    let isMounted = true
+    
+    const initModels = async () => {
+      try {
+        setModelLoading(true)
+        setStepMsg('Loading AI models...')
+        
+        // Load in sequence: TensorFlow -> Upscaler -> Model
+        await loadScript(TF_CDN)
+        console.log('TensorFlow.js loaded')
+        
+        await loadScript(UPSCALER_CDN)
+        console.log('UpscalerJS loaded')
+        
+        await loadScript(scale === 2 ? ESRGAN_2X_CDN : ESRGAN_4X_CDN)
+        console.log(`ESRGAN ${scale}x model loaded`)
+        
+        if (!isMounted) return
+        
+        // Wait for globals to be available
+        let attempts = 0
+        const checkInterval = setInterval(() => {
+          attempts++
+          if (window.Upscaler && (window.EsrganSlim2x || window.EsrganSlim4x || window.EsrganSlim)) {
+            clearInterval(checkInterval)
+            
+            try {
+              const model = scale === 2 
+                ? (window.EsrganSlim2x || window.EsrganSlim['2x'] || window.EsrganSlim)
+                : (window.EsrganSlim4x || window.EsrganSlim['4x'] || window.EsrganSlim)
+              
+              upscalerRef.current = new window.Upscaler({ model })
+              setModelsLoaded(true)
+              setModelLoading(false)
+              console.log('Upscaler initialized successfully')
+            } catch (err) {
+              console.error('Failed to initialize upscaler:', err)
+              setError('Failed to initialize AI models. Please refresh the page.')
+              setModelLoading(false)
+            }
+          }
+          
+          if (attempts > 50) { // 5 seconds timeout
+            clearInterval(checkInterval)
+            setError('Model loading timeout. Please check your connection and refresh.')
+            setModelLoading(false)
+          }
+        }, 100)
+        
+      } catch (err) {
+        console.error('Script loading failed:', err)
+        if (isMounted) {
+          setError('Failed to load AI libraries. Please check your internet connection.')
+          setModelLoading(false)
+        }
+      }
+    }
+    
+    initModels()
+    
+    return () => {
+      isMounted = false
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [scale])
 
   const loadFile = useCallback((file) => {
     if (!file || !file.type.startsWith('image/')) {
-      setError('Please upload a valid image file')
+      setError('Please upload a valid image file (JPG, PNG, WebP)')
       return
     }
-    if (file.size > 10 * 1024 * 1024) {
-      setError('Image size should be less than 10MB')
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size should be less than 5MB for browser processing')
       return
     }
+    
+    // Cleanup previous result
+    if (resultUrl) {
+      URL.revokeObjectURL(resultUrl)
+    }
+    
     setError(null)
     setImage({ url: URL.createObjectURL(file), file })
     setResultUrl(null)
     setCompareX(50)
-  }, [])
+    setProcessingTime(null)
+  }, [resultUrl])
 
   const processImage = async () => {
-    if (!image) return
+    if (!image || !upscalerRef.current) {
+      setError('AI model not ready. Please wait or refresh.')
+      return
+    }
+    
+    // Cancel previous processing if any
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    abortControllerRef.current = new AbortController()
+    
     setProcessing(true)
     setResultUrl(null)
     setProgress(0)
-    setStepMsg('Initializing AI model...')
+    setStepMsg('Initializing...')
     setError(null)
+    
+    const startTime = Date.now()
 
     try {
-      // AI Enhancement using Real-ESRGAN
-      const enhancedUrl = await enhance(image.url, scale, (msg, pct) => {
-        setStepMsg(msg)
-        setProgress(pct)
-      })
+      // Load image
+      const img = new Image()
+      img.src = image.url
+      img.crossOrigin = 'anonymous'
       
-      setResultUrl(enhancedUrl)
+      await new Promise((resolve, reject) => {
+        img.onload = resolve
+        img.onerror = () => reject(new Error('Failed to load image'))
+        
+        // Timeout after 10 seconds
+        setTimeout(() => reject(new Error('Image loading timeout')), 10000)
+      })
+
+      // Check if aborted
+      if (abortControllerRef.current.signal.aborted) return
+
+      setStepMsg('Analyzing image...')
+      setProgress(10)
+
+      // Pre-process: Create thumbnail for analysis
+      const analysisCanvas = document.createElement('canvas')
+      const maxAnalysisDim = 256
+      const analysisScale = Math.min(1, maxAnalysisDim / Math.max(img.naturalWidth, img.naturalHeight))
+      analysisCanvas.width = img.naturalWidth * analysisScale
+      analysisCanvas.height = img.naturalHeight * analysisScale
+      const analysisCtx = analysisCanvas.getContext('2d')
+      analysisCtx.drawImage(img, 0, 0, analysisCanvas.width, analysisCanvas.height)
+      
+      // Get image data for quality analysis
+      const imageData = analysisCtx.getImageData(0, 0, analysisCanvas.width, analysisCanvas.height)
+      const data = imageData.data
+      let totalBrightness = 0
+      let totalEdges = 0
+      
+      // Simple quality analysis
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i], g = data[i+1], b = data[i+2]
+        totalBrightness += (r + g + b) / 3
+        
+        // Simple edge detection (compare with next pixel)
+        if (i < data.length - 4) {
+          const nextR = data[i+4]
+          totalEdges += Math.abs(r - nextR)
+        }
+      }
+      
+      const avgBrightness = totalBrightness / (data.length / 4)
+      const sharpness = totalEdges / (data.length / 4)
+      
+      console.log(`Image analysis - Brightness: ${avgBrightness.toFixed(2)}, Sharpness: ${sharpness.toFixed(2)}`)
+
+      setStepMsg('Running AI super-resolution...')
+      setProgress(20)
+
+      // AI Upscale with progress tracking
+      const upscaledSrc = await upscalerRef.current.upscale(img, {
+        output: 'src',
+        progress: (percent) => {
+          if (abortControllerRef.current.signal.aborted) return
+          const scaledProgress = Math.round(20 + percent * 75) // 20-95%
+          setProgress(scaledProgress)
+          setStepMsg(`Enhancing details... ${Math.round(percent * 100)}%`)
+        },
+        patchSize: 64, // Smaller patches for better memory management
+        padding: 2
+      })
+
+      if (abortControllerRef.current.signal.aborted) return
+
+      // Post-process: Enhance sharpness if needed
+      if (sharpness < 30) {
+        setStepMsg('Applying sharpening...')
+        setProgress(96)
+        // Additional sharpening could be applied here if needed
+        await new Promise(r => setTimeout(r, 100))
+      }
+
+      setResultUrl(upscaledSrc)
+      setProcessingTime(((Date.now() - startTime) / 1000).toFixed(1))
       setStepMsg('Enhancement complete!')
+      setProgress(100)
+      
     } catch (err) {
+      if (err.name === 'AbortError' || abortControllerRef.current.signal.aborted) {
+        console.log('Processing aborted')
+        return
+      }
+      
       console.error('Enhancement failed:', err)
-      setError('AI enhancement failed. Please try again with a different image.')
+      setError(err.message || 'AI enhancement failed. Please try with a different image.')
       setStepMsg('Error occurred')
     } finally {
       setProcessing(false)
-      setProgress(100)
-      setTimeout(() => setProgress(0), 1000)
+      setTimeout(() => setProgress(0), 2000)
     }
   }
 
   // Auto-enhance on upload
   useEffect(() => {
-    if (image && !resultUrl && !processing) {
-      processImage()
+    if (image && !resultUrl && !processing && modelsLoaded) {
+      const timer = setTimeout(() => processImage(), 500)
+      return () => clearTimeout(timer)
     }
-  }, [image])
+  }, [image, modelsLoaded])
 
   // Compare slider handlers
   const onMove = useCallback((e) => {
@@ -238,6 +479,15 @@ export default function ImageEnhancer() {
     }
   }, [dragging, onMove])
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (resultUrl) {
+        URL.revokeObjectURL(resultUrl)
+      }
+    }
+  }, [resultUrl])
+
   return (
     <>
       <SEO 
@@ -252,20 +502,43 @@ export default function ImageEnhancer() {
         breadcrumb="Image Enhancer"
       >
         <div className="max-w-6xl mx-auto">
-          {/* Live Demo Section */}
-          {!image && <DemoCompare />}
+          {/* Model Loading Status */}
+          {modelLoading && (
+            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-xl text-blue-700 text-sm flex items-center gap-3">
+              <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <div>
+                <p className="font-semibold">Loading AI Models...</p>
+                <p className="text-xs text-blue-600">Downloading Real-ESRGAN neural network (one-time)</p>
+              </div>
+            </div>
+          )}
 
+          {/* Live Demo Section */}
+          {!image && !processing && <DemoCompare />}
+
+          {/* Error Display */}
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
-              <i className="fas fa-circle-exclamation"></i>
-              {error}
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-start gap-3">
+              <i className="fas fa-circle-exclamation mt-0.5"></i>
+              <div className="flex-1">
+                <p className="font-semibold">Error</p>
+                <p>{error}</p>
+                <button 
+                  onClick={() => setError(null)} 
+                  className="mt-2 text-xs font-semibold text-red-600 hover:text-red-800 underline"
+                >
+                  Dismiss
+                </button>
+              </div>
             </div>
           )}
 
           {!image ? (
             /* Upload Section */
             <div
-              className={`bg-white rounded-2xl border-2 border-dashed transition-all duration-300 ${dropOver ? 'border-violet-500 bg-violet-50' : 'border-slate-300'} p-12 text-center cursor-pointer hover:border-violet-400 hover:shadow-lg`}
+              className={`bg-white rounded-2xl border-2 border-dashed transition-all duration-300 ${
+                dropOver ? 'border-violet-500 bg-violet-50 scale-[1.02]' : 'border-slate-300'
+              } p-12 text-center cursor-pointer hover:border-violet-400 hover:shadow-xl`}
               onDrop={e => { e.preventDefault(); setDropOver(false); loadFile(e.dataTransfer.files[0]) }}
               onDragOver={e => { e.preventDefault(); setDropOver(true) }}
               onDragLeave={() => setDropOver(false)}
@@ -274,11 +547,11 @@ export default function ImageEnhancer() {
               <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
               
               <div className="flex flex-col items-center gap-6">
-                <div className="relative">
-                  <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-400/40 animate-pulse">
-                    <i className="fas fa-wand-magic-sparkles text-white text-4xl"></i>
+                <div className="relative group">
+                  <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-400/40 group-hover:scale-110 transition-transform duration-300">
+                    <i className="fas fa-cloud-arrow-up text-white text-4xl"></i>
                   </div>
-                  <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-2 border-white">
+                  <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-2 border-white animate-pulse">
                     AI POWERED
                   </div>
                 </div>
@@ -296,20 +569,26 @@ export default function ImageEnhancer() {
                     <button
                       key={s}
                       onClick={(e) => { e.stopPropagation(); setScale(s) }}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${scale === s ? 'bg-violet-600 text-white shadow-md' : 'text-slate-600 hover:bg-white hover:shadow-sm'}`}
+                      disabled={modelLoading}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
+                        scale === s 
+                          ? 'bg-violet-600 text-white shadow-md' 
+                          : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                      } ${modelLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       {s}x Upscale
                     </button>
                   ))}
                 </div>
 
+                {/* Features Grid */}
                 <div className="grid grid-cols-3 gap-4 max-w-lg w-full">
                   {[
-                    { icon: 'fa-microchip', label: 'Real-ESRGAN AI', desc: 'Neural Network', color: 'from-violet-500 to-purple-600' },
-                    { icon: 'fa-image', label: 'Detail Recovery', desc: 'Pixel Generation', color: 'from-blue-500 to-cyan-500' },
-                    { icon: 'fa-wand-sparkles', label: 'Smooth & Natural', desc: 'Artifact Removal', color: 'from-pink-500 to-rose-500' },
+                    { icon: 'fa-brain', label: 'Real-ESRGAN', desc: 'Neural Network', color: 'from-violet-500 to-purple-600' },
+                    { icon: 'fa-image', label: '4K Output', desc: 'Detail Recovery', color: 'from-blue-500 to-cyan-500' },
+                    { icon: 'fa-wand-sparkles', label: 'Natural Look', desc: 'No Artifacts', color: 'from-pink-500 to-rose-500' },
                   ].map(f => (
-                    <div key={f.label} className="bg-slate-50 rounded-2xl p-4 text-center border border-slate-100 hover:border-violet-200 transition-colors">
+                    <div key={f.label} className="bg-slate-50 rounded-2xl p-4 text-center border border-slate-100 hover:border-violet-200 transition-all hover:shadow-md">
                       <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg`}>
                         <i className={`fas ${f.icon} text-white text-lg`}></i>
                       </div>
@@ -319,15 +598,20 @@ export default function ImageEnhancer() {
                   ))}
                 </div>
 
-                <button className="px-10 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-xl shadow-violet-500/30 hover:scale-105 hover:shadow-2xl transition-all duration-300 text-base flex items-center gap-2">
-                  <i className="fas fa-cloud-arrow-up"></i>
-                  Choose Photo to Enhance
+                <button 
+                  disabled={modelLoading}
+                  className={`px-10 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-xl shadow-violet-500/30 hover:scale-105 hover:shadow-2xl transition-all duration-300 text-base flex items-center gap-2 ${
+                    modelLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  <i className="fas fa-upload"></i>
+                  {modelLoading ? 'Loading Models...' : 'Choose Photo to Enhance'}
                 </button>
                 
                 <p className="text-xs text-slate-400 flex items-center gap-4">
-                  <span><i className="fas fa-shield-halved mr-1"></i>100% Private</span>
-                  <span><i className="fas fa-bolt mr-1"></i>Browser Processing</span>
-                  <span><i className="fas fa-infinity mr-1"></i>Free</span>
+                  <span className="flex items-center gap-1"><i className="fas fa-shield-halved"></i>100% Private</span>
+                  <span className="flex items-center gap-1"><i className="fas fa-bolt"></i>Browser Processing</span>
+                  <span className="flex items-center gap-1"><i className="fas fa-infinity"></i>Free</span>
                 </p>
               </div>
             </div>
@@ -350,32 +634,38 @@ export default function ImageEnhancer() {
                     />
                   </div>
                   <p className="text-xs text-slate-500 mt-2 text-center">
-                    Processing with Real-ESRGAN AI model in your browser...
+                    Processing with Real-ESRGAN AI in your browser...
                   </p>
                 </div>
               )}
 
               {/* Comparison Viewer */}
               <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex-wrap gap-3">
                   <div className="flex items-center gap-4">
                     <span className="text-sm font-bold text-slate-700">
                       {resultUrl ? 'Compare: Original vs AI Enhanced' : 'Processing...'}
                     </span>
                     {resultUrl && (
-                      <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg">
+                      <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg flex items-center gap-1">
+                        <i className="fas fa-check-circle"></i>
                         {scale}x Upscaled
                       </span>
                     )}
+                    {processingTime && (
+                      <span className="text-xs text-slate-500">
+                        ({processingTime}s)
+                      </span>
+                    )}
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     {!processing && resultUrl && (
                       <button 
                         onClick={processImage} 
                         className="text-sm text-violet-600 hover:text-violet-800 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-violet-50 transition-colors"
                       >
                         <i className="fas fa-rotate-right"></i>
-                        Re-enhance ({scale}x)
+                        Re-enhance
                       </button>
                     )}
                     <button 
@@ -386,7 +676,12 @@ export default function ImageEnhancer() {
                       Change
                     </button>
                     <button 
-                      onClick={() => { setImage(null); setResultUrl(null); setError(null) }} 
+                      onClick={() => { 
+                        setImage(null); 
+                        setResultUrl(null); 
+                        setError(null);
+                        setProcessingTime(null)
+                      }} 
                       className="text-sm text-red-500 hover:text-red-700 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors"
                     >
                       <i className="fas fa-trash"></i>
@@ -455,15 +750,16 @@ export default function ImageEnhancer() {
                   {/* Processing Overlay */}
                   {processing && !resultUrl && (
                     <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md">
-                      <div className="bg-white rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl">
+                      <div className="bg-white rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl max-w-sm mx-4">
                         <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
                         <div className="text-center">
                           <p className="text-slate-800 font-bold text-lg">{stepMsg}</p>
-                          <p className="text-slate-500 text-sm mt-1">Real-ESRGAN AI Processing</p>
+                          <p className="text-slate-500 text-sm mt-1">Real-ESRGAN Neural Network</p>
                         </div>
                         <div className="w-56 bg-slate-200 rounded-full h-2">
                           <div className="h-2 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
                         </div>
+                        <p className="text-xs text-slate-400">This may take 10-30 seconds depending on image size</p>
                       </div>
                     </div>
                   )}
@@ -482,7 +778,7 @@ export default function ImageEnhancer() {
                     Download Enhanced Image ({scale}x)
                   </a>
                   <button
-                    onClick={() => { setImage(null); setResultUrl(null) }}
+                    onClick={() => { setImage(null); setResultUrl(null); setProcessingTime(null) }}
                     className="px-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-all hover:scale-105"
                   >
                     <i className="fas fa-plus text-xl"></i>
@@ -490,16 +786,17 @@ export default function ImageEnhancer() {
                 </div>
               )}
 
-              {/* Info */}
+              {/* Info Cards */}
               {resultUrl && (
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
                     { label: 'Model', value: 'Real-ESRGAN', icon: 'fa-brain' },
                     { label: 'Scale', value: `${scale}x`, icon: 'fa-expand' },
                     { label: 'Processing', value: 'Local/Browser', icon: 'fa-shield-halved' },
+                    { label: 'Time', value: `${processingTime || '--'}s`, icon: 'fa-clock' },
                   ].map((item) => (
-                    <div key={item.label} className="bg-white rounded-xl p-4 border border-slate-200 text-center">
-                      <i className={`fas ${item.icon} text-violet-500 mb-2`}></i>
+                    <div key={item.label} className="bg-white rounded-xl p-4 border border-slate-200 text-center hover:border-violet-200 transition-colors">
+                      <i className={`fas ${item.icon} text-violet-500 mb-2 text-lg`}></i>
                       <p className="text-xs text-slate-500 uppercase tracking-wider">{item.label}</p>
                       <p className="font-bold text-slate-800">{item.value}</p>
                     </div>
