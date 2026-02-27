@@ -26,7 +26,7 @@ export default function ImageEnhancer() {
       if (existingScript) {
         if (existingScript.dataset.loaded) return resolve();
         existingScript.addEventListener('load', resolve);
-        existingScript.addEventListener('error', reject);
+        existingScript.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)));
         return;
       }
       const script = document.createElement('script');
@@ -41,7 +41,7 @@ export default function ImageEnhancer() {
     });
   };
 
-  // Dynamically load AI with Timeout Fallback (Vercel Strict Mode Fixed)
+  // Dynamically load AI with Timeout Fallback and highly reliable JSdelivr CDN
   useEffect(() => {
     let isMounted = true;
     let fallbackTimeout;
@@ -50,21 +50,23 @@ export default function ImageEnhancer() {
       try {
         // Fallback timer: Agar 8 sec me load nahi hua toh Standard mode de do
         fallbackTimeout = setTimeout(() => {
-          if (isMounted) {
-            console.warn("AI Loading timeout. Switching to Standard HD Mode.");
+          if (isMounted && engineState === 'loading') {
+            console.warn("AI Loading timeout. Switching gracefully to Standard HD Mode.");
             setEngineState('ready_standard');
           }
         }, 8000);
 
-        await loadScript('https://unpkg.com/@tensorflow/tfjs@3.21.0/dist/tf.min.js');
-        await loadScript('https://unpkg.com/upscaler@0.51.3/dist/browser/umd/upscaler.min.js');
+        // Changed from unpkg to jsdelivr for better global availability and uptime
+        await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js');
+        await loadScript('https://cdn.jsdelivr.net/npm/upscaler@0.51.3/dist/browser/umd/upscaler.min.js');
         
         if (isMounted) {
           clearTimeout(fallbackTimeout);
           setEngineState('ready_ai');
         }
       } catch (err) {
-        console.error("AI scripts loading error:", err);
+        // Use warn instead of error to avoid red flags in console when fallback is working fine
+        console.warn("AI script CDN network issue detected. Safely falling back to Standard HD Mode.", err.message);
         if (isMounted) {
           clearTimeout(fallbackTimeout);
           setEngineState('ready_standard');
@@ -78,7 +80,7 @@ export default function ImageEnhancer() {
       isMounted = false; 
       clearTimeout(fallbackTimeout);
     };
-  }, []); // Clean dependency array to prevent Vercel build warnings
+  }, []);
 
   // Auto-animate demo slider
   useEffect(() => {
@@ -166,7 +168,7 @@ export default function ImageEnhancer() {
       setSliderPosition(50);
       
     } catch (error) {
-      console.error("AI Upscaling Failed, using fallback: ", error);
+      console.warn("AI Upscaling Failed, using safe fallback: ", error.message);
       processFallbackUpscale(imgSrc); // Agar AI fail ho jaye toh canvas mode chal jaye
     }
   };
