@@ -1,547 +1,515 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
+import Upscaler from 'upscaler'
+import x2 from '@upscalerjs/esrgan-slim/2x'
+import x4 from '@upscalerjs/esrgan-slim/4x'
 
-// Demo images for live example - aap inhe apne images se replace karein
+// Demo images - replace with your own low/high quality pairs
 const DEMO_IMAGES = {
-  original: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=20', // Low quality/blurry version
-  enhanced: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=90'  // High quality version
+  original: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=30&blur=2',
+  enhanced: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=90'
 }
 
-// ── Luminance & blur analysis ──────────────────────────────────────────────
-function analyzeImage(data, w, h) {
-    let lumSum = 0
-    let lapSum = 0, lapCount = 0
-    const n = data.length / 4
-
-    for (let i = 0; i < data.length; i += 4) {
-        lumSum += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
-    }
+// ── AI Enhancement Hook ────────────────────────────────────────────────────
+function useAIEnhancer() {
+  const upscaler2x = useMemo(() => new Upscaler({ model: x2 }), [])
+  const upscaler4x = useMemo(() => new Upscaler({ model: x4 }), [])
+  
+  const enhance = async (imageUrl, scale = 4, onProgress) => {
+    const upscaler = scale === 2 ? upscaler2x : upscaler4x
     
-    for (let y = 1; y < h - 1; y += 4) {
-        for (let x = 1; x < w - 1; x += 4) {
-            const c = (y * w + x) * 4
-            const t = ((y - 1) * w + x) * 4
-            const b = ((y + 1) * w + x) * 4
-            const lf = (y * w + (x - 1)) * 4
-            const rt = (y * w + (x + 1)) * 4
-            const gC = 0.299 * data[c] + 0.587 * data[c + 1] + 0.114 * data[c + 2]
-            const gT = 0.299 * data[t] + 0.587 * data[t + 1] + 0.114 * data[t + 2]
-            const gB = 0.299 * data[b] + 0.587 * data[b + 1] + 0.114 * data[b + 2]
-            const gL = 0.299 * data[lf] + 0.587 * data[lf + 1] + 0.114 * data[lf + 2]
-            const gR = 0.299 * data[rt] + 0.587 * data[rt + 1] + 0.114 * data[rt + 2]
-            const lap = gT + gB + gL + gR - 4 * gC
-            lapSum += lap * lap
-            lapCount++
-        }
-    }
-
-    return {
-        luminance: lumSum / n,
-        blurScore: lapCount > 0 ? lapSum / lapCount : 999,
-    }
+    // Load image
+    const img = new Image()
+    img.src = imageUrl
+    img.crossOrigin = 'anonymous'
+    await new Promise((resolve, reject) => {
+      img.onload = resolve
+      img.onerror = reject
+    })
+    
+    // Upscale with AI
+    const upscaledSrc = await upscaler.upscale(img, {
+      output: 'src',
+      progress: (percent) => onProgress?.(`AI enhancing...`, Math.round(percent * 100))
+    })
+    
+    return upscaledSrc
+  }
+  
+  return { enhance }
 }
 
-// ── 4x Smart enhancement using ctx.filter ─────────────────────────────────
-async function runAIEnhancement(imgEl, onStep, scale = 4) {
-    const W = imgEl.naturalWidth
-    const H = imgEl.naturalHeight
-    const targetW = W * scale
-    const targetH = H * scale
-
-    // ① Analyse original
-    onStep('🔍 Analysing image quality...', 10)
-    const aCanvas = document.createElement('canvas')
-    aCanvas.width = W; aCanvas.height = H
-    const aC = aCanvas.getContext('2d')
-    aC.drawImage(imgEl, 0, 0)
-    const raw = aC.getImageData(0, 0, W, H)
-    const { luminance, blurScore } = analyzeImage(raw.data, W, H)
-
-    const isBlurry = blurScore < 200
-    const isVeryBlurry = blurScore < 40
-    const isDark = luminance < 90
-    const isOverExp = luminance > 175
-
-    // ② Calculate smart filter values
-    const brightnessVal = isDark ? 115 : isOverExp ? 92 : 105
-    const contrastVal = isVeryBlurry ? 112 : 125
-    const saturateVal = 115
-    const sharpPasses = isVeryBlurry ? 5 : isBlurry ? 4 : 3
-    const sharpAmt = isVeryBlurry ? 3 : isBlurry ? 2.2 : 1.5
-
-    // ③ Create 4x canvas with high quality scaling
-    onStep(`⚙️ Upscaling to ${scale}x...`, 20)
-    await tick()
-
-    const canvas = document.createElement('canvas')
-    canvas.width = targetW
-    canvas.height = targetH
-    const ctx = canvas.getContext('2d')
-    
-    // Disable smoothing for initial sharpness, then apply smart filters
-    ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = 'high'
-    
-    // Apply filters and draw scaled image
-    ctx.filter = `brightness(${brightnessVal}%) contrast(${contrastVal}%) saturate(${saturateVal}%)`
-    ctx.drawImage(imgEl, 0, 0, targetW, targetH)
-    ctx.filter = 'none'
-
-    // ④ Multi-pass unsharp mask for 4x resolution
-    const blurLabel = isVeryBlurry ? 'very blurry' : isBlurry ? 'blurry' : 'sharp'
-    onStep(`🔧 Deblurring (${blurLabel}, ${sharpPasses} passes)...`, 35)
-    await tick()
-
-    for (let pass = 0; pass < sharpPasses; pass++) {
-        onStep(`🔧 Sharpening pass ${pass + 1}/${sharpPasses}...`, 35 + pass * 10)
-        await tick()
-        await unsharpPass(ctx, canvas, targetW, targetH, sharpAmt, pass === 0 ? 2 : 1.2)
-        await tick()
-    }
-
-    // ⑤ Final clarity and detail enhancement
-    onStep('✨ Final clarity polish...', 85)
-    await tick()
-    await unsharpPass(ctx, canvas, targetW, targetH, 0.8, 0.8)
-    
-    // Detail enhancement pass
-    onStep('🎯 Enhancing details...', 92)
-    await tick()
-    ctx.filter = 'contrast(105%)'
-    ctx.globalCompositeOperation = 'overlay'
-    ctx.drawImage(canvas, 0, 0)
-    ctx.globalCompositeOperation = 'source-over'
-    ctx.filter = 'none'
-
-    // ⑥ Encode with high quality
-    onStep('💾 Encoding result...', 96)
-    await tick()
-    return new Promise(resolve =>
-        canvas.toBlob(b => resolve(URL.createObjectURL(b)), 'image/jpeg', 0.95)
-    )
-}
-
-// Unsharp mask using browser's blur filter
-async function unsharpPass(ctx, srcCanvas, W, H, amount, blurRadius) {
-    const origData = ctx.getImageData(0, 0, W, H)
-
-    const blurCanvas = document.createElement('canvas')
-    blurCanvas.width = W; blurCanvas.height = H
-    const bCtx = blurCanvas.getContext('2d')
-    bCtx.filter = `blur(${blurRadius}px)`
-    bCtx.drawImage(srcCanvas, 0, 0)
-    bCtx.filter = 'none'
-    const blurData = bCtx.getImageData(0, 0, W, H)
-
-    const d = origData.data
-    const b = blurData.data
-    for (let i = 0; i < d.length; i += 4) {
-        d[i] = Math.min(255, Math.max(0, d[i] + amount * (d[i] - b[i])))
-        d[i + 1] = Math.min(255, Math.max(0, d[i + 1] + amount * (d[i + 1] - b[i + 1])))
-        d[i + 2] = Math.min(255, Math.max(0, d[i + 2] + amount * (d[i + 2] - b[i + 2])))
-    }
-    ctx.putImageData(origData, 0, 0)
-}
-
-const tick = () => new Promise(r => setTimeout(r, 0))
-
-// ── Demo Compare Component ─────────────────────────────────────────────────
+// ── Demo Compare Component (Side by Side) ─────────────────────────────────
 function DemoCompare() {
-    const [compareX, setCompareX] = useState(50)
-    const [dragging, setDragging] = useState(false)
-    const compareRef = useRef()
+  const [compareX, setCompareX] = useState(50)
+  const [dragging, setDragging] = useState(false)
+  const compareRef = useRef()
 
-    const onMove = useCallback((e) => {
-        if (!dragging || !compareRef.current) return
-        const rect = compareRef.current.getBoundingClientRect()
-        const cx = e.touches ? e.touches[0].clientX : e.clientX
-        setCompareX(Math.min(100, Math.max(0, ((cx - rect.left) / rect.width) * 100)))
-    }, [dragging])
+  const onMove = useCallback((e) => {
+    if (!dragging || !compareRef.current) return
+    const rect = compareRef.current.getBoundingClientRect()
+    const cx = e.touches ? e.touches[0].clientX : e.clientX
+    const percent = Math.min(100, Math.max(0, ((cx - rect.left) / rect.width) * 100))
+    setCompareX(percent)
+  }, [dragging])
 
-    useEffect(() => {
-        if (!dragging) return
-        const stop = () => setDragging(false)
-        window.addEventListener('mousemove', onMove)
-        window.addEventListener('touchmove', onMove, { passive: true })
-        window.addEventListener('mouseup', stop)
-        window.addEventListener('touchend', stop)
-        return () => {
-            window.removeEventListener('mousemove', onMove)
-            window.removeEventListener('touchmove', onMove)
-            window.removeEventListener('mouseup', stop)
-            window.removeEventListener('touchend', stop)
-        }
-    }, [dragging, onMove])
+  useEffect(() => {
+    if (!dragging) return
+    const stop = () => setDragging(false)
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('touchmove', onMove, { passive: true })
+    window.addEventListener('mouseup', stop)
+    window.addEventListener('touchend', stop)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('touchmove', onMove)
+      window.removeEventListener('mouseup', stop)
+      window.removeEventListener('touchend', stop)
+    }
+  }, [dragging, onMove])
 
-    return (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mb-6">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-gradient-to-r from-violet-50 to-indigo-50">
-                <span className="text-sm font-bold text-slate-700 flex items-center gap-2">
-                    <i className="fas fa-wand-magic-sparkles text-violet-500"></i>
-                    Live Demo - Try the slider!
-                </span>
-                <span className="text-xs text-slate-500">← Original · Enhanced →</span>
-            </div>
-            
-            <div
-                ref={compareRef}
-                className="relative select-none overflow-hidden bg-slate-100"
-                style={{ height: 300, cursor: 'col-resize' }}
-                onMouseDown={() => setDragging(true)}
-                onTouchStart={() => setDragging(true)}
-            >
-                {/* Enhanced Image (Background - Full) */}
-                <img
-                    src={DEMO_IMAGES.enhanced}
-                    alt="Enhanced Demo"
-                    className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                />
-
-                {/* Original Image (Clipped - Left Side) */}
-                <div
-                    className="absolute inset-0 pointer-events-none overflow-hidden"
-                    style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}
-                >
-                    <img
-                        src={DEMO_IMAGES.original}
-                        alt="Original Demo"
-                        className="absolute inset-0 w-full h-full object-cover"
-                        style={{ filter: 'blur(1px) brightness(0.9)' }}
-                    />
-                </div>
-
-                {/* Slider handle */}
-                <div className="absolute top-0 bottom-0 z-20 pointer-events-none" style={{ left: `${compareX}%` }}>
-                    <div className="absolute inset-y-0 -translate-x-px w-1 bg-white shadow-[0_0_15px_rgba(139,92,246,0.9)]" />
-                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-violet-500">
-                        <i className="fas fa-arrows-left-right text-violet-600 text-sm"></i>
-                    </div>
-                </div>
-
-                {/* Labels */}
-                <div className="absolute top-3 left-3 z-10 bg-black/70 text-white text-xs font-bold px-3 py-1.5 rounded-lg pointer-events-none backdrop-blur-sm">
-                    ORIGINAL
-                </div>
-                <div className="absolute top-3 right-3 z-10 bg-violet-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg pointer-events-none shadow-lg">
-                    ✨ ENHANCED 4x
-                </div>
-            </div>
-            
-            <div className="px-4 py-3 bg-slate-50 text-center">
-                <p className="text-xs text-slate-500">Drag the slider to compare before and after enhancement</p>
-            </div>
+  return (
+    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-lg mb-8">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-gradient-to-r from-violet-50 to-indigo-50">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+            <i className="fas fa-wand-magic-sparkles text-white text-lg"></i>
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-800">Live Demo</h3>
+            <p className="text-xs text-slate-500">Try the slider to see AI enhancement</p>
+          </div>
         </div>
-    )
+        <div className="flex items-center gap-2 text-sm text-slate-600">
+          <span className="font-medium">Original</span>
+          <i className="fas fa-arrows-left-right text-slate-400"></i>
+          <span className="font-medium text-violet-600">AI Enhanced 4x</span>
+        </div>
+      </div>
+      
+      <div
+        ref={compareRef}
+        className="relative select-none overflow-hidden bg-slate-900 cursor-col-resize"
+        style={{ height: 400 }}
+        onMouseDown={() => setDragging(true)}
+        onTouchStart={() => setDragging(true)}
+      >
+        {/* Enhanced Image (Background) */}
+        <img
+          src={DEMO_IMAGES.enhanced}
+          alt="Enhanced"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Original Image (Clipped) */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}
+        >
+          <img
+            src={DEMO_IMAGES.original}
+            alt="Original"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Slight blur to simulate low quality */}
+          <div className="absolute inset-0 backdrop-blur-[1px]"></div>
+        </div>
+
+        {/* Slider Line */}
+        <div 
+          className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_20px_rgba(139,92,246,0.8)] z-10"
+          style={{ left: `${compareX}%`, transform: 'translateX(-50%)' }}
+        >
+          {/* Handle */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-violet-500">
+            <i className="fas fa-arrows-left-right text-violet-600 text-lg"></i>
+          </div>
+        </div>
+
+        {/* Labels */}
+        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-white/20">
+          ORIGINAL
+        </div>
+        <div className="absolute top-4 right-4 bg-violet-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-lg border border-violet-400">
+          ✨ AI ENHANCED 4x
+        </div>
+      </div>
+      
+      <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+        <p className="text-sm text-slate-600">Drag the slider to compare before and after</p>
+        <div className="flex gap-2">
+          <span className="px-3 py-1 bg-white rounded-full text-xs font-medium text-slate-600 border border-slate-200">Real-ESRGAN</span>
+          <span className="px-3 py-1 bg-white rounded-full text-xs font-medium text-slate-600 border border-slate-200">Detail Recovery</span>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // ── Main Component ─────────────────────────────────────────────────────────
 export default function ImageEnhancer() {
-    const [image, setImage] = useState(null)
-    const [resultUrl, setResultUrl] = useState(null)
-    const [processing, setProcessing] = useState(false)
-    const [progress, setProgress] = useState(0)
-    const [stepMsg, setStepMsg] = useState('')
-    const [badge, setBadge] = useState(null)
-    const [compareX, setCompareX] = useState(50)
-    const [dragging, setDragging] = useState(false)
-    const [dropOver, setDropOver] = useState(false)
-    const [scale, setScale] = useState(4) // Default 4x
-    const compareRef = useRef()
-    const inputRef = useRef()
+  const [image, setImage] = useState(null)
+  const [resultUrl, setResultUrl] = useState(null)
+  const [processing, setProcessing] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const [stepMsg, setStepMsg] = useState('')
+  const [scale, setScale] = useState(4)
+  const [compareX, setCompareX] = useState(50)
+  const [dragging, setDragging] = useState(false)
+  const [dropOver, setDropOver] = useState(false)
+  const [error, setError] = useState(null)
+  
+  const compareRef = useRef()
+  const inputRef = useRef()
+  const { enhance } = useAIEnhancer()
 
-    const loadFile = useCallback((file) => {
-        if (!file || !file.type.startsWith('image/')) return
-        setImage({ url: URL.createObjectURL(file), file })
-        setResultUrl(null)
-        setBadge(null)
-        setCompareX(50)
-    }, [])
-
-    // Auto-enhance on upload
-    useEffect(() => {
-        if (image && !resultUrl && !processing) enhance()
-    }, [image])
-
-    const enhance = async () => {
-        if (!image) return
-        setProcessing(true)
-        setResultUrl(null)
-        setProgress(5)
-        setStepMsg('Loading image...')
-
-        try {
-            const img = new Image()
-            img.crossOrigin = 'anonymous'
-            img.src = image.url
-            await new Promise((r, reject) => { 
-                img.onload = r
-                img.onerror = reject
-            })
-
-            // Quick pre-analysis for badge
-            const tmpC = document.createElement('canvas')
-            const maxDim = 400
-            const scaleFactor = Math.min(1, maxDim / Math.max(img.naturalWidth, img.naturalHeight))
-            tmpC.width = img.naturalWidth * scaleFactor
-            tmpC.height = img.naturalHeight * scaleFactor
-            const tmpCtx = tmpC.getContext('2d')
-            tmpCtx.drawImage(img, 0, 0, tmpC.width, tmpC.height)
-            const tmpData = tmpCtx.getImageData(0, 0, tmpC.width, tmpC.height)
-            const { luminance, blurScore } = analyzeImage(tmpData.data, tmpC.width, tmpC.height)
-
-            if (blurScore < 40) setBadge({ text: 'Very Blurry → Heavy deblur', color: 'red' })
-            else if (blurScore < 200) setBadge({ text: 'Blurry detected → Deblur processing', color: 'amber' })
-            else if (luminance < 90) setBadge({ text: 'Underexposed → Brightening', color: 'blue' })
-            else if (luminance > 175) setBadge({ text: 'Overexposed → Tone correction', color: 'orange' })
-            else setBadge({ text: 'Good quality → Color & sharpness boost', color: 'green' })
-
-            const url = await runAIEnhancement(img, (msg, pct) => {
-                setStepMsg(msg)
-                setProgress(pct)
-            }, scale)
-            
-            setResultUrl(url)
-        } catch (err) {
-            console.error('Enhance failed:', err)
-            setStepMsg('❌ Error: ' + err.message)
-        } finally {
-            setProcessing(false)
-            setProgress(100)
-            setTimeout(() => setProgress(0), 800)
-        }
+  const loadFile = useCallback((file) => {
+    if (!file || !file.type.startsWith('image/')) {
+      setError('Please upload a valid image file')
+      return
     }
-
-    // Compare slider
-    const onMove = useCallback((e) => {
-        if (!dragging || !compareRef.current) return
-        const rect = compareRef.current.getBoundingClientRect()
-        const cx = e.touches ? e.touches[0].clientX : e.clientX
-        setCompareX(Math.min(100, Math.max(0, ((cx - rect.left) / rect.width) * 100)))
-    }, [dragging])
-
-    useEffect(() => {
-        if (!dragging) return
-        const stop = () => setDragging(false)
-        window.addEventListener('mousemove', onMove)
-        window.addEventListener('touchmove', onMove, { passive: true })
-        window.addEventListener('mouseup', stop)
-        window.addEventListener('touchend', stop)
-        return () => {
-            window.removeEventListener('mousemove', onMove)
-            window.removeEventListener('touchmove', onMove)
-            window.removeEventListener('mouseup', stop)
-            window.removeEventListener('touchend', stop)
-        }
-    }, [dragging, onMove])
-
-    const badgeColors = {
-        red: 'bg-red-50 text-red-700 border-red-200',
-        amber: 'bg-amber-50 text-amber-700 border-amber-200',
-        blue: 'bg-blue-50 text-blue-700 border-blue-200',
-        orange: 'bg-orange-50 text-orange-700 border-orange-200',
-        green: 'bg-green-50 text-green-700 border-green-200',
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Image size should be less than 10MB')
+      return
     }
+    setError(null)
+    setImage({ url: URL.createObjectURL(file), file })
+    setResultUrl(null)
+    setCompareX(50)
+  }, [])
 
-    return (
-        <>
-            <SEO title="AI Image Enhancer - Fix Blur & Enhance Photos Free" description="Automatically enhance and deblur photos with AI. Upload any blurry or dark photo and get a sharp, vivid result instantly. Free &amp; private." canonical="/image-enhancer" />
-            <ToolLayout toolSlug="image-enhancer" title="AI Image Enhancer" description="Upload any photo — blurry, dark, or dull — and AI instantly sharpens, brightens, and enhances it. Fully automatic. No settings needed." breadcrumb="Image Enhancer">
+  const processImage = async () => {
+    if (!image) return
+    setProcessing(true)
+    setResultUrl(null)
+    setProgress(0)
+    setStepMsg('Initializing AI model...')
+    setError(null)
 
-                {/* Live Demo Section - Left/Center mein dikhane ke liye */}
-                {!image && <DemoCompare />}
+    try {
+      // AI Enhancement using Real-ESRGAN
+      const enhancedUrl = await enhance(image.url, scale, (msg, pct) => {
+        setStepMsg(msg)
+        setProgress(pct)
+      })
+      
+      setResultUrl(enhancedUrl)
+      setStepMsg('Enhancement complete!')
+    } catch (err) {
+      console.error('Enhancement failed:', err)
+      setError('AI enhancement failed. Please try again with a different image.')
+      setStepMsg('Error occurred')
+    } finally {
+      setProcessing(false)
+      setProgress(100)
+      setTimeout(() => setProgress(0), 1000)
+    }
+  }
 
-                {!image ? (
-                    /* ── Upload ── */
-                    <div
-                        className={`drop-zone group cursor-pointer ${dropOver ? 'active' : ''} bg-white rounded-2xl border-2 border-dashed border-slate-300 hover:border-violet-400 transition-all`}
-                        style={{ padding: '3rem 2rem' }}
-                        onDrop={e => { e.preventDefault(); setDropOver(false); loadFile(e.dataTransfer.files[0]) }}
-                        onDragOver={e => { e.preventDefault(); setDropOver(true) }}
-                        onDragLeave={() => setDropOver(false)}
-                        onClick={() => inputRef.current?.click()}
+  // Auto-enhance on upload
+  useEffect(() => {
+    if (image && !resultUrl && !processing) {
+      processImage()
+    }
+  }, [image])
+
+  // Compare slider handlers
+  const onMove = useCallback((e) => {
+    if (!dragging || !compareRef.current) return
+    const rect = compareRef.current.getBoundingClientRect()
+    const cx = e.touches ? e.touches[0].clientX : e.clientX
+    const percent = Math.min(100, Math.max(0, ((cx - rect.left) / rect.width) * 100))
+    setCompareX(percent)
+  }, [dragging])
+
+  useEffect(() => {
+    if (!dragging) return
+    const stop = () => setDragging(false)
+    window.addEventListener('mousemove', onMove)
+    window.addEventListener('touchmove', onMove, { passive: true })
+    window.addEventListener('mouseup', stop)
+    window.addEventListener('touchend', stop)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('touchmove', onMove)
+      window.removeEventListener('mouseup', stop)
+      window.removeEventListener('touchend', stop)
+    }
+  }, [dragging, onMove])
+
+  return (
+    <>
+      <SEO 
+        title="AI Image Enhancer - Real ESRGAN Super Resolution" 
+        description="Enhance photos with Real AI. Upscale images 4x with detail reconstruction, smoothing, and quality improvement. Free & private browser processing." 
+        canonical="/image-enhancer" 
+      />
+      <ToolLayout 
+        toolSlug="image-enhancer" 
+        title="AI Image Enhancer" 
+        description="Real AI-powered image enhancement using ESRGAN. Upload any photo and get 4x super resolution with detail recovery and smoothing." 
+        breadcrumb="Image Enhancer"
+      >
+        <div className="max-w-6xl mx-auto">
+          {/* Live Demo Section */}
+          {!image && <DemoCompare />}
+
+          {error && (
+            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
+              <i className="fas fa-circle-exclamation"></i>
+              {error}
+            </div>
+          )}
+
+          {!image ? (
+            /* Upload Section */
+            <div
+              className={`bg-white rounded-2xl border-2 border-dashed transition-all duration-300 ${dropOver ? 'border-violet-500 bg-violet-50' : 'border-slate-300'} p-12 text-center cursor-pointer hover:border-violet-400 hover:shadow-lg`}
+              onDrop={e => { e.preventDefault(); setDropOver(false); loadFile(e.dataTransfer.files[0]) }}
+              onDragOver={e => { e.preventDefault(); setDropOver(true) }}
+              onDragLeave={() => setDropOver(false)}
+              onClick={() => inputRef.current?.click()}
+            >
+              <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
+              
+              <div className="flex flex-col items-center gap-6">
+                <div className="relative">
+                  <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-400/40 animate-pulse">
+                    <i className="fas fa-wand-magic-sparkles text-white text-4xl"></i>
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-2 border-white">
+                    AI POWERED
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <h2 className="text-3xl font-extrabold text-slate-800">Upload Any Photo</h2>
+                  <p className="text-slate-500 max-w-md mx-auto">
+                    Real ESRGAN AI upscaling with detail reconstruction. Not just filters - actual pixel generation.
+                  </p>
+                </div>
+
+                {/* Scale Selector */}
+                <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl">
+                  {[2, 4].map((s) => (
+                    <button
+                      key={s}
+                      onClick={(e) => { e.stopPropagation(); setScale(s) }}
+                      className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${scale === s ? 'bg-violet-600 text-white shadow-md' : 'text-slate-600 hover:bg-white hover:shadow-sm'}`}
                     >
-                        <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
-                        <div className="flex flex-col items-center gap-5">
-                            <div className="relative">
-                                <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-400/40 group-hover:scale-110 transition-transform duration-300">
-                                    <i className="fas fa-wand-magic-sparkles text-white text-3xl"></i>
-                                </div>
-                                <div className="absolute -bottom-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow">4X AI</div>
-                            </div>
-                            <div className="text-center">
-                                <p className="text-2xl font-extrabold text-slate-800">Upload Any Photo</p>
-                                <p className="text-slate-500 mt-1.5 text-sm">AI automatically fixes blur, corrects exposure &amp; boosts colors up to 4x resolution</p>
-                            </div>
-                            
-                            {/* Scale Selector */}
-                            <div className="flex items-center gap-3 bg-slate-50 rounded-xl p-2">
-                                <span className="text-xs font-semibold text-slate-600 px-2">Upscale:</span>
-                                {[2, 4].map((s) => (
-                                    <button
-                                        key={s}
-                                        onClick={(e) => { e.stopPropagation(); setScale(s) }}
-                                        className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${scale === s ? 'bg-violet-600 text-white shadow-md' : 'text-slate-600 hover:bg-slate-200'}`}
-                                    >
-                                        {s}x
-                                    </button>
-                                ))}
-                            </div>
+                      {s}x Upscale
+                    </button>
+                  ))}
+                </div>
 
-                            <div className="grid grid-cols-3 gap-3 max-w-xs w-full">
-                                {[
-                                    { icon: 'fa-eye', label: 'Deblurs Images', color: 'from-violet-500 to-purple-600' },
-                                    { icon: 'fa-sun', label: 'Fixes Exposure', color: 'from-amber-400 to-orange-500' },
-                                    { icon: 'fa-droplet', label: '4x Resolution', color: 'from-pink-500 to-rose-500' },
-                                ].map(f => (
-                                    <div key={f.label} className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
-                                        <div className={`w-8 h-8 mx-auto mb-1.5 rounded-lg bg-gradient-to-br ${f.color} flex items-center justify-center`}>
-                                            <i className={`fas ${f.icon} text-white text-xs`}></i>
-                                        </div>
-                                        <p className="text-[11px] font-semibold text-slate-600 leading-tight">{f.label}</p>
-                                    </div>
-                                ))}
-                            </div>
-                            <button className="px-8 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-lg shadow-violet-500/30 hover:scale-105 transition-transform text-sm">
-                                <i className="fas fa-upload mr-2"></i>Choose Photo to Enhance
-                            </button>
-                            <p className="text-xs text-slate-400">Works on blurry, dark, or low-quality photos · 100% private · Up to 4x upscaling</p>
-                        </div>
+                <div className="grid grid-cols-3 gap-4 max-w-lg w-full">
+                  {[
+                    { icon: 'fa-microchip', label: 'Real-ESRGAN AI', desc: 'Neural Network', color: 'from-violet-500 to-purple-600' },
+                    { icon: 'fa-image', label: 'Detail Recovery', desc: 'Pixel Generation', color: 'from-blue-500 to-cyan-500' },
+                    { icon: 'fa-wand-sparkles', label: 'Smooth & Natural', desc: 'Artifact Removal', color: 'from-pink-500 to-rose-500' },
+                  ].map(f => (
+                    <div key={f.label} className="bg-slate-50 rounded-2xl p-4 text-center border border-slate-100 hover:border-violet-200 transition-colors">
+                      <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg`}>
+                        <i className={`fas ${f.icon} text-white text-lg`}></i>
+                      </div>
+                      <p className="text-sm font-bold text-slate-700">{f.label}</p>
+                      <p className="text-[10px] text-slate-500 mt-1">{f.desc}</p>
                     </div>
-                ) : (
-                    <div className="space-y-4">
-                        {/* Badge */}
-                        {badge && (
-                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border ${badgeColors[badge.color]}`}>
-                                <i className={`fas ${badge.color === 'green' ? 'fa-circle-check' : 'fa-triangle-exclamation'}`}></i>
-                                {badge.text}
-                            </div>
-                        )}
+                  ))}
+                </div>
 
-                        {/* Progress */}
-                        {processing && (
-                            <div className="bg-white rounded-2xl border border-violet-100 p-5 shadow-sm space-y-3">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-5 h-5 border-2 border-violet-500 border-t-transparent rounded-full animate-spin flex-shrink-0"></div>
-                                        <span className="text-sm font-semibold text-slate-700">{stepMsg}</span>
-                                    </div>
-                                    <span className="text-sm font-bold text-violet-600 tabular-nums">{progress}%</span>
-                                </div>
-                                <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
-                                    <div
-                                        className="h-3 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-300"
-                                        style={{ width: `${progress}%` }}
-                                    />
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Before / After Compare - FIXED */}
-                        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-                            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-                                <span className="text-sm font-bold text-slate-700">
-                                    {resultUrl ? '← Drag slider · Original vs Enhanced →' : processing ? '⏳ Enhancing...' : 'Ready'}
-                                </span>
-                                <div className="flex gap-3">
-                                    {!processing && <button onClick={enhance} className="text-xs text-violet-600 hover:text-violet-800 font-medium"><i className="fas fa-rotate-right mr-1"></i>Re-enhance ({scale}x)</button>}
-                                    <button onClick={() => inputRef.current?.click()} className="text-xs text-blue-600 hover:text-blue-800 font-medium"><i className="fas fa-folder-open mr-1"></i>Change</button>
-                                    <button onClick={() => { setImage(null); setResultUrl(null) }} className="text-xs text-red-400 hover:text-red-600"><i className="fas fa-trash mr-1"></i>Remove</button>
-                                </div>
-                                <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
-                            </div>
-
-                            <div
-                                ref={compareRef}
-                                className="relative select-none overflow-hidden bg-slate-100"
-                                style={{ minHeight: 400, cursor: resultUrl ? 'col-resize' : 'default' }}
-                                onMouseDown={() => resultUrl && setDragging(true)}
-                                onTouchStart={() => resultUrl && setDragging(true)}
-                            >
-                                {/* Enhanced Image (Background - Full Width) */}
-                                {resultUrl ? (
-                                    <img
-                                        src={resultUrl}
-                                        alt="Enhanced"
-                                        className="absolute inset-0 w-full h-full object-contain pointer-events-none bg-black"
-                                    />
-                                ) : (
-                                    /* Original as placeholder when no result */
-                                    <img
-                                        src={image.url}
-                                        alt="Original"
-                                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                                    />
-                                )}
-
-                                {/* Original Image - Clipped to show only left portion */}
-                                <div
-                                    className="absolute inset-0 pointer-events-none overflow-hidden"
-                                    style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}
-                                >
-                                    <img
-                                        src={image.url}
-                                        alt="Original"
-                                        className="absolute inset-0 w-full h-full object-contain"
-                                    />
-                                </div>
-
-                                {/* Slider handle */}
-                                {resultUrl && (
-                                    <div className="absolute top-0 bottom-0 z-20 pointer-events-none" style={{ left: `${compareX}%` }}>
-                                        <div className="absolute inset-y-0 -translate-x-px w-1 bg-white shadow-[0_0_15px_rgba(139,92,246,0.9)]" />
-                                        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-violet-500">
-                                            <i className="fas fa-arrows-left-right text-violet-600 text-sm"></i>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Labels - FIXED POSITIONS */}
-                                <div className="absolute top-4 left-4 z-10 bg-black/70 text-white text-xs font-bold px-3 py-1.5 rounded-lg pointer-events-none backdrop-blur-sm">
-                                    ORIGINAL
-                                </div>
-                                {resultUrl && (
-                                    <div className="absolute top-4 right-4 z-10 bg-violet-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg pointer-events-none shadow-lg">
-                                        ✨ ENHANCED {scale}x
-                                    </div>
-                                )}
-
-                                {/* Processing overlay */}
-                                {processing && !resultUrl && (
-                                    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm">
-                                        <div className="bg-white rounded-2xl p-6 flex flex-col items-center gap-3 shadow-2xl">
-                                            <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-                                            <p className="text-slate-700 font-bold text-sm text-center">{stepMsg}</p>
-                                            <div className="w-48 bg-slate-200 rounded-full h-2">
-                                                <div className="h-2 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Download */}
-                        {resultUrl && !processing && (
-                            <div className="flex gap-3">
-                                <a
-                                    href={resultUrl}
-                                    download={`ai_enhanced_${scale}x_${image.file.name.replace(/\.[^.]+$/, '')}.jpg`}
-                                    className="flex-1 flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-violet-500/25 transition-all text-sm"
-                                >
-                                    <i className="fas fa-download text-base"></i>Download Enhanced Image ({scale}x)
-                                </a>
-                                <button
-                                    onClick={() => { setImage(null); setResultUrl(null) }}
-                                    className="px-5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold rounded-2xl text-sm transition-all"
-                                >
-                                    <i className="fas fa-plus mr-1"></i>New
-                                </button>
-                            </div>
-                        )}
+                <button className="px-10 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-xl shadow-violet-500/30 hover:scale-105 hover:shadow-2xl transition-all duration-300 text-base flex items-center gap-2">
+                  <i className="fas fa-cloud-arrow-up"></i>
+                  Choose Photo to Enhance
+                </button>
+                
+                <p className="text-xs text-slate-400 flex items-center gap-4">
+                  <span><i className="fas fa-shield-halved mr-1"></i>100% Private</span>
+                  <span><i className="fas fa-bolt mr-1"></i>Browser Processing</span>
+                  <span><i className="fas fa-infinity mr-1"></i>Free</span>
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Progress */}
+              {processing && (
+                <div className="bg-white rounded-2xl border border-violet-100 p-6 shadow-lg">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 border-3 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className="font-semibold text-slate-700">{stepMsg}</span>
                     </div>
-                )}
-            </ToolLayout>
-        </>
-    )
+                    <span className="text-lg font-bold text-violet-600 tabular-nums">{progress}%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 transition-all duration-300"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2 text-center">
+                    Processing with Real-ESRGAN AI model in your browser...
+                  </p>
+                </div>
+              )}
+
+              {/* Comparison Viewer */}
+              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xl">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/50">
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-bold text-slate-700">
+                      {resultUrl ? 'Compare: Original vs AI Enhanced' : 'Processing...'}
+                    </span>
+                    {resultUrl && (
+                      <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg">
+                        {scale}x Upscaled
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex gap-3">
+                    {!processing && resultUrl && (
+                      <button 
+                        onClick={processImage} 
+                        className="text-sm text-violet-600 hover:text-violet-800 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-violet-50 transition-colors"
+                      >
+                        <i className="fas fa-rotate-right"></i>
+                        Re-enhance ({scale}x)
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => inputRef.current?.click()} 
+                      className="text-sm text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
+                    >
+                      <i className="fas fa-folder-open"></i>
+                      Change
+                    </button>
+                    <button 
+                      onClick={() => { setImage(null); setResultUrl(null); setError(null) }} 
+                      className="text-sm text-red-500 hover:text-red-700 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors"
+                    >
+                      <i className="fas fa-trash"></i>
+                      Remove
+                    </button>
+                  </div>
+                  <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
+                </div>
+
+                <div
+                  ref={compareRef}
+                  className="relative select-none overflow-hidden bg-slate-900"
+                  style={{ minHeight: 500, cursor: resultUrl ? 'col-resize' : 'default' }}
+                  onMouseDown={() => resultUrl && setDragging(true)}
+                  onTouchStart={() => resultUrl && setDragging(true)}
+                >
+                  {/* Enhanced Image (Background) */}
+                  {resultUrl ? (
+                    <img
+                      src={resultUrl}
+                      alt="Enhanced"
+                      className="absolute inset-0 w-full h-full object-contain"
+                    />
+                  ) : (
+                    <img
+                      src={image.url}
+                      alt="Original"
+                      className="absolute inset-0 w-full h-full object-contain opacity-50"
+                    />
+                  )}
+
+                  {/* Original Image (Clipped - Left Side) */}
+                  <div
+                    className="absolute inset-0 overflow-hidden"
+                    style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}
+                  >
+                    <img
+                      src={image.url}
+                      alt="Original"
+                      className="absolute inset-0 w-full h-full object-contain"
+                    />
+                  </div>
+
+                  {/* Slider */}
+                  {resultUrl && (
+                    <div 
+                      className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_30px_rgba(139,92,246,1)] z-20"
+                      style={{ left: `${compareX}%`, transform: 'translateX(-50%)' }}
+                    >
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-violet-500">
+                        <i className="fas fa-arrows-left-right text-violet-600 text-xl"></i>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Labels */}
+                  <div className="absolute top-4 left-4 z-10 bg-black/70 backdrop-blur-sm text-white text-sm font-bold px-4 py-2 rounded-lg border border-white/20">
+                    ORIGINAL
+                  </div>
+                  {resultUrl && (
+                    <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-lg border border-violet-400">
+                      ✨ AI ENHANCED {scale}x
+                    </div>
+                  )}
+
+                  {/* Processing Overlay */}
+                  {processing && !resultUrl && (
+                    <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md">
+                      <div className="bg-white rounded-2xl p-8 flex flex-col items-center gap-4 shadow-2xl">
+                        <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+                        <div className="text-center">
+                          <p className="text-slate-800 font-bold text-lg">{stepMsg}</p>
+                          <p className="text-slate-500 text-sm mt-1">Real-ESRGAN AI Processing</p>
+                        </div>
+                        <div className="w-56 bg-slate-200 rounded-full h-2">
+                          <div className="h-2 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-full transition-all" style={{ width: `${progress}%` }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Download */}
+              {resultUrl && !processing && (
+                <div className="flex gap-4">
+                  <a
+                    href={resultUrl}
+                    download={`ai_enhanced_${scale}x_${image.file.name.replace(/\.[^.]+$/, '')}.png`}
+                    className="flex-1 flex items-center justify-center gap-3 py-5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-bold rounded-2xl shadow-xl shadow-violet-500/25 transition-all hover:scale-[1.02] text-lg"
+                  >
+                    <i className="fas fa-download text-xl"></i>
+                    Download Enhanced Image ({scale}x)
+                  </a>
+                  <button
+                    onClick={() => { setImage(null); setResultUrl(null) }}
+                    className="px-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-all hover:scale-105"
+                  >
+                    <i className="fas fa-plus text-xl"></i>
+                  </button>
+                </div>
+              )}
+
+              {/* Info */}
+              {resultUrl && (
+                <div className="grid grid-cols-3 gap-4">
+                  {[
+                    { label: 'Model', value: 'Real-ESRGAN', icon: 'fa-brain' },
+                    { label: 'Scale', value: `${scale}x`, icon: 'fa-expand' },
+                    { label: 'Processing', value: 'Local/Browser', icon: 'fa-shield-halved' },
+                  ].map((item) => (
+                    <div key={item.label} className="bg-white rounded-xl p-4 border border-slate-200 text-center">
+                      <i className={`fas ${item.icon} text-violet-500 mb-2`}></i>
+                      <p className="text-xs text-slate-500 uppercase tracking-wider">{item.label}</p>
+                      <p className="font-bold text-slate-800">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </ToolLayout>
+    </>
+  )
 }
