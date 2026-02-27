@@ -2,28 +2,33 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { UploadCloud, Wand2, Download, RefreshCw, CheckCircle, ChevronLeft, ChevronRight, Sparkles, Image as ImageIcon, ZoomIn, Loader2, AlertTriangle } from 'lucide-react';
 
 // ==========================================
-// VERCEL FIX: Moved static constants and helpers outside component
+// VERCEL FIX: Safe script loading & error boundaries
 // ==========================================
 const DEMO_IMAGE_URL = "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=800&q=80";
 
 const loadScript = (src) => {
   return new Promise((resolve, reject) => {
-    const existingScript = document.querySelector(`script[src="${src}"]`);
-    if (existingScript) {
-      if (existingScript.dataset.loaded) return resolve();
-      existingScript.addEventListener('load', resolve);
-      existingScript.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)));
-      return;
+    try {
+      const existingScript = document.querySelector(`script[src="${src}"]`);
+      if (existingScript) {
+        if (existingScript.dataset.loaded) return resolve();
+        existingScript.addEventListener('load', resolve);
+        existingScript.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)));
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = true;
+      script.crossOrigin = "anonymous"; // Added for CORS issues
+      script.onload = () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      };
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(script);
+    } catch (e) {
+      reject(e);
     }
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.onload = () => {
-      script.dataset.loaded = 'true';
-      resolve();
-    };
-    script.onerror = () => reject(new Error(`Failed to load ${src}`));
-    document.head.appendChild(script);
   });
 };
 
@@ -43,35 +48,36 @@ export default function ImageEnhancer() {
   const sliderRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // VERCEL FIX: Dependency array perfectly clean for strict ESLint checks
+  // Safely initialize AI or fallback immediately
   useEffect(() => {
     let isMounted = true;
     let fallbackTimeout;
 
-    const loadAI = async () => {
+    const initEngine = async () => {
       try {
-        // Fallback timer using functional state update (no missing dependencies)
+        // Safe 6 second timeout to prevent white screen hangs
         fallbackTimeout = setTimeout(() => {
-          if (isMounted) {
-            setEngineState((prev) => {
-              if (prev === 'loading') {
-                console.warn("AI Loading timeout. Switching gracefully to Standard HD Mode.");
-                return 'ready_standard';
-              }
-              return prev;
-            });
+          if (isMounted && engineState === 'loading') {
+            console.warn("AI CDN Timeout. Using Standard HD.");
+            setEngineState('ready_standard');
           }
-        }, 8000);
+        }, 6000);
 
+        // Load TF first, then Upscaler sequentially to avoid dependency issues
         await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js');
         await loadScript('https://cdn.jsdelivr.net/npm/upscaler@0.51.3/dist/browser/umd/upscaler.min.js');
         
         if (isMounted) {
           clearTimeout(fallbackTimeout);
-          setEngineState((prev) => (prev === 'loading' ? 'ready_ai' : prev));
+          // Check if Upscaler actually attached to window
+          if (typeof window !== 'undefined' && window.Upscaler) {
+            setEngineState('ready_ai');
+          } else {
+            setEngineState('ready_standard');
+          }
         }
       } catch (err) {
-        console.warn("AI script CDN network issue detected. Safely falling back.", err.message);
+        console.warn("Script load issue, safely falling back.", err.message);
         if (isMounted) {
           clearTimeout(fallbackTimeout);
           setEngineState('ready_standard');
@@ -79,15 +85,19 @@ export default function ImageEnhancer() {
       }
     };
     
-    loadAI();
+    // Slight delay to ensure React renders first before fetching heavy scripts
+    const startDelay = setTimeout(() => {
+        initEngine();
+    }, 500);
     
     return () => { 
       isMounted = false; 
       clearTimeout(fallbackTimeout);
+      clearTimeout(startDelay);
     };
   }, []);
 
-  // Auto-animate demo slider
+  // Demo animation loop safely handled
   useEffect(() => {
     if (appState !== 'idle') return;
     let animationFrame;
@@ -104,7 +114,7 @@ export default function ImageEnhancer() {
 
   const handleFileUpload = (e) => {
     if (engineState === 'loading') {
-      alert("Engine load ho raha hai. Kripya thoda wait karein.");
+      alert("System is initializing. Please wait a moment.");
       return;
     }
 
@@ -118,24 +128,33 @@ export default function ImageEnhancer() {
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      const imgSrc = event.target.result;
-      setOriginalImage(imgSrc);
-      
-      const img = new Image();
-      img.onload = () => {
-        if (engineState === 'ready_ai' && (img.width > 1200 || img.height > 1200)) {
-           alert("AI ke liye image bohot badi hai. Hum ise Standard HD mode se upscale kar rahe hain.");
-           processFallbackUpscale(imgSrc);
-           return;
-        }
+      try {
+        const imgSrc = event.target.result;
+        setOriginalImage(imgSrc);
         
-        if (engineState === 'ready_ai') {
-          startRealAIUpscaling(imgSrc);
-        } else {
-          processFallbackUpscale(imgSrc);
-        }
-      };
-      img.src = imgSrc;
+        const img = new Image();
+        img.onload = () => {
+          if (engineState === 'ready_ai' && (img.width > 1200 || img.height > 1200)) {
+             alert("Image size is large for browser AI. Upscaling in Standard HD mode.");
+             processFallbackUpscale(imgSrc);
+             return;
+          }
+          
+          if (engineState === 'ready_ai') {
+            startRealAIUpscaling(imgSrc);
+          } else {
+            processFallbackUpscale(imgSrc);
+          }
+        };
+        img.onerror = () => {
+            alert("Error reading image. Please try another file.");
+            resetTool();
+        };
+        img.src = imgSrc;
+      } catch (err) {
+          console.error("File processing error", err);
+          alert("Error processing file.");
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -146,16 +165,13 @@ export default function ImageEnhancer() {
     handleFileUpload(e);
   };
 
-  // ==========================================
-  // TRUE AI UPSCALING LOGIC (ESRGAN Model)
-  // ==========================================
   const startRealAIUpscaling = async (imgSrc) => {
     setAppState('processing');
     setProgress(0);
     setLoadingText("Initializing Neural Network...");
 
     try {
-      if (!window.Upscaler) throw new Error("Upscaler missing");
+      if (!window || !window.Upscaler) throw new Error("Upscaler global missing");
       
       const upscaler = new window.Upscaler();
       const enhancedDataUrl = await upscaler.upscale(imgSrc, {
@@ -178,9 +194,6 @@ export default function ImageEnhancer() {
     }
   };
 
-  // ==========================================
-  // FALLBACK: HIGH-QUALITY SMOOTH UPSCALING
-  // ==========================================
   const processFallbackUpscale = (imgSrc) => {
     setAppState('processing');
     setProgress(0);
@@ -193,31 +206,40 @@ export default function ImageEnhancer() {
       if(count >= 90) clearInterval(interval);
     }, 100);
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
-    
-    img.onload = () => {
-      setTimeout(() => {
-        canvas.width = img.width * 4;
-        canvas.height = img.height * 4;
-
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        const enhancedDataUrl = canvas.toDataURL('image/jpeg', 1.0);
-        setProgress(100);
-        clearInterval(interval);
-        
+    try {
+      const canvas = canvasRef.current;
+      if(!canvas) throw new Error("Canvas missing");
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
         setTimeout(() => {
-          setEnhancedImage(enhancedDataUrl);
-          setAppState('complete');
-          setSliderPosition(50);
-        }, 500);
-      }, 1500); 
-    };
-    img.src = imgSrc;
+          canvas.width = img.width * 4;
+          canvas.height = img.height * 4;
+
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          const enhancedDataUrl = canvas.toDataURL('image/jpeg', 1.0);
+          setProgress(100);
+          clearInterval(interval);
+          
+          setTimeout(() => {
+            setEnhancedImage(enhancedDataUrl);
+            setAppState('complete');
+            setSliderPosition(50);
+          }, 500);
+        }, 1500); 
+      };
+      img.onerror = () => { throw new Error("Image draw failed"); };
+      img.src = imgSrc;
+    } catch(err) {
+        console.error("Fallback processing error", err);
+        clearInterval(interval);
+        alert("Failed to process image. Please try again.");
+        resetTool();
+    }
   };
 
   const resetTool = () => {
@@ -229,12 +251,18 @@ export default function ImageEnhancer() {
   };
 
   const downloadEnhancedImage = () => {
-    const link = document.createElement('a');
-    link.href = enhancedImage;
-    link.download = `Enhanced_ImgTool_${Date.now()}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if(!enhancedImage) return;
+    try {
+        const link = document.createElement('a');
+        link.href = enhancedImage;
+        link.download = `Enhanced_ImgTool_${Date.now()}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } catch(e) {
+        console.error("Download failed", e);
+        alert("Failed to download image.");
+    }
   };
 
   const handleSliderMove = useCallback((e) => {
