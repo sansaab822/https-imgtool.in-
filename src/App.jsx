@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 
 // Pages
+// Force new deployment update
 const HomePage = lazy(() => import('./pages/HomePage'))
 const AllToolsPage = lazy(() => import('./pages/AllToolsPage'))
 const AboutUs = lazy(() => import('./pages/AboutUs'))
