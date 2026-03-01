@@ -300,6 +300,79 @@ export default function PdfToImage({ to = 'jpg' }) {
                                     <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
                                 </div>
                             ))}
+                            {['Full page preview loading', 'Page-by-page selection', 'DPI quality control (72–300)', 'JPG & PNG output formats', 'Download all as ZIP', '100% browser-based — no uploads'].map(f => (
+                                <div key={f} className="flex items-center gap-2 text-xs text-slate-600">
+                                    <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    <img
+                        src="/images/tools/pdf-to-image-tool.png"
+                        alt="Online PDF to Image Converter Interface"
+                        title="Extract High-Quality Images from PDF"
+                        loading="lazy"
+                        className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
+                    />
+
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">Seamlessly Extract Pages as High-Fidelity Images</h2>
+                        <p>
+                            While the Portable Document Format is universally accepted for secure file sharing and printing, it is notoriously cumbersome when you need to embed specific content into a website, a presentation slide, or a social media post. Attempting to take manual screenshots of a PDF inevitably results in blurry, pixelated graphics. Our advanced PDF to Image converter solves this digital friction by allowing you to extract any page—or every page—from your PDF document cleanly and instantly, saving them as high-quality, web-ready image files.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Granular Quality Control with DPI Settings</h3>
+                        <p>
+                            Not all image extraction tasks require the same level of resolution. If you simply need a quick thumbnail of a report cover to embed in an email, generating a massive 5MB image file is counterproductive. Conversely, if you are extracting a complex vector blueprint for a professional presentation, you need maximum clarity. Our tool features three distinct processing tiers: a fast 72 DPI preset optimized for web usage, a balanced 150 DPI setting for standard viewing, and a crystal-clear 300 DPI engine designed for professional printing and high-end displays.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Choose Your Format: JPG vs. PNG</h3>
+                        <p>
+                            Understanding the nuances between image formats is crucial for optimal results. Therefore, our engine allows you to export your pages as either JPG or PNG files. If your PDF consists primarily of dense text, photographs, or scanned documents, we highly recommend selecting the JPG output. It applies intelligent compression algorithms to keep file sizes incredibly small while maintaining visual integrity. However, if your PDF features stark graphs, logos, or pages with transparent elements, exporting to PNG will ensure a pristine, lossless conversion without the "artifacting" often associated with JPG compression.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Client-Side ZIP Generation for Batch Exports</h3>
+                        <p>
+                            Extracting fifty individual pages from a dense financial report shouldn't mean clicking "Download" fifty separate times. When you select multiple pages for conversion, our application intelligently compiles all the resulting image files into a single, neatly organized ZIP archive. Like the rendering process itself, this ZIP generation happens entirely on your local machine using dedicated JavaScript libraries. Your browser effortlessly bundles your newly minted JPGs or PNGs and delivers them to your hard drive at lightning speed.
+                        </p>
+                        <p>
+                            If you find your resulting image files are still slightly too large for your specific web hosting requirements or email limits, don't worry. You can easily drag those newly extracted files directly into our <a href="/image-compressor" className="text-red-600 hover:underline">Free Image Compressor</a> to further reduce their footprint without sacrificing perceptible quality.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Core Converter Features</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Selective Extraction:</strong> Why convert a 100-page manual when you only need page 42? Our intuitive visual grid allows you to easily toggle specific pages on or off for targeted exporting.</li>
+                            <li><strong>High-Resolution Previews:</strong> Instantly view a sharp, magnified preview of the first page to confirm you have uploaded the correct document before initiating any conversions.</li>
+                            <li><strong>One-Click 'Select All':</strong> Need the entire document rasterized? A single button click highlights every page in the document, sending them all to the export queue simultaneously.</li>
+                            <li><strong>Offline Privacy:</strong> The rendering engine processes the PDF binary data inside your browser's RAM. No files are uploaded to our servers, guaranteeing the confidentiality of your personal documents.</li>
+                            <li><strong>Progressive Feedback:</strong> When exporting large batches, a dynamic progress bar keeps you informed of exactly how many pages have been successfully rendered in real-time.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Will extracting images from a PDF reduce their quality?</h4>
+                                <p className="mt-1">By default, our tool renders the PDF vector data into pixels at high resolution (150 DPI or 300 DPI). For most documents, this results in an image that looks virtually identical to the original PDF. However, you are converting scalable vector data into fixed-pixel raster data, meaning the resulting image will pixelate if zoomed in too far.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I convert a password-protected PDF?</h4>
+                                <p className="mt-1">If the PDF is strictly encrypted with a user password required simply to open and view the document, our browser-side render engine will be unable to parse the file, and you will receive an error. You must decrypt it first.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Why are my exported PNG files so large?</h4>
+                                <p className="mt-1">PNG is a lossless format, meaning it preserves every single pixel of data without applying aggressive compression. If you render a text-heavy, full-color PDF page at 300 DPI into a PNG, the resulting file can easily exceed 5MB. For smaller files, we recommend using the 72 DPI setting or switching the output format to JPG.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Does this tool extract embedded images or convert the whole page?</h4>
+                                <p className="mt-1">This specific tool takes a "snapshot" of the entire page exactly as it appears when printed and saves that snapshot as an image. It does not search through the PDF codebase to extract individual, loosely embedded photographs (though we plan to add an "Extract Assets" tool in the future).</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Are there limits on the number of pages I can convert?</h4>
+                                <p className="mt-1">Since the processing utilizes your own device's hardware rather than our servers, there are no artificial paywalls or daily limits. The only restriction is the processing power and RAM available on your computer; attempting to convert a 1000-page textbook at 300 DPI simultaneously may cause your browser tab to crash.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
