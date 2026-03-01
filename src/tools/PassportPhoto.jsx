@@ -305,6 +305,82 @@ export default function PassportPhoto() {
                         </div>
                     </div>
                 </div>
+
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    <img
+                        src="/images/tools/passport-photo-tool.png"
+                        alt="Online Passport Size Photo Maker Interface"
+                        title="Create Professional Passport Photos"
+                        loading="lazy"
+                        className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
+                    />
+
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">Generate Perfect Passport and ID Photos at Home</h2>
+                        <p>
+                            Applying for a new passport, securing a travel visa, or registering for official government examinations often comes with notoriously strict photograph requirements. Historically, this meant taking time out of your day to visit a professional photography studio or a local pharmacy, paying premium prices for a simple sheet of four photos. With our online Passport Size Photo Maker, you can bypass the studio entirely. By combining advanced browser-based image cropping with precise millimeter-accurate PDF generation, you can transform a casual selfie taken in your living room into a perfectly formatted, print-ready document in less than a minute.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">A Comprehensive Library of Official Dimensions</h3>
+                        <p>
+                            One of the most frustrating aspects of bureaucratic applications is that every country and institution seems to require a slightly different photo size. A standard Schengen Visa demands a neat 35×45mm vertical rectangle, while a US Passport requires a perfectly square 2×2 inch (51×51mm) crop. Our utility comes pre-loaded with an extensive directory of official dimensions covering global passports, international visas, driver's licenses, and specific regional requirements like Indian PAN cards or UPSC/SSC examination formats. If your specific requirement isn't listed, simply select the "Custom" option to manually input the exact width and height you need.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Preparing Your Photo for Printing</h3>
+                        <p>
+                            Once you have aligned your face using our intuitive visual guides, the tool doesn't just give you a single cropped image—it automatically generates a professional, high-resolution PDF document perfectly sized for standard A4 printer paper. You can choose whether you need a quick strip of four photos, or a full sheet of eight. We even automatically draw light, dotted cutting lines around each portrait so you know exactly where to trim with your scissors. Simply download the PDF and send it to your home printer or a local print shop.
+                        </p>
+                        <p>
+                            It is important to note that most official government agencies require passport photos to be printed on a pure white or light grey background. If the selfie you upload was taken in your messy bedroom, you will likely face rejection. To solve this, we highly recommend taking your photo, running it through our <a href="/bg-remover" className="text-blue-600 hover:underline">Background Remover Tool</a> to extract yourself onto a transparent canvas, and then bringing that clean image back into this passport maker. This allows you to utilize our built-in background color selector to instantly snap a perfect, studio-grade white backdrop behind your head.
+                        </p>
+
+                        <img
+                            src="/images/tools/passport-photo-example.png"
+                            alt="Visual showing a single portrait transformed into a printable A4 grid of passport photos"
+                            title="Passport Photo Printing Layout Example"
+                            loading="lazy"
+                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+                        />
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Tips for a Successfully Accepted Photograph</h3>
+                        <p>
+                            Even with perfect cropping and a pure white background, your photo can still be rejected if you don't follow basic biometric guidelines. Always ensure you are facing the camera directly, not angled to the side. Maintain a neutral facial expression—no wide smiles or frowning. Ensure both of your ears are visible, and remove any bulky glasses that might cause glare or obscure your eyes. Finally, make sure the original photograph was taken in a well-lit environment so there are no harsh, distracting shadows falling across half of your face or onto the background behind you.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Essential Features</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Biometric Guidelines:</strong> The preview canvas features a helpful oval overlay designed to ensure your head and shoulders take up the correct percentage of the final cropped frame.</li>
+                            <li><strong>Custom Solid Backgrounds:</strong> Instantly fill transparent areas of your uploaded PNG file with official colors like pure white, light grey, or specific shades of blue required by certain nations.</li>
+                            <li><strong>A4 Print Layouts:</strong> The generator actively spaces your photos intelligently on standard A4 dimensions, saving you the hassle of trying to manually align them in a word processor.</li>
+                            <li><strong>Dual Download Links:</strong> In addition to the printable PDF sheet, you can also download a single, high-quality JPG version of the crop for digital application forms.</li>
+                            <li><strong>100% Data Privacy:</strong> Because this tool utilizes JavaScript to manipulate the canvas locally in your browser, your personal face data and identification photos are never uploaded to any remote server.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Common Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">What type of paper should I use to print the PDF?</h4>
+                                <p className="mt-1">For official government applications, you must print the generated PDF document on high-quality glossy or matte photographic paper. Printing these photos on standard, thin copy paper will almost certainly result in your application being rejected.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">How do I ensure the photos print at the exact millimeter size?</h4>
+                                <p className="mt-1">When you open the downloaded PDF file to print it, you must delve into your printer settings dialogue box and ensure that options like "Fit to Page" or "Scale to Fit" are completely disabled. Make sure the scale is set exactly to "100%" or "Actual Size."</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I wear glasses in my passport photo?</h4>
+                                <p className="mt-1">Policies vary drastically by country. The United States State Department strictly prohibits wearing eyeglasses in passport photos under any circumstances. However, other governments may allow them provided there is absolutely no glare on the lenses. Always check your specific application constraints.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Why isn't the background changing when I select a new color?</h4>
+                                <p className="mt-1">The background color selector will only work if the original image file you upload has a transparent background (like a cutout PNG). If you upload a standard JPG selfie taken against your living room wall, our tool cannot automatically erase your living room. You must use a background removal tool first.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Is this tool really free to use?</h4>
+                                <p className="mt-1">Yes, generating both the single digital photographs and the multi-photo A4 PDF layout is completely free and unwatermarked. We believe basic bureaucratic utilities should be accessible to everyone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ToolLayout>
         </>
     )
