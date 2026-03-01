@@ -271,6 +271,82 @@ export default function ImageToPdf() {
                         </div>
                     </div>
                 </div>
+
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    <img
+                        src="/images/tools/image-to-pdf-tool.png"
+                        alt="Online Image to PDF Converter Interface"
+                        title="Convert Images to PDF Documents"
+                        loading="lazy"
+                        className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
+                    />
+
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">The Ultimate Tool to Convert Images to PDF</h2>
+                        <p>
+                            In today's digital workspace, sharing multiple photographs or scanned documents as individual image files can be incredibly frustrating for the recipient. Sending ten separate JPG or PNG files over email often leads to disorganized attachments that are difficult to print or review in a logical order. The most professional and universally accepted solution is to combine these images into a single, cohesive PDF document. Our Image to PDF Converter is engineered specifically to solve this problem, allowing you to seamlessly merge dozens of pictures into a perfectly formatted, easily shareable file in just a few clicks.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Why Combine Pictures into a PDF?</h3>
+                        <p>
+                            The Portable Document Format (PDF) was designed to look exactly the same regardless of what device, operating system, or software the viewer is using. When you convert your images to PDF, you guarantee that your presentation slides, scanned receipts, portfolio artwork, or assignment pages will be viewed precisely as you intended. Furthermore, a single multi-page PDF is significantly easier for clients, teachers, or colleagues to download and archive compared to a messy folder of scattered JPEGs.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Complete Layout Control</h3>
+                        <p>
+                            Unlike basic converters that haphazardly slap your photos onto a page, our tool provides desktop-grade layout controls directly in your browser. Whether you are generating a formal US Letter sized business report or compiling an A4 portfolio, you have complete authority over the final output. You can force all pages into portrait or landscape mode, or let our "Auto" feature intelligently rotate the page depending on the dimensions of each individual image. We also provide granular control over page margins and image scaling—choose "Fit" to ensure nothing is cut off, or "Fill" to stretch the image edge-to-edge for stunning, borderless presentations.
+                        </p>
+                        <p>
+                            If you ever need to reverse this process and extract pages from a document back into standalone images, you can easily use our companion <a href="/pdf-to-image" className="text-violet-600 hover:underline">PDF to Image Converter</a>. Alternatively, if you already have several smaller PDF files that need to be grouped together, our <a href="/merge-pdf" className="text-violet-600 hover:underline">Merge PDF Tool</a> is perfectly suited for combining existing documents.
+                        </p>
+
+                        <img
+                            src="/images/tools/image-to-pdf-example.png"
+                            alt="Illustration showing scattered photos organized into a single PDF binder"
+                            title="Visualizing Image to PDF Compilation"
+                            loading="lazy"
+                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+                        />
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Secure, Private, and Client-Side</h3>
+                        <p>
+                            When dealing with scanned bank statements, medical records, or signed contracts, data privacy is paramount. Many free online PDF converters force you to upload your sensitive documents to remote servers where they may be stored indefinitely. Our architecture is fundamentally different. We utilize advanced JavaScript libraries to process all image compilation and PDF generation entirely on your local device. Because your files never actually leave your computer or phone, you can convert highly confidential materials with 100% peace of mind, knowing that interception or data leaks are technically impossible.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Key Conversion Capabilities</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Drag & Drop Reordering:</strong> Before generating the document, visually rearrange the order of your pages simply by clicking and dragging the image thumbnails into the correct sequence.</li>
+                            <li><strong>Adjustable Compression:</strong> Use the quality slider to dial in the perfect balance between high-fidelity visual sharpness and smaller, email-friendly final file sizes.</li>
+                            <li><strong>Universal Format Support:</strong> Import JPG, PNG, WebP, and standard image formats simultaneously, and let the tool automatically normalize them into the PDF structure.</li>
+                            <li><strong>Document Metatags:</strong> Embed an optional, searchable Title directly into the metadata of the compiled file to ensure professional presentation in business environments.</li>
+                            <li><strong>Zero Uploads Required:</strong> Enjoy blazing-fast conversion speeds regardless of your internet connection, since all processing happens locally inside your browser cache.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Common Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">How do I rearrange the order of the photos?</h4>
+                                <p className="mt-1">Once you have uploaded your images, you will see a grid of thumbnails. Simply click and hold your mouse (or drag your finger on mobile) on an image, and drag it to the desired position. The tiny number at the bottom of each thumbnail indicates its final page number.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">What is the difference between "Fit" and "Fill" image modes?</h4>
+                                <p className="mt-1">"Fit (no crop)" ensures that your entire image is visible on the page, even if that means leaving blank white space around the edges. "Fill (may crop)" will expand the image to cover the entire printable area of the page, but might slice off the edges of your photo if its aspect ratio doesn't perfectly match the paper size.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Why is the resulting PDF file so large?</h4>
+                                <p className="mt-1">If you upload twenty high-resolution 12-megapixel smartphone photos, combining them into a PDF will naturally create a very large file. To reduce the final size, try lowering the "Image Quality" slider in the settings panel before generating the document.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I convert images to PDF on my iPhone or Android device?</h4>
+                                <p className="mt-1">Absolutely. Because the tool runs entirely in the browser using web standards, it functions flawlessly on modern mobile browsers like Safari and Chrome without requiring you to install a dedicated app.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Are there any limits on how many images I can upload at once?</h4>
+                                <p className="mt-1">While we do not impose strict artificial limits, your web browser's memory dictates how many images can be processed simultaneously. Most modern computers can comfortably handle compiling 50-100 standard images into a single document without crashing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ToolLayout>
         </>
     )
