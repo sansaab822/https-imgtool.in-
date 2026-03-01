@@ -36,13 +36,13 @@ const loadScript = (src, retries = 3) => new Promise((resolve, reject) => {
     resolve()
     return
   }
-  
+
   const attempt = (triesLeft) => {
     const script = document.createElement('script')
     script.src = src
     script.async = true
     script.crossOrigin = 'anonymous'
-    
+
     script.onload = () => resolve()
     script.onerror = () => {
       if (triesLeft > 0) {
@@ -52,10 +52,10 @@ const loadScript = (src, retries = 3) => new Promise((resolve, reject) => {
         reject(new Error(`Failed to load ${src}`))
       }
     }
-    
+
     document.head.appendChild(script)
   }
-  
+
   attempt(retries)
 })
 
@@ -113,25 +113,24 @@ function DemoCompare() {
             <p className="text-xs text-slate-500">See AI enhancement in action</p>
           </div>
         </div>
-        
+
         {/* Demo Selector */}
         <div className="flex gap-2">
           {DEMO_IMAGES.map((demo, idx) => (
             <button
               key={demo.id}
               onClick={() => setActiveDemo(idx)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                activeDemo === idx 
-                  ? 'bg-violet-600 text-white' 
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeDemo === idx
+                  ? 'bg-violet-600 text-white'
                   : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-              }`}
+                }`}
             >
               {demo.title}
             </button>
           ))}
         </div>
       </div>
-      
+
       {/* Compare Area */}
       <div
         ref={compareRef}
@@ -169,7 +168,7 @@ function DemoCompare() {
         </div>
 
         {/* Slider Line */}
-        <div 
+        <div
           className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_20px_rgba(139,92,246,0.8)] z-10"
           style={{ left: `${compareX}%`, transform: 'translateX(-50%)' }}
         >
@@ -191,7 +190,7 @@ function DemoCompare() {
           Drag slider to compare
         </div>
       </div>
-      
+
       {/* Footer */}
       <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-4 text-sm text-slate-600">
@@ -231,7 +230,7 @@ export default function ImageEnhancer() {
   const [modelsLoaded, setModelsLoaded] = useState(false)
   const [modelLoading, setModelLoading] = useState(true)
   const [processingTime, setProcessingTime] = useState(null)
-  
+
   const compareRef = useRef()
   const inputRef = useRef()
   const upscalerRef = useRef(null)
@@ -240,36 +239,36 @@ export default function ImageEnhancer() {
   // Initialize AI Models
   useEffect(() => {
     let isMounted = true
-    
+
     const initModels = async () => {
       try {
         setModelLoading(true)
         setStepMsg('Loading AI models...')
-        
+
         // Load in sequence: TensorFlow -> Upscaler -> Model
         await loadScript(TF_CDN)
         console.log('TensorFlow.js loaded')
-        
+
         await loadScript(UPSCALER_CDN)
         console.log('UpscalerJS loaded')
-        
+
         await loadScript(scale === 2 ? ESRGAN_2X_CDN : ESRGAN_4X_CDN)
         console.log(`ESRGAN ${scale}x model loaded`)
-        
+
         if (!isMounted) return
-        
+
         // Wait for globals to be available
         let attempts = 0
         const checkInterval = setInterval(() => {
           attempts++
           if (window.Upscaler && (window.EsrganSlim2x || window.EsrganSlim4x || window.EsrganSlim)) {
             clearInterval(checkInterval)
-            
+
             try {
-              const model = scale === 2 
+              const model = scale === 2
                 ? (window.EsrganSlim2x || window.EsrganSlim['2x'] || window.EsrganSlim)
                 : (window.EsrganSlim4x || window.EsrganSlim['4x'] || window.EsrganSlim)
-              
+
               upscalerRef.current = new window.Upscaler({ model })
               setModelsLoaded(true)
               setModelLoading(false)
@@ -280,14 +279,14 @@ export default function ImageEnhancer() {
               setModelLoading(false)
             }
           }
-          
+
           if (attempts > 50) { // 5 seconds timeout
             clearInterval(checkInterval)
             setError('Model loading timeout. Please check your connection and refresh.')
             setModelLoading(false)
           }
         }, 100)
-        
+
       } catch (err) {
         console.error('Script loading failed:', err)
         if (isMounted) {
@@ -296,9 +295,9 @@ export default function ImageEnhancer() {
         }
       }
     }
-    
+
     initModels()
-    
+
     return () => {
       isMounted = false
       if (abortControllerRef.current) {
@@ -316,12 +315,12 @@ export default function ImageEnhancer() {
       setError('Image size should be less than 5MB for browser processing')
       return
     }
-    
+
     // Cleanup previous result
     if (resultUrl) {
       URL.revokeObjectURL(resultUrl)
     }
-    
+
     setError(null)
     setImage({ url: URL.createObjectURL(file), file })
     setResultUrl(null)
@@ -334,19 +333,19 @@ export default function ImageEnhancer() {
       setError('AI model not ready. Please wait or refresh.')
       return
     }
-    
+
     // Cancel previous processing if any
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
     abortControllerRef.current = new AbortController()
-    
+
     setProcessing(true)
     setResultUrl(null)
     setProgress(0)
     setStepMsg('Initializing...')
     setError(null)
-    
+
     const startTime = Date.now()
 
     try {
@@ -354,11 +353,11 @@ export default function ImageEnhancer() {
       const img = new Image()
       img.src = image.url
       img.crossOrigin = 'anonymous'
-      
+
       await new Promise((resolve, reject) => {
         img.onload = resolve
         img.onerror = () => reject(new Error('Failed to load image'))
-        
+
         // Timeout after 10 seconds
         setTimeout(() => reject(new Error('Image loading timeout')), 10000)
       })
@@ -377,28 +376,28 @@ export default function ImageEnhancer() {
       analysisCanvas.height = img.naturalHeight * analysisScale
       const analysisCtx = analysisCanvas.getContext('2d')
       analysisCtx.drawImage(img, 0, 0, analysisCanvas.width, analysisCanvas.height)
-      
+
       // Get image data for quality analysis
       const imageData = analysisCtx.getImageData(0, 0, analysisCanvas.width, analysisCanvas.height)
       const data = imageData.data
       let totalBrightness = 0
       let totalEdges = 0
-      
+
       // Simple quality analysis
       for (let i = 0; i < data.length; i += 4) {
-        const r = data[i], g = data[i+1], b = data[i+2]
+        const r = data[i], g = data[i + 1], b = data[i + 2]
         totalBrightness += (r + g + b) / 3
-        
+
         // Simple edge detection (compare with next pixel)
         if (i < data.length - 4) {
-          const nextR = data[i+4]
+          const nextR = data[i + 4]
           totalEdges += Math.abs(r - nextR)
         }
       }
-      
+
       const avgBrightness = totalBrightness / (data.length / 4)
       const sharpness = totalEdges / (data.length / 4)
-      
+
       console.log(`Image analysis - Brightness: ${avgBrightness.toFixed(2)}, Sharpness: ${sharpness.toFixed(2)}`)
 
       setStepMsg('Running AI super-resolution...')
@@ -431,13 +430,13 @@ export default function ImageEnhancer() {
       setProcessingTime(((Date.now() - startTime) / 1000).toFixed(1))
       setStepMsg('Enhancement complete!')
       setProgress(100)
-      
+
     } catch (err) {
       if (err.name === 'AbortError' || abortControllerRef.current.signal.aborted) {
         console.log('Processing aborted')
         return
       }
-      
+
       console.error('Enhancement failed:', err)
       setError(err.message || 'AI enhancement failed. Please try with a different image.')
       setStepMsg('Error occurred')
@@ -490,15 +489,15 @@ export default function ImageEnhancer() {
 
   return (
     <>
-      <SEO 
-        title="AI Image Enhancer - Real ESRGAN Super Resolution" 
-        description="Enhance photos with Real AI. Upscale images 4x with detail reconstruction, smoothing, and quality improvement. Free & private browser processing." 
-        canonical="/image-enhancer" 
+      <SEO
+        title="AI Image Enhancer - Real ESRGAN Super Resolution"
+        description="Enhance photos with Real AI. Upscale images 4x with detail reconstruction, smoothing, and quality improvement. Free & private browser processing."
+        canonical="/image-enhancer"
       />
-      <ToolLayout 
-        toolSlug="image-enhancer" 
-        title="AI Image Enhancer" 
-        description="Real AI-powered image enhancement using ESRGAN. Upload any photo and get 4x super resolution with detail recovery and smoothing." 
+      <ToolLayout
+        toolSlug="image-enhancer"
+        title="AI Image Enhancer"
+        description="Real AI-powered image enhancement using ESRGAN. Upload any photo and get 4x super resolution with detail recovery and smoothing."
         breadcrumb="Image Enhancer"
       >
         <div className="max-w-6xl mx-auto">
@@ -523,8 +522,8 @@ export default function ImageEnhancer() {
               <div className="flex-1">
                 <p className="font-semibold">Error</p>
                 <p>{error}</p>
-                <button 
-                  onClick={() => setError(null)} 
+                <button
+                  onClick={() => setError(null)}
                   className="mt-2 text-xs font-semibold text-red-600 hover:text-red-800 underline"
                 >
                   Dismiss
@@ -536,16 +535,15 @@ export default function ImageEnhancer() {
           {!image ? (
             /* Upload Section */
             <div
-              className={`bg-white rounded-2xl border-2 border-dashed transition-all duration-300 ${
-                dropOver ? 'border-violet-500 bg-violet-50 scale-[1.02]' : 'border-slate-300'
-              } p-12 text-center cursor-pointer hover:border-violet-400 hover:shadow-xl`}
+              className={`bg-white rounded-2xl border-2 border-dashed transition-all duration-300 ${dropOver ? 'border-violet-500 bg-violet-50 scale-[1.02]' : 'border-slate-300'
+                } p-12 text-center cursor-pointer hover:border-violet-400 hover:shadow-xl`}
               onDrop={e => { e.preventDefault(); setDropOver(false); loadFile(e.dataTransfer.files[0]) }}
               onDragOver={e => { e.preventDefault(); setDropOver(true) }}
               onDragLeave={() => setDropOver(false)}
               onClick={() => inputRef.current?.click()}
             >
               <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={e => loadFile(e.target.files[0])} />
-              
+
               <div className="flex flex-col items-center gap-6">
                 <div className="relative group">
                   <div className="w-28 h-28 rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-violet-400/40 group-hover:scale-110 transition-transform duration-300">
@@ -555,7 +553,7 @@ export default function ImageEnhancer() {
                     AI POWERED
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <h2 className="text-3xl font-extrabold text-slate-800">Upload Any Photo</h2>
                   <p className="text-slate-500 max-w-md mx-auto">
@@ -570,11 +568,10 @@ export default function ImageEnhancer() {
                       key={s}
                       onClick={(e) => { e.stopPropagation(); setScale(s) }}
                       disabled={modelLoading}
-                      className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${
-                        scale === s 
-                          ? 'bg-violet-600 text-white shadow-md' 
+                      className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${scale === s
+                          ? 'bg-violet-600 text-white shadow-md'
                           : 'text-slate-600 hover:bg-white hover:shadow-sm'
-                      } ${modelLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        } ${modelLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       {s}x Upscale
                     </button>
@@ -598,16 +595,15 @@ export default function ImageEnhancer() {
                   ))}
                 </div>
 
-                <button 
+                <button
                   disabled={modelLoading}
-                  className={`px-10 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-xl shadow-violet-500/30 hover:scale-105 hover:shadow-2xl transition-all duration-300 text-base flex items-center gap-2 ${
-                    modelLoading ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`px-10 py-4 bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold rounded-full shadow-xl shadow-violet-500/30 hover:scale-105 hover:shadow-2xl transition-all duration-300 text-base flex items-center gap-2 ${modelLoading ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
                   <i className="fas fa-upload"></i>
                   {modelLoading ? 'Loading Models...' : 'Choose Photo to Enhance'}
                 </button>
-                
+
                 <p className="text-xs text-slate-400 flex items-center gap-4">
                   <span className="flex items-center gap-1"><i className="fas fa-shield-halved"></i>100% Private</span>
                   <span className="flex items-center gap-1"><i className="fas fa-bolt"></i>Browser Processing</span>
@@ -660,28 +656,28 @@ export default function ImageEnhancer() {
                   </div>
                   <div className="flex gap-2">
                     {!processing && resultUrl && (
-                      <button 
-                        onClick={processImage} 
+                      <button
+                        onClick={processImage}
                         className="text-sm text-violet-600 hover:text-violet-800 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-violet-50 transition-colors"
                       >
                         <i className="fas fa-rotate-right"></i>
                         Re-enhance
                       </button>
                     )}
-                    <button 
-                      onClick={() => inputRef.current?.click()} 
+                    <button
+                      onClick={() => inputRef.current?.click()}
                       className="text-sm text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
                     >
                       <i className="fas fa-folder-open"></i>
                       Change
                     </button>
-                    <button 
-                      onClick={() => { 
-                        setImage(null); 
-                        setResultUrl(null); 
+                    <button
+                      onClick={() => {
+                        setImage(null);
+                        setResultUrl(null);
                         setError(null);
                         setProcessingTime(null)
-                      }} 
+                      }}
                       className="text-sm text-red-500 hover:text-red-700 font-semibold flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors"
                     >
                       <i className="fas fa-trash"></i>
@@ -727,7 +723,7 @@ export default function ImageEnhancer() {
 
                   {/* Slider */}
                   {resultUrl && (
-                    <div 
+                    <div
                       className="absolute top-0 bottom-0 w-1 bg-white shadow-[0_0_30px_rgba(139,92,246,1)] z-20"
                       style={{ left: `${compareX}%`, transform: 'translateX(-50%)' }}
                     >
@@ -806,7 +802,85 @@ export default function ImageEnhancer() {
             </div>
           )}
         </div>
-      </ToolLayout>
+          )}
+      </div>
+
+      <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+        <img
+          src="/images/tools/image-enhancer-tool.png"
+          alt="AI Image Enhancer Tool Interface"
+          title="Enhance Image Quality Online"
+          loading="lazy"
+          className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
+        />
+
+        <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+          <h2 className="text-2xl font-bold text-slate-800">State-of-the-Art Image Upscaling Without Losing Detail</h2>
+          <p>
+            For decades, trying to enlarge a small, low-resolution photograph meant accepting a blurry, heavily pixelated result. Traditional scaling software simply stretches existing pixels and guesses the colors between them, creating a soft and unnatural look. Today, however, artificial intelligence has completely rewritten the rules of image scaling. Our Image Enhancer leverages the renowned Real-ESRGAN (Enhanced Super-Resolution Generative Adversarial Networks) architecture to accurately rebuild missing details from thin air. Instead of merely stretching the photo, the AI intelligently analyzes the textures and actually generates brand new, high-definition pixels to match the original context.
+          </p>
+
+          <h3 className="text-lg font-bold text-slate-800 mt-6">How Our Browser-Based Neural Network Operates</h3>
+          <p>
+            What makes our upscaler completely unique is our commitment to user privacy and frictionless performance. While most "AI Enhancers" on the internet require you to create an account, pay a subscription fee, and upload your personal photos to a remote cloud server, imgtool.in does the exact opposite. We utilize TensorFlow.js to download a highly optimized version of the ESRGAN neural network directly into your browser's local cache. Once loaded, your computer's own processing power is used to run the enhancement matrix. Your images are never transmitted across the internet, ensuring 100% confidentiality for sensitive family photos or unreleased corporate assets.
+          </p>
+
+          <h3 className="text-lg font-bold text-slate-800 mt-6">Transforming Old Memories and Digital Assets</h3>
+          <p>
+            The practical applications for true AI upscaling are virtually endless. Archivists and genealogists frequently use our tool to rescue tiny, scanned heritage photos from the 1990s, restoring the sharpness of their ancestors' faces. Digital artists who use AI image generators (like Midjourney or DALL-E) rely on our 4x upscaler to take their low-resolution draft outputs and expand them into massive, print-ready 4K masterpieces. Furthermore, small business owners often find themselves with a tiny thumbnail of their company logo and use our enhancer to reconstruct it cleanly without needing to hire a vector artist.
+          </p>
+          <p>
+            Keep in mind that while the AI is incredible at adding resolution, it drastically increases the file size of the image. After you have upscaled your photo, you will likely want to run the resulting file through our <a href="/image-compressor" className="text-violet-600 hover:underline">Image Compressor Tool</a> to optimize it for web delivery. Additionally, if the AI enhanced a beautiful portrait but you want to remove a distracting background, you can pass the high-resolution file directly into our <a href="/bg-remover" className="text-violet-600 hover:underline">Background Remover Tool</a> for a flawless, professional finish.
+          </p>
+
+          <img
+            src="/images/tools/image-enhancer-example.png"
+            alt="Visual comparison showing a blurry photo being sharpened by AI"
+            title="Image Enhancer Before and After Example"
+            loading="lazy"
+            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+          />
+
+          <h3 className="text-lg font-bold text-slate-800 mt-6">Optimizing Your Enhancement Workflow</h3>
+          <p>
+            Because this tool runs a massive mathematical model directly on your local hardware, the processing time will depend heavily on the speed of your device and the original dimensions of the photo. Attempting to apply a 4x multiplier to an image that is already 2000 pixels wide on an older smartphone may cause your browser to run out of memory and crash. For the best experience, we recommend using a modern desktop computer. If you only need to make a photo slightly larger for a social media post, try using the 2x scale option first, as it demands significantly less RAM and processing power while still providing a massive quality boost.
+          </p>
+
+          <h3 className="text-lg font-bold text-slate-800 mt-6">Unrivaled Upscaling Features</h3>
+          <ul className="list-disc pl-5 space-y-2">
+            <li><strong>Real-ESRGAN Architecture:</strong> Built on industry-leading academic research specifically designed for reconstructing realistic textures like skin, fabric, and landscapes.</li>
+            <li><strong>Selectable Multipliers:</strong> Choose between a rapid 2x enhancement for quick social media fixes, or a demanding 4x super-resolution for large-format printing.</li>
+            <li><strong>Local Hardware Acceleration:</strong> Automatically attempts to utilize your device's GPU via WebGL to calculate the neural network matrix as quickly as possible.</li>
+            <li><strong>Interactive Live Viewer:</strong> Includes a satisfying before-and-after slider so you can deeply inspect the newly generated pixels before committing to the download.</li>
+            <li><strong>Completely Free & Uncapped:</strong> No watermarks, no daily limits, and no premium subscriptions required to access the full power of the AI model.</li>
+          </ul>
+
+          <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-bold text-slate-700">Can this tool read blurred license plates or text?</h4>
+              <p className="mt-1">No. It is extremely important to understand that AI enhancement generates *new* pixels based on what it predicts *should* be there. It cannot magically reveal hidden information, uncover blurred passwords, or accurately reconstruct specific letters or numbers that were totally destroyed in the original file.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-700">Why did my browser tab freeze while processing?</h4>
+              <p className="mt-1">Running a generative neural network inside a web browser is incredibly resource-intensive. During the few seconds that the progress bar is moving, your device's CPU or GPU is working at 100% capacity to calculate millions of mathematical operations. A temporary interface freeze is entirely normal.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-700">Does the AI work better on illustrations or photographs?</h4>
+              <p className="mt-1">The default ESRGAN model loaded by this tool is a generic model trained on a massively diverse dataset. It performs exceptionally well on actual photographs (landscapes, people, objects) and reasonably well on digital art, though highly stylized 2D anime or flat vector graphics might sometimes exhibit slight painterly artifacts.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-700">Will this fix blurry photos taken with a shaky camera?</h4>
+              <p className="mt-1">It depends on the severity. The AI is primarily designed to fix "low resolution blur" (pixelation from zooming in). While it does apply intelligent sharpening that can rescue a slightly out-of-focus shot, it cannot fix severe motion blur caused by drastically moving the camera while the shutter was open.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-slate-700">Are there any limits to the image size I can upload?</h4>
+              <p className="mt-1">Yes, to prevent your browser from instantly crashing due to memory exhaustion, we limit incoming uploads to a maximum of 5 Megabytes. If you upload a massive 4K image and ask the AI to upscale it by 4x, the resulting 16K image would require more RAM than most consumer computers possess.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ToolLayout >
     </>
   )
 }
