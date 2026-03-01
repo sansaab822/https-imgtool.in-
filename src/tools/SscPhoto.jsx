@@ -278,6 +278,66 @@ export default function SscPhoto() {
                         </div>
                     </div>
                 </div>
+
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">Add Dates and Names to Exam Photos Instantly</h2>
+                        <p>
+                            Applying for government examinations or competitive job postings often involves navigating a maze of strict documentation requirements. One of the most common—and most frequently mishandled—requirements is submitting a passport-size photograph with the current date, and sometimes your full name, printed visibly at the bottom. Historically, candidates would have to physically go to a photo studio to request this specific format, or attempt to clumsily edit the text onto the image using basic, hard-to-use paint software. Our specialized SSC Photo & Date Adder eliminates this hassle entirely, allowing you to digitally stamp your application photos with precision in seconds.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Crucial for SSC, UPSC, and Railway Apps</h3>
+                        <p>
+                            Commissions like the Staff Selection Commission (SSC) and the Union Public Service Commission (UPSC) in India are notoriously strict about application formats. A photograph that does not clearly display the date it was taken (usually required to be within the last three months) is one of the leading causes for immediate application rejection. This tool is purpose-built to help candidates comply with these exact standards. You can easily insert the current date, or a custom past date, ensuring your application moves through the screening process without a hitch.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Complete Typographical Control</h3>
+                        <p>
+                            Different examination boards may have varying preferences for how the text should look. We provide a full suite of typographical controls directly in your browser. You can choose from standard, highly readable fonts like Arial or Times New Roman, adjust the font size to ensure it is legible without obscuring your face, and toggle bold or italic styling. Crucially, we also feature a background opacity slider. This allows you to place a semi-transparent white box behind the text, guaranteeing that your name and date stand out perfectly clear, regardless of what color shirt you are wearing or what the background of the original photo looks like.
+                        </p>
+                        <p>
+                            If you realize your uploaded photo hasn't been cropped to the correct dimensions (usually 35x45mm) before adding the date, we highly recommend running it through our <a href="/passport-size-photo" className="text-blue-600 hover:underline">Passport Size Photo Maker</a> first. Once you have the perfect crop, bring it back here to add your required text overlay.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Local Processing for Total Privacy</h3>
+                        <p>
+                            As an applicant, you are dealing with sensitive, personally identifiable information—your face and your full legal name. The vast majority of online photo editors upload your image to their corporate servers to process the text overlay, which poses a significant privacy risk. Our architecture is different. The image manipulation canvas runs entirely within the local memory of your web browser. Your photograph and your inputted data never leave your device, ensuring total security and privacy during your application process.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use the Date Adder</h3>
+                        <ol className="list-decimal pl-5 space-y-2">
+                            <li><strong>Upload Your Base Image:</strong> Drag and drop your pre-cropped, passport-sized photograph into the upload zone.</li>
+                            <li><strong>Configure the Text:</strong> Use the input fields to type out the specific date and your name as required by your application guidelines.</li>
+                            <li><strong>Adjust Positioning:</strong> Use the X and Y sliders to move the text block so it sits comfortably at the bottom of the frame, ensuring it does not cover your chin or neck.</li>
+                            <li><strong>Style for Legibility:</strong> Tweak the text size, color, and background opacity until the information is perfectly readable.</li>
+                            <li><strong>Generate and Download:</strong> Select your preferred output format (JPG is usually required for digital applications) and download the finalized, stamped image.</li>
+                        </ol>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Common Questions Answered</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Will this lower the resolution of my application photo?</h4>
+                                <p className="mt-1">No. The HTML5 canvas technology we use maps the text onto the image at the native resolution of the file you upload. Assuming you upload a clear, high-quality image, the resulting stamped photo will maintain that exact same quality.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">What format should the date be in?</h4>
+                                <p className="mt-1">This depends entirely on the specific exam notification. However, the most universally accepted formats are DD-MM-YYYY or DD/MM/YYYY. Our tool includes quick-select buttons for the most common formats, but you can also manually type whatever specific format is requested.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I use this on a mobile phone?</h4>
+                                <p className="mt-1">Absolutely. The interface is fully responsive, meaning you can easily upload a selfie you just took, crop it, add the date, and download it right from your smartphone browser, ready to be uploaded to the official exam portal.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">The text is hard to read against my dark shirt. How do I fix this?</h4>
+                                <p className="mt-1">This is why we included the Background Opacity slider. Simply change the font color to black, and increase the background opacity to around 70-100%. This will draw a solid white box behind the text, completely isolating it from your shirt color for maximum legibility.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Is this tool affiliated with the SSC or UPSC?</h4>
+                                <p className="mt-1">No, this is an independent, free utility designed to help candidates format their application materials correctly. You must always refer to the official exam notification for the exact, up-to-date photograph requirements.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ToolLayout>
         </>
     )
