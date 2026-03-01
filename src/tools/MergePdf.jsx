@@ -223,84 +223,83 @@ export default function MergePdf() {
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                <img
-                    src="/images/tools/merge-pdf-tool.png"
-                    alt="Online PDF Merger Interface"
-                    title="Merge Multiple PDF Files"
-                    loading="lazy"
-                    className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
-                />
-
-                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                    <h2 className="text-2xl font-bold text-slate-800">Combine Multiple PDFs Quickly and Securely</h2>
-                    <p>
-                        Managing scattered digital documents can quickly become a logistical nightmare. Whether you are a student compiling research papers, an accountant organizing monthly tax receipts, or a lawyer assembling case files, dealing with dozens of individual PDF files is inefficient. Sending multiple attachments via email often leads to missing documents or confused recipients. The most elegant solution is to merge these disparate files into one unified, cohesive PDF document. Our secure online PDF merger provides a lightning-fast, intuitive platform to combine your files exactly the way you want them.
-                    </p>
-
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Intuitive Visual Reordering</h3>
-                    <p>
-                        Unlike basic merging utilities that blindly stitch documents together alphabetically or by upload timestamp, we give you complete visual control over your final document's structure. As soon as you add your files to the dashboard, our system generates a crisp thumbnail preview of the first page of every document. You can clearly see exactly what each file contains. To arrange your master document, simply drag and drop the thumbnails into your desired sequence. The numbering badges on each thumbnail update in real-time, guaranteeing that your final combined PDF flows perfectly from the title page to the appendix.
-                    </p>
-
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Client-Side Processing for Total Privacy</h3>
-                    <p>
-                        Perhaps the most critical feature of our PDF merger is how it handles your sensitive data. The vast majority of online document tools require you to actively upload your confidential contracts, bank statements, or medical records to a remote corporate server. That server processes the merge and sends a download link back to you. This poses a massive security risk. We built our tool using advanced, browser-based JavaScript technology. The entire merging process happens locally inside your computer's RAM. Your private files never leave your device, meaning there is absolutely zero risk of your data being intercepted, stored, or leaked.
-                    </p>
-                    <p>
-                        Once you have successfully combined your documents, you might discover that appending several large PDFs together has resulted in a massive file that exceeds email attachment limits. If this occurs, we highly recommend utilizing our <a href="/pdf-compressor" className="text-teal-600 hover:underline">PDF Compressor Tool</a> (coming soon) to optimize the file size. Alternatively, if you need to remove a specific page from the newly merged document, you can use a PDF splitting utility to extract only what you need.
-                    </p>
-
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
                     <img
-                        src="/images/tools/merge-pdf-example.png"
-                        alt="Visual graphic showing distinct PDF files being bound into one master document"
-                        title="Visualizing PDF Merging"
+                        src="/images/tools/merge-pdf-tool.png"
+                        alt="Online PDF Merger Interface"
+                        title="Merge Multiple PDF Files"
                         loading="lazy"
-                        className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+                        className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
                     />
 
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Optimized for Speed and Efficiency</h3>
-                    <p>
-                        Because the merging engine runs directly on your local hardware, the speed of the operation is practically instantaneous, completely bypassing the frustrating upload and download times associated with cloud-based converters. You can easily drag fifty separate invoice PDFs into the drop zone, arrange them, and hit merge. Your browser will instantly stitch the binary data together and spit out the combined file in seconds, entirely offline.
-                    </p>
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">Combine Multiple PDFs Quickly and Securely</h2>
+                        <p>
+                            Managing scattered digital documents can quickly become a logistical nightmare. Whether you are a student compiling research papers, an accountant organizing monthly tax receipts, or a lawyer assembling case files, dealing with dozens of individual PDF files is inefficient. Sending multiple attachments via email often leads to missing documents or confused recipients. The most elegant solution is to merge these disparate files into one unified, cohesive PDF document. Our secure online PDF merger provides a lightning-fast, intuitive platform to combine your files exactly the way you want them.
+                        </p>
 
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Core Merging Features</h3>
-                    <ul className="list-disc pl-5 space-y-2">
-                        <li><strong>Thumbnail Previews:</strong> Instantly view a generated snapshot of the first page of every uploaded PDF to ensure you are combining the correct files.</li>
-                        <li><strong>Live Page Counting:</strong> The interface automatically calculates and displays the total number of pages your final document will contain before you even hit the merge button.</li>
-                        <li><strong>Drag-and-Drop Canvas:</strong> Easily upload files straight from your desktop, and then drag the document cards to visually establish the perfect reading order.</li>
-                        <li><strong>Unlimited Operations:</strong> We do not restrict how often you can use the tool or place artificial paywalls on the number of documents you can combine per day.</li>
-                        <li><strong>Offline Functionality:</strong> Once the page loads, the core merging logic functions independently of your internet connection, making it ideal for travel or secure offline environments.</li>
-                    </ul>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Intuitive Visual Reordering</h3>
+                        <p>
+                            Unlike basic merging utilities that blindly stitch documents together alphabetically or by upload timestamp, we give you complete visual control over your final document's structure. As soon as you add your files to the dashboard, our system generates a crisp thumbnail preview of the first page of every document. You can clearly see exactly what each file contains. To arrange your master document, simply drag and drop the thumbnails into your desired sequence. The numbering badges on each thumbnail update in real-time, guaranteeing that your final combined PDF flows perfectly from the title page to the appendix.
+                        </p>
 
-                    <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
-                    <div className="space-y-4">
-                        <div>
-                            <h4 className="font-bold text-slate-700">Does merging PDFs reduce the quality of the text or images?</h4>
-                            <p className="mt-1">Absolutely not. Our merging engine simply concatenates the existing binary data structures of the original PDF files. It does not re-render, rasterize, or compress the contents, ensuring that vector text remains perfectly sharp and images retain their original fidelity.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Can I merge documents that have different page sizes?</h4>
-                            <p className="mt-1">Yes! If you merge a standard US Letter document with an A4 contract and a tiny receipt, the final PDF will simply contain distinct pages of different sizes. The Portable Document Format natively supports varying page dimensions within the same file.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Is there a maximum limit on how many files I can merge?</h4>
-                            <p className="mt-1">While we do not impose artificial limits, the theoretical maximum depends entirely on your computer's available RAM, as the files are held in memory during the merging process. Most modern laptops can easily handle merging over 100 typical PDF documents simultaneously.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Will bookmarks and hyperlinks be preserved?</h4>
-                            <p className="mt-1">Internal document structures like basic text hyperlinks are generally preserved during the merge. However, complex interactive elements like fillable form fields or highly nested bookmark trees may behave unpredictably when stitched into a new document structure.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Why does the thumbnail preview sometimes look blank?</h4>
-                            <p className="mt-1">To quickly generate the thumbnail, we use a lightweight PDF renderer to paint the first page. If the first page of your PDF is completely blank, or if the file contains highly complex vector encryption that our previewer cannot parse, it will display a generic PDF icon instead. This does not affect the actual merging process in any way.</p>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Client-Side Processing for Total Privacy</h3>
+                        <p>
+                            Perhaps the most critical feature of our PDF merger is how it handles your sensitive data. The vast majority of online document tools require you to actively upload your confidential contracts, bank statements, or medical records to a remote corporate server. That server processes the merge and sends a download link back to you. This poses a massive security risk. We built our tool using advanced, browser-based JavaScript technology. The entire merging process happens locally inside your computer's RAM. Your private files never leave your device, meaning there is absolutely zero risk of your data being intercepted, stored, or leaked.
+                        </p>
+                        <p>
+                            Once you have successfully combined your documents, you might discover that appending several large PDFs together has resulted in a massive file that exceeds email attachment limits. If this occurs, we highly recommend utilizing our <a href="/pdf-compressor" className="text-teal-600 hover:underline">PDF Compressor Tool</a> (coming soon) to optimize the file size. Alternatively, if you need to remove a specific page from the newly merged document, you can use a PDF splitting utility to extract only what you need.
+                        </p>
+
+                        <img
+                            src="/images/tools/merge-pdf-example.png"
+                            alt="Visual graphic showing distinct PDF files being bound into one master document"
+                            title="Visualizing PDF Merging"
+                            loading="lazy"
+                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+                        />
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Optimized for Speed and Efficiency</h3>
+                        <p>
+                            Because the merging engine runs directly on your local hardware, the speed of the operation is practically instantaneous, completely bypassing the frustrating upload and download times associated with cloud-based converters. You can easily drag fifty separate invoice PDFs into the drop zone, arrange them, and hit merge. Your browser will instantly stitch the binary data together and spit out the combined file in seconds, entirely offline.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Core Merging Features</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Thumbnail Previews:</strong> Instantly view a generated snapshot of the first page of every uploaded PDF to ensure you are combining the correct files.</li>
+                            <li><strong>Live Page Counting:</strong> The interface automatically calculates and displays the total number of pages your final document will contain before you even hit the merge button.</li>
+                            <li><strong>Drag-and-Drop Canvas:</strong> Easily upload files straight from your desktop, and then drag the document cards to visually establish the perfect reading order.</li>
+                            <li><strong>Unlimited Operations:</strong> We do not restrict how often you can use the tool or place artificial paywalls on the number of documents you can combine per day.</li>
+                            <li><strong>Offline Functionality:</strong> Once the page loads, the core merging logic functions independently of your internet connection, making it ideal for travel or secure offline environments.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Does merging PDFs reduce the quality of the text or images?</h4>
+                                <p className="mt-1">Absolutely not. Our merging engine simply concatenates the existing binary data structures of the original PDF files. It does not re-render, rasterize, or compress the contents, ensuring that vector text remains perfectly sharp and images retain their original fidelity.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I merge documents that have different page sizes?</h4>
+                                <p className="mt-1">Yes! If you merge a standard US Letter document with an A4 contract and a tiny receipt, the final PDF will simply contain distinct pages of different sizes. The Portable Document Format natively supports varying page dimensions within the same file.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Is there a maximum limit on how many files I can merge?</h4>
+                                <p className="mt-1">While we do not impose artificial limits, the theoretical maximum depends entirely on your computer's available RAM, as the files are held in memory during the merging process. Most modern laptops can easily handle merging over 100 typical PDF documents simultaneously.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Will bookmarks and hyperlinks be preserved?</h4>
+                                <p className="mt-1">Internal document structures like basic text hyperlinks are generally preserved during the merge. However, complex interactive elements like fillable form fields or highly nested bookmark trees may behave unpredictably when stitched into a new document structure.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Why does the thumbnail preview sometimes look blank?</h4>
+                                <p className="mt-1">To quickly generate the thumbnail, we use a lightweight PDF renderer to paint the first page. If the first page of your PDF is completely blank, or if the file contains highly complex vector encryption that our previewer cannot parse, it will display a generic PDF icon instead. This does not affect the actual merging process in any way.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </ToolLayout >
+            </ToolLayout >
         </>
     )
 }

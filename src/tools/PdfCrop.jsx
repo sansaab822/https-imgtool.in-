@@ -490,84 +490,83 @@ export default function PdfCrop() {
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                <img
-                    src="/images/tools/pdf-crop-tool.png"
-                    alt="Online PDF Crop Interface"
-                    title="Visually Crop PDF Pages"
-                    loading="lazy"
-                    className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
-                />
-
-                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                    <h2 className="text-2xl font-bold text-slate-800">Precision PDF Cropping Made Effortless</h2>
-                    <p>
-                        Digital documents rarely exist in a perfect state when first received or generated. Scanned architectural blueprints often feature jagged, distracting black borders from the scanning bed. Slide decks exported from presentation software frequently contain massive, unnecessary white margins intended for printing bleeds rather than on-screen reading. Removing these unwanted elements from a Portable Document Format (PDF) used to require expensive, heavy desktop publishing software. Our online PDF Cropper revolutionizes this workflow by giving you precise, visual control over your document's dimensions directly within your web browser.
-                    </p>
-
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Interactive Visual Cropping</h3>
-                    <p>
-                        Unlike basic command-line utilities or rudimentary web tools that force you to guess margin values in millimeters or inches, we believe in a fully interactive, "what-you-see-is-what-you-get" approach. The moment you upload your document, our rendering engine paints a crisp, high-fidelity preview of the page onto an interactive canvas. To define your trim area, simply click and drag your mouse (or use your finger on touch devices) to draw a dynamic selection rectangle. This intuitive bounding box immediately darkens the areas that will be discarded, providing instant visual feedback before you commit to any changes.
-                    </p>
-
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Batch Processing Capabilities</h3>
-                    <p>
-                        We understand that cropping one page is easy; cropping a hundred pages consistently is a challenge. If you are dealing with a scanned textbook where every single page has the same annoying punch-hole margin, cropping them individually would take hours. Our tool solves this with a powerful batch application feature. Once you draw the perfect crop box on any single page, you can instruct the engine to apply those exact Cartesian coordinates to the entire document simultaneously. Alternatively, if only the title page needs adjustment, you can restrict the crop exclusively to the current active preview page.
-                    </p>
-                    <p>
-                        Cropping is just one aspect of document preparation. If your freshly trimmed PDF now needs to be combined with a different report, we recommend utilizing our seamless <a href="/merge-pdf" className="text-amber-600 hover:underline">Merge PDF Tool</a>. If the cropping process removed valuable metadata, or if you simply need to compress the final result for easier emailing without losing visual quality, our comprehensive suite of PDF utilities is ready to assist.
-                    </p>
-
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
                     <img
-                        src="/images/tools/pdf-crop-example.png"
-                        alt="Visual graphic showing a PDF page with large margins being cropped to a focused area"
-                        title="Example of PDF Margin Removal"
+                        src="/images/tools/pdf-crop-tool.png"
+                        alt="Online PDF Crop Interface"
+                        title="Visually Crop PDF Pages"
                         loading="lazy"
-                        className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+                        className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
                     />
 
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Uncompromising Data Security</h3>
-                    <p>
-                        When you are dealing with financial ledgers, legal contracts, or unreleased manuscripts, uploading those files to a remote server for processing is an unacceptable security risk. We built this application fundamentally differently. By leveraging WebAssembly and advanced browser-based JavaScript, the actual geometric modification of your document happens entirely inside your computer's local memory. Your sensitive files never traverse the internet, are never saved on our databases, and leave zero digital footprint. It is as secure as using a disconnected desktop application.
-                    </p>
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">Precision PDF Cropping Made Effortless</h2>
+                        <p>
+                            Digital documents rarely exist in a perfect state when first received or generated. Scanned architectural blueprints often feature jagged, distracting black borders from the scanning bed. Slide decks exported from presentation software frequently contain massive, unnecessary white margins intended for printing bleeds rather than on-screen reading. Removing these unwanted elements from a Portable Document Format (PDF) used to require expensive, heavy desktop publishing software. Our online PDF Cropper revolutionizes this workflow by giving you precise, visual control over your document's dimensions directly within your web browser.
+                        </p>
 
-                    <h3 className="text-lg font-bold text-slate-800 mt-6">Key Application Features</h3>
-                    <ul className="list-disc pl-5 space-y-2">
-                        <li><strong>Live Dimension Tracking:</strong> As you draw your selection box, a floating badge instantly calculates and displays the exact physical dimensions of the resulting crop in points (pt).</li>
-                        <li><strong>Composition Guides:</strong> The selection box features an integrated rule-of-thirds grid, immensely helpful when cropping artwork, photographs, or marketing layouts within a PDF.</li>
-                        <li><strong>Thumbnail Navigator:</strong> A scrollable filmstrip of page thumbnails sits below the main canvas, allowing you to quickly jump through massive documents to find the specific page you need to inspect.</li>
-                        <li><strong>Non-Destructive Core:</strong> The tool modifies the internal 'CropBox' parameter of the PDF structure rather than rasterizing and re-saving the content, ensuring vector text remains searchable and infinitely scalable.</li>
-                        <li><strong>Cross-Platform Compatibility:</strong> Whether you prefer a Windows PC, a Mac, or a tablet with a stylus, the canvas responds flawlessly to both mouse events and touch gestures.</li>
-                    </ul>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Interactive Visual Cropping</h3>
+                        <p>
+                            Unlike basic command-line utilities or rudimentary web tools that force you to guess margin values in millimeters or inches, we believe in a fully interactive, "what-you-see-is-what-you-get" approach. The moment you upload your document, our rendering engine paints a crisp, high-fidelity preview of the page onto an interactive canvas. To define your trim area, simply click and drag your mouse (or use your finger on touch devices) to draw a dynamic selection rectangle. This intuitive bounding box immediately darkens the areas that will be discarded, providing instant visual feedback before you commit to any changes.
+                        </p>
 
-                    <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
-                    <div className="space-y-4">
-                        <div>
-                            <h4 className="font-bold text-slate-700">Does cropping a PDF reduce the actual file size?</h4>
-                            <p className="mt-1">In most cases, no. Cropping a PDF alters the visible boundary (the CropBox or MediaBox), instructing PDF viewers not to display anything outside that rectangle. However, the data outside the crop (like high-res imagery that bleeds off the edge) is often retained within the file structure. To truly reduce the bytes on disk, you must use a dedicated compressor.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Can I crop different pages to different sizes in the same document?</h4>
-                            <p className="mt-1">Yes. You can draw a crop box and apply it only to "Current Page," navigate to a different page, draw a completely different box, and apply that. The generated PDF will contain pages of varying dimensions, which is fully supported by the PDF specification.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Why can't I select the exact text I want to crop?</h4>
-                            <p className="mt-1">This tool performs geometric cropping on the page structure itself, not content extraction. You are cutting the "paper" the text is printed on, not highlighting the text strings. The bounding box defines the new physical borders of the document.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">What happens to hyperlinks if they fall outside the cropped area?</h4>
-                            <p className="mt-1">If an interactive element like a hyperlink, form field, or button falls completely outside the new crop boundary, it will generally become inaccessible or hidden when viewed in a standard PDF reader, as it exists outside the visible canvas.</p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold text-slate-700">Is there a limit to how small I can crop a page?</h4>
-                            <p className="mt-1">We enforce a very small minimum dimension (8×8 points) simply to prevent the interface from glitching out or creating microscopic, unreadable documents, but practically, you can crop down to a single word or image.</p>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Batch Processing Capabilities</h3>
+                        <p>
+                            We understand that cropping one page is easy; cropping a hundred pages consistently is a challenge. If you are dealing with a scanned textbook where every single page has the same annoying punch-hole margin, cropping them individually would take hours. Our tool solves this with a powerful batch application feature. Once you draw the perfect crop box on any single page, you can instruct the engine to apply those exact Cartesian coordinates to the entire document simultaneously. Alternatively, if only the title page needs adjustment, you can restrict the crop exclusively to the current active preview page.
+                        </p>
+                        <p>
+                            Cropping is just one aspect of document preparation. If your freshly trimmed PDF now needs to be combined with a different report, we recommend utilizing our seamless <a href="/merge-pdf" className="text-amber-600 hover:underline">Merge PDF Tool</a>. If the cropping process removed valuable metadata, or if you simply need to compress the final result for easier emailing without losing visual quality, our comprehensive suite of PDF utilities is ready to assist.
+                        </p>
+
+                        <img
+                            src="/images/tools/pdf-crop-example.png"
+                            alt="Visual graphic showing a PDF page with large margins being cropped to a focused area"
+                            title="Example of PDF Margin Removal"
+                            loading="lazy"
+                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+                        />
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Uncompromising Data Security</h3>
+                        <p>
+                            When you are dealing with financial ledgers, legal contracts, or unreleased manuscripts, uploading those files to a remote server for processing is an unacceptable security risk. We built this application fundamentally differently. By leveraging WebAssembly and advanced browser-based JavaScript, the actual geometric modification of your document happens entirely inside your computer's local memory. Your sensitive files never traverse the internet, are never saved on our databases, and leave zero digital footprint. It is as secure as using a disconnected desktop application.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Key Application Features</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Live Dimension Tracking:</strong> As you draw your selection box, a floating badge instantly calculates and displays the exact physical dimensions of the resulting crop in points (pt).</li>
+                            <li><strong>Composition Guides:</strong> The selection box features an integrated rule-of-thirds grid, immensely helpful when cropping artwork, photographs, or marketing layouts within a PDF.</li>
+                            <li><strong>Thumbnail Navigator:</strong> A scrollable filmstrip of page thumbnails sits below the main canvas, allowing you to quickly jump through massive documents to find the specific page you need to inspect.</li>
+                            <li><strong>Non-Destructive Core:</strong> The tool modifies the internal 'CropBox' parameter of the PDF structure rather than rasterizing and re-saving the content, ensuring vector text remains searchable and infinitely scalable.</li>
+                            <li><strong>Cross-Platform Compatibility:</strong> Whether you prefer a Windows PC, a Mac, or a tablet with a stylus, the canvas responds flawlessly to both mouse events and touch gestures.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Does cropping a PDF reduce the actual file size?</h4>
+                                <p className="mt-1">In most cases, no. Cropping a PDF alters the visible boundary (the CropBox or MediaBox), instructing PDF viewers not to display anything outside that rectangle. However, the data outside the crop (like high-res imagery that bleeds off the edge) is often retained within the file structure. To truly reduce the bytes on disk, you must use a dedicated compressor.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I crop different pages to different sizes in the same document?</h4>
+                                <p className="mt-1">Yes. You can draw a crop box and apply it only to "Current Page," navigate to a different page, draw a completely different box, and apply that. The generated PDF will contain pages of varying dimensions, which is fully supported by the PDF specification.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Why can't I select the exact text I want to crop?</h4>
+                                <p className="mt-1">This tool performs geometric cropping on the page structure itself, not content extraction. You are cutting the "paper" the text is printed on, not highlighting the text strings. The bounding box defines the new physical borders of the document.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">What happens to hyperlinks if they fall outside the cropped area?</h4>
+                                <p className="mt-1">If an interactive element like a hyperlink, form field, or button falls completely outside the new crop boundary, it will generally become inaccessible or hidden when viewed in a standard PDF reader, as it exists outside the visible canvas.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Is there a limit to how small I can crop a page?</h4>
+                                <p className="mt-1">We enforce a very small minimum dimension (8×8 points) simply to prevent the interface from glitching out or creating microscopic, unreadable documents, but practically, you can crop down to a single word or image.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </ToolLayout >
+            </ToolLayout >
         </>
     )
 }

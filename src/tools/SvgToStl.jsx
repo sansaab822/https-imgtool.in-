@@ -310,7 +310,7 @@ export default function SvgToStl() {
                         <div className="space-y-4">
                             <div>
                                 <h4 className="font-bold text-slate-700">Why does my 3D model look hollow or broken?</h4>
-                                <p className="mt-1">The 3D engine requires <strong>closed paths</strong> to create a solid volume. If your SVG consists of unjoined lines or open strokes instead of solid filled shapes, the engine cannot figure out what the "inside" of the object is. You must return to your vector software and use tools like "Expand," "Outline Stroke," or "Pathfinder -> Unite" to turn all strokes into solid, closed shapes.</p>
+                                <p className="mt-1">The 3D engine requires <strong>closed paths</strong> to create a solid volume. If your SVG consists of unjoined lines or open strokes instead of solid filled shapes, the engine cannot figure out what the "inside" of the object is. You must return to your vector software and use tools like "Expand," "Outline Stroke," or "Pathfinder -&gt; Unite" to turn all strokes into solid, closed shapes.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Will this tool convert the colors from my SVG into a multi-color 3D file?</h4>
