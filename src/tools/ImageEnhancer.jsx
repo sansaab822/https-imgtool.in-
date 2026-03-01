@@ -121,8 +121,8 @@ function DemoCompare() {
               key={demo.id}
               onClick={() => setActiveDemo(idx)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeDemo === idx
-                  ? 'bg-violet-600 text-white'
-                  : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+                ? 'bg-violet-600 text-white'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
                 }`}
             >
               {demo.title}
@@ -569,8 +569,8 @@ export default function ImageEnhancer() {
                       onClick={(e) => { e.stopPropagation(); setScale(s) }}
                       disabled={modelLoading}
                       className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 ${scale === s
-                          ? 'bg-violet-600 text-white shadow-md'
-                          : 'text-slate-600 hover:bg-white hover:shadow-sm'
+                        ? 'bg-violet-600 text-white shadow-md'
+                        : 'text-slate-600 hover:bg-white hover:shadow-sm'
                         } ${modelLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       {s}x Upscale
@@ -802,85 +802,83 @@ export default function ImageEnhancer() {
             </div>
           )}
         </div>
-          )}
-      </div>
 
-      <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-        <img
-          src="/images/tools/image-enhancer-tool.png"
-          alt="AI Image Enhancer Tool Interface"
-          title="Enhance Image Quality Online"
-          loading="lazy"
-          className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
-        />
-
-        <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-          <h2 className="text-2xl font-bold text-slate-800">State-of-the-Art Image Upscaling Without Losing Detail</h2>
-          <p>
-            For decades, trying to enlarge a small, low-resolution photograph meant accepting a blurry, heavily pixelated result. Traditional scaling software simply stretches existing pixels and guesses the colors between them, creating a soft and unnatural look. Today, however, artificial intelligence has completely rewritten the rules of image scaling. Our Image Enhancer leverages the renowned Real-ESRGAN (Enhanced Super-Resolution Generative Adversarial Networks) architecture to accurately rebuild missing details from thin air. Instead of merely stretching the photo, the AI intelligently analyzes the textures and actually generates brand new, high-definition pixels to match the original context.
-          </p>
-
-          <h3 className="text-lg font-bold text-slate-800 mt-6">How Our Browser-Based Neural Network Operates</h3>
-          <p>
-            What makes our upscaler completely unique is our commitment to user privacy and frictionless performance. While most "AI Enhancers" on the internet require you to create an account, pay a subscription fee, and upload your personal photos to a remote cloud server, imgtool.in does the exact opposite. We utilize TensorFlow.js to download a highly optimized version of the ESRGAN neural network directly into your browser's local cache. Once loaded, your computer's own processing power is used to run the enhancement matrix. Your images are never transmitted across the internet, ensuring 100% confidentiality for sensitive family photos or unreleased corporate assets.
-          </p>
-
-          <h3 className="text-lg font-bold text-slate-800 mt-6">Transforming Old Memories and Digital Assets</h3>
-          <p>
-            The practical applications for true AI upscaling are virtually endless. Archivists and genealogists frequently use our tool to rescue tiny, scanned heritage photos from the 1990s, restoring the sharpness of their ancestors' faces. Digital artists who use AI image generators (like Midjourney or DALL-E) rely on our 4x upscaler to take their low-resolution draft outputs and expand them into massive, print-ready 4K masterpieces. Furthermore, small business owners often find themselves with a tiny thumbnail of their company logo and use our enhancer to reconstruct it cleanly without needing to hire a vector artist.
-          </p>
-          <p>
-            Keep in mind that while the AI is incredible at adding resolution, it drastically increases the file size of the image. After you have upscaled your photo, you will likely want to run the resulting file through our <a href="/image-compressor" className="text-violet-600 hover:underline">Image Compressor Tool</a> to optimize it for web delivery. Additionally, if the AI enhanced a beautiful portrait but you want to remove a distracting background, you can pass the high-resolution file directly into our <a href="/bg-remover" className="text-violet-600 hover:underline">Background Remover Tool</a> for a flawless, professional finish.
-          </p>
-
+        <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
           <img
-            src="/images/tools/image-enhancer-example.png"
-            alt="Visual comparison showing a blurry photo being sharpened by AI"
-            title="Image Enhancer Before and After Example"
+            src="/images/tools/image-enhancer-tool.png"
+            alt="AI Image Enhancer Tool Interface"
+            title="Enhance Image Quality Online"
             loading="lazy"
-            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+            className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
           />
 
-          <h3 className="text-lg font-bold text-slate-800 mt-6">Optimizing Your Enhancement Workflow</h3>
-          <p>
-            Because this tool runs a massive mathematical model directly on your local hardware, the processing time will depend heavily on the speed of your device and the original dimensions of the photo. Attempting to apply a 4x multiplier to an image that is already 2000 pixels wide on an older smartphone may cause your browser to run out of memory and crash. For the best experience, we recommend using a modern desktop computer. If you only need to make a photo slightly larger for a social media post, try using the 2x scale option first, as it demands significantly less RAM and processing power while still providing a massive quality boost.
-          </p>
+          <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+            <h2 className="text-2xl font-bold text-slate-800">State-of-the-Art Image Upscaling Without Losing Detail</h2>
+            <p>
+              For decades, trying to enlarge a small, low-resolution photograph meant accepting a blurry, heavily pixelated result. Traditional scaling software simply stretches existing pixels and guesses the colors between them, creating a soft and unnatural look. Today, however, artificial intelligence has completely rewritten the rules of image scaling. Our Image Enhancer leverages the renowned Real-ESRGAN (Enhanced Super-Resolution Generative Adversarial Networks) architecture to accurately rebuild missing details from thin air. Instead of merely stretching the photo, the AI intelligently analyzes the textures and actually generates brand new, high-definition pixels to match the original context.
+            </p>
 
-          <h3 className="text-lg font-bold text-slate-800 mt-6">Unrivaled Upscaling Features</h3>
-          <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Real-ESRGAN Architecture:</strong> Built on industry-leading academic research specifically designed for reconstructing realistic textures like skin, fabric, and landscapes.</li>
-            <li><strong>Selectable Multipliers:</strong> Choose between a rapid 2x enhancement for quick social media fixes, or a demanding 4x super-resolution for large-format printing.</li>
-            <li><strong>Local Hardware Acceleration:</strong> Automatically attempts to utilize your device's GPU via WebGL to calculate the neural network matrix as quickly as possible.</li>
-            <li><strong>Interactive Live Viewer:</strong> Includes a satisfying before-and-after slider so you can deeply inspect the newly generated pixels before committing to the download.</li>
-            <li><strong>Completely Free & Uncapped:</strong> No watermarks, no daily limits, and no premium subscriptions required to access the full power of the AI model.</li>
-          </ul>
+            <h3 className="text-lg font-bold text-slate-800 mt-6">How Our Browser-Based Neural Network Operates</h3>
+            <p>
+              What makes our upscaler completely unique is our commitment to user privacy and frictionless performance. While most "AI Enhancers" on the internet require you to create an account, pay a subscription fee, and upload your personal photos to a remote cloud server, imgtool.in does the exact opposite. We utilize TensorFlow.js to download a highly optimized version of the ESRGAN neural network directly into your browser's local cache. Once loaded, your computer's own processing power is used to run the enhancement matrix. Your images are never transmitted across the internet, ensuring 100% confidentiality for sensitive family photos or unreleased corporate assets.
+            </p>
 
-          <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
-          <div className="space-y-4">
-            <div>
-              <h4 className="font-bold text-slate-700">Can this tool read blurred license plates or text?</h4>
-              <p className="mt-1">No. It is extremely important to understand that AI enhancement generates *new* pixels based on what it predicts *should* be there. It cannot magically reveal hidden information, uncover blurred passwords, or accurately reconstruct specific letters or numbers that were totally destroyed in the original file.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-700">Why did my browser tab freeze while processing?</h4>
-              <p className="mt-1">Running a generative neural network inside a web browser is incredibly resource-intensive. During the few seconds that the progress bar is moving, your device's CPU or GPU is working at 100% capacity to calculate millions of mathematical operations. A temporary interface freeze is entirely normal.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-700">Does the AI work better on illustrations or photographs?</h4>
-              <p className="mt-1">The default ESRGAN model loaded by this tool is a generic model trained on a massively diverse dataset. It performs exceptionally well on actual photographs (landscapes, people, objects) and reasonably well on digital art, though highly stylized 2D anime or flat vector graphics might sometimes exhibit slight painterly artifacts.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-700">Will this fix blurry photos taken with a shaky camera?</h4>
-              <p className="mt-1">It depends on the severity. The AI is primarily designed to fix "low resolution blur" (pixelation from zooming in). While it does apply intelligent sharpening that can rescue a slightly out-of-focus shot, it cannot fix severe motion blur caused by drastically moving the camera while the shutter was open.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-700">Are there any limits to the image size I can upload?</h4>
-              <p className="mt-1">Yes, to prevent your browser from instantly crashing due to memory exhaustion, we limit incoming uploads to a maximum of 5 Megabytes. If you upload a massive 4K image and ask the AI to upscale it by 4x, the resulting 16K image would require more RAM than most consumer computers possess.</p>
+            <h3 className="text-lg font-bold text-slate-800 mt-6">Transforming Old Memories and Digital Assets</h3>
+            <p>
+              The practical applications for true AI upscaling are virtually endless. Archivists and genealogists frequently use our tool to rescue tiny, scanned heritage photos from the 1990s, restoring the sharpness of their ancestors' faces. Digital artists who use AI image generators (like Midjourney or DALL-E) rely on our 4x upscaler to take their low-resolution draft outputs and expand them into massive, print-ready 4K masterpieces. Furthermore, small business owners often find themselves with a tiny thumbnail of their company logo and use our enhancer to reconstruct it cleanly without needing to hire a vector artist.
+            </p>
+            <p>
+              Keep in mind that while the AI is incredible at adding resolution, it drastically increases the file size of the image. After you have upscaled your photo, you will likely want to run the resulting file through our <a href="/image-compressor" className="text-violet-600 hover:underline">Image Compressor Tool</a> to optimize it for web delivery. Additionally, if the AI enhanced a beautiful portrait but you want to remove a distracting background, you can pass the high-resolution file directly into our <a href="/bg-remover" className="text-violet-600 hover:underline">Background Remover Tool</a> for a flawless, professional finish.
+            </p>
+
+            <img
+              src="/images/tools/image-enhancer-example.png"
+              alt="Visual comparison showing a blurry photo being sharpened by AI"
+              title="Image Enhancer Before and After Example"
+              loading="lazy"
+              className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
+            />
+
+            <h3 className="text-lg font-bold text-slate-800 mt-6">Optimizing Your Enhancement Workflow</h3>
+            <p>
+              Because this tool runs a massive mathematical model directly on your local hardware, the processing time will depend heavily on the speed of your device and the original dimensions of the photo. Attempting to apply a 4x multiplier to an image that is already 2000 pixels wide on an older smartphone may cause your browser to run out of memory and crash. For the best experience, we recommend using a modern desktop computer. If you only need to make a photo slightly larger for a social media post, try using the 2x scale option first, as it demands significantly less RAM and processing power while still providing a massive quality boost.
+            </p>
+
+            <h3 className="text-lg font-bold text-slate-800 mt-6">Unrivaled Upscaling Features</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li><strong>Real-ESRGAN Architecture:</strong> Built on industry-leading academic research specifically designed for reconstructing realistic textures like skin, fabric, and landscapes.</li>
+              <li><strong>Selectable Multipliers:</strong> Choose between a rapid 2x enhancement for quick social media fixes, or a demanding 4x super-resolution for large-format printing.</li>
+              <li><strong>Local Hardware Acceleration:</strong> Automatically attempts to utilize your device's GPU via WebGL to calculate the neural network matrix as quickly as possible.</li>
+              <li><strong>Interactive Live Viewer:</strong> Includes a satisfying before-and-after slider so you can deeply inspect the newly generated pixels before committing to the download.</li>
+              <li><strong>Completely Free & Uncapped:</strong> No watermarks, no daily limits, and no premium subscriptions required to access the full power of the AI model.</li>
+            </ul>
+
+            <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-bold text-slate-700">Can this tool read blurred license plates or text?</h4>
+                <p className="mt-1">No. It is extremely important to understand that AI enhancement generates *new* pixels based on what it predicts *should* be there. It cannot magically reveal hidden information, uncover blurred passwords, or accurately reconstruct specific letters or numbers that were totally destroyed in the original file.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-700">Why did my browser tab freeze while processing?</h4>
+                <p className="mt-1">Running a generative neural network inside a web browser is incredibly resource-intensive. During the few seconds that the progress bar is moving, your device's CPU or GPU is working at 100% capacity to calculate millions of mathematical operations. A temporary interface freeze is entirely normal.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-700">Does the AI work better on illustrations or photographs?</h4>
+                <p className="mt-1">The default ESRGAN model loaded by this tool is a generic model trained on a massively diverse dataset. It performs exceptionally well on actual photographs (landscapes, people, objects) and reasonably well on digital art, though highly stylized 2D anime or flat vector graphics might sometimes exhibit slight painterly artifacts.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-700">Will this fix blurry photos taken with a shaky camera?</h4>
+                <p className="mt-1">It depends on the severity. The AI is primarily designed to fix "low resolution blur" (pixelation from zooming in). While it does apply intelligent sharpening that can rescue a slightly out-of-focus shot, it cannot fix severe motion blur caused by drastically moving the camera while the shutter was open.</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-slate-700">Are there any limits to the image size I can upload?</h4>
+                <p className="mt-1">Yes, to prevent your browser from instantly crashing due to memory exhaustion, we limit incoming uploads to a maximum of 5 Megabytes. If you upload a massive 4K image and ask the AI to upscale it by 4x, the resulting 16K image would require more RAM than most consumer computers possess.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </ToolLayout >
+      </ToolLayout >
     </>
   )
 }
