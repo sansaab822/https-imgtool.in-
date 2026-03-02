@@ -268,6 +268,88 @@ export default function ImageToArt() {
                         </div>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">Turn Any Photo into a Work of Art — Free Online AI Art Filter</h2>
+                        <p>
+                            Art has always been about transformation — taking a moment, a face, a landscape, and reinterpreting it through a new creative lens. Historically, achieving that transformation required years of training, expensive software, or access to a professional artist. Today, you can do it in seconds. Our Image to Art converter applies sophisticated filter pipelines inspired by real artistic techniques to transform your ordinary photographs into visually stunning artworks across 16 distinct styles.
+                        </p>
+                        <p>
+                            Whether you want to see your portrait rendered in the rich, impasto texture of an oil painting, the flowing washes of a watercolor, the clean lines of a comic book panel, or the vibrant glow of a neon city — this tool handles the transformation instantly inside your browser. Nothing is uploaded. Everything stays private. And you can download high-quality results to use anywhere you want.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Exploring the 16 Art Styles</h3>
+                        <p>Each style is engineered to evoke a specific visual tradition. Here is what each one does to your photo:</p>
+                        <div className="grid sm:grid-cols-2 gap-3 mt-3">
+                            {[
+                                ['🖼️ Oil Painting', 'Rich contrast and deep saturated colors that mimic the layered brushwork of classical canvas paintings.'],
+                                ['🎨 Watercolor', 'Soft, slightly desaturated tones with a dreamy, paper-like transparency typical of watercolor illustration.'],
+                                ['✏️ Pencil Sketch', 'A full grayscale conversion with boosted contrast that replicates the look of hand-drawn graphite sketches.'],
+                                ['📽️ Vintage Film', 'Warm sepia tones and muted saturation that evoke analog film photography from the mid-20th century.'],
+                                ['🎬 Film Noir', 'Extreme high-contrast black and white with dramatic shadows reminiscent of classic detective cinema.'],
+                                ['🎪 Pop Art', "Ultra-saturated, almost posterized colors inspired by Andy Warhol and Lichtenstein's graphic art movement."],
+                                ['💡 Neon Glow', 'Vivid, electrically charged colors with a screen-blended cyan overlay for a nightclub or synthwave aesthetic.'],
+                                ['🤖 Cyberpunk', 'Purple-shifted hues with high contrast that suggests a dystopian sci-fi visual world.'],
+                            ].map(([name, desc]) => (
+                                <div key={name} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                                    <p className="font-bold text-slate-700 text-xs">{name}</p>
+                                    <p className="text-xs text-slate-500 mt-1">{desc}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Best Use Cases for Each Art Category</h3>
+                        <p>
+                            <strong>For portraits and headshots:</strong> Oil Painting and Watercolor styles work exceptionally well because they add a timeless, painterly quality to faces. The soft focus and tonal richness of these filters makes even casual smartphone selfies look gallery-worthy. These outputs are popular for social media profile photos, creative LinkedIn headers, and custom gifts like canvas prints.
+                        </p>
+                        <p>
+                            <strong>For landscapes and travel photos:</strong> Golden Hour, Dreamy, and Vintage Film styles pair beautifully with natural scenery. They warm the color palette, reduce harsh highlights, and add a nostalgic, editorial feel that makes travel photos look professionally edited without touching a single slider manually.
+                        </p>
+                        <p>
+                            <strong>For graphic design and brand content:</strong> Pop Art, Comic Book, Neon Glow, and Cyberpunk styles generate images with strong, bold visual energy that cuts through crowded social media feeds. Brands in music, gaming, streetwear, and creative industries frequently use these aesthetics for promotional materials, thumbnails, and event posters.
+                        </p>
+                        <p>
+                            <strong>For editorial and documentary work:</strong> Pencil Sketch, Film Noir, and Thermal Vision create dramatic, documentary-style visuals that work well for editorial illustrations, editorial photography, book covers, and conceptual projects.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Using Intensity and Vignette for Fine Control</h3>
+                        <p>
+                            Every artistic effect has an intensity slider ranging from 10% to 100%. At lower values, the style acts as a subtle enhancement — slightly warming or desaturating the image without overpowering the original. At maximum intensity, the full effect is applied. The sweet spot for most portrait styles is between 60-80%, which applies enough artistic character to be visually interesting while still keeping faces recognizable and natural.
+                        </p>
+                        <p>
+                            The vignette option adds a graduated dark shadow around the border of the image, drawing the viewer's eye toward the center. This technique has been used by photographers and painters for centuries to create focus and depth. It is particularly effective with Oil Painting, Vintage, and Film Noir styles. For Neon and Cyberpunk, vignette adds a moody, cinematic framing.
+                        </p>
+                        <p>
+                            After applying your chosen style, the before/after comparison slider lets you drag across the image to instantly compare the original and transformed versions side by side. This makes it easy to judge the effect before committing to a download.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Is this tool using actual AI to generate the art?</h4>
+                                <p className="mt-1">The styles use advanced CSS filter pipelines and canvas compositing — a form of client-side image processing rather than generative AI. This means results are instant, completely private, and don't require an internet connection once the page loads. Generative AI art creates entirely new images; this tool artistically transforms your existing photo.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I use the output images commercially?</h4>
+                                <p className="mt-1">Yes. You own both the original photo and the artistic output. There are no watermarks, no licensing fees, and no usage restrictions on images you create with this tool. They are yours to use freely in commercial projects, social media, print media, or anywhere else.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">What resolution is the output file?</h4>
+                                <p className="mt-1">The output file matches the exact pixel dimensions of your original uploaded photo. No resolution is lost during the processing. If you upload a 4000×3000 pixel photo, you get a 4000×3000 pixel artwork back at 95% JPEG quality.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Which photos work best with the art filters?</h4>
+                                <p className="mt-1">Photos with a clear subject, good lighting, and reasonable contrast tend to produce the most dramatic results. Overexposed or extremely dark photos may not show as much artistic character. For portraits, ensure the face is well-lit. For landscapes, golden hour photos with warm natural light respond especially beautifully to the available styles.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I apply multiple styles to the same image?</h4>
+                                <p className="mt-1">Yes. Simply select a different style, adjust the intensity, and click Apply again. Each time you apply, the effect is rendered from the original uploaded image — not stacked on top of a previous effect — so you can freely experiment with every style option without degradation.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ToolLayout>
         </>
     )

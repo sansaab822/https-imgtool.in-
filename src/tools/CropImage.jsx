@@ -266,6 +266,77 @@ export default function CropImage() {
                         </div>
                     </div>
                 </div>
+
+                {/* SEO Content */}
+                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                        <h2 className="text-2xl font-bold text-slate-800">What Is Image Cropping and Why Does It Matter?</h2>
+                        <p>
+                            Cropping is one of the most fundamental skills in digital photography and graphic design. At its core, it means selecting a specific rectangular region of an image and discarding everything outside that boundary. While the concept is simple, the impact on composition, visual storytelling, and file usability is enormous. A well-cropped photograph can transform a cluttered snapshot into a focused, powerful image. Removing distracting elements at the edges, straightening a tilted horizon, or zooming in on the subject without physically moving closer are all achieved through cropping.
+                        </p>
+                        <p>
+                            Our free online Image Cropper gives you professional-grade control over your images without requiring any software installation. Whether you are preparing a photo for social media, removing unwanted border artifacts from a scan, or resizing a product image for your online store, the tool handles all of it directly in your browser. Every operation happens locally — no file is sent to a server.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Real-World Examples of When to Crop</h3>
+                        <p>
+                            Understanding when and why to crop comes naturally once you start thinking about the final destination of your image. Here are some of the most common real scenarios where cropping makes a decisive difference:
+                        </p>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Social media profile photos:</strong> Twitter, LinkedIn, and Instagram all require square or near-square images. Use the 1:1 aspect ratio preset to ensure your portrait fills the frame without awkward letterboxing.</li>
+                            <li><strong>YouTube thumbnails and banners:</strong> YouTube thumbnails need to be exactly 16:9. Applying the 16:9 preset crops your image to lock in that exact ratio before resizing — preventing the platform from cropping it unpredictably.</li>
+                            <li><strong>Product photography:</strong> E-commerce platforms like Amazon and Shopify require product images to be square and centered. Cropping removes distracting studio backgrounds and focuses attention on the item.</li>
+                            <li><strong>Print photography:</strong> Print labs often require specific aspect ratios like 4:6, 5:7, or 8:10 inches. Cropping to those ratios before ordering prevents the lab from making unexpected auto-crops that cut off important parts of the image.</li>
+                            <li><strong>Document scanning:</strong> Scanned documents often have wide, uneven white borders from the flatbed scanner. Cropping them away makes the document cleaner and reduces the file size significantly.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Advanced Features That Make a Difference</h3>
+                        <p>
+                            Beyond a simple rectangular selection, our tool includes several features that professional editors rely on daily. The <strong>Rule of Thirds grid</strong> — the photographer's secret weapon — overlays the crop selection with guide lines dividing the image into thirds both horizontally and vertically. Aligning your subject along these lines or at their intersections creates images that feel naturally balanced and engaging to the human eye.
+                        </p>
+                        <p>
+                            The <strong>rotation controls</strong> let you straighten tilted photos before your final crop. This is invaluable for smartphone photos taken at an angle, scanned documents misaligned on the scanner bed, and horizon lines that dip one direction. Combine rotation with the crop in a single operation to avoid double-processing the image quality. The <strong>flip controls</strong> handle mirror-image corrections for self portraits, screenshots from certain devices, and scanned text that came out reversed.
+                        </p>
+                        <p>
+                            You can choose your output format from PNG (for transparency and lossless quality), JPG (for smaller sharing-ready photos), or WebP (for web-optimized images that load faster). Each format serves a distinct purpose, and having the choice built right into the crop workflow saves you from needing a second tool.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Advantages of Cropping in the Browser vs Desktop Software</h3>
+                        <p>
+                            Traditional image editors like Photoshop or even free alternatives like GIMP are powerful but heavyweight. They require installation, loading times, project management, and often a learning curve just to perform a simple crop. Our browser-based cropper is available immediately — no downloads, no updates, no licensing fees, no account creation. Open the page, upload your image, crop it, and download the result. The entire workflow from start to finish typically takes under thirty seconds.
+                        </p>
+                        <p>
+                            Privacy is another significant advantage. Unlike cloud-based tools that upload your images to their servers for processing, every pixel of your image stays on your device from start to finish. This matters enormously for sensitive content like personal photos, legal documents, medical imagery, and business confidential materials.
+                        </p>
+                        <p>
+                            If you need to go further after cropping — for example resizing the cropped image to exact pixel dimensions, compressing it for web upload, or converting it to a different format — our <a href="/image-resizer" className="text-pink-600 hover:underline">Image Resizer</a>, <a href="/image-compressor" className="text-pink-600 hover:underline">Image Compressor</a>, and format converter tools are just one click away in the navigation.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Does cropping reduce image quality?</h4>
+                                <p className="mt-1">Cropping itself doesn't reduce quality — it simply removes pixels from outside the selected area. If you export as PNG, the remaining cropped area is pixel-perfect. Exporting as JPG applies compression, but at the default quality of 92%, any quality reduction is invisible at normal viewing distances.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I crop to an exact pixel size?</h4>
+                                <p className="mt-1">The cropper shows pixel dimensions live as you drag the selection. For an exact pixel-size output, crop to your desired ratio first, then use our Image Resizer to set the precise final dimensions in pixels.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">What image formats can I upload?</h4>
+                                <p className="mt-1">The tool accepts any format your browser can display natively — JPG, PNG, WebP, GIF, AVIF, BMP, and more. The upload accepts any file your browser recognizes as an image.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Will rotating an image degrade the quality?</h4>
+                                <p className="mt-1">When you rotate and then crop in a single operation (which our tool does), quality loss is minimized because the image is only drawn once to a canvas. Avoid applying multiple separate rotation passes to the same image.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Can I use this on my phone?</h4>
+                                <p className="mt-1">Yes. The tool is fully responsive and works on iPhone and Android browsers. The crop selection supports touch gestures so you can drag and resize the crop box on a touchscreen exactly as you would on a desktop.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ToolLayout>
         </>
     )
