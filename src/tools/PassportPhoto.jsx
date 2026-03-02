@@ -6,6 +6,15 @@ const SIZES = [
     { name: 'Standard Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
     { name: 'US Passport', w: 51, h: 51, unit: 'mm', desc: '51×51mm (2×2")', cat: 'Passport' },
     { name: 'UK Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
+    { name: 'UAE Passport', w: 40, h: 60, unit: 'mm', desc: '40×60mm', cat: 'Passport' },
+    { name: 'Saudi Arabia', w: 40, h: 60, unit: 'mm', desc: '40×60mm', cat: 'Passport' },
+    { name: 'Canada Passport', w: 50, h: 70, unit: 'mm', desc: '50×70mm', cat: 'Passport' },
+    { name: 'Germany Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
+    { name: 'Australia Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
+    { name: 'China Passport', w: 33, h: 48, unit: 'mm', desc: '33×48mm', cat: 'Passport' },
+    { name: 'Japan Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
+    { name: 'France Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
+    { name: 'Italy Passport', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Passport' },
     { name: 'Schengen Visa', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'Visa' },
     { name: 'US Visa', w: 51, h: 51, unit: 'mm', desc: '51×51mm', cat: 'Visa' },
     { name: 'Aadhaar/PAN Card', w: 35, h: 45, unit: 'mm', desc: '35×45mm', cat: 'ID' },
@@ -32,6 +41,20 @@ const LAYOUTS = [
     { count: 8, cols: 4, label: '8 Photos (4×2)' },
 ]
 
+const PAPER_SIZES = [
+    { id: 'a4', label: 'A4', w: 210, h: 297, desc: '210×297mm' },
+    { id: 'letter', label: 'Letter', w: 216, h: 279, desc: '8.5×11"' },
+    { id: 'a5', label: 'A5', w: 148, h: 210, desc: '148×210mm' },
+]
+
+const DPI_OPTIONS = [
+    { value: 200, label: '200 DPI', desc: 'Web/Screen' },
+    { value: 300, label: '300 DPI', desc: 'Print' },
+    { value: 600, label: '600 DPI', desc: 'High Print' },
+]
+
+const CATS = ['Passport', 'Visa', 'ID', 'Exam', 'Custom']
+
 export default function PassportPhoto() {
     const [photo, setPhoto] = useState(null)
     const [selectedSize, setSelectedSize] = useState(SIZES[0])
@@ -44,10 +67,13 @@ export default function PassportPhoto() {
     const [processing, setProcessing] = useState(false)
     const [dragging, setDragging] = useState(false)
     const [sizeCat, setSizeCat] = useState('Passport')
+    const [printDpi, setPrintDpi] = useState(300)
+    const [printPaper, setPrintPaper] = useState(PAPER_SIZES[0])
+    const [showGuides, setShowGuides] = useState(true)
     const inputRef = useRef()
     const imgRef = useRef()
 
-    const mmToPx = (mm) => Math.round(mm * 300 / 25.4) // 300 DPI
+    const mmToPx = (mm) => Math.round(mm * printDpi / 25.4)
 
     const loadFile = useCallback((file) => {
         if (!file || !file.type.startsWith('image/')) return
@@ -140,8 +166,6 @@ export default function PassportPhoto() {
         setProcessing(false)
     }
 
-    const cats = [...new Set(SIZES.map(s => s.cat))]
-
     return (
         <>
             <SEO title="Passport Size Photo Maker - Free Online" description="Create passport size photos for any document. Multiple sizes for passport, visa, ID cards, and exams. Print-ready A4 PDF layout." canonical="/passport-size-photo" />
@@ -221,7 +245,7 @@ export default function PassportPhoto() {
                             <div>
                                 <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Category</label>
                                 <div className="flex gap-1.5 flex-wrap">
-                                    {cats.map(c => (
+                                    {CATS.map(c => (
                                         <button key={c} onClick={() => setSizeCat(c)}
                                             className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${sizeCat === c ? 'bg-blue-500 text-white' : 'bg-slate-50 text-slate-500 hover:bg-blue-50'}`}>
                                             {c}
@@ -284,9 +308,49 @@ export default function PassportPhoto() {
                             {/* Quality */}
                             <div>
                                 <label className="flex justify-between text-[10px] text-slate-500 font-medium mb-1">
-                                    <span>Print Quality</span><span className="font-bold text-blue-600">{quality}%</span>
+                                    <span>JPEG Quality</span><span className="font-bold text-blue-600">{quality}%</span>
                                 </label>
                                 <input type="range" min="70" max="100" value={quality} onChange={e => setQuality(+e.target.value)} className="slider-range w-full" />
+                            </div>
+
+                            {/* DPI */}
+                            <div>
+                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Output DPI</label>
+                                <div className="grid grid-cols-3 gap-1.5">
+                                    {DPI_OPTIONS.map(d => (
+                                        <button key={d.value} onClick={() => setPrintDpi(d.value)}
+                                            className={`py-2 rounded-lg text-center transition-all ${printDpi === d.value ? 'bg-indigo-500 text-white' : 'bg-slate-50 text-slate-600 hover:bg-indigo-50'}`}>
+                                            <p className="text-xs font-bold">{d.label}</p>
+                                            <p className="text-[9px] opacity-70">{d.desc}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Paper Size */}
+                            <div>
+                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Print Paper Size</label>
+                                <div className="grid grid-cols-3 gap-1.5">
+                                    {PAPER_SIZES.map(p => (
+                                        <button key={p.id} onClick={() => setPrintPaper(p)}
+                                            className={`py-2 rounded-lg text-center transition-all ${printPaper.id === p.id ? 'bg-blue-500 text-white' : 'bg-slate-50 text-slate-600 hover:bg-blue-50'}`}>
+                                            <p className="text-xs font-bold">{p.label}</p>
+                                            <p className="text-[9px] opacity-70">{p.desc}</p>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Cut Guides */}
+                            <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
+                                <div>
+                                    <p className="text-xs font-bold text-slate-700">Cut Guide Lines</p>
+                                    <p className="text-[10px] text-slate-400">Dashed lines for trimming</p>
+                                </div>
+                                <button onClick={() => setShowGuides(g => !g)}
+                                    className={`w-10 h-5 rounded-full transition-all ${showGuides ? 'bg-blue-500' : 'bg-slate-300'} relative`}>
+                                    <span className={`block w-4 h-4 bg-white rounded-full shadow transition-all absolute top-0.5 ${showGuides ? 'left-5' : 'left-0.5'}`} />
+                                </button>
                             </div>
 
                             {/* Generate */}

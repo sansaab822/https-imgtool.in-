@@ -294,12 +294,7 @@ export default function PdfToImage({ to = 'jpg' }) {
                         </div>
 
                         <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl border border-red-100 p-4 space-y-2">
-                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-shield-halved text-red-500 mr-2"></i>Features</h4>
-                            {['Full page preview loading', 'Page-by-page selection', 'DPI quality control (72–300)', 'JPG & PNG output formats', 'Download all as ZIP', '100% browser-based — no uploads'].map(f => (
-                                <div key={f} className="flex items-center gap-2 text-xs text-slate-600">
-                                    <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
-                                </div>
-                            ))}
+                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-shield-halved text-red-500 mr-2"></i>Premium Features</h4>
                             {['Full page preview loading', 'Page-by-page selection', 'DPI quality control (72–300)', 'JPG & PNG output formats', 'Download all as ZIP', '100% browser-based — no uploads'].map(f => (
                                 <div key={f} className="flex items-center gap-2 text-xs text-slate-600">
                                     <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
