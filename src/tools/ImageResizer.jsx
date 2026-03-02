@@ -13,6 +13,8 @@ const PRESETS = [
     { name: 'YouTube Thumb', w: 1280, h: 720, cat: 'Social' },
     { name: 'LinkedIn Banner', w: 1584, h: 396, cat: 'Social' },
     { name: 'Pinterest Pin', w: 1000, h: 1500, cat: 'Social' },
+    { name: 'WhatsApp DP', w: 500, h: 500, cat: 'Social' },
+    { name: 'TikTok', w: 1080, h: 1920, cat: 'Social' },
     { name: 'Thumbnail', w: 320, h: 180, cat: 'General' },
     { name: 'A4 (300dpi)', w: 2480, h: 3508, cat: 'Print' },
     { name: 'A3 (300dpi)', w: 3508, h: 4961, cat: 'Print' },
@@ -46,8 +48,12 @@ export default function ImageResizer() {
     const [dragging, setDragging] = useState(false)
     const [presetCat, setPresetCat] = useState('Social')
     const [resizing, setResizing] = useState(false)
+    const [showCompare, setShowCompare] = useState(false)
+    const [compareX, setCompareX] = useState(50)
+    const [isDraggingSlider, setIsDraggingSlider] = useState(false)
     const imgRef = useRef()
     const inputRef = useRef()
+    const compareRef = useRef()
 
     const loadFile = useCallback((file) => {
         if (!file || !file.type.startsWith('image/')) return
@@ -138,6 +144,13 @@ export default function ImageResizer() {
 
     const formatSize = (b) => b < 1024 ? `${b} B` : b < 1048576 ? `${(b / 1024).toFixed(1)} KB` : `${(b / 1048576).toFixed(2)} MB`
 
+    const onCompareMove = useCallback((e) => {
+        if (!isDraggingSlider || !compareRef.current) return
+        const rect = compareRef.current.getBoundingClientRect()
+        const cx = e.touches ? e.touches[0].clientX : e.clientX
+        setCompareX(Math.min(100, Math.max(0, ((cx - rect.left) / rect.width) * 100)))
+    }, [isDraggingSlider])
+
     const categories = [...new Set(PRESETS.map(p => p.cat))]
 
     return (
@@ -182,10 +195,39 @@ export default function ImageResizer() {
                                     </button>
                                 </div>
 
-                                {/* Preview */}
-                                <div className="bg-slate-50 rounded-xl p-3 flex items-center justify-center min-h-[200px]">
-                                    <img ref={imgRef} src={result?.url || image.url} alt="Preview" className="max-h-[350px] max-w-full object-contain rounded-lg" />
-                                </div>
+                                {/* Preview / Comparison Slider */}
+                                {result && showCompare ? (
+                                    <div
+                                        ref={compareRef}
+                                        className="bg-slate-50 rounded-xl overflow-hidden relative select-none"
+                                        style={{ minHeight: 250, cursor: 'col-resize' }}
+                                        onMouseDown={() => setIsDraggingSlider(true)}
+                                        onTouchStart={() => setIsDraggingSlider(true)}
+                                        onMouseMove={onCompareMove}
+                                        onTouchMove={onCompareMove}
+                                        onMouseUp={() => setIsDraggingSlider(false)}
+                                        onTouchEnd={() => setIsDraggingSlider(false)}
+                                        onMouseLeave={() => setIsDraggingSlider(false)}
+                                    >
+                                        <img src={image.url} alt="Original" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+                                        <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ clipPath: `inset(0 ${100 - compareX}% 0 0)` }}>
+                                            <div className="absolute inset-0 bg-slate-50" />
+                                            <img src={result.url} alt="Resized" className="absolute inset-0 w-full h-full object-contain" />
+                                        </div>
+                                        <div className="absolute top-0 bottom-0 z-20 pointer-events-none" style={{ left: `${compareX}%` }}>
+                                            <div className="absolute inset-y-0 -translate-x-px w-0.5 bg-white shadow-lg" />
+                                            <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 bg-white rounded-full shadow-xl flex items-center justify-center border-2 border-cyan-100">
+                                                <i className="fas fa-arrows-left-right text-cyan-500 text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <div className="absolute top-2 left-2 z-10 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded-lg pointer-events-none">ORIGINAL {image.origW}×{image.origH}</div>
+                                        <div className="absolute top-2 right-2 z-10 bg-cyan-600/90 text-white text-[10px] font-bold px-2 py-1 rounded-lg pointer-events-none">RESIZED {result.w}×{result.h}</div>
+                                    </div>
+                                ) : (
+                                    <div className="bg-slate-50 rounded-xl p-3 flex items-center justify-center min-h-[200px]">
+                                        <img ref={imgRef} src={result?.url || image.url} alt="Preview" className="max-h-[350px] max-w-full object-contain rounded-lg" />
+                                    </div>
+                                )}
 
                                 {/* Result Info */}
                                 {result && (
@@ -195,9 +237,15 @@ export default function ImageResizer() {
                                             <span className="text-sm font-bold text-green-800">Resized to {result.w}×{result.h}px</span>
                                             <span className="text-xs text-green-600">({formatSize(result.size)})</span>
                                         </div>
-                                        <a href={result.url} download={result.name} className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition-all">
-                                            <i className="fas fa-download"></i> Download
-                                        </a>
+                                        <div className="flex items-center gap-2">
+                                            <button onClick={() => { setShowCompare(c => !c); setCompareX(50) }}
+                                                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${showCompare ? 'bg-cyan-500 text-white' : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'}`}>
+                                                <i className="fas fa-eye mr-1"></i>Compare
+                                            </button>
+                                            <a href={result.url} download={result.name} className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition-all">
+                                                <i className="fas fa-download"></i> Download
+                                            </a>
+                                        </div>
                                     </div>
                                 )}
                             </div>
