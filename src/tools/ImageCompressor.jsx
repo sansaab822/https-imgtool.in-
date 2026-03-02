@@ -11,21 +11,44 @@ const PRESETS = [
 const OUTPUT_FORMATS = [
     { id: 'original', label: 'Keep Original', mime: null },
     { id: 'jpg', label: 'JPG', mime: 'image/jpeg' },
-    { id: 'webp', label: 'WebP', mime: 'image/webp' },
+    { id: 'webp', label: 'WebP ✨', mime: 'image/webp' },
     { id: 'png', label: 'PNG', mime: 'image/png' },
+    { id: 'avif', label: 'AVIF 🔥', mime: 'image/avif' },
 ]
+
+// Binary-search compress to a target byte size
+async function compressToTargetSize(img, mime, targetBytes) {
+    let lo = 10, hi = 95, bestBlob = null
+    for (let iter = 0; iter < 12; iter++) {
+        const mid = Math.round((lo + hi) / 2)
+        const canvas = document.createElement('canvas')
+        canvas.width = img.naturalWidth; canvas.height = img.naturalHeight
+        const ctx = canvas.getContext('2d')
+        if (mime === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height) }
+        ctx.drawImage(img, 0, 0)
+        const blob = await new Promise(r => canvas.toBlob(r, mime, mid / 100))
+        if (!blob) break
+        bestBlob = blob
+        if (blob.size <= targetBytes) lo = mid + 1
+        else hi = mid - 1
+        if (lo > hi) break
+    }
+    return bestBlob
+}
 
 export default function ImageCompressor() {
     const [files, setFiles] = useState([])
     const [results, setResults] = useState([])
     const [quality, setQuality] = useState(75)
-    const [outputFmt, setOutputFmt] = useState('original')
+    const [outputFmt, setOutputFmt] = useState('webp')
     const [compressing, setCompressing] = useState(false)
     const [progress, setProgress] = useState(0)
     const [dragging, setDragging] = useState(false)
     const [compareIdx, setCompareIdx] = useState(null)
     const [compareX, setCompareX] = useState(50)
     const [isDraggingSlider, setIsDraggingSlider] = useState(false)
+    const [useTargetSize, setUseTargetSize] = useState(false)
+    const [targetKB, setTargetKB] = useState(200)
     const inputRef = useRef()
     const compareRef = useRef()
 
@@ -69,17 +92,18 @@ export default function ImageCompressor() {
                 const img = new Image()
                 img.src = f.preview
                 await new Promise(r => { img.onload = r })
-                const canvas = document.createElement('canvas')
-                canvas.width = img.naturalWidth
-                canvas.height = img.naturalHeight
-                const ctx = canvas.getContext('2d')
                 const mime = getMime(f.file)
-                if (mime === 'image/jpeg') {
-                    ctx.fillStyle = '#ffffff'
-                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+                let blob
+                if (useTargetSize) {
+                    blob = await compressToTargetSize(img, mime, targetKB * 1024)
+                } else {
+                    const canvas = document.createElement('canvas')
+                    canvas.width = img.naturalWidth; canvas.height = img.naturalHeight
+                    const ctx = canvas.getContext('2d')
+                    if (mime === 'image/jpeg') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height) }
+                    ctx.drawImage(img, 0, 0)
+                    blob = await new Promise(r => canvas.toBlob(r, mime, quality / 100))
                 }
-                ctx.drawImage(img, 0, 0)
-                const blob = await new Promise(r => canvas.toBlob(r, mime, quality / 100))
                 const baseName = f.name.replace(/\.[^.]+$/, '')
                 const ext = getExt(f.file)
                 out.push({
@@ -88,8 +112,8 @@ export default function ImageCompressor() {
                     name: `${baseName}_compressed.${ext}`,
                     originalSize: f.size,
                     compressedSize: blob.size,
-                    width: canvas.width,
-                    height: canvas.height,
+                    width: img.naturalWidth,
+                    height: img.naturalHeight,
                     savedPct: Math.round((1 - blob.size / f.size) * 100),
                 })
             } catch (err) {
@@ -301,32 +325,69 @@ export default function ImageCompressor() {
                                 <i className="fas fa-gear text-orange-500"></i> Compression Settings
                             </h3>
 
-                            {/* Preset Buttons */}
-                            <div>
-                                <label className="block text-xs font-medium text-slate-600 mb-2">Quick Presets</label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {PRESETS.map(p => (
-                                        <button key={p.label} onClick={() => setQuality(p.quality)}
-                                            className={`py-2.5 rounded-xl text-center transition-all ${quality === p.quality ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20' : 'bg-slate-50 hover:bg-orange-50 text-slate-600'}`}>
-                                            <i className={`fas ${p.icon} ${quality === p.quality ? 'text-white' : p.color} text-sm mb-0.5`}></i>
-                                            <p className="text-xs font-bold">{p.label}</p>
-                                            <p className="text-[10px] opacity-75">{p.desc}</p>
-                                        </button>
-                                    ))}
-                                </div>
+                            {/* Mode Toggle */}
+                            <div className="flex rounded-lg overflow-hidden border border-slate-200">
+                                <button onClick={() => setUseTargetSize(false)}
+                                    className={`flex-1 py-2 text-xs font-bold transition-all ${!useTargetSize ? 'bg-orange-500 text-white' : 'bg-white text-slate-500 hover:bg-slate-50'}`}>
+                                    <i className="fas fa-sliders mr-1"></i>Quality Mode
+                                </button>
+                                <button onClick={() => setUseTargetSize(true)}
+                                    className={`flex-1 py-2 text-xs font-bold transition-all ${useTargetSize ? 'bg-orange-500 text-white' : 'bg-white text-slate-500 hover:bg-slate-50'}`}>
+                                    <i className="fas fa-bullseye mr-1"></i>Target Size
+                                </button>
                             </div>
 
-                            {/* Quality Slider */}
-                            <div>
-                                <label className="flex justify-between text-xs font-medium text-slate-600 mb-2">
-                                    <span>Quality</span>
-                                    <span className={`font-bold ${quality >= 80 ? 'text-green-600' : quality >= 50 ? 'text-amber-600' : 'text-red-500'}`}>{quality}%</span>
-                                </label>
-                                <input type="range" min="10" max="100" value={quality} onChange={e => setQuality(+e.target.value)} className="slider-range w-full" />
-                                <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-                                    <span>Maximum compression</span><span>Maximum quality</span>
+                            {useTargetSize ? (
+                                <div>
+                                    <label className="block text-xs font-medium text-slate-600 mb-2">
+                                        Target File Size
+                                        <span className="ml-1 text-[10px] text-slate-400">(compress TO this size)</span>
+                                    </label>
+                                    <div className="flex items-center gap-2">
+                                        <input type="number" value={targetKB} onChange={e => setTargetKB(+e.target.value)} min="10" max="10000"
+                                            className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold focus:border-orange-500 outline-none" />
+                                        <span className="text-sm font-bold text-slate-500">KB</span>
+                                    </div>
+                                    <div className="flex gap-1.5 mt-2">
+                                        {[50, 100, 200, 500, 1000].map(kb => (
+                                            <button key={kb} onClick={() => setTargetKB(kb)}
+                                                className={`flex-1 py-1 rounded text-[10px] font-bold transition-all ${targetKB === kb ? 'bg-orange-500 text-white' : 'bg-slate-50 text-slate-500 hover:bg-orange-50'}`}>
+                                                {kb >= 1000 ? `${kb / 1000}MB` : `${kb}KB`}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <p className="text-[10px] text-slate-400 mt-1.5"><i className="fas fa-info-circle mr-1"></i>Uses binary search — may take a moment</p>
                                 </div>
-                            </div>
+                            ) : (
+                                <>
+                                    {/* Preset Buttons */}
+                                    <div>
+                                        <label className="block text-xs font-medium text-slate-600 mb-2">Quick Presets</label>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {PRESETS.map(p => (
+                                                <button key={p.label} onClick={() => setQuality(p.quality)}
+                                                    className={`py-2.5 rounded-xl text-center transition-all ${quality === p.quality ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20' : 'bg-slate-50 hover:bg-orange-50 text-slate-600'}`}>
+                                                    <i className={`fas ${p.icon} ${quality === p.quality ? 'text-white' : p.color} text-sm mb-0.5`}></i>
+                                                    <p className="text-xs font-bold">{p.label}</p>
+                                                    <p className="text-[10px] opacity-75">{p.desc}</p>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Quality Slider */}
+                                    <div>
+                                        <label className="flex justify-between text-xs font-medium text-slate-600 mb-2">
+                                            <span>Quality</span>
+                                            <span className={`font-bold ${quality >= 80 ? 'text-green-600' : quality >= 50 ? 'text-amber-600' : 'text-red-500'}`}>{quality}%</span>
+                                        </label>
+                                        <input type="range" min="10" max="100" value={quality} onChange={e => setQuality(+e.target.value)} className="slider-range w-full" />
+                                        <div className="flex justify-between text-[10px] text-slate-400 mt-1">
+                                            <span>Maximum compression</span><span>Maximum quality</span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
 
                             {/* Output Format */}
                             <div>
@@ -339,7 +400,32 @@ export default function ImageCompressor() {
                                         </button>
                                     ))}
                                 </div>
+                                {outputFmt === 'avif' && <p className="text-[10px] text-amber-600 mt-1"><i className="fas fa-triangle-exclamation mr-1"></i>AVIF: best compression, may be slower</p>}
+                                {outputFmt === 'webp' && <p className="text-[10px] text-green-600 mt-1"><i className="fas fa-star mr-1"></i>WebP: recommended — 30% smaller than JPG</p>}
                             </div>
+
+                            {/* File Size Savings Preview */}
+                            {files.length > 0 && !results.length && (
+                                <div className="bg-slate-50 rounded-lg p-3 space-y-1.5">
+                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Queue Summary</p>
+                                    <div className="flex justify-between text-xs">
+                                        <span className="text-slate-600">{files.length} image{files.length > 1 ? 's' : ''}</span>
+                                        <span className="font-bold text-slate-700">{formatSize(files.reduce((a, f) => a + f.size, 0))} total</span>
+                                    </div>
+                                    {!useTargetSize && (
+                                        <div>
+                                            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
+                                                <span>Est. savings at {quality}% quality</span>
+                                                <span className="text-green-600 font-bold">~{Math.max(0, Math.round((1 - quality / 100) * 55))}–{Math.max(0, Math.round((1 - quality / 100) * 75))}%</span>
+                                            </div>
+                                            <div className="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                                                <div className="h-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all"
+                                                    style={{ width: `${Math.min(95, Math.max(0, Math.round((1 - quality / 100) * 65)))}%` }} />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             {/* Compress Button */}
                             <button
@@ -357,8 +443,8 @@ export default function ImageCompressor() {
 
                         {/* Features */}
                         <div className="bg-gradient-to-br from-orange-50 to-rose-50 rounded-xl border border-orange-100 p-4 space-y-2">
-                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-bolt text-orange-500 mr-2"></i>Features</h4>
-                            {['Batch compress multiple images', 'Visual before/after comparison', 'Output format selection', 'Download all as ZIP', '100% browser-based — no uploads'].map(f => (
+                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-bolt text-orange-500 mr-2"></i>Premium Features</h4>
+                            {['Target-KB compress mode', 'AVIF & WebP next-gen output', 'Batch compress + ZIP download', 'Visual before/after comparison', 'Binary-search quality optimizer', '100% browser-based — no uploads'].map(f => (
                                 <div key={f} className="flex items-center gap-2 text-xs text-slate-600">
                                     <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
                                 </div>

@@ -17,11 +17,22 @@ const BG_PRESETS = [
     { id: '#0ea5e9', label: 'Sky Blue' },
 ]
 
+const GRADIENT_PRESETS = [
+    { id: 'grad-sunset', label: 'Sunset', css: 'linear-gradient(135deg,#ff6b6b,#ffd93d)' },
+    { id: 'grad-ocean', label: 'Ocean', css: 'linear-gradient(135deg,#2196f3,#00bcd4)' },
+    { id: 'grad-forest', label: 'Forest', css: 'linear-gradient(135deg,#4caf50,#8bc34a)' },
+    { id: 'grad-purple', label: 'Purple', css: 'linear-gradient(135deg,#9c27b0,#673ab7)' },
+    { id: 'grad-rose', label: 'Rose', css: 'linear-gradient(135deg,#e91e63,#f06292)' },
+    { id: 'grad-midnight', label: 'Night', css: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364)' },
+]
+
 const CHECKER = {
     backgroundImage: 'conic-gradient(#e2e8f0 25%, white 0) 0 0 / 20px 20px',
 }
 
 function getContainerStyle(bgColor) {
+    const grad = GRADIENT_PRESETS.find(g => g.id === bgColor)
+    if (grad) return { background: grad.css }
     return bgColor === 'transparent' ? CHECKER : { backgroundColor: bgColor }
 }
 
@@ -39,6 +50,9 @@ export default function BgRemover() {
     const [isDragging, setIsDragging] = useState(false)
     const [dropOver, setDropOver] = useState(false)
     const [errorMsg, setErrorMsg] = useState(null)
+    const [edgeFeather, setEdgeFeather] = useState(0)
+    const [dlFormat, setDlFormat] = useState('png')
+    const [bgTab, setBgTab] = useState('solid')
     const progressTimer = useRef(null)
     const compareRef = useRef()
     const inputRef = useRef()
@@ -61,10 +75,10 @@ export default function BgRemover() {
         if (image && !transparentBlob && !processing) doRemove()
     }, [image])
 
-    // Reapply bg when color changes and we have the transparent blob
+    // Reapply bg when color/feather changes and we have the transparent blob
     useEffect(() => {
-        if (transparentBlob && !processing) applyBg(transparentBlob, bgColor)
-    }, [bgColor, transparentBlob])
+        if (transparentBlob && !processing) applyBg(transparentBlob, bgColor, edgeFeather)
+    }, [bgColor, transparentBlob, edgeFeather])
 
     // ── Fake progress ticker ───────────────────────────────────────────────
     const startProgress = (msgs) => {
@@ -83,12 +97,11 @@ export default function BgRemover() {
         setTimeout(() => setProgress(0), 800)
     }
 
-    // ── Apply solid/transparent background over result ─────────────────────
-    const applyBg = async (blob, color) => {
+    // ── Apply solid/gradient/transparent background over result ───────────
+    const applyBg = async (blob, color, feather = edgeFeather) => {
         const url = URL.createObjectURL(blob)
-        const cleanUrl = url
-        if (color === 'transparent') {
-            setDisplayUrl(cleanUrl)
+        if (color === 'transparent' && feather === 0) {
+            setDisplayUrl(url)
             return
         }
         const img = new Image()
@@ -98,11 +111,41 @@ export default function BgRemover() {
         c.width = img.naturalWidth
         c.height = img.naturalHeight
         const ctx = c.getContext('2d')
-        ctx.fillStyle = color
-        ctx.fillRect(0, 0, c.width, c.height)
-        ctx.drawImage(img, 0, 0)
+
+        if (color !== 'transparent') {
+            const grad = GRADIENT_PRESETS.find(g => g.id === color)
+            if (grad) {
+                // Parse gradient stops into canvas gradient
+                const grd = ctx.createLinearGradient(0, 0, c.width, c.height)
+                grd.addColorStop(0, grad.css.match(/#[a-f0-9]+/gi)?.[0] || '#000')
+                grd.addColorStop(1, grad.css.match(/#[a-f0-9]+/gi)?.[1] || '#fff')
+                ctx.fillStyle = grd
+            } else {
+                ctx.fillStyle = color
+            }
+            ctx.fillRect(0, 0, c.width, c.height)
+        }
+
+        // Apply edge feather if requested
+        if (feather > 0) {
+            const offscreen = document.createElement('canvas')
+            offscreen.width = c.width; offscreen.height = c.height
+            const octx = offscreen.getContext('2d')
+            octx.drawImage(img, 0, 0)
+            const idata = octx.getImageData(0, 0, c.width, c.height)
+            const d = idata.data
+            // Simple alpha erosion for feathered edges
+            for (let i = 3; i < d.length; i += 4) {
+                if (d[i] > 0 && d[i] < 255) d[i] = Math.max(0, d[i] - feather * 2)
+            }
+            octx.putImageData(idata, 0, 0)
+            ctx.drawImage(offscreen, 0, 0)
+        } else {
+            ctx.drawImage(img, 0, 0)
+        }
         URL.revokeObjectURL(url)
-        c.toBlob(b => setDisplayUrl(URL.createObjectURL(b)), 'image/jpeg', 0.96)
+        const mime = color === 'transparent' ? 'image/png' : dlFormat === 'png' ? 'image/png' : dlFormat === 'webp' ? 'image/webp' : 'image/jpeg'
+        c.toBlob(b => setDisplayUrl(URL.createObjectURL(b)), mime, 0.96)
     }
 
     // ── Main AI removal ────────────────────────────────────────────────────
@@ -375,40 +418,86 @@ export default function BgRemover() {
                             {/* Background color picker */}
                             <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-3">
                                 <h3 className="font-bold text-slate-800 text-sm flex items-center gap-2">
-                                    <i className="fas fa-palette text-purple-500"></i>Background Color
+                                    <i className="fas fa-palette text-purple-500"></i>Background
                                 </h3>
-                                <div className="grid grid-cols-4 gap-2">
-                                    {BG_PRESETS.map(p => (
-                                        <button
-                                            key={p.id}
-                                            onClick={() => setBgColor(p.id)}
-                                            title={p.label}
-                                            className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:scale-105 ${bgColor === p.id ? 'border-purple-500 scale-105 shadow-md' : 'border-transparent hover:border-slate-300'
-                                                }`}
-                                            style={p.id === 'transparent' ? CHECKER : { backgroundColor: p.id }}
-                                        >
-                                            {bgColor === p.id && (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                                                    <i className="fas fa-check text-white text-xs drop-shadow-lg"></i>
-                                                </div>
-                                            )}
+
+                                {/* Tabs */}
+                                <div className="flex rounded-lg overflow-hidden border border-slate-200">
+                                    {[['solid', '🎨 Solid'], ['gradient', '🌈 Gradient']].map(([id, label]) => (
+                                        <button key={id} onClick={() => setBgTab(id)}
+                                            className={`flex-1 py-1.5 text-xs font-bold transition-all ${bgTab === id ? 'bg-purple-500 text-white' : 'bg-white text-slate-500 hover:bg-slate-50'}`}>
+                                            {label}
                                         </button>
                                     ))}
                                 </div>
 
-                                {/* Custom color */}
-                                <div className="flex items-center gap-2 pt-1">
-                                    <span className="text-xs text-slate-500 font-medium flex-shrink-0">Custom:</span>
-                                    <label className="relative" style={{ cursor: 'pointer' }}>
-                                        <input type="color" value={customColor} onChange={e => setCustomColor(e.target.value)}
-                                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
-                                        <div className="w-9 h-9 rounded-lg border-2 border-slate-200" style={{ backgroundColor: customColor }} />
+                                {bgTab === 'solid' ? (
+                                    <>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {BG_PRESETS.map(p => (
+                                                <button
+                                                    key={p.id}
+                                                    onClick={() => setBgColor(p.id)}
+                                                    title={p.label}
+                                                    className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:scale-105 ${bgColor === p.id ? 'border-purple-500 scale-105 shadow-md' : 'border-transparent hover:border-slate-300'}`}
+                                                    style={p.id === 'transparent' ? CHECKER : { backgroundColor: p.id }}
+                                                >
+                                                    {bgColor === p.id && (
+                                                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                                            <i className="fas fa-check text-white text-xs drop-shadow-lg"></i>
+                                                        </div>
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        {/* Custom color */}
+                                        <div className="flex items-center gap-2 pt-1">
+                                            <span className="text-xs text-slate-500 font-medium flex-shrink-0">Custom:</span>
+                                            <label className="relative" style={{ cursor: 'pointer' }}>
+                                                <input type="color" value={customColor} onChange={e => setCustomColor(e.target.value)}
+                                                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
+                                                <div className="w-9 h-9 rounded-lg border-2 border-slate-200" style={{ backgroundColor: customColor }} />
+                                            </label>
+                                            <button
+                                                onClick={() => setBgColor(customColor)}
+                                                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${bgColor === customColor ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                                            >Apply Custom</button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {GRADIENT_PRESETS.map(g => (
+                                            <button key={g.id} onClick={() => setBgColor(g.id)}
+                                                title={g.label}
+                                                className={`h-12 rounded-xl border-2 transition-all hover:scale-105 ${bgColor === g.id ? 'border-purple-500 scale-105 shadow-md' : 'border-transparent hover:border-slate-300'}`}
+                                                style={{ background: g.css }}>
+                                                {bgColor === g.id && <i className="fas fa-check text-white text-xs drop-shadow-lg"></i>}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Edge feather */}
+                                <div>
+                                    <label className="flex justify-between text-[10px] font-medium text-slate-600 mb-1">
+                                        <span>Edge Feather</span>
+                                        <span className="text-purple-600 font-bold">{edgeFeather === 0 ? 'Off' : `${edgeFeather}px`}</span>
                                     </label>
-                                    <button
-                                        onClick={() => setBgColor(customColor)}
-                                        className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${bgColor === customColor ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                                            }`}
-                                    >Apply Custom</button>
+                                    <input type="range" min="0" max="20" value={edgeFeather} onChange={e => setEdgeFeather(+e.target.value)} className="slider-range w-full" />
+                                    <p className="text-[10px] text-slate-400 mt-0.5">Softens sharp cutout edges</p>
+                                </div>
+
+                                {/* Download format */}
+                                <div>
+                                    <label className="block text-[10px] font-medium text-slate-600 mb-1.5">Download Format</label>
+                                    <div className="flex gap-1.5">
+                                        {[['png', 'PNG (transparent)'], ['jpg', 'JPG'], ['webp', 'WebP']].map(([id, label]) => (
+                                            <button key={id} onClick={() => setDlFormat(id)}
+                                                className={`flex-1 py-1.5 rounded-lg text-[10px] font-bold transition-all ${dlFormat === id ? 'bg-purple-500 text-white' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}`}>
+                                                {label}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
