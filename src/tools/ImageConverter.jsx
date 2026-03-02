@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
 import { getToolBySlug } from '../data/toolsData'
+import ConverterSeoSection from '../components/ConverterSeoSection'
 
 const FORMAT_NAMES = {
     jpg: 'JPG', jpeg: 'JPEG', png: 'PNG', webp: 'WebP', avif: 'AVIF',
@@ -599,28 +600,7 @@ export default function ImageConverter({ from, to }) {
                         </div>
                     </div>
                 ) : (
-                    <div className="mt-8 bg-white rounded-xl border border-slate-200 p-6">
-                        <h2 className="text-lg font-bold text-slate-800 mb-3">How to Convert {fromName} to {toName}</h2>
-                        <div className="grid sm:grid-cols-4 gap-4">
-                            {[
-                                { step: '1', icon: 'fa-upload', title: 'Upload', desc: `Drop or browse your ${fromName} file(s)` },
-                                { step: '2', icon: 'fa-sliders', title: 'Adjust', desc: 'Set quality, size, or other options' },
-                                { step: '3', icon: 'fa-bolt', title: 'Convert', desc: `Click convert to process to ${toName}` },
-                                { step: '4', icon: 'fa-download', title: 'Download', desc: 'Get your files individually or as ZIP' },
-                            ].map(s => (
-                                <div key={s.step} className="text-center">
-                                    <div className="w-10 h-10 mx-auto rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-2">
-                                        <i className={`fas ${s.icon} text-sm`}></i>
-                                    </div>
-                                    <p className="text-sm font-bold text-slate-700">{s.title}</p>
-                                    <p className="text-xs text-slate-500 mt-0.5">{s.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                        <p className="text-slate-500 text-xs mt-4 text-center">
-                            All conversions happen in your browser. Files are never uploaded to any server.
-                        </p>
-                    </div>
+                    <ConverterSeoSection from={from} to={to} slug={slug} fromName={fromName} toName={toName} />
                 )}
             </ToolLayout>
         </>
