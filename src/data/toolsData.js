@@ -97,6 +97,7 @@ export const tools = [
     { slug: 'merge-pdf', name: 'Merge PDF', category: 'pdf-tools', icon: 'fa-object-group', color: 'red', description: 'Combine multiple PDFs into one document.' },
     { slug: 'aadhaar-card-print-setting-a4', name: 'Aadhaar Print A4', category: 'special', icon: 'fa-print', color: 'blue', description: 'Print Aadhaar card with proper A4 settings.' },
     { slug: 'ssc-photo-date-adder', name: 'SSC Photo & Date', category: 'special', icon: 'fa-calendar-alt', color: 'blue', description: 'Add date to SSC exam photos professionally.' },
+    { slug: 'pan-card-photo', name: 'PAN Card Photo', category: 'special', icon: 'fa-id-card', color: 'orange', description: 'Resize photo to exact PAN card 25×35mm size for NSDL/UTI applications.' },
 ]
 
 export const categories = [

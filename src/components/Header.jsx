@@ -13,6 +13,7 @@ const megaMenuItems = {
         { href: '/image-enhancer', icon: 'fa-magic', label: 'Image Enhancer', color: 'purple' },
         { href: '/3d-text-to-stl-generator', icon: 'fa-cube', label: '3D Text to STL', color: 'purple' },
         { href: '/passport-size-photo', icon: 'fa-id-card', label: 'Passport Photo', color: 'purple' },
+        { href: '/pan-card-photo', icon: 'fa-id-card', label: 'PAN Card Photo', color: 'purple' },
     ],
     converters: [
         { href: '/heic-to-jpg', icon: 'fa-mobile-alt', label: 'HEIC to JPG', color: 'green' },

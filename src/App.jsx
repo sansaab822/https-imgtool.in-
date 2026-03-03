@@ -30,6 +30,7 @@ const ThreeDTextStl = lazy(() => import('./tools/ThreeDTextStl'))
 const SvgToStl = lazy(() => import('./tools/SvgToStl'))
 const AadhaarPrint = lazy(() => import('./tools/AadhaarPrint'))
 const SscPhoto = lazy(() => import('./tools/SscPhoto'))
+const PanCardPhoto = lazy(() => import('./tools/PanCardPhoto'))
 
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -70,6 +71,7 @@ export default function App() {
           <Route path="/svg-to-stl" element={<SvgToStl />} />
           <Route path="/aadhaar-card-print-setting-a4" element={<AadhaarPrint />} />
           <Route path="/ssc-photo-date-adder" element={<SscPhoto />} />
+          <Route path="/pan-card-photo" element={<PanCardPhoto />} />
 
           {/* PDF Tools */}
           <Route path="/pdf-to-jpg" element={<PdfToImage to="jpg" />} />
