@@ -1,78 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#2563eb" />
 
-    <!-- Critical inline CSS: paints above-fold instantly before any external CSS -->
-    <style>
-      *{box-sizing:border-box;margin:0;padding:0}
-      html{scroll-behavior:smooth;font-size:16px}
-      body{font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;color:#1e293b;-webkit-font-smoothing:antialiased}
-      #root{min-height:100vh;display:flex;flex-direction:column}
-      /* Prevent layout shift from fixed nav */
-      .nav-spacer{height:80px;flex-shrink:0}
-      /* FontAwesome icon placeholder to avoid CLS before FA loads */
-      .fa,.fas,.fab,.far{display:inline-block;font-style:normal;line-height:1}
-      /* Hero critical paint */
-      section{position:relative}
-      h1{font-size:clamp(2rem,6vw,3.75rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em}
-    </style>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2563eb" />
 
-    <!-- DNS prefetch + preconnect for third-party origins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+  <!-- Critical inline CSS: paints above-fold instantly before any external CSS -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-    <!-- Google Fonts: non-blocking load via media trick -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
-    </noscript>
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px
+    }
 
-    <!-- FontAwesome: defer so it never blocks render -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      media="print"
-      onload="this.media='all'"
-      crossorigin="anonymous"
-    />
-    <noscript>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
-    </noscript>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased
+    }
 
-    <!-- Google Analytics: async, does not block rendering -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GLVTW6Y2WH"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-GLVTW6Y2WH', { send_page_view: false });
-    </script>
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
 
-    <title>IMG Tool - Free Online Image &amp; PDF Tools</title>
-    <script type="module" crossorigin src="/assets/js/index-WlOX3RY7.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/js/router-vendor-ygHnQ8X4.js">
-    <link rel="modulepreload" crossorigin href="/assets/js/react-vendor-a11urO-2.js">
-    <link rel="modulepreload" crossorigin href="/assets/js/image-vendor-39WHk21J.js">
-    <link rel="stylesheet" crossorigin href="/assets/css/react-vendor-OEN34m2J.css">
-    <link rel="stylesheet" crossorigin href="/assets/css/index-W3-wvVo5.css">
-  </head>
-  <body>
-    <div id="root"></div>
+    /* Prevent layout shift from fixed nav */
+    .nav-spacer {
+      height: 80px;
+      flex-shrink: 0
+    }
 
-    <!-- Google AdSense: moved to body so it never blocks critical rendering path -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9944098162008719" crossorigin="anonymous"></script>
+    /* FontAwesome icon placeholder to avoid CLS before FA loads */
+    .fa,
+    .fas,
+    .fab,
+    .far {
+      display: inline-block;
+      font-style: normal;
+      line-height: 1
+    }
+
+    /* Hero critical paint */
+    section {
+      position: relative
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em
+    }
+  </style>
+
+  <!-- DNS prefetch + preconnect for third-party origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+  <!-- Preload critical fonts for instant render -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" as="style" />
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" />
+
+  <!-- Google Fonts: non-blocking load via media trick -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+  </noscript>
+
+  <!-- FontAwesome: defer so it never blocks render -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print"
+    onload="this.media='all'" crossorigin="anonymous" />
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      crossorigin="anonymous" />
+  </noscript>
+
+  <!-- Google Analytics: async, does not block rendering -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GLVTW6Y2WH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-GLVTW6Y2WH', { send_page_view: false });
+  </script>
+
+  <title>IMG Tool - Free Online Image &amp; PDF Tools</title>
+
+  <style>
+    /* --- PRE-RENDERED STATIC SKELETON CSS (App Shell) --- */
+    /* Matches React styling so LCP is instant and CLS is zero */
+    .app-shell {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .shell-nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 999;
+    }
+
+    @media (min-width: 1024px) {
+      .shell-nav {
+        padding: 0 32px;
+        max-width: 1280px;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+      }
+    }
+
+    .shell-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .shell-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(to bottom right, #2563eb, #4f46e5, #9333ea);
+    }
+
+    .shell-logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e293b;
+      letter-spacing: -0.02em;
+    }
+
+    .shell-text-blue {
+      color: #2563eb;
+    }
+
+    .shell-nav-items {
+      display: none;
+    }
+
+    @media (min-width: 1024px) {
+      .shell-nav-items {
+        display: flex;
+        gap: 16px;
+      }
+
+      .shell-nav-btn {
+        background: #2563eb;
+        color: #fff;
+        padding: 10px 24px;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 14px;
+      }
+    }
+
+    .shell-hero {
+      padding-top: 160px;
+      padding-bottom: 96px;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      position: relative;
+    }
+
+    .shell-badge {
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 9999px;
+      background: #e0e7ff;
+      color: #4338ca;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .shell-h1 {
+      font-size: clamp(3rem, 6vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      color: #1e293b;
+    }
+
+    .shell-gradient {
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .shell-p {
+      font-size: 20px;
+      color: #475569;
+      max-width: 42rem;
+      margin: 0 auto 40px auto;
+      line-height: 1.5;
+    }
+
+    .shell-search {
+      max-width: 36rem;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .shell-input {
+      width: 100%;
+      height: 60px;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      background: #fff;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/js/index-CbOP74mW.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/js/router-vendor-ygHnQ8X4.js">
+  <link rel="modulepreload" crossorigin href="/assets/js/react-vendor-a11urO-2.js">
+  <link rel="modulepreload" crossorigin href="/assets/js/image-vendor-39WHk21J.js">
+  <link rel="stylesheet" crossorigin href="/assets/css/react-vendor-OEN34m2J.css">
+  <link rel="stylesheet" crossorigin href="/assets/css/index-CCBnjlYG.css">
+</head>
+
+<body>
+  <!-- App Shell: Renders instantly on mobile while React executes -->
+  <div id="root">
+    <div class="app-shell" aria-hidden="true">
+      <nav class="shell-nav">
+        <div class="shell-logo-wrap">
+          <div class="shell-logo-icon"></div>
+          <span class="shell-logo-text">IMG <span class="shell-text-blue">Tool</span></span>
+        </div>
+        <div class="shell-nav-items">
+          <div class="shell-nav-btn">View All Tools</div>
+        </div>
+      </nav>
+      <section class="shell-hero">
+        <div class="shell-badge">100% Free &amp; Secure • Client-Side Processing</div>
+        <h1 class="shell-h1">Your All-in-One <br /><span class="shell-gradient">Image Toolkit</span></h1>
+        <p class="shell-p">Convert, Resize, Compress, and Edit images instantly.<br />We support AVIF, HEIC, WebP, PDF,
+          and 50+ other formats.</p>
+        <div class="shell-search">
+          <div class="shell-input"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Google AdSense: moved to body so it never blocks critical rendering path -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9944098162008719"
+    crossorigin="anonymous"></script>
 
-  </body>
+</body>
+
 </html>
