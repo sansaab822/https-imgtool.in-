@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 const megaMenuItems = {
     editors: [
         { href: '/image-resizer', icon: 'fa-expand', label: 'Resize Image', color: 'blue' },
+        { href: '/collage-maker', icon: 'fa-th', label: 'Collage Maker', color: 'blue' },
         { href: '/image-compressor', icon: 'fa-compress-alt', label: 'Compress Image', color: 'blue' },
         { href: '/crop-image', icon: 'fa-crop-alt', label: 'Crop Image', color: 'blue' },
         { href: '/image-to-art', icon: 'fa-palette', label: 'Art Generator', color: 'blue' },

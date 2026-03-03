@@ -141,6 +141,12 @@ const routes = [
         changefreq: 'weekly',
         priority: 0.8,
     },
+    {
+        loc: '/collage-maker',
+        lastmod: TODAY,
+        changefreq: 'weekly',
+        priority: 0.9,
+    },
 
     // ──────────────────────────────────────────────────────────────────
     // PDF TOOLS

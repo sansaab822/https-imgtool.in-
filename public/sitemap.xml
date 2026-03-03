@@ -130,6 +130,13 @@
     </url>
 
     <url>
+        <loc>https://imgtool.in/collage-maker</loc>
+        <lastmod>2026-03-03</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
         <loc>https://imgtool.in/pdf-to-jpg</loc>
         <lastmod>2025-11-30</lastmod>
         <changefreq>monthly</changefreq>

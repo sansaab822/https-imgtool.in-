@@ -21,6 +21,7 @@ const CropImage = lazy(() => import('./tools/CropImage'))
 const BgRemover = lazy(() => import('./tools/BgRemover'))
 const ImageEnhancer = lazy(() => import('./tools/ImageEnhancer'))
 const ImageToArt = lazy(() => import('./tools/ImageToArt'))
+const CollageMaker = lazy(() => import('./tools/CollageMaker'))
 const PassportPhoto = lazy(() => import('./tools/PassportPhoto'))
 const PdfToImage = lazy(() => import('./tools/PdfToImage'))
 const ImageToPdf = lazy(() => import('./tools/ImageToPdf'))
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="/image-compressor" element={<ImageCompressor />} />
           <Route path="/crop-image" element={<CropImage />} />
           <Route path="/bg-remover" element={<BgRemover />} />
+          <Route path="/collage-maker" element={<CollageMaker />} />
           <Route path="/image-enhancer" element={<ImageEnhancer />} />
           <Route path="/image-to-art" element={<ImageToArt />} />
           <Route path="/passport-size-photo" element={<PassportPhoto />} />

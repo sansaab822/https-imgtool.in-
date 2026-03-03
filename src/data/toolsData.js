@@ -88,6 +88,7 @@ export const tools = [
     { slug: 'image-to-art', name: 'Image to Art', category: 'editors', icon: 'fa-palette', color: 'purple', description: 'Transform photos into artistic masterpieces.' },
     { slug: 'passport-size-photo', name: 'Passport Photo', category: 'editors', icon: 'fa-id-card', color: 'blue', description: 'Create passport size photos instantly.' },
     { slug: 'image-converter', name: 'Image Converter', category: 'editors', icon: 'fa-exchange-alt', color: 'indigo', description: 'Universal image format converter.' },
+    { slug: 'collage-maker', name: 'Collage Maker', category: 'editors', icon: 'fa-th', color: 'purple', description: 'Combine multiple photos into beautiful grids or rows.' },
     { slug: 'all-image-converters', name: 'All Tools', category: 'editors', icon: 'fa-th-large', color: 'slate', description: 'Browse all 70+ image tools.' },
 
     // ── Special Tools ────────────────────────────────────────────
