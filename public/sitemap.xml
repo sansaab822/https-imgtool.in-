@@ -71,6 +71,18 @@
         </image:image>
     </url>
 
+    <!-- PAN Card Photo Resizer (New) -->
+    <url>
+        <loc>https://imgtool.in/pan-card-photo</loc>
+        <lastmod>2026-03-03</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://imgtool.in/images/tools/pan-card-photo-tool.png</image:loc>
+            <image:title>PAN Card Photo Resizer — Resize to 25×35mm NSDL/UTI Size Online</image:title>
+        </image:image>
+    </url>
+
     <!-- ========================================== -->
     <!-- IMAGE EDITORS -->
     <!-- ========================================== -->
