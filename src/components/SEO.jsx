@@ -39,7 +39,7 @@ export default function SEO({
     title = 'IMG Tool - Free Online Image & PDF Tools',
     description = 'Convert, resize, compress, and edit images online for free. No upload needed — 100% client-side processing.',
     canonical,
-    ogImage = `${SITE_URL}/image/og-home.webp`,
+    ogImage = `${SITE_URL}/og-home.png`,
     noIndex = false,
     schema = null, // optional per-page schema (WebApplication, HowTo, etc.)
 }) {
