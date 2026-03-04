@@ -11,6 +11,7 @@ const ContactUs = lazy(() => import('./pages/ContactUs'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 const BlogPage = lazy(() => import('./pages/BlogPage'))
+const BlogPost = lazy(() => import('./pages/BlogPost'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Tool Components
@@ -103,6 +104,7 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/blog.html" element={<BlogPage />} />
 
           {/* Editors */}

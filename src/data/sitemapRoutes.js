@@ -17,6 +17,8 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
+import { blogPosts } from './blogData.js';
+
 const BASE_URL = 'https://imgtool.in';
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
@@ -338,8 +340,21 @@ const routes = [
     // UTILITY - QR CODE
     // ──────────────────────────────────────────────────────────────────
     { loc: '/qr-code-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
-];
 
+    // ──────────────────────────────────────────────────────────────────
+    // DYNAMIC BLOG POSTS
+    // ──────────────────────────────────────────────────────────────────
+    ...blogPosts.map(post => ({
+        loc: `/blog/${post.slug}`,
+        lastmod: TODAY, // In a real DB this would be post.lastmod
+        changefreq: 'monthly',
+        priority: 0.8,
+        image: {
+            loc: `${BASE_URL}${post.coverImage}`,
+            title: post.title
+        }
+    }))
+];
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
 // ESM named exports — used by the generator script and any future React utils.
