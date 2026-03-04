@@ -120,6 +120,36 @@ export const tools = [
     { slug: 'worksheet-converter', name: 'Worksheet Converter', category: 'utility', icon: 'fa-file-excel', color: 'green', description: 'Convert between CSV, JSON, and Excel formats.' },
     { slug: 'text-to-handwriting', name: 'Text to Handwriting', category: 'utility', icon: 'fa-pen-fancy', color: 'indigo', description: 'Convert typed text into beautiful handwriting style.' },
     { slug: 'html-table-generator', name: 'HTML Table Generator', category: 'utility', icon: 'fa-border-all', color: 'teal', description: 'Generate HTML or Markdown tables from your data.' },
+
+    // ── Image Editing Tools ──────────────────────────────────────
+    { slug: 'combine-images-side-by-side', name: 'Combine Images Side by Side', category: 'image-editing', icon: 'fa-columns', color: 'blue', description: 'Combine two images side by side horizontally online.' },
+    { slug: 'add-watermark-to-image', name: 'Add Watermark to Image', category: 'image-editing', icon: 'fa-copyright', color: 'cyan', description: 'Add transparent text or image watermark to photos.' },
+    { slug: 'merge-images-vertically', name: 'Merge Images Vertically', category: 'image-editing', icon: 'fa-arrows-alt-v', color: 'blue', description: 'Stack and merge two images vertically online.' },
+    { slug: 'blend-two-photos', name: 'Blend Two Photos', category: 'image-editing', icon: 'fa-adjust', color: 'purple', description: 'Blend and mix two photos together with opacity control.' },
+    { slug: 'rotate-image-custom-angle', name: 'Rotate Image', category: 'image-editing', icon: 'fa-sync-alt', color: 'green', description: 'Rotate image by any custom angle online.' },
+    { slug: 'flip-image-horizontally', name: 'Flip Image Mirror', category: 'image-editing', icon: 'fa-arrows-alt-h', color: 'teal', description: 'Flip image horizontally (mirror) or vertically.' },
+    { slug: 'polaroid-photo-effect', name: 'Polaroid Photo Effect', category: 'image-editing', icon: 'fa-camera-retro', color: 'yellow', description: 'Turn any photo into a vintage Polaroid frame online.' },
+    { slug: 'add-drop-shadow', name: 'Add Drop Shadow', category: 'image-editing', icon: 'fa-clone', color: 'slate', description: 'Add drop shadow effect to transparent PNG images.' },
+    { slug: 'wet-floor-reflection', name: 'Wet Floor Reflection', category: 'image-editing', icon: 'fa-water', color: 'blue', description: 'Add a wet floor mirror reflection effect to images.' },
+    { slug: 'zoomed-inset-image', name: 'Zoomed Inset Creator', category: 'image-editing', icon: 'fa-search-plus', color: 'orange', description: 'Create a zoomed inset/magnifier overlay on any image.' },
+    { slug: 'instagram-safe-zones', name: 'Instagram Reel Safe Zones', category: 'image-editing', icon: 'fa-mobile-alt', color: 'pink', description: 'Add Instagram Reel safe zone overlay to your image.' },
+
+    // ── Fun Effects ───────────────────────────────────────────────
+    { slug: 'meme-generator', name: 'Meme Generator', category: 'fun-effects', icon: 'fa-laugh-squint', color: 'yellow', description: 'Add text and stickers to meme templates and photos.' },
+    { slug: 'gif-maker', name: 'GIF Maker', category: 'fun-effects', icon: 'fa-film', color: 'pink', description: 'Create animated GIFs from a series of images.' },
+    { slug: 'lego-art-generator', name: 'Lego / Block Art', category: 'fun-effects', icon: 'fa-th', color: 'red', description: 'Convert any image into a blocky Lego-style pixel art.' },
+    { slug: 'warhol-poster-effect', name: 'Warhol Pop-Art Effect', category: 'fun-effects', icon: 'fa-palette', color: 'orange', description: 'Generate Andy Warhol style pop-art poster from a photo.' },
+    { slug: 'emoji-mosaic', name: 'Emoji Mosaic', category: 'fun-effects', icon: 'fa-smile', color: 'yellow', description: 'Replace image pixels with matching emoji characters.' },
+    { slug: 'jigsaw-puzzle-maker', name: 'Jigsaw Puzzle Maker', category: 'fun-effects', icon: 'fa-puzzle-piece', color: 'green', description: 'Slice any image into printable jigsaw puzzle pieces.' },
+    { slug: 'face-morph', name: 'Face Morph / Blend', category: 'fun-effects', icon: 'fa-user-friends', color: 'purple', description: 'Blend and morph two faces together into one photo.' },
+    { slug: 'sticker-add-virtual', name: 'Sticker Add to Photo', category: 'fun-effects', icon: 'fa-star', color: 'pink', description: 'Add fun stickers, hats, glasses and speech bubbles to photos.' },
+
+    // ── AI Tools ─────────────────────────────────────────────────
+    { slug: 'ai-denoiser', name: 'AI Denoiser', category: 'ai-tools', icon: 'fa-wind', color: 'indigo', description: 'Reduce image noise and blur using smart algorithms.' },
+    { slug: 'ai-colorizer', name: 'AI Colorizer', category: 'ai-tools', icon: 'fa-fill-drip', color: 'purple', description: 'Colorize black-and-white photos using smart colorization.' },
+
+    // ── Utility (additions) ───────────────────────────────────────
+    { slug: 'qr-code-generator', name: 'QR Code Generator', category: 'utility', icon: 'fa-qrcode', color: 'slate', description: 'Generate QR codes with logo inside, custom colors and sizes.' },
 ]
 
 export const categories = [
@@ -127,6 +157,9 @@ export const categories = [
     { id: 'converters', name: 'Standard Converters', icon: 'fa-exchange-alt', color: 'indigo' },
     { id: 'pdf-tools', name: 'PDF Tools', icon: 'fa-file-pdf', color: 'red' },
     { id: 'editors', name: 'Editors & Utilities', icon: 'fa-wand-magic-sparkles', color: 'purple' },
+    { id: 'image-editing', name: 'Image Editing', icon: 'fa-edit', color: 'blue' },
+    { id: 'fun-effects', name: 'Fun Effects', icon: 'fa-magic', color: 'pink' },
+    { id: 'ai-tools', name: 'AI Tools', icon: 'fa-robot', color: 'indigo' },
     { id: 'special', name: 'Special Tools', icon: 'fa-star', color: 'orange' },
     { id: 'video-tools', name: 'Video Tools', icon: 'fa-video', color: 'violet' },
     { id: 'utility', name: 'Utility Tools', icon: 'fa-tools', color: 'teal' },
@@ -134,4 +167,3 @@ export const categories = [
 
 export const getToolBySlug = (slug) => tools.find(t => t.slug === slug)
 export const getToolsByCategory = (catId) => tools.filter(t => t.category === catId)
-

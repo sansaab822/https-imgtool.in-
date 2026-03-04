@@ -53,7 +53,34 @@ const ColorPaletteGenerator = lazy(() => import('./tools/ColorPaletteGenerator')
 const WorksheetConverter = lazy(() => import('./tools/WorksheetConverter'))
 const TextToHandwriting = lazy(() => import('./tools/TextToHandwriting'))
 const HtmlTableGenerator = lazy(() => import('./tools/HtmlTableGenerator'))
+const QRCodeGenerator = lazy(() => import('./tools/QRCodeGenerator'))
 
+// Image Editing
+const CombineImagesSideBySide = lazy(() => import('./tools/CombineImagesSideBySide'))
+const AddWatermark = lazy(() => import('./tools/AddWatermark'))
+const MergeImagesVertically = lazy(() => import('./tools/MergeImagesVertically'))
+const BlendTwoPhotos = lazy(() => import('./tools/BlendTwoPhotos'))
+const RotateImage = lazy(() => import('./tools/RotateImage'))
+const FlipImage = lazy(() => import('./tools/FlipImage'))
+const PolaroidEffect = lazy(() => import('./tools/PolaroidEffect'))
+const AddDropShadow = lazy(() => import('./tools/AddDropShadow'))
+const WetFloorReflection = lazy(() => import('./tools/WetFloorReflection'))
+const ZoomedInset = lazy(() => import('./tools/ZoomedInset'))
+const InstagramSafeZones = lazy(() => import('./tools/InstagramSafeZones'))
+
+// Fun Effects
+const MemeGenerator = lazy(() => import('./tools/MemeGenerator'))
+const GifMaker = lazy(() => import('./tools/GifMaker'))
+const LegoArtGenerator = lazy(() => import('./tools/LegoArtGenerator'))
+const WarholPosterEffect = lazy(() => import('./tools/WarholPosterEffect'))
+const EmojiMosaic = lazy(() => import('./tools/EmojiMosaic'))
+const JigsawPuzzleMaker = lazy(() => import('./tools/JigsawPuzzleMaker'))
+const FaceMorph = lazy(() => import('./tools/FaceMorph'))
+const StickerAddVirtual = lazy(() => import('./tools/StickerAddVirtual'))
+
+// AI Tools
+const AIDenoiser = lazy(() => import('./tools/AIDenoiser'))
+const AIColorizer = lazy(() => import('./tools/AIColorizer'))
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="flex flex-col items-center gap-3">
@@ -197,6 +224,34 @@ export default function App() {
           <Route path="/worksheet-converter" element={<WorksheetConverter />} />
           <Route path="/text-to-handwriting" element={<TextToHandwriting />} />
           <Route path="/html-table-generator" element={<HtmlTableGenerator />} />
+          <Route path="/qr-code-generator" element={<QRCodeGenerator />} />
+
+          {/* Image Editing Tools */}
+          <Route path="/combine-images-side-by-side" element={<CombineImagesSideBySide />} />
+          <Route path="/add-watermark-to-image" element={<AddWatermark />} />
+          <Route path="/merge-images-vertically" element={<MergeImagesVertically />} />
+          <Route path="/blend-two-photos" element={<BlendTwoPhotos />} />
+          <Route path="/rotate-image-custom-angle" element={<RotateImage />} />
+          <Route path="/flip-image-horizontally" element={<FlipImage />} />
+          <Route path="/polaroid-photo-effect" element={<PolaroidEffect />} />
+          <Route path="/add-drop-shadow" element={<AddDropShadow />} />
+          <Route path="/wet-floor-reflection" element={<WetFloorReflection />} />
+          <Route path="/zoomed-inset-image" element={<ZoomedInset />} />
+          <Route path="/instagram-safe-zones" element={<InstagramSafeZones />} />
+
+          {/* Fun Effects Tools */}
+          <Route path="/meme-generator" element={<MemeGenerator />} />
+          <Route path="/gif-maker" element={<GifMaker />} />
+          <Route path="/lego-art-generator" element={<LegoArtGenerator />} />
+          <Route path="/warhol-poster-effect" element={<WarholPosterEffect />} />
+          <Route path="/emoji-mosaic" element={<EmojiMosaic />} />
+          <Route path="/jigsaw-puzzle-maker" element={<JigsawPuzzleMaker />} />
+          <Route path="/face-morph" element={<FaceMorph />} />
+          <Route path="/sticker-add-virtual" element={<StickerAddVirtual />} />
+
+          {/* AI Tools */}
+          <Route path="/ai-denoiser" element={<AIDenoiser />} />
+          <Route path="/ai-colorizer" element={<AIColorizer />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />

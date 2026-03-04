@@ -46,7 +46,35 @@ const megaMenuItems = {
         { href: '/text-to-handwriting', icon: 'fa-pen-fancy', label: 'Text to Handwriting', color: 'indigo' },
         { href: '/worksheet-converter', icon: 'fa-file-excel', label: 'Worksheet Converter', color: 'green' },
         { href: '/html-table-generator', icon: 'fa-border-all', label: 'Table Generator', color: 'teal' },
+        { href: '/qr-code-generator', icon: 'fa-qrcode', label: 'QR Generator', color: 'slate' },
     ],
+    imageEditing: [
+        { href: '/combine-images-side-by-side', icon: 'fa-columns', label: 'Combine Images', color: 'blue' },
+        { href: '/add-watermark-to-image', icon: 'fa-copyright', label: 'Add Watermark', color: 'cyan' },
+        { href: '/merge-images-vertically', icon: 'fa-arrows-alt-v', label: 'Merge Vertically', color: 'blue' },
+        { href: '/blend-two-photos', icon: 'fa-adjust', label: 'Blend Photos', color: 'purple' },
+        { href: '/rotate-image-custom-angle', icon: 'fa-sync-alt', label: 'Rotate Image', color: 'green' },
+        { href: '/flip-image-horizontally', icon: 'fa-arrows-alt-h', label: 'Flip Image', color: 'teal' },
+        { href: '/polaroid-photo-effect', icon: 'fa-camera-retro', label: 'Polaroid Effect', color: 'yellow' },
+        { href: '/add-drop-shadow', icon: 'fa-clone', label: 'Drop Shadow', color: 'slate' },
+        { href: '/wet-floor-reflection', icon: 'fa-water', label: 'Reflection', color: 'blue' },
+        { href: '/zoomed-inset-image', icon: 'fa-search-plus', label: 'Zoomed Inset', color: 'orange' },
+        { href: '/instagram-safe-zones', icon: 'fa-mobile-alt', label: 'Insta Safe Zones', color: 'pink' },
+    ],
+    funEffects: [
+        { href: '/meme-generator', icon: 'fa-laugh-squint', label: 'Meme Generator', color: 'yellow' },
+        { href: '/gif-maker', icon: 'fa-film', label: 'GIF Maker', color: 'pink' },
+        { href: '/lego-art-generator', icon: 'fa-th', label: 'Lego Art', color: 'red' },
+        { href: '/warhol-poster-effect', icon: 'fa-palette', label: 'Warhol Poster', color: 'fuchsia' },
+        { href: '/emoji-mosaic', icon: 'fa-smile-beam', label: 'Emoji Mosaic', color: 'indigo' },
+        { href: '/jigsaw-puzzle-maker', icon: 'fa-puzzle-piece', label: 'Jigsaw Puzzle', color: 'emerald' },
+        { href: '/face-morph', icon: 'fa-theater-masks', label: 'Face Morph', color: 'blue' },
+        { href: '/sticker-add-virtual', icon: 'fa-smile', label: 'Add Stickers', color: 'orange' },
+    ],
+    ai: [
+        { href: '/ai-denoiser', icon: 'fa-magic', label: 'AI Denoiser', color: 'violet' },
+        { href: '/ai-colorizer', icon: 'fa-palette', label: 'AI Colorizer', color: 'rose' },
+    ]
 }
 
 export default function Header() {
@@ -103,9 +131,15 @@ export default function Header() {
                                 <div className="fixed top-20 left-0 w-full opacity-0 invisible translate-y-2.5 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out z-[998] flex justify-center pointer-events-none group-hover:pointer-events-auto">
                                     <div className="mt-2 w-full max-w-5xl px-4 sm:px-6">
                                         <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden ring-1 ring-black/5 p-8 max-h-[80vh] overflow-y-auto">
-                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                                                 {/* Editors */}
                                                 <MegaMenuCol title="Editors" icon="fa-crop-simple" iconColor="text-blue-500" items={megaMenuItems.editors} hoverColor="blue" />
+                                                {/* Image Editing */}
+                                                <MegaMenuCol title="Image Editing" icon="fa-images" iconColor="text-cyan-500" items={megaMenuItems.imageEditing} hoverColor="cyan" />
+                                                {/* Fun Effects */}
+                                                <MegaMenuCol title="Fun Effects" icon="fa-masks-theater" iconColor="text-fuchsia-500" items={megaMenuItems.funEffects} hoverColor="fuchsia" />
+                                                {/* AI Tools */}
+                                                <MegaMenuCol title="AI Tools" icon="fa-brain" iconColor="text-rose-500" items={megaMenuItems.ai} hoverColor="rose" />
                                                 {/* AI & 3D */}
                                                 <MegaMenuCol title="AI & 3D" icon="fa-wand-magic-sparkles" iconColor="text-purple-500" items={megaMenuItems.ai3d} hoverColor="purple" />
                                                 {/* Converters */}
@@ -173,9 +207,13 @@ export default function Header() {
                         {mobileToolsOpen && (
                             <div className="bg-white border-t border-slate-100 py-2">
                                 <MobileMenuSection title="Editors" items={megaMenuItems.editors} />
+                                <MobileMenuSection title="Image Editing" items={megaMenuItems.imageEditing} />
+                                <MobileMenuSection title="Fun Effects" items={megaMenuItems.funEffects} />
+                                <MobileMenuSection title="AI Tools" items={megaMenuItems.ai} />
                                 <MobileMenuSection title="AI & 3D" items={megaMenuItems.ai3d} />
                                 <MobileMenuSection title="Converters" items={megaMenuItems.converters} />
                                 <MobileMenuSection title="PDF & Photo" items={megaMenuItems.pdf} />
+                                <MobileMenuSection title="Utility & Video" items={[...megaMenuItems.video, ...megaMenuItems.utility]} />
                             </div>
                         )}
                     </div>

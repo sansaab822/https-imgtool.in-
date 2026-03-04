@@ -300,7 +300,46 @@ const routes = [
     { loc: '/worksheet-converter', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
     { loc: '/text-to-handwriting', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
     { loc: '/html-table-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // IMAGE EDITING TOOLS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/combine-images-side-by-side', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/add-watermark-to-image', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/merge-images-vertically', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/blend-two-photos', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/rotate-image-custom-angle', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/flip-image-horizontally', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/polaroid-photo-effect', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/add-drop-shadow', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/wet-floor-reflection', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/zoomed-inset-image', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/instagram-safe-zones', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // FUN EFFECTS TOOLS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/meme-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/gif-maker', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/lego-art-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/warhol-poster-effect', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/emoji-mosaic', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/jigsaw-puzzle-maker', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/face-morph', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/sticker-add-virtual', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // AI TOOLS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/ai-denoiser', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ai-colorizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // UTILITY - QR CODE
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/qr-code-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
 ];
+
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
 // ESM named exports — used by the generator script and any future React utils.

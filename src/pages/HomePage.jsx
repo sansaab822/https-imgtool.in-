@@ -24,8 +24,16 @@ const catIconMap = {
     'pdf-tools': 'fa-file-pdf',
     'editors': 'fa-wand-magic-sparkles',
     'special': 'fa-star',
+    'image-editing': 'fa-edit',
+    'fun-effects': 'fa-masks-theater',
+    'ai-tools': 'fa-brain',
+    'video-tools': 'fa-video',
+    'utility': 'fa-tools',
 }
-const catColorMap = { 'modern-formats': 'text-yellow-500', 'converters': 'text-indigo-500', 'pdf-tools': 'text-red-500', 'editors': 'text-purple-500', 'special': 'text-orange-500' }
+const catColorMap = {
+    'modern-formats': 'text-yellow-500', 'converters': 'text-indigo-500', 'pdf-tools': 'text-red-500', 'editors': 'text-purple-500', 'special': 'text-orange-500',
+    'image-editing': 'text-blue-500', 'fun-effects': 'text-pink-500', 'ai-tools': 'text-indigo-500', 'video-tools': 'text-violet-500', 'utility': 'text-teal-500'
+}
 
 export default function HomePage() {
     const [search, setSearch] = useState('')
