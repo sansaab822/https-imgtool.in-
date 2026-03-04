@@ -4,7 +4,6 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 const megaMenuItems = {
     editors: [
         { href: '/image-resizer', icon: 'fa-expand', label: 'Resize Image', color: 'blue' },
-        { href: '/collage-maker', icon: 'fa-th', label: 'Collage Maker', color: 'blue' },
         { href: '/image-compressor', icon: 'fa-compress-alt', label: 'Compress Image', color: 'blue' },
         { href: '/crop-image', icon: 'fa-crop-alt', label: 'Crop Image', color: 'blue' },
         { href: '/image-to-art', icon: 'fa-palette', label: 'Art Generator', color: 'blue' },
@@ -27,6 +26,26 @@ const megaMenuItems = {
         { href: '/jpg-to-pdf', icon: 'fa-file-alt', label: 'JPG to PDF', color: 'red' },
         { href: '/pdf-crop', icon: 'fa-crop', label: 'PDF Crop', color: 'red' },
         { href: '/merge-pdf', icon: 'fa-object-group', label: 'Merge PDF', color: 'red' },
+        { href: '/pdf-to-excel', icon: 'fa-table', label: 'PDF to Excel', color: 'red' },
+        { href: '/html-to-pdf', icon: 'fa-code', label: 'HTML to PDF', color: 'red' },
+        { href: '/remove-pdf-watermark', icon: 'fa-tint-slash', label: 'Remove Watermark', color: 'red' },
+        { href: '/pdf-password-remover', icon: 'fa-unlock', label: 'PDF Password', color: 'red' },
+    ],
+    video: [
+        { href: '/video-compressor', icon: 'fa-compress-arrows-alt', label: 'Video Compressor', color: 'violet' },
+        { href: '/video-converter', icon: 'fa-exchange-alt', label: 'Video Converter', color: 'violet' },
+        { href: '/video-to-audio', icon: 'fa-music', label: 'Video to Audio', color: 'violet' },
+        { href: '/video-trimmer', icon: 'fa-cut', label: 'Video Trimmer', color: 'violet' },
+        { href: '/video-merger', icon: 'fa-layer-group', label: 'Video Merger', color: 'violet' },
+    ],
+    utility: [
+        { href: '/collage-maker', icon: 'fa-th', label: 'Collage Maker', color: 'pink' },
+        { href: '/favicon-generator', icon: 'fa-star', label: 'Favicon Generator', color: 'orange' },
+        { href: '/image-metadata-viewer', icon: 'fa-info-circle', label: 'Image Metadata', color: 'blue' },
+        { href: '/color-palette-generator', icon: 'fa-palette', label: 'Color Palette', color: 'purple' },
+        { href: '/text-to-handwriting', icon: 'fa-pen-fancy', label: 'Text to Handwriting', color: 'indigo' },
+        { href: '/worksheet-converter', icon: 'fa-file-excel', label: 'Worksheet Converter', color: 'green' },
+        { href: '/html-table-generator', icon: 'fa-border-all', label: 'Table Generator', color: 'teal' },
     ],
 }
 
@@ -84,7 +103,7 @@ export default function Header() {
                                 <div className="fixed top-20 left-0 w-full opacity-0 invisible translate-y-2.5 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 ease-out z-[998] flex justify-center pointer-events-none group-hover:pointer-events-auto">
                                     <div className="mt-2 w-full max-w-5xl px-4 sm:px-6">
                                         <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden ring-1 ring-black/5 p-8 max-h-[80vh] overflow-y-auto">
-                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                                                 {/* Editors */}
                                                 <MegaMenuCol title="Editors" icon="fa-crop-simple" iconColor="text-blue-500" items={megaMenuItems.editors} hoverColor="blue" />
                                                 {/* AI & 3D */}
@@ -92,8 +111,13 @@ export default function Header() {
                                                 {/* Converters */}
                                                 <MegaMenuCol title="Converters" icon="fa-exchange-alt" iconColor="text-green-500" items={megaMenuItems.converters} hoverColor="green" />
                                                 {/* PDF */}
-                                                <MegaMenuCol title="PDF & Photo" icon="fa-file-pdf" iconColor="text-red-500" items={megaMenuItems.pdf} hoverColor="red" />
+                                                <MegaMenuCol title="PDF Tools" icon="fa-file-pdf" iconColor="text-red-500" items={megaMenuItems.pdf} hoverColor="red" />
+                                                {/* Video Tools */}
+                                                <MegaMenuCol title="Video Tools" icon="fa-video" iconColor="text-violet-500" items={megaMenuItems.video} hoverColor="violet" />
+                                                {/* Utility Tools */}
+                                                <MegaMenuCol title="Utility Tools" icon="fa-tools" iconColor="text-teal-500" items={megaMenuItems.utility} hoverColor="teal" />
                                             </div>
+
                                             <div className="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center bg-slate-50 -mx-8 -mb-8 p-4 px-8">
                                                 <div className="flex items-center gap-2 text-xs text-slate-500">
                                                     <i className="fas fa-check-circle text-green-500"></i> Free Forever

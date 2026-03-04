@@ -21,7 +21,6 @@ const CropImage = lazy(() => import('./tools/CropImage'))
 const BgRemover = lazy(() => import('./tools/BgRemover'))
 const ImageEnhancer = lazy(() => import('./tools/ImageEnhancer'))
 const ImageToArt = lazy(() => import('./tools/ImageToArt'))
-const CollageMaker = lazy(() => import('./tools/CollageMaker'))
 const PassportPhoto = lazy(() => import('./tools/PassportPhoto'))
 const PdfToImage = lazy(() => import('./tools/PdfToImage'))
 const ImageToPdf = lazy(() => import('./tools/ImageToPdf'))
@@ -32,6 +31,28 @@ const SvgToStl = lazy(() => import('./tools/SvgToStl'))
 const AadhaarPrint = lazy(() => import('./tools/AadhaarPrint'))
 const SscPhoto = lazy(() => import('./tools/SscPhoto'))
 const PanCardPhoto = lazy(() => import('./tools/PanCardPhoto'))
+
+// Video Tools
+const VideoCompressor = lazy(() => import('./tools/VideoCompressor'))
+const VideoConverter = lazy(() => import('./tools/VideoConverter'))
+const VideoToAudio = lazy(() => import('./tools/VideoToAudio'))
+const VideoTrimmer = lazy(() => import('./tools/VideoTrimmer'))
+const VideoMerger = lazy(() => import('./tools/VideoMerger'))
+
+// New PDF Tools
+const PdfToExcel = lazy(() => import('./tools/PdfToExcel'))
+const HtmlToPdf = lazy(() => import('./tools/HtmlToPdf'))
+const RemovePdfWatermark = lazy(() => import('./tools/RemovePdfWatermark'))
+const PdfPasswordRemover = lazy(() => import('./tools/PdfPasswordRemover'))
+
+// Utility Tools
+const CollageMaker = lazy(() => import('./tools/CollageMaker'))
+const FaviconGenerator = lazy(() => import('./tools/FaviconGenerator'))
+const ImageMetadataViewer = lazy(() => import('./tools/ImageMetadataViewer'))
+const ColorPaletteGenerator = lazy(() => import('./tools/ColorPaletteGenerator'))
+const WorksheetConverter = lazy(() => import('./tools/WorksheetConverter'))
+const TextToHandwriting = lazy(() => import('./tools/TextToHandwriting'))
+const HtmlTableGenerator = lazy(() => import('./tools/HtmlTableGenerator'))
 
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center">
@@ -62,7 +83,6 @@ export default function App() {
           <Route path="/image-compressor" element={<ImageCompressor />} />
           <Route path="/crop-image" element={<CropImage />} />
           <Route path="/bg-remover" element={<BgRemover />} />
-          <Route path="/collage-maker" element={<CollageMaker />} />
           <Route path="/image-enhancer" element={<ImageEnhancer />} />
           <Route path="/image-to-art" element={<ImageToArt />} />
           <Route path="/passport-size-photo" element={<PassportPhoto />} />
@@ -155,6 +175,28 @@ export default function App() {
           {/* RAW/CR2 */}
           <Route path="/raw-to-jpg" element={<ImageConverter from="raw" to="jpg" />} />
           <Route path="/cr2-to-jpg" element={<ImageConverter from="cr2" to="jpg" />} />
+
+          {/* Video Tools */}
+          <Route path="/video-compressor" element={<VideoCompressor />} />
+          <Route path="/video-converter" element={<VideoConverter />} />
+          <Route path="/video-to-audio" element={<VideoToAudio />} />
+          <Route path="/video-trimmer" element={<VideoTrimmer />} />
+          <Route path="/video-merger" element={<VideoMerger />} />
+
+          {/* New PDF Tools */}
+          <Route path="/pdf-to-excel" element={<PdfToExcel />} />
+          <Route path="/html-to-pdf" element={<HtmlToPdf />} />
+          <Route path="/remove-pdf-watermark" element={<RemovePdfWatermark />} />
+          <Route path="/pdf-password-remover" element={<PdfPasswordRemover />} />
+
+          {/* Utility Tools */}
+          <Route path="/collage-maker" element={<CollageMaker />} />
+          <Route path="/favicon-generator" element={<FaviconGenerator />} />
+          <Route path="/image-metadata-viewer" element={<ImageMetadataViewer />} />
+          <Route path="/color-palette-generator" element={<ColorPaletteGenerator />} />
+          <Route path="/worksheet-converter" element={<WorksheetConverter />} />
+          <Route path="/text-to-handwriting" element={<TextToHandwriting />} />
+          <Route path="/html-table-generator" element={<HtmlTableGenerator />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />

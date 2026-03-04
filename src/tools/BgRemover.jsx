@@ -579,9 +579,6 @@ export default function BgRemover() {
                         <p>
                             Once you have successfully isolated your subject, you might discover that the final file size is a bit too large for your website due to the uncompressed PNG format it creates. If that happens, simply drop your new transparent image into our <a href="/image-compressor" className="text-purple-600 hover:underline">Image Compressor Tool</a>. Likewise, if you need to adjust the physical dimensions of the cutout before sending it to a client, you can use our <a href="/image-resizer" className="text-purple-600 hover:underline">Image Resizer Tool</a> or convert it utilizing the <a href="/png-to-jpg" className="text-purple-600 hover:underline">PNG to JPG Converter</a> if maintaining transparency is no longer required.
                         </p>
-                        <p>
-                            Beyond background removal, imgtool.in offers a complete suite of professional utilities. You can use our <a href="/image-compressor" className="text-purple-600 hover:underline">Image Compressor</a> to reduce file sizes before uploading to your website, or our <a href="/image-resizer" className="text-purple-600 hover:underline">Image Resizer</a> to hit exact pixel requirements for social media headers. <strong>Creating a transparent collage?</strong> Try placing your newly cutout subjects onto a custom background using our <a href="/collage-maker" className="text-purple-600 hover:underline">Photo Collage Maker</a>.
-                        </p>
 
                         <img
                             src="/images/tools/bg-remover-example.png"

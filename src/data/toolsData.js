@@ -88,7 +88,6 @@ export const tools = [
     { slug: 'image-to-art', name: 'Image to Art', category: 'editors', icon: 'fa-palette', color: 'purple', description: 'Transform photos into artistic masterpieces.' },
     { slug: 'passport-size-photo', name: 'Passport Photo', category: 'editors', icon: 'fa-id-card', color: 'blue', description: 'Create passport size photos instantly.' },
     { slug: 'image-converter', name: 'Image Converter', category: 'editors', icon: 'fa-exchange-alt', color: 'indigo', description: 'Universal image format converter.' },
-    { slug: 'collage-maker', name: 'Collage Maker', category: 'editors', icon: 'fa-th', color: 'purple', description: 'Combine multiple photos into beautiful grids or rows.' },
     { slug: 'all-image-converters', name: 'All Tools', category: 'editors', icon: 'fa-th-large', color: 'slate', description: 'Browse all 70+ image tools.' },
 
     // ── Special Tools ────────────────────────────────────────────
@@ -99,6 +98,28 @@ export const tools = [
     { slug: 'aadhaar-card-print-setting-a4', name: 'Aadhaar Print A4', category: 'special', icon: 'fa-print', color: 'blue', description: 'Print Aadhaar card with proper A4 settings.' },
     { slug: 'ssc-photo-date-adder', name: 'SSC Photo & Date', category: 'special', icon: 'fa-calendar-alt', color: 'blue', description: 'Add date to SSC exam photos professionally.' },
     { slug: 'pan-card-photo', name: 'PAN Card Photo', category: 'special', icon: 'fa-id-card', color: 'orange', description: 'Resize photo to exact PAN card 25×35mm size for NSDL/UTI applications.' },
+
+    // ── Video Tools ──────────────────────────────────────────────
+    { slug: 'video-compressor', name: 'Video Compressor', category: 'video-tools', icon: 'fa-compress-arrows-alt', color: 'violet', description: 'Reduce video file size without losing quality.' },
+    { slug: 'video-converter', name: 'Video Converter', category: 'video-tools', icon: 'fa-exchange-alt', color: 'violet', description: 'Convert videos between MP4, WebM, and other formats.' },
+    { slug: 'video-to-audio', name: 'Video to Audio', category: 'video-tools', icon: 'fa-music', color: 'violet', description: 'Extract audio track from any video file.' },
+    { slug: 'video-trimmer', name: 'Video Trimmer', category: 'video-tools', icon: 'fa-cut', color: 'violet', description: 'Trim and cut video clips to the exact length you need.' },
+    { slug: 'video-merger', name: 'Video Merger', category: 'video-tools', icon: 'fa-layer-group', color: 'violet', description: 'Merge multiple video clips into one seamless video.' },
+
+    // ── PDF Tools (additions) ────────────────────────────────────
+    { slug: 'pdf-to-excel', name: 'PDF to Excel/CSV', category: 'pdf-tools', icon: 'fa-table', color: 'red', description: 'Extract tables from PDF and convert to Excel or CSV.' },
+    { slug: 'html-to-pdf', name: 'HTML/Markdown to PDF', category: 'pdf-tools', icon: 'fa-code', color: 'red', description: 'Convert HTML or Markdown text to a styled PDF.' },
+    { slug: 'remove-pdf-watermark', name: 'Remove PDF Watermark', category: 'pdf-tools', icon: 'fa-tint-slash', color: 'red', description: 'Remove watermarks from scanned PDF pages.' },
+    { slug: 'pdf-password-remover', name: 'PDF Password Remover', category: 'pdf-tools', icon: 'fa-unlock', color: 'red', description: 'Remove password protection from PDF files you own.' },
+
+    // ── Utility Tools ────────────────────────────────────────────
+    { slug: 'collage-maker', name: 'Collage Maker', category: 'utility', icon: 'fa-th', color: 'pink', description: 'Create beautiful photo collages with multiple layouts.' },
+    { slug: 'favicon-generator', name: 'Favicon Generator', category: 'utility', icon: 'fa-star', color: 'orange', description: 'Generate favicon.ico and PNG icons from any image.' },
+    { slug: 'image-metadata-viewer', name: 'Image Metadata Viewer', category: 'utility', icon: 'fa-info-circle', color: 'blue', description: 'View and edit EXIF metadata from images.' },
+    { slug: 'color-palette-generator', name: 'Color Palette Generator', category: 'utility', icon: 'fa-palette', color: 'purple', description: 'Pick colors and generate beautiful palettes from images.' },
+    { slug: 'worksheet-converter', name: 'Worksheet Converter', category: 'utility', icon: 'fa-file-excel', color: 'green', description: 'Convert between CSV, JSON, and Excel formats.' },
+    { slug: 'text-to-handwriting', name: 'Text to Handwriting', category: 'utility', icon: 'fa-pen-fancy', color: 'indigo', description: 'Convert typed text into beautiful handwriting style.' },
+    { slug: 'html-table-generator', name: 'HTML Table Generator', category: 'utility', icon: 'fa-border-all', color: 'teal', description: 'Generate HTML or Markdown tables from your data.' },
 ]
 
 export const categories = [
@@ -107,7 +128,10 @@ export const categories = [
     { id: 'pdf-tools', name: 'PDF Tools', icon: 'fa-file-pdf', color: 'red' },
     { id: 'editors', name: 'Editors & Utilities', icon: 'fa-wand-magic-sparkles', color: 'purple' },
     { id: 'special', name: 'Special Tools', icon: 'fa-star', color: 'orange' },
+    { id: 'video-tools', name: 'Video Tools', icon: 'fa-video', color: 'violet' },
+    { id: 'utility', name: 'Utility Tools', icon: 'fa-tools', color: 'teal' },
 ]
 
 export const getToolBySlug = (slug) => tools.find(t => t.slug === slug)
 export const getToolsByCategory = (catId) => tools.filter(t => t.category === catId)
+

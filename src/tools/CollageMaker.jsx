@@ -1,327 +1,291 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import ToolLayout from '../components/ToolLayout'
+import SEO from '../components/SEO'
+
+const LAYOUTS = [
+    { id: '2x1', label: '2 Photos Side by Side', cols: 2, rows: 1, cells: [[0, 0, 1, 1], [1, 0, 2, 1]] },
+    { id: '1+2', label: '1 Big + 2 Small', cols: 2, rows: 2, cells: [[0, 0, 1, 2], [1, 0, 2, 1], [1, 1, 2, 2]] },
+    { id: '3x1', label: '3 in a Row', cols: 3, rows: 1, cells: [[0, 0, 1, 1], [1, 0, 2, 1], [2, 0, 3, 1]] },
+    { id: '2x2', label: '2×2 Grid', cols: 2, rows: 2, cells: [[0, 0, 1, 1], [1, 0, 2, 1], [0, 1, 1, 2], [1, 1, 2, 2]] },
+    { id: '1+3', label: '1 Big + 3 Small', cols: 3, rows: 2, cells: [[0, 0, 2, 2], [2, 0, 3, 1], [2, 1, 3, 2]] },
+    { id: '3x2', label: '3×2 Grid', cols: 3, rows: 2, cells: [[0, 0, 1, 1], [1, 0, 2, 1], [2, 0, 3, 1], [0, 1, 1, 2], [1, 1, 2, 2], [2, 1, 3, 2]] },
+]
+
+const CANVS = 900
+const GAP = 8
+const BGSIZES = { small: 8, medium: 16, large: 24 }
 
 export default function CollageMaker() {
-    const [images, setImages] = useState([])
-    const [layout, setLayout] = useState('grid') // grid, row, col
-    const [gap, setGap] = useState(10)
+    const [layout, setLayout] = useState(LAYOUTS[3])
+    const [images, setImages] = useState({})
     const [bgColor, setBgColor] = useState('#ffffff')
+    const [gap, setGap] = useState('medium')
+    const [rounded, setRounded] = useState(true)
+    const [isDragging, setIsDragging] = useState(null)
+    const [generated, setGenerated] = useState(null)
+    const [generating, setGenerating] = useState(false)
     const canvasRef = useRef(null)
 
-    // Handle File Drop
-    const handleDrop = useCallback((e) => {
+    const required = layout.cells.length
+
+    const loadImage = (file) => new Promise((res, rej) => {
+        const img = new Image()
+        const url = URL.createObjectURL(file)
+        img.onload = () => res({ img, url })
+        img.onerror = rej
+        img.src = url
+    })
+
+    const handleDrop = useCallback(async (e, idx) => {
         e.preventDefault()
-        const files = Array.from(e.dataTransfer ? e.dataTransfer.files : e.target.files)
-        const validFiles = files.filter(f => f.type.startsWith('image/'))
+        setIsDragging(null)
+        const file = e.dataTransfer?.files?.[0] || e.target?.files?.[0]
+        if (!file || !file.type.startsWith('image/')) return
+        const result = await loadImage(file)
+        setImages(prev => ({ ...prev, [idx]: result }))
+        if (generated) setGenerated(null)
+    }, [generated])
 
-        validFiles.forEach(file => {
-            const reader = new FileReader()
-            reader.onload = (event) => {
-                const img = new Image()
-                img.onload = () => {
-                    setImages(prev => [...prev, { file, src: event.target.result, img, id: Date.now() + Math.random() }])
-                }
-                img.src = event.target.result
-            }
-            reader.readAsDataURL(file)
-        })
-    }, [])
-
-    const removeImage = (id) => {
-        setImages(prev => prev.filter(img => img.id !== id))
+    const handleFileClick = (idx) => {
+        const input = document.createElement('input')
+        input.type = 'file'
+        input.accept = 'image/*'
+        input.onchange = (e) => handleDrop(e, idx)
+        input.click()
     }
 
-    // Canvas Renderer
-    useEffect(() => {
-        if (images.length === 0 || !canvasRef.current) return
-
+    const generateCollage = async () => {
+        if (Object.keys(images).length < required) return
+        setGenerating(true)
         const canvas = canvasRef.current
         const ctx = canvas.getContext('2d')
+        const gapPx = BGSIZES[gap]
+        const cols = layout.cols
+        const rows = layout.rows
+        const cellW = (CANVS - gapPx * (cols + 1)) / cols
+        const cellH = (CANVS - gapPx * (rows + 1)) / rows
 
-        // Simple Layout Math
-        const count = images.length
-        let canvasWidth = 800
-        let canvasHeight = 800
+        canvas.width = CANVS
+        canvas.height = CANVS
 
-        if (layout === 'row') {
-            canvasWidth = count * 400 + (count + 1) * gap
-            canvasHeight = 400 + gap * 2
-        } else if (layout === 'col') {
-            canvasWidth = 400 + gap * 2
-            canvasHeight = count * 400 + (count + 1) * gap
-        } else {
-            // Grid
-            const cols = Math.ceil(Math.sqrt(count))
-            const rows = Math.ceil(count / cols)
-            canvasWidth = cols * 400 + (cols + 1) * gap
-            canvasHeight = rows * 400 + (rows + 1) * gap
-        }
-
-        // Limit huge sizes for preview performance
-        canvas.width = canvasWidth
-        canvas.height = canvasHeight
-
-        // Draw background
+        // Background
         ctx.fillStyle = bgColor
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillRect(0, 0, CANVS, CANVS)
 
-        // Draw images
-        images.forEach((imageObj, i) => {
-            const { img } = imageObj
+        for (let i = 0; i < layout.cells.length; i++) {
+            const [c1, r1, c2, r2] = layout.cells[i]
+            const x = gapPx + c1 * (cellW + gapPx)
+            const y = gapPx + r1 * (cellH + gapPx)
+            const w = (c2 - c1) * cellW + (c2 - c1 - 1) * gapPx
+            const h = (r2 - r1) * cellH + (r2 - r1 - 1) * gapPx
 
-            let x = 0, y = 0, targetW = 400, targetH = 400
+            const imgData = images[i]
+            if (!imgData) continue
 
-            if (layout === 'row') {
-                x = gap + i * (targetW + gap)
-                y = gap
-            } else if (layout === 'col') {
-                x = gap
-                y = gap + i * (targetH + gap)
-            } else {
-                // Grid
-                const cols = Math.ceil(Math.sqrt(count))
-                const col = i % cols
-                const row = Math.floor(i / cols)
-                x = gap + col * (targetW + gap)
-                y = gap + row * (targetH + gap)
+            ctx.save()
+            if (rounded) {
+                ctx.beginPath()
+                const r = 12
+                ctx.moveTo(x + r, y)
+                ctx.arcTo(x + w, y, x + w, y + h, r)
+                ctx.arcTo(x + w, y + h, x, y + h, r)
+                ctx.arcTo(x, y + h, x, y, r)
+                ctx.arcTo(x, y, x + w, y, r)
+                ctx.closePath()
+                ctx.clip()
             }
 
-            // Draw with object-fit: cover logic
-            const scale = Math.max(targetW / img.width, targetH / img.height)
-            const sx = (img.width - targetW / scale) / 2
-            const sy = (img.height - targetH / scale) / 2
-            const sw = targetW / scale
-            const sh = targetH / scale
+            // Cover fit
+            const scaleW = w / imgData.img.naturalWidth
+            const scaleH = h / imgData.img.naturalHeight
+            const scale = Math.max(scaleW, scaleH)
+            const dw = imgData.img.naturalWidth * scale
+            const dh = imgData.img.naturalHeight * scale
+            const dx = x + (w - dw) / 2
+            const dy = y + (h - dh) / 2
+            ctx.drawImage(imgData.img, dx, dy, dw, dh)
+            ctx.restore()
+        }
 
-            ctx.drawImage(img, sx, sy, sw, sh, x, y, targetW, targetH)
-        })
-    }, [images, layout, gap, bgColor])
-
-    const handleDownload = () => {
-        if (!canvasRef.current) return
-        const link = document.createElement('a')
-        link.download = `imgtool-collage-${Date.now()}.jpg`
-        link.href = canvasRef.current.toDataURL('image/jpeg', 0.95)
-        link.click()
+        const url = canvas.toDataURL('image/jpeg', 0.92)
+        setGenerated(url)
+        setGenerating(false)
     }
 
+    const download = () => {
+        const a = document.createElement('a')
+        a.href = generated
+        a.download = 'collage-imgtool.jpg'
+        a.click()
+    }
+
+    const reset = () => { setImages({}); setGenerated(null) }
+
     return (
-        <ToolLayout
-            title="Free Photo Collage Maker"
-            description="Create beautiful photo collages instantly. Combine multiple images into perfect grids, rows, or columns. 100% Free, no watermarks, secure in-browser processing."
-            toolSlug="collage-maker"
-            breadcrumb="Collage Maker"
-        >
-            {/* Tool UI */}
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 mb-12">
-                <div className="grid lg:grid-cols-[1fr_350px] gap-8">
-
-                    {/* Workspace */}
-                    <div className="space-y-6">
-                        {/* Dropzone */}
-                        <div
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={handleDrop}
-                            className={`drop-zone ${images.length > 0 ? 'bg-slate-50 py-8 px-4' : 'py-20'}`}
-                        >
-                            <label className="cursor-pointer block">
-                                <i className="fas fa-images text-5xl text-blue-500 mb-4"></i>
-                                <h3 className="text-xl font-bold text-slate-700 mb-2">Drag &amp; Drop Images Here</h3>
-                                <p className="text-slate-500 mb-6">or click to browse from your device</p>
-                                <input type="file" onChange={handleDrop} accept="image/*" multiple className="hidden" />
-                                <span className="btn-primary">Select Images</span>
-                            </label>
-
-                            {images.length > 0 && (
-                                <div className="mt-8 grid grid-cols-4 sm:grid-cols-6 gap-3 pt-6 border-t border-slate-200">
-                                    {images.map(img => (
-                                        <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden border border-slate-200">
-                                            <img src={img.src} alt="thumbnail" className="w-full h-full object-cover" />
-                                            <button
-                                                onClick={() => removeImage(img.id)}
-                                                className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 shadow"
-                                            >
-                                                <i className="fas fa-times"></i>
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Preview Canvas */}
-                        {images.length > 0 && (
-                            <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-100 flex items-center justify-center p-4">
-                                <canvas
-                                    ref={canvasRef}
-                                    className="max-w-full max-h-[600px] w-auto h-auto shadow-sm"
-                                    style={{
-                                        objectFit: 'contain'
-                                    }}
-                                />
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Controls Sidebar */}
-                    <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 h-fit sticky top-24">
-                        <h3 className="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2">
-                            <i className="fas fa-sliders-h text-blue-500"></i> Settings
-                        </h3>
-
-                        {/* Layout Select */}
-                        <div className="mb-6">
-                            <label className="block text-sm font-semibold text-slate-700 mb-3">Layout Style</label>
-                            <div className="grid grid-cols-3 gap-2">
-                                {[
-                                    { id: 'grid', icon: 'fa-th-large', label: 'Grid' },
-                                    { id: 'row', icon: 'fa-grip-lines', label: 'Row' },
-                                    { id: 'col', icon: 'fa-ellipsis-v', label: 'Column' }
-                                ].map(t => (
-                                    <button
-                                        key={t.id}
-                                        onClick={() => setLayout(t.id)}
-                                        className={`flex flex-col items-center justify-center py-3 rounded-lg border-2 transition-all ${layout === t.id ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-slate-200 bg-white text-slate-500 hover:border-blue-300'}`}
-                                    >
-                                        <i className={`fas ${t.icon} mb-1 text-lg`}></i>
-                                        <span className="text-xs font-bold">{t.label}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Spacing / Gap Slider */}
-                        <div className="mb-6">
-                            <div className="flex justify-between items-center mb-2">
-                                <label className="text-sm font-semibold text-slate-700">Photos Spacing (Gap)</label>
-                                <span className="text-xs font-bold bg-white border border-slate-200 px-2 py-1 rounded text-slate-600">{gap}px</span>
-                            </div>
-                            <input
-                                type="range"
-                                min="0" max="100"
-                                value={gap}
-                                onChange={(e) => setGap(Number(e.target.value))}
-                                className="slider-range w-full"
-                            />
-                        </div>
-
-                        {/* Background Color */}
-                        <div className="mb-8">
-                            <label className="block text-sm font-semibold text-slate-700 mb-3">Background Color</label>
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="color"
-                                    value={bgColor}
-                                    onChange={(e) => setBgColor(e.target.value)}
-                                    className="w-10 h-10 rounded cursor-pointer border-0 p-0"
-                                />
-                                <span className="text-sm text-slate-600 font-mono bg-white px-2 py-1 border border-slate-200 rounded">{bgColor.toUpperCase()}</span>
-                            </div>
-                        </div>
-
-                        {/* Download CTA */}
-                        <button
-                            onClick={handleDownload}
-                            disabled={images.length === 0}
-                            className={`w-full py-4 rounded-xl text-white font-bold text-lg flex items-center justify-center gap-2 shadow-lg transition-all ${images.length === 0 ? 'bg-slate-300 cursor-not-allowed shadow-none' : 'bg-green-600 hover:bg-green-700 shadow-green-500/30 hover:-translate-y-1'}`}
-                        >
-                            <i className="fas fa-download"></i> Download Collage
-                        </button>
-
-                        {images.length > 0 && (
-                            <button onClick={() => setImages([])} className="w-full mt-3 py-2 text-slate-500 text-sm font-semibold hover:text-red-500 transition-colors">
-                                Clear All Images
+        <>
+            <SEO
+                title="Free Online Collage Maker — Create Photo Collages Instantly"
+                description="Create beautiful photo collages online with multiple layouts. Choose from 2x2 grid, side-by-side, or custom layouts. Download as high-quality JPG. Free, no signup."
+                canonical="/collage-maker"
+                schema={{
+                    '@context': 'https://schema.org',
+                    '@type': 'SoftwareApplication',
+                    name: 'Collage Maker',
+                    applicationCategory: 'MultimediaApplication',
+                    operatingSystem: 'Any',
+                    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+                }}
+            />
+            <ToolLayout
+                toolSlug="collage-maker"
+                title="Collage Maker"
+                description="Create beautiful photo collages with multiple layouts. Download as high-quality JPG instantly."
+                breadcrumb="Collage Maker"
+            >
+                {/* Layout Selector */}
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+                    <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-th text-pink-500"></i> Choose Layout
+                    </h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {LAYOUTS.map(l => (
+                            <button
+                                key={l.id}
+                                onClick={() => { setLayout(l); setImages({}); setGenerated(null) }}
+                                className={`p-3 rounded-xl border-2 text-sm font-medium transition-all ${layout.id === l.id ? 'border-pink-500 bg-pink-50 text-pink-700' : 'border-slate-200 hover:border-pink-300 text-slate-600'}`}
+                            >
+                                <i className="fas fa-border-all mr-2 opacity-60"></i>{l.label}
                             </button>
-                        )}
+                        ))}
                     </div>
-
                 </div>
-            </div>
 
-            {/* SEO Content */}
-            <div className="seo-content prose prose-slate max-w-none prose-headings:text-slate-800 prose-a:text-blue-600 hover:prose-a:text-blue-700 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                <h2>The Best Free Online Photo Collage Maker</h2>
-                <p>Welcome to the ultimate tool for combining multiple memories into one stunning picture. The <strong>Collage Maker</strong> by IMG Tool is designed to be ridiculously easy to use while offering professional results. Whether you need a side-by-side comparison image, a beautiful photo grid for Instagram, or a horizontal filmstrip, our in-browser tool does it perfectly in seconds.</p>
+                {/* Settings */}
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+                    <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-sliders-h text-pink-500"></i> Settings
+                    </h2>
+                    <div className="grid sm:grid-cols-3 gap-4">
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-600 mb-2">Background Color</label>
+                            <div className="flex items-center gap-3">
+                                <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)}
+                                    className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer" />
+                                <span className="text-sm text-slate-500">{bgColor}</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-slate-600 mb-2">Gap Size</label>
+                            <select value={gap} onChange={e => setGap(e.target.value)}
+                                className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm">
+                                <option value="small">Small (8px)</option>
+                                <option value="medium">Medium (16px)</option>
+                                <option value="large">Large (24px)</option>
+                            </select>
+                        </div>
+                        <div className="flex items-end">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked={rounded} onChange={e => setRounded(e.target.checked)}
+                                    className="w-4 h-4 text-pink-600 rounded" />
+                                <span className="text-sm font-medium text-slate-700">Rounded corners</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-                <h3>Why Use Our Collage Maker?</h3>
-                <p>Most online collage builders ask you to sign up, pay for premium templates, or worst of all, they ruin your photos by stamping their ugly watermarks all over them. Our philosophy is different:</p>
-                <ul>
-                    <li><strong>100% Free & No Watermarks:</strong> We will never watermark your collages or put features behind a paywall. What you make is yours.</li>
-                    <li><strong>Secure Client-Side Processing:</strong> We do not upload your personal photos to an external server. Your images stay locally in your browser cache. This is vital for privacy when handling personal or family photos.</li>
-                    <li><strong>Instant Rendering:</strong> Because everything runs on your device's RAM/CPU via HTML5 Canvas, the processing speed is practically instantaneous. There's zero upload time and zero download wait.</li>
-                    <li><strong>Smart Auto-Cropping:</strong> To ensure your grids look uniform, our Canvas engine automatically applies a smart 'object-fit: cover' logic. It centers your images so the focal point remains intact without stretching or distorting the aspect ratios.</li>
-                </ul>
+                {/* Photo Upload Grid */}
+                <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+                    <h2 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-images text-pink-500"></i> Upload Photos ({Object.keys(images).length}/{required})
+                    </h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        {layout.cells.map((_, idx) => (
+                            <div
+                                key={idx}
+                                onDragOver={e => { e.preventDefault(); setIsDragging(idx) }}
+                                onDragLeave={() => setIsDragging(null)}
+                                onDrop={e => handleDrop(e, idx)}
+                                onClick={() => handleFileClick(idx)}
+                                className={`aspect-square rounded-xl border-2 border-dashed cursor-pointer transition-all flex flex-col items-center justify-center overflow-hidden relative
+                  ${isDragging === idx ? 'border-pink-500 bg-pink-50' : 'border-slate-300 hover:border-pink-400 hover:bg-pink-50/50'}
+                  ${images[idx] ? 'border-solid border-pink-400' : ''}`}
+                            >
+                                {images[idx] ? (
+                                    <>
+                                        <img src={images[idx].url} alt={`Photo ${idx + 1}`} className="absolute inset-0 w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-all flex items-center justify-center">
+                                            <i className="fas fa-edit text-white text-2xl opacity-0 hover:opacity-100 transition-opacity"></i>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="fas fa-plus-circle text-3xl text-slate-300 mb-2"></i>
+                                        <span className="text-xs text-slate-400 font-medium">Photo {idx + 1}</span>
+                                        <span className="text-xs text-slate-300">click or drag</span>
+                                    </>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
-                <h3>How to Combine Multiple Photos</h3>
-                <ol>
-                    <li><strong>Drag & Drop:</strong> Select 2 or more images from your phone gallery or computer folders and drag them into the upload zone. You can also click the blue select button.</li>
-                    <li><strong>Choose Layout:</strong> Select your preferred layout style from the right-hand sidebar. 'Grid' works best for 4+ photos. 'Row' places them side-by-side horizontally. 'Column' stacks them vertically.</li>
-                    <li><strong>Adjust Spacing:</strong> Use the Gap slider to add white space (or colored borders) between your photos. Setting it to 0px creates a seamless, edge-to-edge collage.</li>
-                    <li><strong>Pick a Color:</strong> Change the background color to match the theme of your photos. A plain black or white background often looks the most professional, but you have access to a full hex color picker.</li>
-                    <li><strong>Download:</strong> Once satisfied with the preview, hit the exact green 'Download Collage' button. It instantly saves to your device as a crisp, high-quality JPG.</li>
-                </ol>
+                {/* Actions */}
+                <div className="flex flex-wrap gap-3 mb-6">
+                    <button
+                        onClick={generateCollage}
+                        disabled={Object.keys(images).length < required || generating}
+                        className="flex-1 sm:flex-none btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                        {generating ? <><i className="fas fa-spinner fa-spin"></i> Generating...</> : <><i className="fas fa-magic"></i> Create Collage</>}
+                    </button>
+                    {generated && (
+                        <button onClick={download}
+                            className="flex items-center gap-2 px-6 py-2.5 bg-green-600 text-white text-sm font-bold rounded-full hover:bg-green-700 transition-all">
+                            <i className="fas fa-download"></i> Download JPG
+                        </button>
+                    )}
+                    <button onClick={reset}
+                        className="flex items-center gap-2 px-6 py-2.5 bg-slate-100 text-slate-600 text-sm font-bold rounded-full hover:bg-slate-200 transition-all">
+                        <i className="fas fa-redo"></i> Reset
+                    </button>
+                </div>
 
-                <p>If you're looking to modify your images before adding them to the collage, you should try our other tools. For instance, use the <a href="/crop-image">Crop Image</a> tool to cut out unwanted edges, or the <a href="/image-enhancer">Image Enhancer</a> to fix the lighting beforehand.</p>
+                {/* Preview */}
+                {generated && (
+                    <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
+                        <h2 className="font-bold text-slate-800 mb-4"><i className="fas fa-eye text-pink-500 mr-2"></i>Preview</h2>
+                        <img src={generated} alt="Collage preview" className="w-full max-w-2xl mx-auto rounded-xl shadow-lg" />
+                    </div>
+                )}
 
-                <h3>Collage Layout Ideas and Inspiration</h3>
-                <p>Not sure how to arrange your photos? Here are some classic layouts that look great on social media, blogs, or printed out:</p>
-                <ul>
-                    <li><strong>The Before & After (Row):</strong> Perfect for showing progress. Upload a "before" image and an "after" image, select the 'Row' layout, and set the gap to 10px with a white background. Very popular for fitness progress, room renovations, or photo editing comparisons.</li>
-                    <li><strong>The Instagram Grid:</strong> Upload 4 or 9 photos of the same theme (e.g., a vacation to Paris, a wedding, or a recipe step-by-step). Select the 'Grid' layout. This creates a beautifully balanced, symmetrical square perfect for social feeds.</li>
-                    <li><strong>The Vertical Story (Column):</strong> Ideal for Pinterest or mobile-scrolling content. Upload 3-5 images and stack them vertically with a tiny 5px gap.</li>
-                </ul>
+                <canvas ref={canvasRef} className="hidden" />
 
-                <h3>Fast, Built on Canvas API</h3>
-                <p>We leverage the power of HTML5 Canvas and modern JavaScript to stitch your images together. When you pick a layout, our system calculates the exact `ctx.drawImage()` coordinates necessary to build the mosaic perfectly. We automatically scale photos to uniformly match a 400x400 block ratio, ensuring the final output is high-resolution but perfectly framed.</p>
-
-                <p>Need to compress the final collage? Use our <a href="/image-compressor">Image Compressor</a> to shrink the file size before sharing it on Discord, WhatsApp or uploading it to a website.</p>
-
-                {/* JSON-LD Schema */}
-                <script type="application/ld+json" dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "http://schema.org",
-                        "@type": "SoftwareApplication",
-                        "name": "Photo Collage Maker",
-                        "applicationCategory": "MultimediaApplication",
-                        "operatingSystem": "Any",
-                        "offers": {
-                            "@type": "Offer",
-                            "price": "0",
-                            "priceCurrency": "USD"
-                        },
-                        "description": "Combine multiple photos into beautiful grids, side-by-side rows, or vertical columns instantly. Free, no watermarks, secure in-browser processing."
-                    })
-                }} />
-
-                <script type="application/ld+json" dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "FAQPage",
-                        "mainEntity": [{
-                            "@type": "Question",
-                            "name": "Is there a watermark on the downloaded collage?",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "No! Our Collage Maker is 100% free and we never add watermarks to your pictures. What you create is completely yours."
-                            }
-                        }, {
-                            "@type": "Question",
-                            "name": "Are my photos uploaded to a server?",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "Absolutely not. This tool processes your images locally in your web browser. No photos are uploaded to any external server, meaning complete privacy for you."
-                            }
-                        }, {
-                            "@type": "Question",
-                            "name": "How many photos can I add?",
-                            "acceptedAnswer": {
-                                "@type": "Answer",
-                                "text": "You can add as many photos as you need, but we recommend between 2 to 9 photos for the best-looking grid proportions."
-                            }
-                        }]
-                    })
-                }} />
-            </div>
-        </ToolLayout>
+                {/* SEO Content */}
+                <div className="bg-white rounded-2xl border border-slate-200 p-8 prose max-w-none">
+                    <h2 className="text-2xl font-bold text-slate-800 mb-4">Free Online Collage Maker</h2>
+                    <p className="text-slate-600">Create stunning photo collages directly in your browser without any software installation. Our collage maker supports multiple layouts including 2x2 grids, side-by-side comparisons, and asymmetric designs perfect for social media, family albums, and presentations.</p>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">How to Make a Photo Collage</h3>
+                    <ol className="list-decimal list-inside text-slate-600 space-y-2">
+                        <li>Select a layout that fits the number of photos you want to combine</li>
+                        <li>Customize the background color, gap size, and corner style</li>
+                        <li>Upload your photos by clicking each slot or dragging and dropping</li>
+                        <li>Click "Create Collage" to generate your high-quality 900×900px collage</li>
+                        <li>Download as JPG to share on Instagram, WhatsApp, or print</li>
+                    </ol>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Features</h3>
+                    <ul className="list-disc list-inside text-slate-600 space-y-2">
+                        <li><strong>6 professional layouts</strong> — 2x1, 1+2, 3x1, 2x2, 1+3, 3x2 grids</li>
+                        <li><strong>Custom background colors</strong> — white, black, or any color you pick</li>
+                        <li><strong>Smart cropping</strong> — images auto-fit each cell with cover scaling</li>
+                        <li><strong>Rounded corners</strong> — toggle for a modern or classic look</li>
+                        <li><strong>High resolution output</strong> — 900×900px JPG at 92% quality</li>
+                        <li><strong>100% private</strong> — all processing done in your browser, no uploads</li>
+                    </ul>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Perfect For</h3>
+                    <p className="text-slate-600">Instagram posts, WhatsApp status, Facebook memories, wedding albums, travel diaries, before-and-after comparisons, recipe cards, and school project presentations. Our collage maker is completely free with no watermarks added to your output.</p>
+                    <p className="text-slate-600 mt-4">You can also use our <a href="/image-resizer" className="text-blue-600 hover:underline">Image Resizer</a> to prepare photos before making a collage, or our <a href="/image-compressor" className="text-blue-600 hover:underline">Image Compressor</a> to reduce the final collage file size.</p>
+                </div>
+            </ToolLayout>
+        </>
     )
 }

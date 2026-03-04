@@ -141,12 +141,6 @@ const routes = [
         changefreq: 'weekly',
         priority: 0.8,
     },
-    {
-        loc: '/collage-maker',
-        lastmod: TODAY,
-        changefreq: 'weekly',
-        priority: 0.9,
-    },
 
     // ──────────────────────────────────────────────────────────────────
     // PDF TOOLS
@@ -278,6 +272,34 @@ const routes = [
     { loc: '/contact-us', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
     { loc: '/privacy-policy', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
     { loc: '/terms-of-service', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // VIDEO TOOLS (new category)
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/video-compressor', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/video-converter', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/video-to-audio', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/video-trimmer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/video-merger', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // NEW PDF TOOLS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/pdf-to-excel', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/html-to-pdf', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/remove-pdf-watermark', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/pdf-password-remover', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // UTILITY TOOLS (new category)
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/collage-maker', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/favicon-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/image-metadata-viewer', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/color-palette-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/worksheet-converter', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: '/text-to-handwriting', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/html-table-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
 ];
 
 // ─── Exports ──────────────────────────────────────────────────────────────────

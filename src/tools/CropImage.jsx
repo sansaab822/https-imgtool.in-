@@ -309,7 +309,7 @@ export default function CropImage() {
                             Privacy is another significant advantage. Unlike cloud-based tools that upload your images to their servers for processing, every pixel of your image stays on your device from start to finish. This matters enormously for sensitive content like personal photos, legal documents, medical imagery, and business confidential materials.
                         </p>
                         <p>
-                            If you need to go further after cropping — for example resizing the cropped image to exact pixel dimensions, compressing it for web upload, or converting it to a different format — our <a href="/image-resizer" className="text-pink-600 hover:underline">Image Resizer</a>, <a href="/image-compressor" className="text-pink-600 hover:underline">Image Compressor</a>, and format converter tools are just one click away in the navigation. <strong>Looking to combine multiple cropped photos into one?</strong> Use our free <a href="/collage-maker" className="text-pink-600 hover:underline">Photo Collage Maker</a> to arrange them perfectly.
+                            If you need to go further after cropping — for example resizing the cropped image to exact pixel dimensions, compressing it for web upload, or converting it to a different format — our <a href="/image-resizer" className="text-pink-600 hover:underline">Image Resizer</a>, <a href="/image-compressor" className="text-pink-600 hover:underline">Image Compressor</a>, and format converter tools are just one click away in the navigation.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
