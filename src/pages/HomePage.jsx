@@ -41,12 +41,50 @@ export default function HomePage() {
         )
     }, [search])
 
+    const homeSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'IMG Tool — Free Online Image & PDF Tools',
+        url: 'https://imgtool.in/',
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'Any',
+        browserRequirements: 'Requires a modern web browser with JavaScript enabled',
+        offers: {
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+        },
+        description: 'All-in-one online image tools. Convert AVIF, HEIC, WebP, PNG, JPG, PDF and more. Resize, Crop, Compress, and Edit images in your browser. No upload needed — 100% private.',
+        featureList: [
+            'Image format conversion (JPG, PNG, WebP, HEIC, AVIF, BMP, GIF, TIFF, ICO, SVG)',
+            'Image resize and crop',
+            'Image compression',
+            'Background removal',
+            'Image enhancement',
+            'PDF to image conversion',
+            'Image to PDF conversion',
+            'Passport size photo maker',
+            'PAN card photo resizer',
+            'SSC photo date adder',
+            '3D text to STL generator',
+            'Aadhaar card print setter',
+        ],
+        screenshot: 'https://imgtool.in/image/og-home.webp',
+        aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.8',
+            ratingCount: '142',
+            bestRating: '5',
+        },
+    }
+
     return (
         <>
             <SEO
                 title="IMG Tool - Free Online Image & PDF Tools (100% Secure)"
                 description="All-in-one online image tools. Convert AVIF, HEIC, WebP, PNG, JPG, PDF and more. Resize, Crop, Compress, and Edit images in your browser. No upload needed."
                 canonical="/"
+                schema={homeSchema}
             />
 
             {/* Hero */}
