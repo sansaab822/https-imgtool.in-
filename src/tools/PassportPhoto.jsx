@@ -1,4 +1,5 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
+import Cropper from 'react-easy-crop'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
 
@@ -35,12 +36,6 @@ const BACKGROUNDS = [
     { color: 'none', name: 'None' },
 ]
 
-const LAYOUTS = [
-    { count: 4, cols: 2, label: '4 Photos (2×2)' },
-    { count: 6, cols: 3, label: '6 Photos (3×2)' },
-    { count: 8, cols: 4, label: '8 Photos (4×2)' },
-]
-
 const PAPER_SIZES = [
     { id: 'a4', label: 'A4', w: 210, h: 297, desc: '210×297mm' },
     { id: 'letter', label: 'Letter', w: 216, h: 279, desc: '8.5×11"' },
@@ -56,22 +51,38 @@ const DPI_OPTIONS = [
 const CATS = ['Passport', 'Visa', 'ID', 'Exam', 'Custom']
 
 export default function PassportPhoto() {
+    // Media State
     const [photo, setPhoto] = useState(null)
+    const [isBgRemoved, setIsBgRemoved] = useState(false)
+    const [bgProcessing, setBgProcessing] = useState(false)
+
+    // Cropper State
+    const [crop, setCrop] = useState({ x: 0, y: 0 })
+    const [zoom, setZoom] = useState(1)
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+
+    // Adjustments
+    const [brightness, setBrightness] = useState(100)
+    const [contrast, setContrast] = useState(100)
+    const [saturation, setSaturation] = useState(100)
+
+    // Config State
     const [selectedSize, setSelectedSize] = useState(SIZES[0])
     const [customW, setCustomW] = useState(35)
     const [customH, setCustomH] = useState(45)
     const [bgColor, setBgColor] = useState('#ffffff')
-    const [layout, setLayout] = useState(LAYOUTS[0])
+    const [copies, setCopies] = useState(8)
     const [quality, setQuality] = useState(95)
-    const [result, setResult] = useState(null)
-    const [processing, setProcessing] = useState(false)
-    const [dragging, setDragging] = useState(false)
     const [sizeCat, setSizeCat] = useState('Passport')
     const [printDpi, setPrintDpi] = useState(300)
     const [printPaper, setPrintPaper] = useState(PAPER_SIZES[0])
     const [showGuides, setShowGuides] = useState(true)
+
+    // Result & UI State
+    const [result, setResult] = useState(null)
+    const [processing, setProcessing] = useState(false)
+    const [dragging, setDragging] = useState(false)
     const inputRef = useRef()
-    const imgRef = useRef()
 
     const mmToPx = (mm) => Math.round(mm * printDpi / 25.4)
 
@@ -79,97 +90,176 @@ export default function PassportPhoto() {
         if (!file || !file.type.startsWith('image/')) return
         setPhoto({ url: URL.createObjectURL(file), file })
         setResult(null)
+        setIsBgRemoved(false)
+        setCrop({ x: 0, y: 0 })
+        setZoom(1)
+        setBrightness(100)
+        setContrast(100)
+        setSaturation(100)
     }, [])
 
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels)
+    }, [])
+
+    const removeBg = async () => {
+        if (!photo) return
+        setBgProcessing(true)
+        try {
+            const bgModule = await import('@imgly/background-removal')
+            const removeBackground = bgModule.removeBackground
+            const blob = await removeBackground(photo.file, { output: { format: 'image/png' } })
+            const url = URL.createObjectURL(blob)
+            setPhoto({ url, file: blob })
+            setIsBgRemoved(true)
+        } catch (e) {
+            console.error('BG Removal failed:', e)
+            alert('Background removal failed. Please try again.')
+        } finally {
+            setBgProcessing(false)
+        }
+    }
+
     const generatePhoto = async () => {
-        if (!imgRef.current) return
+        if (!photo || !croppedAreaPixels) return
         setProcessing(true)
+
+        // Let UI update
         await new Promise(r => setTimeout(r, 50))
 
-        const img = imgRef.current
-        const size = selectedSize.name === 'Custom' ? { w: customW, h: customH } : selectedSize
-        const photoW = mmToPx(size.w)
-        const photoH = mmToPx(size.h)
+        try {
+            const size = selectedSize.name === 'Custom' ? { w: customW, h: customH } : selectedSize
+            const targetW_px = mmToPx(size.w)
+            const targetH_px = mmToPx(size.h)
 
-        // Create single photo
-        const singleCanvas = document.createElement('canvas')
-        singleCanvas.width = photoW
-        singleCanvas.height = photoH
-        const sCtx = singleCanvas.getContext('2d')
+            // 1. Get raw cropped image
+            const img = new Image()
+            img.crossOrigin = 'anonymous'
+            img.src = photo.url
+            await new Promise((resolve, reject) => {
+                img.onload = resolve
+                img.onerror = () => {
+                    resolve() // resolve anyway to avoid stuck process
+                }
+            })
 
-        // Background
-        if (bgColor !== 'none') {
-            sCtx.fillStyle = bgColor
-            sCtx.fillRect(0, 0, photoW, photoH)
-        }
+            const singleCanvas = document.createElement('canvas')
+            singleCanvas.width = targetW_px
+            singleCanvas.height = targetH_px
+            const sCtx = singleCanvas.getContext('2d')
 
-        // Fit image (center crop)
-        const imgRatio = img.naturalWidth / img.naturalHeight
-        const photoRatio = photoW / photoH
-        let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight
-        if (imgRatio > photoRatio) {
-            sw = img.naturalHeight * photoRatio
-            sx = (img.naturalWidth - sw) / 2
-        } else {
-            sh = img.naturalWidth / photoRatio
-            sy = (img.naturalHeight - sh) / 2
-        }
-        sCtx.drawImage(img, sx, sy, sw, sh, 0, 0, photoW, photoH)
-
-        // Create A4 sheet with multiples
-        const { jsPDF } = await import('jspdf')
-        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-        const a4W = 210, a4H = 297
-        const gap = 3
-        const cols = layout.cols
-        const rows = Math.ceil(layout.count / cols)
-        const totalW = cols * size.w + (cols - 1) * gap
-        const totalH = rows * size.h + (rows - 1) * gap
-        const startX = (a4W - totalW) / 2
-        const startY = 35
-
-        // Header
-        pdf.setFontSize(12)
-        pdf.setTextColor(80)
-        pdf.text('Passport Photos — Print Ready', a4W / 2, 15, { align: 'center' })
-        pdf.setFontSize(8)
-        pdf.setTextColor(150)
-        pdf.text(`Size: ${size.w}×${size.h}mm · ${layout.label} · Print at 100% scale`, a4W / 2, 22, { align: 'center' })
-
-        const dataUrl = singleCanvas.toDataURL('image/jpeg', quality / 100)
-        let photoCount = 0
-        for (let row = 0; row < rows && photoCount < layout.count; row++) {
-            for (let col = 0; col < cols && photoCount < layout.count; col++) {
-                const x = startX + col * (size.w + gap)
-                const y = startY + row * (size.h + gap)
-                pdf.addImage(dataUrl, 'JPEG', x, y, size.w, size.h)
-                // Cutting lines
-                pdf.setDrawColor(200)
-                pdf.setLineDashPattern([1, 1], 0)
-                pdf.rect(x, y, size.w, size.h)
-                photoCount++
+            // Draw Background
+            if (bgColor !== 'none') {
+                sCtx.fillStyle = bgColor
+                sCtx.fillRect(0, 0, targetW_px, targetH_px)
             }
+
+            // Apply filters
+            sCtx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`
+
+            // Draw crop
+            sCtx.drawImage(
+                img,
+                croppedAreaPixels.x,
+                croppedAreaPixels.y,
+                croppedAreaPixels.width,
+                croppedAreaPixels.height,
+                0,
+                0,
+                targetW_px,
+                targetH_px
+            )
+
+            // Reset filter for anything else
+            sCtx.filter = 'none'
+
+            // 2. Build PDF
+            const { jsPDF } = await import('jspdf')
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: printPaper.id })
+            const a4W = printPaper.w, a4H = printPaper.h
+            const gap = 3
+
+            // Calculate grid
+            const usableW = a4W - 20 // 10mm margins on sides
+            const cols = Math.floor((usableW + gap) / (size.w + gap))
+
+            const totalLayoutW = cols * size.w + (cols - 1) * gap
+            const startX = (a4W - totalLayoutW) / 2
+            let startY = 35
+
+            // Initial Header
+            pdf.setFontSize(14)
+            pdf.setTextColor(40)
+            pdf.setFont("helvetica", "bold")
+            pdf.text('Passport Photos — Print Ready', a4W / 2, 18, { align: 'center' })
+
+            pdf.setFontSize(9)
+            pdf.setTextColor(120)
+            pdf.setFont("helvetica", "normal")
+            pdf.text(`Size: ${size.w}×${size.h}mm • ${copies} Copies • Paper: ${printPaper.label}`, a4W / 2, 25, { align: 'center' })
+
+            const dataUrl = singleCanvas.toDataURL('image/jpeg', quality / 100)
+
+            // Generate multiple copies onto the grid
+            let photoCount = 0
+            let currentRow = 0
+
+            while (photoCount < copies) {
+                // Check if we need a new page (bottom margin ~20mm)
+                if (startY + (currentRow + 1) * (size.h + gap) > a4H - 20 && currentRow > 0) {
+                    pdf.addPage()
+                    startY = 20
+                    currentRow = 0
+                }
+
+                for (let col = 0; col < cols && photoCount < copies; col++) {
+                    const x = startX + col * (size.w + gap)
+                    const y = startY + currentRow * (size.h + gap)
+
+                    pdf.addImage(dataUrl, 'JPEG', x, y, size.w, size.h)
+
+                    // Cutting lines
+                    if (showGuides) {
+                        pdf.setDrawColor(200)
+                        pdf.setLineDashPattern([1, 1], 0)
+                        pdf.setLineWidth(0.2)
+                        pdf.rect(x - 0.5, y - 0.5, size.w + 1, size.h + 1)
+                    }
+                    photoCount++
+                }
+                currentRow++
+            }
+
+            // Footer on the very last page
+            const lastY = startY + currentRow * (size.h + gap)
+            if (lastY < a4H - 15) {
+                pdf.setFontSize(8)
+                pdf.setTextColor(150)
+                pdf.text('Print at 100% scale. Do NOT "Fit to Page" or "Scale to Fit".', a4W / 2, lastY + 8, { align: 'center' })
+            }
+
+            const blob = pdf.output('blob')
+            setResult({
+                url: URL.createObjectURL(blob),
+                name: `passport_photos_${size.w}x${size.h}mm_${copies}copies.pdf`,
+                singleUrl: singleCanvas.toDataURL('image/jpeg', quality / 100),
+                singleName: `passport_${size.w}x${size.h}mm_HQ.jpg`,
+            })
+
+        } catch (e) {
+            console.error(e)
+            alert('An error occurred during generation.')
         }
 
-        pdf.setFontSize(7)
-        pdf.setTextColor(180)
-        pdf.text('Cut along dotted lines. Print at 100% scale on A4 paper.', a4W / 2, startY + totalH + 8, { align: 'center' })
-
-        const blob = pdf.output('blob')
-        setResult({
-            url: URL.createObjectURL(blob),
-            name: `passport_photos_${size.w}x${size.h}mm.pdf`,
-            // Also create single photo download
-            singleUrl: singleCanvas.toDataURL('image/jpeg', quality / 100),
-            singleName: `passport_${size.w}x${size.h}mm.jpg`,
-        })
         setProcessing(false)
     }
 
+    const currentAspect = selectedSize.name === 'Custom' ? customW / customH : selectedSize.w / selectedSize.h
+
     return (
         <>
-            <SEO title="Passport Size Photo Maker - Free Online" description="Create passport size photos for any document. Multiple sizes for passport, visa, ID cards, and exams. Print-ready A4 PDF layout." canonical="/passport-size-photo" />
-            <ToolLayout toolSlug="passport-size-photo" title="Passport Photo Maker" description="Create perfectly sized passport photos with background options and print-ready A4 layouts." breadcrumb="Passport Photo">
+            <SEO title="Passport Size Photo Maker - Free Online" description="Create advanced passport size photos. Manual visual crop, AI background removal, custom copies setup, and print-ready formats." canonical="/passport-size-photo" />
+            <ToolLayout toolSlug="passport-size-photo" title="Advanced Passport Photo Maker" description="Premium passport studio. Visually crop, auto-remove background, tune photo limits, and create bulk print-ready PDF sheets." breadcrumb="Passport Photo">
                 <div className="grid lg:grid-cols-3 gap-6">
                     {/* ── Left Panel ── */}
                     <div className="lg:col-span-2 space-y-4">
@@ -188,43 +278,104 @@ export default function PassportPhoto() {
                                     </div>
                                     <div className="text-center">
                                         <p className="text-lg font-bold text-slate-700">Drop your photo or <span className="text-blue-600">browse</span></p>
-                                        <p className="text-slate-400 text-sm mt-0.5">Face-centered photo recommended · All formats</p>
+                                        <p className="text-slate-400 text-sm mt-0.5">We support manual crop and automatic backgrounds!</p>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-4">
-                                {/* Preview with aspect overlay */}
+                            <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-4 shadow-sm">
+                                {/* Preview with Cropper */}
                                 <div className="flex items-center justify-between">
                                     <span className="text-xs font-bold text-slate-600">
-                                        <i className="fas fa-image text-blue-400 mr-1"></i>Photo Preview — {selectedSize.name} ({selectedSize.desc})
+                                        <i className="fas fa-crop-simple text-blue-500 mr-2"></i>Crop &amp; Adjust — {selectedSize.name}
                                     </span>
-                                    <button onClick={() => { setPhoto(null); setResult(null) }} className="text-xs text-slate-400 hover:text-red-500">
-                                        <i className="fas fa-xmark mr-1"></i>Remove
+                                    <button onClick={() => { setPhoto(null); setResult(null); setIsBgRemoved(false) }} className="text-[11px] font-bold text-slate-400 hover:text-red-500 transition-colors bg-slate-50 hover:bg-red-50 px-3 py-1.5 rounded-full">
+                                        <i className="fas fa-xmark mr-1"></i>Remove Photo
                                     </button>
                                 </div>
-                                <div className="bg-slate-50 rounded-xl p-3 flex items-center justify-center min-h-[250px]">
-                                    <div className="relative inline-block" style={{ backgroundColor: bgColor !== 'none' ? bgColor : 'transparent' }}>
-                                        <img ref={imgRef} src={photo.url} alt="Photo" className="max-h-[350px] max-w-full object-contain rounded-lg" crossOrigin="anonymous" />
-                                        {/* Face guide overlay */}
-                                        <div className="absolute inset-0 pointer-events-none flex items-start justify-center pt-[8%]">
-                                            <div className="border-2 border-dashed border-blue-300/50 rounded-full" style={{ width: '40%', height: '55%' }}></div>
+
+                                <div className="relative w-full h-[380px] rounded-xl overflow-hidden shadow-inner border border-slate-200 group">
+                                    <Cropper
+                                        image={photo.url}
+                                        crop={crop}
+                                        zoom={zoom}
+                                        aspect={currentAspect}
+                                        onCropChange={setCrop}
+                                        onCropComplete={onCropComplete}
+                                        onZoomChange={setZoom}
+                                        style={{
+                                            containerStyle: { background: bgColor !== 'none' ? bgColor : '#e2e8f0', backgroundImage: bgColor === 'none' ? 'linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%)' : 'none', backgroundSize: '8px 8px', backgroundPosition: '0 0, 4px 4px' },
+                                            mediaStyle: { filter: `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)` }
+                                        }}
+                                    />
+                                    {/* Face guide overlay */}
+                                    {showGuides && (
+                                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center transition-opacity opacity-60 group-hover:opacity-100">
+                                            <div className="border-[3px] border-dashed border-white/80 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.3)] mix-blend-difference" style={{ width: '45%', height: '60%', marginTop: '-10%' }}></div>
                                         </div>
+                                    )}
+                                </div>
+
+                                {/* Fine-tune Sliders */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-slate-50/80 rounded-xl border border-slate-100">
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-500 justify-between flex mb-1">
+                                            <span><i className="fas fa-magnifying-glass mr-1"></i>Zoom</span>
+                                            <span className="text-blue-600">{zoom.toFixed(1)}x</span>
+                                        </label>
+                                        <input type="range" min="1" max="3" step="0.1" value={zoom} onChange={e => setZoom(+e.target.value)} className="slider-range w-full" />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-500 justify-between flex mb-1">
+                                            <span><i className="fas fa-sun mr-1"></i>Brightness</span>
+                                            <span className="text-blue-600">{brightness}%</span>
+                                        </label>
+                                        <input type="range" min="50" max="150" value={brightness} onChange={e => setBrightness(+e.target.value)} className="slider-range w-full" />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-500 justify-between flex mb-1">
+                                            <span><i className="fas fa-circle-half-stroke mr-1"></i>Contrast</span>
+                                            <span className="text-blue-600">{contrast}%</span>
+                                        </label>
+                                        <input type="range" min="50" max="150" value={contrast} onChange={e => setContrast(+e.target.value)} className="slider-range w-full" />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-bold text-slate-500 justify-between flex mb-1">
+                                            <span><i className="fas fa-droplet mr-1"></i>Saturation</span>
+                                            <span className="text-blue-600">{saturation}%</span>
+                                        </label>
+                                        <input type="range" min="0" max="200" value={saturation} onChange={e => setSaturation(+e.target.value)} className="slider-range w-full" />
                                     </div>
                                 </div>
 
-                                {/* Results */}
+                                {/* AI Button */}
+                                {!isBgRemoved && (
+                                    <button onClick={removeBg} disabled={bgProcessing} className="w-full py-3 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 disabled:opacity-50 text-white text-sm font-bold rounded-xl transition-all shadow-md shadow-purple-500/20 flex items-center justify-center gap-2">
+                                        {bgProcessing ? (
+                                            <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> AI processing...</>
+                                        ) : (
+                                            <><i className="fas fa-wand-magic-sparkles"></i> Auto Remove Background</>
+                                        )}
+                                    </button>
+                                )}
+
+                                {/* Results Banner */}
                                 {result && (
-                                    <div className="space-y-2">
-                                        <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-xl">
-                                            <i className="fas fa-circle-check text-green-500 flex-shrink-0"></i>
-                                            <span className="text-sm font-bold text-green-800 flex-1">Print-ready PDF generated!</span>
+                                    <div className="space-y-3 pt-2">
+                                        <div className="flex items-center gap-3 p-3 bg-green-50 border border-green-200 rounded-xl shadow-sm">
+                                            <div className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center shrink-0">
+                                                <i className="fas fa-check"></i>
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-bold text-green-800">Ready to Print!</p>
+                                                <p className="text-[10px] text-green-600">Your high quality layout is prepared successfully.</p>
+                                            </div>
                                         </div>
                                         <div className="grid grid-cols-2 gap-3">
-                                            <a href={result.url} download={result.name} className="flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all">
-                                                <i className="fas fa-file-pdf"></i> Download A4 PDF
+                                            <a href={result.url} download={result.name} className="flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-blue-500/20">
+                                                <i className="fas fa-file-pdf"></i> Download {copies} Print PDF
                                             </a>
-                                            <a href={result.singleUrl} download={result.singleName} className="flex items-center justify-center gap-2 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm font-bold transition-all">
+                                            <a href={result.singleUrl} download={result.singleName} className="flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-emerald-500/20">
                                                 <i className="fas fa-image"></i> Download Single Photo
                                             </a>
                                         </div>
@@ -236,116 +387,115 @@ export default function PassportPhoto() {
 
                     {/* ── Right Panel ── */}
                     <div className="space-y-4">
-                        {/* Photo Size */}
-                        <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
-                            <h3 className="font-bold text-slate-800 flex items-center gap-2">
-                                <i className="fas fa-ruler-combined text-blue-500"></i> Photo Settings
+                        <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-5 shadow-sm">
+                            <h3 className="font-bold text-slate-800 flex items-center gap-2 text-sm">
+                                <i className="fas fa-sliders text-blue-500"></i> Settings
                             </h3>
 
+                            {/* Photo Size categories */}
                             <div>
-                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Category</label>
+                                <label className="block text-[10px] text-slate-500 mb-1.5 font-bold uppercase tracking-wide">Document Type</label>
                                 <div className="flex gap-1.5 flex-wrap">
                                     {CATS.map(c => (
                                         <button key={c} onClick={() => setSizeCat(c)}
-                                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${sizeCat === c ? 'bg-blue-500 text-white' : 'bg-slate-50 text-slate-500 hover:bg-blue-50'}`}>
+                                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${sizeCat === c ? 'bg-blue-500 text-white shadow-sm' : 'bg-slate-50 text-slate-500 hover:bg-blue-50 border border-slate-100'}`}>
                                             {c}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="space-y-1.5 max-h-36 overflow-y-auto">
+                            {/* Standard Size Selector or Custom */}
+                            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1 stylish-scroll">
                                 {SIZES.filter(s => s.cat === sizeCat).map(s => (
                                     <button key={s.name} onClick={() => setSelectedSize(s)}
-                                        className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all text-left ${selectedSize.name === s.name ? 'bg-blue-500 text-white' : 'bg-slate-50 text-slate-600 hover:bg-blue-50'}`}>
-                                        <span className="text-xs font-medium">{s.name}</span>
-                                        <span className="text-[10px] opacity-75">{s.desc}</span>
+                                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-all text-left border ${selectedSize.name === s.name ? 'border-blue-500 bg-blue-50/50' : 'border-slate-100 hover:bg-slate-50'}`}>
+                                        <span className={`text-xs font-bold ${selectedSize.name === s.name ? 'text-blue-700' : 'text-slate-600'}`}>{s.name}</span>
+                                        <span className={`text-[10px] ${selectedSize.name === s.name ? 'text-blue-500' : 'text-slate-400'}`}>{s.desc}</span>
                                     </button>
                                 ))}
                             </div>
 
-                            {/* Custom size */}
+                            {/* Custom size inputs */}
                             {selectedSize.name === 'Custom' && (
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 p-3 bg-slate-50 rounded-xl border border-slate-100">
                                     <div className="flex-1">
-                                        <label className="block text-[10px] text-slate-500 mb-0.5">Width (mm)</label>
-                                        <input type="number" value={customW} onChange={e => setCustomW(+e.target.value)} className="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs" />
+                                        <label className="block text-[10px] text-slate-500 font-bold mb-1">Width (mm)</label>
+                                        <input type="number" min="10" max="200" value={customW} onChange={e => setCustomW(+e.target.value)} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" />
                                     </div>
                                     <div className="flex-1">
-                                        <label className="block text-[10px] text-slate-500 mb-0.5">Height (mm)</label>
-                                        <input type="number" value={customH} onChange={e => setCustomH(+e.target.value)} className="w-full px-2.5 py-1.5 border border-slate-200 rounded-lg text-xs" />
+                                        <label className="block text-[10px] text-slate-500 font-bold mb-1">Height (mm)</label>
+                                        <input type="number" min="10" max="200" value={customH} onChange={e => setCustomH(+e.target.value)} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-medium focus:ring-1 focus:ring-blue-500 outline-none" />
                                     </div>
                                 </div>
                             )}
 
                             {/* Background Color */}
                             <div>
-                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Background Color</label>
+                                <label className="block text-[10px] text-slate-500 mb-1.5 font-bold uppercase tracking-wide">Background Canvas</label>
                                 <div className="flex gap-2 flex-wrap">
                                     {BACKGROUNDS.map(b => (
                                         <button key={b.color} onClick={() => setBgColor(b.color)}
-                                            className={`w-8 h-8 rounded-lg border-2 transition-all ${bgColor === b.color ? 'border-blue-500 scale-110 shadow-md' : 'border-slate-200 hover:border-blue-300'}`}
+                                            className={`w-8 h-8 rounded-lg border-2 transition-transform hover:scale-110 shadow-sm ${bgColor === b.color ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-slate-200'}`}
                                             style={{ backgroundColor: b.color === 'none' ? 'transparent' : b.color, backgroundImage: b.color === 'none' ? 'linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%)' : 'none', backgroundSize: '8px 8px', backgroundPosition: '0 0, 4px 4px' }}
                                             title={b.name}>
                                         </button>
                                     ))}
                                 </div>
+                                {!isBgRemoved && (
+                                    <p className="text-[9px] text-amber-500 font-medium mt-1.5 flex items-center gap-1"><i className="fas fa-circle-exclamation"></i> Hit 'Auto Remove Background' to view canvas.</p>
+                                )}
                             </div>
 
-                            {/* Layout */}
+                            {/* Copies count wrapper */}
                             <div>
-                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Photos Per Sheet</label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {LAYOUTS.map(l => (
-                                        <button key={l.count} onClick={() => setLayout(l)}
-                                            className={`py-2 rounded-lg text-xs font-bold transition-all ${layout.count === l.count ? 'bg-blue-600 text-white' : 'bg-slate-50 text-slate-600 hover:bg-blue-50'}`}>
-                                            {l.count} Photos
-                                        </button>
-                                    ))}
+                                <div className="flex items-center justify-between mb-1.5">
+                                    <label className="block text-[10px] text-slate-500 font-bold uppercase tracking-wide">Number of Copies</label>
+                                    <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{copies} {copies === 1 ? 'Copy' : 'Copies'}</span>
+                                </div>
+                                <div className="flex gap-2">
+                                    <div className="flex-1 grid grid-cols-4 gap-1">
+                                        {[4, 6, 8, 12].map(c => (
+                                            <button key={c} onClick={() => setCopies(c)}
+                                                className={`py-2 rounded-lg text-xs font-bold transition-all border ${copies === c ? 'bg-blue-600 border-blue-600 text-white shadow-md' : 'bg-slate-50 text-slate-500 border-slate-100 hover:bg-slate-100'}`}>
+                                                {c}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="w-16 relative">
+                                        <input type="number" min="1" max="99" value={copies} onChange={e => setCopies(parseInt(e.target.value) || 1)} className="w-full h-full px-1 border border-slate-200 rounded-lg text-xs text-center font-bold text-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all" title="Custom Copies" />
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Quality */}
-                            <div>
-                                <label className="flex justify-between text-[10px] text-slate-500 font-medium mb-1">
-                                    <span>JPEG Quality</span><span className="font-bold text-blue-600">{quality}%</span>
-                                </label>
-                                <input type="range" min="70" max="100" value={quality} onChange={e => setQuality(+e.target.value)} className="slider-range w-full" />
-                            </div>
+                            <hr className="border-slate-100" />
 
-                            {/* DPI */}
-                            <div>
-                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Output DPI</label>
-                                <div className="grid grid-cols-3 gap-1.5">
-                                    {DPI_OPTIONS.map(d => (
-                                        <button key={d.value} onClick={() => setPrintDpi(d.value)}
-                                            className={`py-2 rounded-lg text-center transition-all ${printDpi === d.value ? 'bg-indigo-500 text-white' : 'bg-slate-50 text-slate-600 hover:bg-indigo-50'}`}>
-                                            <p className="text-xs font-bold">{d.label}</p>
-                                            <p className="text-[9px] opacity-70">{d.desc}</p>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Paper Size */}
-                            <div>
-                                <label className="block text-[10px] text-slate-500 mb-1.5 font-medium">Print Paper Size</label>
-                                <div className="grid grid-cols-3 gap-1.5">
-                                    {PAPER_SIZES.map(p => (
-                                        <button key={p.id} onClick={() => setPrintPaper(p)}
-                                            className={`py-2 rounded-lg text-center transition-all ${printPaper.id === p.id ? 'bg-blue-500 text-white' : 'bg-slate-50 text-slate-600 hover:bg-blue-50'}`}>
-                                            <p className="text-xs font-bold">{p.label}</p>
-                                            <p className="text-[9px] opacity-70">{p.desc}</p>
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Cut Guides */}
-                            <div className="flex items-center justify-between bg-slate-50 rounded-lg px-3 py-2">
+                            <div className="grid grid-cols-2 gap-3">
+                                {/* Print Paper Selection */}
                                 <div>
-                                    <p className="text-xs font-bold text-slate-700">Cut Guide Lines</p>
-                                    <p className="text-[10px] text-slate-400">Dashed lines for trimming</p>
+                                    <label className="block text-[10px] text-slate-500 font-bold mb-1">Canvas Size</label>
+                                    <select value={printPaper.id} onChange={(e) => setPrintPaper(PAPER_SIZES.find(p => p.id === e.target.value))} className="w-full text-xs p-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none">
+                                        {PAPER_SIZES.map(p => (
+                                            <option key={p.id} value={p.id}>{p.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                {/* DPI Selection */}
+                                <div>
+                                    <label className="block text-[10px] text-slate-500 font-bold mb-1">Print Quality</label>
+                                    <select value={printDpi} onChange={(e) => setPrintDpi(+e.target.value)} className="w-full text-xs p-2 border border-slate-200 rounded-lg focus:border-blue-500 outline-none">
+                                        {DPI_OPTIONS.map(d => (
+                                            <option key={d.value} value={d.value}>{d.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Cut Guides Slider Toggle */}
+                            <div className="flex items-center justify-between bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+                                <div>
+                                    <p className="text-xs font-bold text-slate-700">Dashed Cut Lines</p>
+                                    <p className="text-[10px] text-slate-400">Guides for scissors</p>
                                 </div>
                                 <button onClick={() => setShowGuides(g => !g)}
                                     className={`w-10 h-5 rounded-full transition-all ${showGuides ? 'bg-blue-500' : 'bg-slate-300'} relative`}>
@@ -355,16 +505,12 @@ export default function PassportPhoto() {
 
                             {/* Generate */}
                             <button onClick={generatePhoto} disabled={!photo || processing}
-                                className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+                                className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 text-white font-black rounded-xl transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-2 transform hover:-translate-y-0.5 active:translate-y-0 text-sm">
                                 {processing ? (
-                                    <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Generating...</>
+                                    <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Generating PDF...</>
                                 ) : (
-                                    <><i className="fas fa-id-card"></i> Generate Passport Photos</>
+                                    <><i className="fas fa-print"></i> Generate {copies} Photos Layout</>
                                 )}
-                            </button>
-
-                            <button onClick={() => { setPhoto(null); setResult(null) }} className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm rounded-xl transition-all">
-                                Upload New Photo
                             </button>
                         </div>
                     </div>
@@ -390,12 +536,14 @@ export default function PassportPhoto() {
                             One of the most frustrating aspects of bureaucratic applications is that every country and institution seems to require a slightly different photo size. A standard Schengen Visa demands a neat 35×45mm vertical rectangle, while a US Passport requires a perfectly square 2×2 inch (51×51mm) crop. Our utility comes pre-loaded with an extensive directory of official dimensions covering global passports, international visas, driver's licenses, and specific regional requirements like Indian PAN cards or UPSC/SSC examination formats. If your specific requirement isn't listed, simply select the "Custom" option to manually input the exact width and height you need.
                         </p>
 
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Advanced AI Background Eraser</h3>
+                        <p>
+                            One of the most common reasons a passport application photograph is rejected by authorities is due to a dark, cluttered, or non-compliant background behind your head. Our tool integrates advanced, purely browser-based AI to automatically erase messy backgrounds flawlessly with a single click. Once stripped, you can utilize our studio selector to place a perfectly clean white, gray, or soft blue canvas back behind your head.
+                        </p>
+
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Preparing Your Photo for Printing</h3>
                         <p>
-                            Once you have aligned your face using our intuitive visual guides, the tool doesn't just give you a single cropped image—it automatically generates a professional, high-resolution PDF document perfectly sized for standard A4 printer paper. You can choose whether you need a quick strip of four photos, or a full sheet of eight. We even automatically draw light, dotted cutting lines around each portrait so you know exactly where to trim with your scissors. Simply download the PDF and send it to your home printer or a local print shop.
-                        </p>
-                        <p>
-                            It is important to note that most official government agencies require passport photos to be printed on a pure white or light grey background. If the selfie you upload was taken in your messy bedroom, you will likely face rejection. To solve this, we highly recommend taking your photo, running it through our <a href="/bg-remover" className="text-blue-600 hover:underline">Background Remover Tool</a> to extract yourself onto a transparent canvas, and then bringing that clean image back into this passport maker. This allows you to utilize our built-in background color selector to instantly snap a perfect, studio-grade white backdrop behind your head.
+                            Once you have aligned your face using our intuitive visual guides, the tool doesn't just give you a single cropped image—it automatically generates a professional, high-resolution PDF document perfectly sized for standard A4 printer paper. You can choose whether you need a quick strip of four photos, or a full sheet of 24. We even automatically draw light, dotted cutting lines around each portrait so you know exactly where to trim with your scissors. Simply download the PDF and send it to your home printer or a local print shop.
                         </p>
 
                         <img
@@ -408,41 +556,17 @@ export default function PassportPhoto() {
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Tips for a Successfully Accepted Photograph</h3>
                         <p>
-                            Even with perfect cropping and a pure white background, your photo can still be rejected if you don't follow basic biometric guidelines. Always ensure you are facing the camera directly, not angled to the side. Maintain a neutral facial expression—no wide smiles or frowning. Ensure both of your ears are visible, and remove any bulky glasses that might cause glare or obscure your eyes. Finally, make sure the original photograph was taken in a well-lit environment so there are no harsh, distracting shadows falling across half of your face or onto the background behind you.
+                            Even with perfect cropping and a pure white background, your photo can still be rejected if you don't follow basic biometric guidelines. Always ensure you are facing the camera directly, not angled to the side. Maintain a neutral facial expression—no wide smiles or frowning. Ensure both of your ears are visible, and remove any bulky glasses that might cause glare or obscure your eyes. Finally, make sure the original photograph was taken in a well-lit environment so there are no harsh, distracting shadows.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Essential Features</h3>
                         <ul className="list-disc pl-5 space-y-2">
                             <li><strong>Biometric Guidelines:</strong> The preview canvas features a helpful oval overlay designed to ensure your head and shoulders take up the correct percentage of the final cropped frame.</li>
-                            <li><strong>Custom Solid Backgrounds:</strong> Instantly fill transparent areas of your uploaded PNG file with official colors like pure white, light grey, or specific shades of blue required by certain nations.</li>
-                            <li><strong>A4 Print Layouts:</strong> The generator actively spaces your photos intelligently on standard A4 dimensions, saving you the hassle of trying to manually align them in a word processor.</li>
-                            <li><strong>Dual Download Links:</strong> In addition to the printable PDF sheet, you can also download a single, high-quality JPG version of the crop for digital application forms.</li>
+                            <li><strong>Interactive Cropper:</strong> Precisely zoom and reposition your photo, controlling exactly how it fits inside the required official borders.</li>
+                            <li><strong>Smart Generation:</strong> Choose precise number of copies. Our PDF generator automatically structures dynamic layouts from 1 single photo up to a 50 piece grid layout spanning multiple sheets.</li>
                             <li><strong>100% Data Privacy:</strong> Because this tool utilizes JavaScript to manipulate the canvas locally in your browser, your personal face data and identification photos are never uploaded to any remote server.</li>
                         </ul>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Common Questions</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <h4 className="font-bold text-slate-700">What type of paper should I use to print the PDF?</h4>
-                                <p className="mt-1">For official government applications, you must print the generated PDF document on high-quality glossy or matte photographic paper. Printing these photos on standard, thin copy paper will almost certainly result in your application being rejected.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">How do I ensure the photos print at the exact millimeter size?</h4>
-                                <p className="mt-1">When you open the downloaded PDF file to print it, you must delve into your printer settings dialogue box and ensure that options like "Fit to Page" or "Scale to Fit" are completely disabled. Make sure the scale is set exactly to "100%" or "Actual Size."</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Can I wear glasses in my passport photo?</h4>
-                                <p className="mt-1">Policies vary drastically by country. The United States State Department strictly prohibits wearing eyeglasses in passport photos under any circumstances. However, other governments may allow them provided there is absolutely no glare on the lenses. Always check your specific application constraints.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Why isn't the background changing when I select a new color?</h4>
-                                <p className="mt-1">The background color selector will only work if the original image file you upload has a transparent background (like a cutout PNG). If you upload a standard JPG selfie taken against your living room wall, our tool cannot automatically erase your living room. You must use a background removal tool first.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Is this tool really free to use?</h4>
-                                <p className="mt-1">Yes, generating both the single digital photographs and the multi-photo A4 PDF layout is completely free and unwatermarked. We believe basic bureaucratic utilities should be accessible to everyone.</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </ToolLayout>
