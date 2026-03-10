@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-
+import LanguageSelector from './LanguageSelector'
 const popularTools = [
     { href: '/avif-to-jpg', label: 'AVIF to JPG' },
     { href: '/heic-to-jpg', label: 'HEIC to JPG' },
@@ -85,11 +85,14 @@ export default function Footer() {
 
                 {/* Copyright */}
                 <div className="border-t border-slate-800 pt-8 mt-8">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-slate-500">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
                         <p>&copy; {year} imgtool.in. All rights reserved.</p>
-                        <p className="flex items-center gap-2">
-                            Made with <i className="fas fa-heart text-red-500 animate-pulse" aria-hidden="true"></i> for Creators
-                        </p>
+                        <div className="flex items-center gap-6">
+                            <p className="flex items-center gap-2">
+                                Made with <i className="fas fa-heart text-red-500 animate-pulse" aria-hidden="true"></i> for Creators
+                            </p>
+                            <LanguageSelector />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -73,22 +73,18 @@ async function submitToGoogle(urls) {
 
     console.log(`\n🚀 Authenticating with Google Indexing API...`)
     try {
-        const key = JSON.parse(fs.readFileSync(SERVICE_ACCOUNT_FILE, 'utf-8'))
-        const authClient = new google.auth.JWT(
-            key.client_email,
-            null,
-            key.private_key,
-            ['https://www.googleapis.com/auth/indexing'],
-            null
-        )
+        const authClient = new google.auth.GoogleAuth({
+            keyFilename: SERVICE_ACCOUNT_FILE,
+            scopes: ['https://www.googleapis.com/auth/indexing'],
+        })
 
-        await authClient.authorize()
+        const auth = await authClient.getClient()
         console.log('✅  Authenticated with Google successfully.')
 
         // Setup indexing client
         const indexing = google.indexing({
             version: 'v3',
-            auth: authClient,
+            auth: auth,
         })
 
         // Prepare batches or loop carefully to respect quotas (Google limits to 100/200 requests per batch)
