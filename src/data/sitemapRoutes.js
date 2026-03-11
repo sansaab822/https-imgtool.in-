@@ -342,6 +342,75 @@ const routes = [
     { loc: '/qr-code-generator', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
 
     // ──────────────────────────────────────────────────────────────────
+    // GOVT EXAM PHOTO RESIZERS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/ssc-cgl-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ssc-chsl-photo-signature-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ssc-gd-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ssc-mts-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ssc-signature-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ibps-po-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ibps-clerk-photo-signature-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ibps-rrb-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/sbi-po-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/sbi-clerk-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/upsc-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/neet-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/jee-main-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/rrb-ntpc-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/up-police-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/bihar-police-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/rajasthan-police-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/mp-police-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/ctet-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/gate-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/post-office-gds-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/army-agniveer-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/navy-agniveer-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/mpsc-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/wbcs-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // COMPRESS TO EXACT SIZE
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/compress-image-to-30kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-to-40kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-to-60kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-to-70kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-to-80kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-to-120kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-to-150kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-20kb-30kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // SOCIAL MEDIA RESIZERS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/whatsapp-dp-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/whatsapp-status-photo-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/instagram-profile-photo-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/instagram-post-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/instagram-reels-thumbnail-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/facebook-profile-photo-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/facebook-cover-photo-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/linkedin-profile-photo-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/linkedin-banner-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/twitter-profile-photo-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/youtube-channel-art-resize', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
+    // DOCUMENT & ID PHOTO TOOLS
+    // ──────────────────────────────────────────────────────────────────
+    { loc: '/aadhaar-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/voter-id-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/driving-licence-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/visa-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/resume-photo-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/thumb-impression-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/handwritten-declaration-resizer', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/signature-resize-140x60', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+    { loc: '/compress-image-under-100kb', lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
+
+    // ──────────────────────────────────────────────────────────────────
     // DYNAMIC BLOG POSTS
     // ──────────────────────────────────────────────────────────────────
     ...blogPosts.map(post => ({

@@ -82,6 +82,12 @@ const StickerAddVirtual = lazy(() => import('./tools/StickerAddVirtual'))
 // AI Tools
 const AIDenoiser = lazy(() => import('./tools/AIDenoiser'))
 const AIColorizer = lazy(() => import('./tools/AIColorizer'))
+
+// New Shared Category Tools
+const GovernmentPhotoResizer = lazy(() => import('./tools/GovernmentPhotoResizer'))
+const CompressToSize = lazy(() => import('./tools/CompressToSize'))
+const SocialMediaResizer = lazy(() => import('./tools/SocialMediaResizer'))
+const DocumentPhotoResizer = lazy(() => import('./tools/DocumentPhotoResizer'))
 const Loader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="flex flex-col items-center gap-3">
@@ -254,6 +260,67 @@ export default function App() {
           {/* AI Tools */}
           <Route path="/ai-denoiser" element={<AIDenoiser />} />
           <Route path="/ai-colorizer" element={<AIColorizer />} />
+
+          {/* ── Govt Exam Photo Resizers ── */}
+          <Route path="/ssc-cgl-photo-resizer" element={<GovernmentPhotoResizer slug="ssc-cgl-photo-resizer" examName="SSC CGL" width={275} height={354} minKb={20} maxKb={50} extraInfo="Staff Selection Commission — Combined Graduate Level" />} />
+          <Route path="/ssc-chsl-photo-signature-resizer" element={<GovernmentPhotoResizer slug="ssc-chsl-photo-signature-resizer" examName="SSC CHSL" width={275} height={354} minKb={20} maxKb={50} extraInfo="Combined Higher Secondary Level — also resize signature to 140×60px" />} />
+          <Route path="/ssc-gd-photo-resizer" element={<GovernmentPhotoResizer slug="ssc-gd-photo-resizer" examName="SSC GD Constable" width={200} height={230} minKb={20} maxKb={50} extraInfo="General Duty Constable photo specification" />} />
+          <Route path="/ssc-mts-photo-resizer" element={<GovernmentPhotoResizer slug="ssc-mts-photo-resizer" examName="SSC MTS" width={275} height={354} minKb={20} maxKb={50} extraInfo="Multi-Tasking Staff exam photo format" />} />
+          <Route path="/ssc-signature-resizer" element={<GovernmentPhotoResizer slug="ssc-signature-resizer" examName="SSC Signature" width={140} height={60} minKb={10} maxKb={20} isSignature={true} extraInfo="SSC Signature — official portal spec 140×60px, 10–20KB" />} />
+          <Route path="/ibps-po-photo-resizer" element={<GovernmentPhotoResizer slug="ibps-po-photo-resizer" examName="IBPS PO" width={200} height={230} minKb={20} maxKb={50} extraInfo="IBPS Probationary Officer photo spec" />} />
+          <Route path="/ibps-clerk-photo-signature-resizer" element={<GovernmentPhotoResizer slug="ibps-clerk-photo-signature-resizer" examName="IBPS Clerk" width={200} height={230} minKb={20} maxKb={50} extraInfo="IBPS Clerk photo — also resize signature to 140×60px" />} />
+          <Route path="/ibps-rrb-photo-resizer" element={<GovernmentPhotoResizer slug="ibps-rrb-photo-resizer" examName="IBPS RRB" width={200} height={230} minKb={20} maxKb={50} extraInfo="Regional Rural Banks photo specification" />} />
+          <Route path="/sbi-po-photo-resizer" element={<GovernmentPhotoResizer slug="sbi-po-photo-resizer" examName="SBI PO" width={200} height={230} minKb={20} maxKb={50} extraInfo="State Bank of India — Probationary Officer" />} />
+          <Route path="/sbi-clerk-photo-resizer" element={<GovernmentPhotoResizer slug="sbi-clerk-photo-resizer" examName="SBI Clerk" width={200} height={230} minKb={20} maxKb={50} extraInfo="SBI Junior Associate (Customer Support & Sales)" />} />
+          <Route path="/upsc-photo-resizer" element={<GovernmentPhotoResizer slug="upsc-photo-resizer" examName="UPSC Civil Services" width={300} height={400} minKb={20} maxKb={100} extraInfo="Union Public Service Commission — IAS, IPS, IFS aspirants" />} />
+          <Route path="/neet-photo-resizer" element={<GovernmentPhotoResizer slug="neet-photo-resizer" examName="NEET UG" width={413} height={531} minKb={10} maxKb={200} extraInfo="NTA NEET photo — 3.5×4.5cm, coloured passport size" />} />
+          <Route path="/jee-main-photo-resizer" element={<GovernmentPhotoResizer slug="jee-main-photo-resizer" examName="JEE Main" width={200} height={230} minKb={10} maxKb={40} extraInfo="NTA JEE Main portal exact specification" />} />
+          <Route path="/rrb-ntpc-photo-resizer" element={<GovernmentPhotoResizer slug="rrb-ntpc-photo-resizer" examName="RRB NTPC" width={200} height={230} minKb={20} maxKb={50} extraInfo="Railway Recruitment Board — Non-Technical Popular Categories" />} />
+          <Route path="/up-police-photo-resizer" element={<GovernmentPhotoResizer slug="up-police-photo-resizer" examName="UP Police" width={275} height={354} minKb={20} maxKb={50} extraInfo="Uttar Pradesh Police Constable/SI photo specs" />} />
+          <Route path="/bihar-police-photo-resizer" element={<GovernmentPhotoResizer slug="bihar-police-photo-resizer" examName="Bihar Police" width={200} height={230} minKb={20} maxKb={50} extraInfo="Bihar Police BPSSC portal photo specification" />} />
+          <Route path="/rajasthan-police-photo-resizer" element={<GovernmentPhotoResizer slug="rajasthan-police-photo-resizer" examName="Rajasthan Police" width={200} height={230} minKb={20} maxKb={50} extraInfo="Rajasthan Police Constable/SI portal photo specs" />} />
+          <Route path="/mp-police-photo-resizer" element={<GovernmentPhotoResizer slug="mp-police-photo-resizer" examName="MP Police" width={200} height={230} minKb={20} maxKb={50} extraInfo="Madhya Pradesh Police portal photo specification" />} />
+          <Route path="/ctet-photo-resizer" element={<GovernmentPhotoResizer slug="ctet-photo-resizer" examName="CTET" width={200} height={230} minKb={20} maxKb={50} extraInfo="Central Teacher Eligibility Test — NIC portal specs" />} />
+          <Route path="/gate-photo-resizer" element={<GovernmentPhotoResizer slug="gate-photo-resizer" examName="GATE" width={480} height={640} minKb={5} maxKb={40} extraInfo="Graduate Aptitude Test in Engineering — IIT portal" />} />
+          <Route path="/post-office-gds-photo-resizer" element={<GovernmentPhotoResizer slug="post-office-gds-photo-resizer" examName="Post Office GDS" width={200} height={230} minKb={20} maxKb={50} extraInfo="Gramin Dak Sevak portal photo specification" />} />
+          <Route path="/army-agniveer-photo-resizer" element={<GovernmentPhotoResizer slug="army-agniveer-photo-resizer" examName="Army Agniveer" width={200} height={230} minKb={20} maxKb={50} extraInfo="Indian Army Agniveer recruitment photo specs" />} />
+          <Route path="/navy-agniveer-photo-resizer" element={<GovernmentPhotoResizer slug="navy-agniveer-photo-resizer" examName="Navy Agniveer" width={200} height={230} minKb={20} maxKb={50} extraInfo="Indian Navy Agniveer recruitment photo specs" />} />
+          <Route path="/mpsc-photo-resizer" element={<GovernmentPhotoResizer slug="mpsc-photo-resizer" examName="MPSC" width={200} height={230} minKb={20} maxKb={50} extraInfo="Maharashtra Public Service Commission portal specs" />} />
+          <Route path="/wbcs-photo-resizer" element={<GovernmentPhotoResizer slug="wbcs-photo-resizer" examName="WBCS" width={300} height={400} minKb={20} maxKb={60} extraInfo="West Bengal Civil Service photo specification" />} />
+
+          {/* ── Compress to Exact Size ── */}
+          <Route path="/compress-image-to-30kb" element={<CompressToSize slug="compress-image-to-30kb" targetKb={30} minKb={27} maxKb={30} />} />
+          <Route path="/compress-image-to-40kb" element={<CompressToSize slug="compress-image-to-40kb" targetKb={40} minKb={36} maxKb={40} />} />
+          <Route path="/compress-image-to-60kb" element={<CompressToSize slug="compress-image-to-60kb" targetKb={60} minKb={55} maxKb={60} />} />
+          <Route path="/compress-image-to-70kb" element={<CompressToSize slug="compress-image-to-70kb" targetKb={70} minKb={65} maxKb={70} />} />
+          <Route path="/compress-image-to-80kb" element={<CompressToSize slug="compress-image-to-80kb" targetKb={80} minKb={74} maxKb={80} />} />
+          <Route path="/compress-image-to-120kb" element={<CompressToSize slug="compress-image-to-120kb" targetKb={120} minKb={110} maxKb={120} />} />
+          <Route path="/compress-image-to-150kb" element={<CompressToSize slug="compress-image-to-150kb" targetKb={150} minKb={138} maxKb={150} />} />
+          <Route path="/compress-image-20kb-30kb" element={<CompressToSize slug="compress-image-20kb-30kb" targetKb={25} minKb={20} maxKb={30} />} />
+
+          {/* ── Social Media Resizers ── */}
+          <Route path="/whatsapp-dp-resize" element={<SocialMediaResizer slug="whatsapp-dp-resize" platform="WhatsApp" mediaType="DP" width={500} height={500} tips={['Use PNG for logos/graphics', 'Square photos work best', 'Avoid very dark backgrounds']} />} />
+          <Route path="/whatsapp-status-photo-resize" element={<SocialMediaResizer slug="whatsapp-status-photo-resize" platform="WhatsApp" mediaType="Status" width={750} height={1334} tips={['Portrait orientation is ideal', 'Leave space at top and bottom', 'Avoid text near edges']} />} />
+          <Route path="/instagram-profile-photo-resize" element={<SocialMediaResizer slug="instagram-profile-photo-resize" platform="Instagram" mediaType="Profile Photo" width={110} height={110} tips={['Center your face', 'Avoid tiny text in the photo', 'Instagram will display it as a circle']} />} />
+          <Route path="/instagram-post-resize" element={<SocialMediaResizer slug="instagram-post-resize" platform="Instagram" mediaType="Post" width={1080} height={1080} tips={['Square format performs best', 'Use high-contrast visuals', 'Keep important elements centered']} />} />
+          <Route path="/instagram-reels-thumbnail-resize" element={<SocialMediaResizer slug="instagram-reels-thumbnail-resize" platform="Instagram" mediaType="Reels Thumbnail" width={1080} height={1920} tips={['Portrait orientation required', 'Keep text in the safe zone (middle 50%)', 'Bright thumbnails get more clicks']} />} />
+          <Route path="/facebook-profile-photo-resize" element={<SocialMediaResizer slug="facebook-profile-photo-resize" platform="Facebook" mediaType="Profile Photo" width={170} height={170} tips={['Displays as a circle on desktop', 'Centered face works best', 'PNG for logos, JPG for photos']} />} />
+          <Route path="/facebook-cover-photo-resize" element={<SocialMediaResizer slug="facebook-cover-photo-resize" platform="Facebook" mediaType="Cover Photo" width={851} height={315} tips={['Avoid faces/text at the left edge (overlapped by profile pic)', 'Use simple, bold visuals', 'Regularly update your cover for engagement']} />} />
+          <Route path="/linkedin-profile-photo-resize" element={<SocialMediaResizer slug="linkedin-profile-photo-resize" platform="LinkedIn" mediaType="Profile Photo" width={400} height={400} tips={['Professional headshot works best', 'Light, neutral background recommended', 'Displays as a circle']} />} />
+          <Route path="/linkedin-banner-resize" element={<SocialMediaResizer slug="linkedin-banner-resize" platform="LinkedIn" mediaType="Banner" width={1584} height={396} tips={['Add your job title or company', 'Avoid small text', 'Use brand colors for consistency']} />} />
+          <Route path="/twitter-profile-photo-resize" element={<SocialMediaResizer slug="twitter-profile-photo-resize" platform="Twitter/X" mediaType="Profile Photo" width={400} height={400} tips={['Displays as a circle', 'Keep key elements centered', 'PNG preferred for logos']} />} />
+          <Route path="/youtube-channel-art-resize" element={<SocialMediaResizer slug="youtube-channel-art-resize" platform="YouTube" mediaType="Channel Art" width={2560} height={1440} tips={['Design for the safe zone (1235x338px center)', 'Your art appears on TVs, phones & desktops', 'Avoid important content near edges']} />} />
+
+          {/* ── Document & ID Photo Resizers ── */}
+          <Route path="/aadhaar-photo-resizer" element={<DocumentPhotoResizer slug="aadhaar-photo-resizer" docName="Aadhaar Card" width={200} height={230} minKb={10} maxKb={50} note="UIDAI Aadhaar update/enrollment photo format" />} />
+          <Route path="/voter-id-photo-resizer" element={<DocumentPhotoResizer slug="voter-id-photo-resizer" docName="Voter ID" width={200} height={230} minKb={10} maxKb={50} note="Election Commission of India voter enrollment photo" />} />
+          <Route path="/driving-licence-photo-resizer" element={<DocumentPhotoResizer slug="driving-licence-photo-resizer" docName="Driving Licence" width={200} height={230} minKb={10} maxKb={50} note="Sarathi/RTO portal driving licence photo" />} />
+          <Route path="/visa-photo-resizer" element={<DocumentPhotoResizer slug="visa-photo-resizer" docName="Visa Photo" width={413} height={531} minKb={10} maxKb={240} note="Standard 2×2 inch (51×51mm) — US, UK, Canada, Schengen" />} />
+          <Route path="/resume-photo-resizer" element={<DocumentPhotoResizer slug="resume-photo-resizer" docName="Resume/CV" width={413} height={531} minKb={10} maxKb={50} note="Indian CV/resume photo — 3.5×4.5cm, under 50KB" />} />
+          <Route path="/thumb-impression-resizer" element={<DocumentPhotoResizer slug="thumb-impression-resizer" docName="Thumb Impression" width={240} height={240} minKb={20} maxKb={50} note="IBPS/SBI thumb impression — 240×240px, 20–50KB" />} />
+          <Route path="/handwritten-declaration-resizer" element={<DocumentPhotoResizer slug="handwritten-declaration-resizer" docName="Handwritten Declaration" width={800} height={400} minKb={10} maxKb={100} note="Bank exam handwritten declaration — 800×400px" />} />
+          <Route path="/signature-resize-140x60" element={<DocumentPhotoResizer slug="signature-resize-140x60" docName="Signature" width={140} height={60} minKb={10} maxKb={20} note="Standard exam signature size — 140×60px, 10–20KB" />} />
+          <Route path="/compress-image-under-100kb" element={<CompressToSize slug="compress-image-under-100kb" targetKb={90} minKb={10} maxKb={100} seoTitle="Compress Image Under 100KB — Free Online Tool" seoDesc="Compress any image to under 100KB for online form submissions. Free, private, browser-based." />} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />

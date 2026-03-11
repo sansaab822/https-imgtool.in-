@@ -149,8 +149,71 @@ export const tools = [
     { slug: 'ai-colorizer', name: 'AI Colorizer', category: 'ai-tools', icon: 'fa-fill-drip', color: 'purple', description: 'Colorize black-and-white photos using smart colorization.' },
 
     // ── Utility (additions) ───────────────────────────────────────
+    // ── Utility - QR Code (additions) ───────────────────────────────────────
     { slug: 'qr-code-generator', name: 'QR Code Generator', category: 'utility', icon: 'fa-qrcode', color: 'slate', description: 'Generate QR codes with logo inside, custom colors and sizes.' },
+
+    // ── Govt Exam Photo Resizers ──────────────────────────────────────────────
+    { slug: 'ssc-cgl-photo-resizer', name: 'SSC CGL Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize photo to SSC CGL specs: 275×354px, 20–50KB.' },
+    { slug: 'ssc-chsl-photo-signature-resizer', name: 'SSC CHSL Photo & Signature Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize SSC CHSL photo & signature to exact portal specs.' },
+    { slug: 'ssc-gd-photo-resizer', name: 'SSC GD Constable Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize SSC GD Constable photo to 200×230px, 20–50KB.' },
+    { slug: 'ssc-mts-photo-resizer', name: 'SSC MTS Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize SSC MTS photo to exact portal specs, 20–50KB.' },
+    { slug: 'ssc-signature-resizer', name: 'SSC Signature Resizer', category: 'govt-exam-photos', icon: 'fa-signature', color: 'blue', description: 'Resize SSC signature to 140×60px, 10–20KB.' },
+    { slug: 'ibps-po-photo-resizer', name: 'IBPS PO Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize IBPS PO photo to 200×230px, 20–50KB.' },
+    { slug: 'ibps-clerk-photo-signature-resizer', name: 'IBPS Clerk Photo & Signature Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize IBPS Clerk photo & signature to portal specs.' },
+    { slug: 'ibps-rrb-photo-resizer', name: 'IBPS RRB Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize IBPS RRB photo and signature to exact specs.' },
+    { slug: 'sbi-po-photo-resizer', name: 'SBI PO Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize SBI PO photo to exact portal specifications.' },
+    { slug: 'sbi-clerk-photo-resizer', name: 'SBI Clerk Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize SBI Clerk photo to correct dimensions online.' },
+    { slug: 'upsc-photo-resizer', name: 'UPSC Civil Services Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'indigo', description: 'Resize UPSC Civil Services photo to 300×400px.' },
+    { slug: 'neet-photo-resizer', name: 'NEET UG Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'indigo', description: 'Resize NEET UG photo to 10–200KB, 3.5×4.5cm.' },
+    { slug: 'jee-main-photo-resizer', name: 'JEE Main Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'indigo', description: 'Resize JEE Main photo to exact NTA portal specs.' },
+    { slug: 'rrb-ntpc-photo-resizer', name: 'RRB NTPC Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize RRB NTPC photo and signature to rail portal specs.' },
+    { slug: 'up-police-photo-resizer', name: 'UP Police Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize UP Police Constable photo to 20–50KB.' },
+    { slug: 'bihar-police-photo-resizer', name: 'Bihar Police Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize Bihar Police photo to exact portal specs.' },
+    { slug: 'rajasthan-police-photo-resizer', name: 'Rajasthan Police Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize Rajasthan Police photo to exact portal specs.' },
+    { slug: 'mp-police-photo-resizer', name: 'MP Police Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize Madhya Pradesh Police photo to portal specs.' },
+    { slug: 'ctet-photo-resizer', name: 'CTET Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize CTET photo to NIC portal specifications.' },
+    { slug: 'gate-photo-resizer', name: 'GATE Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'indigo', description: 'Resize GATE exam photo to IIT portal exact specs.' },
+    { slug: 'post-office-gds-photo-resizer', name: 'Post Office GDS Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize Post Office GDS photo to portal specs.' },
+    { slug: 'army-agniveer-photo-resizer', name: 'Army Agniveer Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize Army Agniveer photo to exact official specs.' },
+    { slug: 'navy-agniveer-photo-resizer', name: 'Navy Agniveer Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize Navy Agniveer photo to exact portal specifications.' },
+    { slug: 'mpsc-photo-resizer', name: 'MPSC Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize MPSC Maharashtra photo to exact portal specs.' },
+    { slug: 'wbcs-photo-resizer', name: 'WBCS Photo Resizer', category: 'govt-exam-photos', icon: 'fa-graduation-cap', color: 'blue', description: 'Resize WBCS West Bengal photo to 300×400px.' },
+
+    // ── Compress to Exact Size ───────────────────────────────────────────────
+    { slug: 'compress-image-to-30kb', name: 'Compress Image to 30KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 30KB for exam forms.' },
+    { slug: 'compress-image-to-40kb', name: 'Compress Image to 40KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 40KB.' },
+    { slug: 'compress-image-to-60kb', name: 'Compress Image to 60KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 60KB.' },
+    { slug: 'compress-image-to-70kb', name: 'Compress Image to 70KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 70KB.' },
+    { slug: 'compress-image-to-80kb', name: 'Compress Image to 80KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 80KB.' },
+    { slug: 'compress-image-to-120kb', name: 'Compress Image to 120KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 120KB.' },
+    { slug: 'compress-image-to-150kb', name: 'Compress Image to 150KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress any photo to exactly 150KB.' },
+    { slug: 'compress-image-20kb-30kb', name: 'Compress Image to 20–30KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress image to between 20KB and 30KB range.' },
+
+    // ── Social Media Resizers ───────────────────────────────────────────────
+    { slug: 'whatsapp-dp-resize', name: 'WhatsApp DP Resize 500×500', category: 'social-media-tools', icon: 'fa-whatsapp', color: 'green', description: 'Resize photo to perfect WhatsApp DP size 500×500px without crop.' },
+    { slug: 'whatsapp-status-photo-resize', name: 'WhatsApp Status Photo Resize', category: 'social-media-tools', icon: 'fa-whatsapp', color: 'green', description: 'Resize photo to WhatsApp Status size 750×1334px.' },
+    { slug: 'instagram-profile-photo-resize', name: 'Instagram Profile Photo Resize', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to Instagram profile size 110×110px.' },
+    { slug: 'instagram-post-resize', name: 'Instagram Post Resize 1080×1080', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to perfect Instagram square post size.' },
+    { slug: 'instagram-reels-thumbnail-resize', name: 'Instagram Reels Thumbnail Resize', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to Instagram Reels thumbnail 1080×1920px.' },
+    { slug: 'facebook-profile-photo-resize', name: 'Facebook Profile Photo Resize', category: 'social-media-tools', icon: 'fa-facebook', color: 'blue', description: 'Resize photo to Facebook profile size 170×170px.' },
+    { slug: 'facebook-cover-photo-resize', name: 'Facebook Cover Photo Resize', category: 'social-media-tools', icon: 'fa-facebook', color: 'blue', description: 'Resize photo to Facebook cover 851×315px.' },
+    { slug: 'linkedin-profile-photo-resize', name: 'LinkedIn Profile Photo Resize', category: 'social-media-tools', icon: 'fa-linkedin', color: 'blue', description: 'Resize photo to LinkedIn profile size 400×400px.' },
+    { slug: 'linkedin-banner-resize', name: 'LinkedIn Banner Resize', category: 'social-media-tools', icon: 'fa-linkedin', color: 'blue', description: 'Resize image to LinkedIn banner size 1584×396px.' },
+    { slug: 'twitter-profile-photo-resize', name: 'Twitter/X Profile Photo Resize', category: 'social-media-tools', icon: 'fa-twitter', color: 'slate', description: 'Resize photo to Twitter/X profile size 400×400px.' },
+    { slug: 'youtube-channel-art-resize', name: 'YouTube Channel Art Resize', category: 'social-media-tools', icon: 'fa-youtube', color: 'red', description: 'Resize image to YouTube Channel Art size 2560×1440px.' },
+
+    // ── Document & ID Photo Resizers ─────────────────────────────────────────
+    { slug: 'aadhaar-photo-resizer', name: 'Aadhaar Card Photo Resizer', category: 'document-id-tools', icon: 'fa-id-badge', color: 'teal', description: 'Resize photo to Aadhaar card application specs online.' },
+    { slug: 'voter-id-photo-resizer', name: 'Voter ID Photo Resizer', category: 'document-id-tools', icon: 'fa-id-badge', color: 'teal', description: 'Resize photo to Voter ID card application specifications.' },
+    { slug: 'driving-licence-photo-resizer', name: 'Driving Licence Photo Resizer', category: 'document-id-tools', icon: 'fa-id-badge', color: 'teal', description: 'Resize photo to Driving Licence RTO portal specs.' },
+    { slug: 'visa-photo-resizer', name: 'Visa Photo Resizer', category: 'document-id-tools', icon: 'fa-id-badge', color: 'teal', description: 'Resize photo to US, UK, Canada, Schengen visa photo specs.' },
+    { slug: 'resume-photo-resizer', name: 'Resume/CV Photo Resizer India', category: 'document-id-tools', icon: 'fa-id-badge', color: 'teal', description: 'Resize photo to Indian resume/CV spec: 3.5×4.5cm, under 50KB.' },
+    { slug: 'thumb-impression-resizer', name: 'Thumb Impression Resizer', category: 'document-id-tools', icon: 'fa-fingerprint', color: 'teal', description: 'Resize thumb impression to 240×240px, 20–50KB for IBPS/SBI.' },
+    { slug: 'handwritten-declaration-resizer', name: 'Handwritten Declaration Resizer', category: 'document-id-tools', icon: 'fa-file-signature', color: 'teal', description: 'Resize handwritten declaration to 800×400px for bank exams.' },
+    { slug: 'signature-resize-140x60', name: 'Signature Resize to 140×60', category: 'document-id-tools', icon: 'fa-signature', color: 'teal', description: 'Resize signature to exactly 140×60 pixels for exam portals.' },
+    { slug: 'compress-image-under-100kb', name: 'Compress Image Under 100KB', category: 'document-id-tools', icon: 'fa-compress-arrows-alt', color: 'teal', description: 'Compress any image to under 100KB for online forms.' },
 ]
+
 
 export const categories = [
     { id: 'modern-formats', name: 'Modern Image Formats', icon: 'fa-bolt', color: 'yellow' },
@@ -163,6 +226,10 @@ export const categories = [
     { id: 'special', name: 'Special Tools', icon: 'fa-star', color: 'orange' },
     { id: 'video-tools', name: 'Video Tools', icon: 'fa-video', color: 'violet' },
     { id: 'utility', name: 'Utility Tools', icon: 'fa-tools', color: 'teal' },
+    { id: 'govt-exam-photos', name: 'Govt Exam Photo Resizer', icon: 'fa-graduation-cap', color: 'blue' },
+    { id: 'compress-to-size', name: 'Compress to Exact Size', icon: 'fa-weight', color: 'orange' },
+    { id: 'social-media-tools', name: 'Social Media Resizer', icon: 'fa-share-nodes', color: 'pink' },
+    { id: 'document-id-tools', name: 'Document & ID Photo Tools', icon: 'fa-id-badge', color: 'teal' },
 ]
 
 export const getToolBySlug = (slug) => tools.find(t => t.slug === slug)
