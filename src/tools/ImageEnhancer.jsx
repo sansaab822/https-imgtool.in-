@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
 
-// ── Category configs ───────────────────────────────────────────────────────────
+// ── Category configs ────────────────────────────────────────────────────────────
 const CATEGORIES = [
   {
     id: 'portrait', label: 'Portrait', icon: '👤',
@@ -26,231 +26,238 @@ const CATEGORIES = [
   },
 ]
 
-// ── Per-category enhancement config (PREMIUM tuning) ─────────────────────
+// ── Per-category config: RESTORATION FIRST, color is secondary ─────────────────
 const CFG = {
   portrait: {
-    // Tone: lift shadows, recover highlights, strong S-curve
-    brightness: 1.08, contrast: 1.30, shadowLift: 18, highlightRecover: 0.92,
-    // Color
-    saturation: 1.35, vibrance: 1.55, warmth: 8,
-    // Clarity (local contrast / micro-contrast strength)
-    clarity: 0.55,
-    // Surface blur (skin smoothing)
-    blur: { radius: 3, sigmaColor: 50 },
-    // Unsharp mask (sharpening)
-    sharpen: { amount: 1.2, radius: 1, threshold: 8 },
-    // Fine detail pass
-    detail: { amount: 0.7, radius: 0, threshold: 4 },
+    // Very gentle tone — sharpening does the visual heavy lifting
+    brightness: 1.02, contrast: 1.06, shadowLift: 5, highlightRecover: 0.97,
+    saturation: 1.04, vibrance: 1.06,
+    // Bilateral surface denoise (smooth skin before sharpening)
+    blur: { radius: 3, sigmaColor: 48 },
+    // Multi-scale USM: [radius-px, amount, threshold]
+    // Three bands: fine texture, mid edges, broad structure
+    usm: [
+      { radius: 1, amount: 2.2, threshold: 2 },
+      { radius: 3, amount: 1.4, threshold: 8 },
+      { radius: 9, amount: 0.55, threshold: 18 },
+    ],
+    // Post-upscale sharpening
+    postUsm: [
+      { radius: 1, amount: 1.2, threshold: 4 },
+    ],
   },
   object: {
-    brightness: 1.05, contrast: 1.35, shadowLift: 10, highlightRecover: 0.95,
-    saturation: 1.40, vibrance: 1.45, warmth: 0,
-    clarity: 0.70,
-    blur: { radius: 2, sigmaColor: 30 },
-    sharpen: { amount: 1.5, radius: 1, threshold: 5 },
-    detail: { amount: 0.9, radius: 0, threshold: 3 },
+    brightness: 1.01, contrast: 1.08, shadowLift: 4, highlightRecover: 0.98,
+    saturation: 1.06, vibrance: 1.08,
+    blur: { radius: 2, sigmaColor: 32 },
+    usm: [
+      { radius: 1, amount: 2.8, threshold: 1 },
+      { radius: 3, amount: 1.8, threshold: 5 },
+      { radius: 9, amount: 0.7, threshold: 14 },
+    ],
+    postUsm: [{ radius: 1, amount: 1.5, threshold: 3 }],
   },
   scenery: {
-    brightness: 1.06, contrast: 1.40, shadowLift: 12, highlightRecover: 0.88,
-    saturation: 1.55, vibrance: 1.70, warmth: -5,
-    clarity: 0.80,
+    brightness: 1.02, contrast: 1.10, shadowLift: 4, highlightRecover: 0.96,
+    saturation: 1.10, vibrance: 1.12,
     blur: { radius: 2, sigmaColor: 28 },
-    sharpen: { amount: 1.6, radius: 2, threshold: 6 },
-    detail: { amount: 1.0, radius: 0, threshold: 4 },
+    usm: [
+      { radius: 1, amount: 2.5, threshold: 2 },
+      { radius: 4, amount: 1.8, threshold: 7 },
+      { radius: 11, amount: 0.7, threshold: 14 },
+    ],
+    postUsm: [{ radius: 1, amount: 1.4, threshold: 4 }],
   },
   pets: {
-    brightness: 1.04, contrast: 1.28, shadowLift: 14, highlightRecover: 0.93,
-    saturation: 1.30, vibrance: 1.40, warmth: 5,
-    clarity: 0.60,
-    blur: { radius: 2, sigmaColor: 38 },
-    sharpen: { amount: 1.4, radius: 1.5, threshold: 5 },
-    detail: { amount: 0.8, radius: 0, threshold: 3 },
+    brightness: 1.01, contrast: 1.07, shadowLift: 4, highlightRecover: 0.97,
+    saturation: 1.05, vibrance: 1.07,
+    blur: { radius: 2, sigmaColor: 40 },
+    usm: [
+      { radius: 1, amount: 2.2, threshold: 2 },
+      { radius: 3, amount: 1.5, threshold: 7 },
+      { radius: 9, amount: 0.5, threshold: 16 },
+    ],
+    postUsm: [{ radius: 1, amount: 1.2, threshold: 4 }],
   },
   text: {
-    brightness: 1.0, contrast: 1.60, shadowLift: 5, highlightRecover: 1.0,
-    saturation: 0.85, vibrance: 1.0, warmth: 0,
-    clarity: 1.0,
+    brightness: 1.0, contrast: 1.18, shadowLift: 0, highlightRecover: 1.0,
+    saturation: 0.9, vibrance: 1.0,
     blur: { radius: 1, sigmaColor: 60 },
-    sharpen: { amount: 2.2, radius: 1, threshold: 0 },
-    detail: { amount: 1.5, radius: 0, threshold: 0 },
+    usm: [
+      { radius: 1, amount: 3.5, threshold: 0 },
+      { radius: 2, amount: 2.2, threshold: 0 },
+      { radius: 6, amount: 1.0, threshold: 0 },
+    ],
+    postUsm: [{ radius: 1, amount: 2.0, threshold: 0 }],
   },
 }
 
-// ── Yield for UI updates ──────────────────────────────────────────────────
+// ── Yield for UI updates ────────────────────────────────────────────────────────
 const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 0))
 
-// ── 1. Lookup Table Builder (fast per-pixel transform) ─────────────────────
-// Pre-computes 256-value LUT for brightness, S-curve contrast, gamma
-function buildLUT(brightness, contrast, shadowLift, highlightRecover) {
-  const lut = new Uint8ClampedArray(256)
-  for (let i = 0; i < 256; i++) {
-    let v = i / 255
-
-    // 1a. Shadow lift (raise blacks slightly)
-    v = v + (shadowLift / 255) * (1 - v) * (1 - v)
-
-    // 1b. Highlight recovery (compress near-white)
-    if (v > 0.75) v = 0.75 + (v - 0.75) * highlightRecover
-
-    // 1c. Brightness
-    v *= brightness
-
-    // 1d. Sigmoid S-curve (proper photographic contrast)
-    // Maps 0-1 → 0-1 with S-shaped curve controlled by `contrast`
-    const k = contrast  // 1.0 = no change, 1.5 = strong, 2.0 = very strong
-    v = (v - 0.5) * k + 0.5
-
-    lut[i] = Math.min(255, Math.max(0, Math.round(v * 255)))
-  }
-  return lut
-}
-
-// ── 2. Color Grading (Saturation + Vibrance + Warmth) ─────────────────────
-function applyColorEnhance(src, cfg) {
-  const dst = new Uint8ClampedArray(src.length)
-  const lut = buildLUT(cfg.brightness, cfg.contrast, cfg.shadowLift, cfg.highlightRecover)
-
-  for (let i = 0; i < src.length; i += 4) {
-    let r = src[i], g = src[i + 1], b = src[i + 2]
-
-    // Warmth (slight red/yellow push for portraits, or cool for scenery)
-    r = Math.min(255, r + cfg.warmth)
-    b = Math.min(255, Math.max(0, b - cfg.warmth * 0.5))
-
-    // Apply tone LUT
-    r = lut[Math.min(255, Math.max(0, r))]
-    g = lut[Math.min(255, Math.max(0, g))]
-    b = lut[Math.min(255, Math.max(0, b))]
-
-    // Saturation (full HSL-based)
-    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    r = luma + (r - luma) * cfg.saturation
-    g = luma + (g - luma) * cfg.saturation
-    b = luma + (b - luma) * cfg.saturation
-
-    // Vibrance — boost undersaturated areas more (protects already-saturated skin)
-    const avg = (r + g + b) / 3
-    const maxC = Math.max(r, g, b)
-    const satLevel = maxC > 0 ? (maxC - Math.min(r, g, b)) / maxC : 0
-    const vibrancePush = (1 - satLevel) * (cfg.vibrance - 1.0)  // stronger for desaturated
-    r = r + (r - avg) * vibrancePush
-    g = g + (g - avg) * vibrancePush
-    b = b + (b - avg) * vibrancePush
-
-    dst[i] = Math.min(255, Math.max(0, r))
-    dst[i + 1] = Math.min(255, Math.max(0, g))
-    dst[i + 2] = Math.min(255, Math.max(0, b))
-    dst[i + 3] = src[i + 3]
-  }
-  return dst
-}
-
-// ── 3. Fast Box Blur (for both bilateral base and unsharp masks) ───────────
-function boxBlur(src, w, h, radius) {
-  const dst = new Uint8ClampedArray(src.length)
+// ── Separable Box Blur (2-pass, fast, Float32 output) ──────────────────────────
+function boxBlur(src, imgW, imgH, radius) {
   const r = Math.max(1, Math.floor(radius))
+  const tmp = new Float32Array(src.length)
+  const dst = new Float32Array(src.length)
   // Horizontal pass
-  const tmp = new Uint8ClampedArray(src.length)
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
+  for (let y = 0; y < imgH; y++) {
+    for (let x = 0; x < imgW; x++) {
       let rS = 0, gS = 0, bS = 0, n = 0
       for (let dx = -r; dx <= r; dx++) {
-        const nx = Math.min(w - 1, Math.max(0, x + dx))
-        const idx = (y * w + nx) * 4
+        const nx = Math.min(imgW - 1, Math.max(0, x + dx))
+        const idx = (y * imgW + nx) * 4
         rS += src[idx]; gS += src[idx + 1]; bS += src[idx + 2]; n++
       }
-      const o = (y * w + x) * 4
+      const o = (y * imgW + x) * 4
       tmp[o] = rS / n; tmp[o + 1] = gS / n; tmp[o + 2] = bS / n; tmp[o + 3] = src[o + 3]
     }
   }
   // Vertical pass
-  for (let x = 0; x < w; x++) {
-    for (let y = 0; y < h; y++) {
+  for (let x = 0; x < imgW; x++) {
+    for (let y = 0; y < imgH; y++) {
       let rS = 0, gS = 0, bS = 0, n = 0
       for (let dy = -r; dy <= r; dy++) {
-        const ny = Math.min(h - 1, Math.max(0, y + dy))
-        const idx = (ny * w + x) * 4
+        const ny = Math.min(imgH - 1, Math.max(0, y + dy))
+        const idx = (ny * imgW + x) * 4
         rS += tmp[idx]; gS += tmp[idx + 1]; bS += tmp[idx + 2]; n++
       }
-      const o = (y * w + x) * 4
+      const o = (y * imgW + x) * 4
       dst[o] = rS / n; dst[o + 1] = gS / n; dst[o + 2] = bS / n; dst[o + 3] = tmp[o + 3]
     }
   }
   return dst
 }
 
-// ── 4. Unsharp Mask (with threshold) ──────────────────────────────────────
-function unsharpMask(src, blurred, amount, threshold) {
-  const dst = new Uint8ClampedArray(src.length)
-  for (let i = 0; i < src.length; i += 4) {
-    for (let c = 0; c < 3; c++) {
-      const diff = src[i + c] - blurred[i + c]
-      dst[i + c] = Math.min(255, Math.max(0,
-        Math.abs(diff) > threshold
-          ? src[i + c] + diff * amount
-          : src[i + c]
-      ))
+// ── Multi-Scale Luminance USM ──────────────────────────────────────────────────
+// The restoration core. Works ONLY on luminance to avoid orange/color halos.
+// Three frequency bands: fine (radius 1), mid (radius 3), broad (radius 8-11).
+// Each band adds sharpening detail at that frequency, then merged back into RGB.
+function multiScaleUSM(src, imgW, imgH, usmPasses) {
+  const n = src.length
+  const numPix = n / 4
+
+  // Extract luminance for each pixel (Y from Rec.709)
+  const lum = new Float32Array(numPix)
+  for (let i = 0, p = 0; i < n; i += 4, p++) {
+    lum[p] = 0.2126 * src[i] + 0.7152 * src[i + 1] + 0.0722 * src[i + 2]
+  }
+
+  // Accumulate USM lumiance delta from all frequency bands
+  const delta = new Float32Array(numPix)
+
+  for (const pass of usmPasses) {
+    // Expand lum into RGBA array for boxBlur
+    const lumRGBA = new Float32Array(n)
+    for (let p = 0; p < numPix; p++) {
+      lumRGBA[p * 4] = lumRGBA[p * 4 + 1] = lumRGBA[p * 4 + 2] = lum[p]
+      lumRGBA[p * 4 + 3] = 255
+    }
+    const blurred = boxBlur(lumRGBA, imgW, imgH, pass.radius)
+
+    for (let p = 0; p < numPix; p++) {
+      const diff = lum[p] - blurred[p * 4]   // detail at this frequency
+      if (Math.abs(diff) > pass.threshold) {
+        delta[p] += diff * pass.amount
+      }
+    }
+  }
+
+  // Apply luminance delta back to RGB proportionally (preserves hue/chroma)
+  const dst = new Uint8ClampedArray(n)
+  for (let i = 0, p = 0; i < n; i += 4, p++) {
+    const L = lum[p]
+    const dL = delta[p]
+    if (L > 1) {
+      // Scale all channels by luminance ratio — preserves colour proportions
+      const ratio = Math.min(4, Math.max(0.25, (L + dL) / L))
+      dst[i] = Math.min(255, Math.max(0, src[i] * ratio))
+      dst[i + 1] = Math.min(255, Math.max(0, src[i + 1] * ratio))
+      dst[i + 2] = Math.min(255, Math.max(0, src[i + 2] * ratio))
+    } else {
+      // Near-black: add deltaL directly
+      dst[i] = Math.min(255, Math.max(0, src[i] + dL))
+      dst[i + 1] = Math.min(255, Math.max(0, src[i + 1] + dL))
+      dst[i + 2] = Math.min(255, Math.max(0, src[i + 2] + dL))
     }
     dst[i + 3] = src[i + 3]
   }
   return dst
 }
 
-// ── 5. Clarity (Local Contrast / Micro-Contrast) ─────────────────────────
-// High-pass overlay blended at moderate strength — lifts midtone detail pop
-function applyClarity(src, w, h, strength) {
-  // Use a large-radius blur as the base, then add the difference back
-  const largeBlur = boxBlur(src, w, h, 8)
-  const dst = new Uint8ClampedArray(src.length)
-  for (let i = 0; i < src.length; i += 4) {
-    for (let c = 0; c < 3; c++) {
-      const diff = src[i + c] - largeBlur[i + c]
-      dst[i + c] = Math.min(255, Math.max(0, src[i + c] + diff * strength))
-    }
-    dst[i + 3] = src[i + 3]
-  }
-  return dst
-}
-
-// ── 6. Surface Blur (Edge-Preserving Smooth for skin/noise) ───────────────
-async function applySurfaceBlur(srcData, w, h, radius, sigmaColor, onProgress) {
+// ── Edge-Preserving Bilateral Denoise ─────────────────────────────────────────
+async function applySurfaceBlur(srcData, imgW, imgH, radius, sigmaColor, onProgress) {
   const src = srcData.data
   const dst = new Uint8ClampedArray(src.length)
-  const sigmaColorSq = sigmaColor * sigmaColor * 3
-  const chunk = Math.max(1, Math.floor(h / 10))
+  const scSq = sigmaColor * sigmaColor * 3
+  const chunk = Math.max(1, Math.floor(imgH / 10))
 
-  for (let y = 0; y < h; y++) {
-    if (y % chunk === 0) { onProgress(20 + (y / h) * 30, 'Smoothing surfaces...'); await yieldToMain() }
-    for (let x = 0; x < w; x++) {
-      const idx = (y * w + x) * 4
+  for (let y = 0; y < imgH; y++) {
+    if (y % chunk === 0) {
+      onProgress(15 + (y / imgH) * 32, 'Edge-preserving denoise...')
+      await yieldToMain()
+    }
+    for (let x = 0; x < imgW; x++) {
+      const idx = (y * imgW + x) * 4
       const r0 = src[idx], g0 = src[idx + 1], b0 = src[idx + 2]
       let rS = 0, gS = 0, bS = 0, wS = 0
       for (let dy = -radius; dy <= radius; dy++) {
-        const ny = y + dy; if (ny < 0 || ny >= h) continue
+        const ny = y + dy; if (ny < 0 || ny >= imgH) continue
         for (let dx = -radius; dx <= radius; dx++) {
-          const nx = x + dx; if (nx < 0 || nx >= w) continue
-          const nIdx = (ny * w + nx) * 4
-          const r1 = src[nIdx], g1 = src[nIdx + 1], b1 = src[nIdx + 2]
-          const cDist = (r1 - r0) ** 2 + (g1 - g0) ** 2 + (b1 - b0) ** 2
-          const spW = 1.0 - (Math.abs(dx) + Math.abs(dy)) / (2 * radius + 1)
-          const cW = cDist < sigmaColorSq ? 1.0 - cDist / sigmaColorSq : 0
+          const nx = x + dx; if (nx < 0 || nx >= imgW) continue
+          const ni = (ny * imgW + nx) * 4
+          const r1 = src[ni], g1 = src[ni + 1], b1 = src[ni + 2]
+          const cD = (r1 - r0) ** 2 + (g1 - g0) ** 2 + (b1 - b0) ** 2
+          const spW = 1 - (Math.abs(dx) + Math.abs(dy)) / (2 * radius + 1)
+          const cW = cD < scSq ? 1 - cD / scSq : 0
           const wt = spW * cW
           rS += r1 * wt; gS += g1 * wt; bS += b1 * wt; wS += wt
         }
       }
-      if (wS > 0) {
-        dst[idx] = rS / wS; dst[idx + 1] = gS / wS; dst[idx + 2] = bS / wS
-      } else {
-        dst[idx] = r0; dst[idx + 1] = g0; dst[idx + 2] = b0
-      }
+      if (wS > 0) { dst[idx] = rS / wS; dst[idx + 1] = gS / wS; dst[idx + 2] = bS / wS }
+      else { dst[idx] = r0; dst[idx + 1] = g0; dst[idx + 2] = b0 }
       dst[idx + 3] = src[idx + 3]
     }
   }
-  return new ImageData(dst, w, h)
+  return new ImageData(dst, imgW, imgH)
 }
 
-// ── MAIN PIPELINE ─────────────────────────────────────────────────────────
-async function enhanceOnCanvas(imgSrc, scale = 2, category = 'portrait', onProgress) {
+// ── Very Subtle Color Grade (last step, minimal) ──────────────────────────────
+function applyColorGrade(src, cfg) {
+  // Build LUT: shadow lift → highlight protect → brightness → contrast S-curve
+  const lut = new Uint8ClampedArray(256)
+  for (let i = 0; i < 256; i++) {
+    let v = i / 255
+    v += (cfg.shadowLift / 255) * (1 - v) * (1 - v)         // gentle shadow lift
+    if (v > 0.82) v = 0.82 + (v - 0.82) * cfg.highlightRecover
+    v = v * cfg.brightness
+    v = (v - 0.5) * cfg.contrast + 0.5                       // S-curve
+    lut[i] = Math.min(255, Math.max(0, Math.round(v * 255)))
+  }
+  const dst = new Uint8ClampedArray(src.length)
+  for (let i = 0; i < src.length; i += 4) {
+    // Tone
+    let r = lut[src[i]], g = lut[src[i + 1]], b = lut[src[i + 2]]
+    // Luminosity-preserving saturation (no hue shift)
+    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    r = Math.min(255, Math.max(0, luma + (r - luma) * cfg.saturation))
+    g = Math.min(255, Math.max(0, luma + (g - luma) * cfg.saturation))
+    b = Math.min(255, Math.max(0, luma + (b - luma) * cfg.saturation))
+    // Gentle vibrance boost for undersaturated areas only
+    const avg = (r + g + b) / 3
+    const mx = Math.max(r, g, b)
+    const satLvl = mx > 0 ? (mx - Math.min(r, g, b)) / mx : 0
+    const vib = (1 - satLvl) * (cfg.vibrance - 1.0) * 0.5
+    dst[i] = Math.min(255, Math.max(0, r + (r - avg) * vib))
+    dst[i + 1] = Math.min(255, Math.max(0, g + (g - avg) * vib))
+    dst[i + 2] = Math.min(255, Math.max(0, b + (b - avg) * vib))
+    dst[i + 3] = src[i + 3]
+  }
+  return dst
+}
+
+// ── MAIN PIPELINE ──────────────────────────────────────────────────────────────
+function enhanceOnCanvas(imgSrc, scale = 2, category = 'portrait', onProgress) {
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
@@ -260,42 +267,32 @@ async function enhanceOnCanvas(imgSrc, scale = 2, category = 'portrait', onProgr
         const srcW = img.naturalWidth, srcH = img.naturalHeight
         const outW = srcW * scale, outH = srcH * scale
 
-        onProgress?.(5, 'Analyzing photo...')
+        onProgress?.(5, 'Loading image...')
         await yieldToMain()
 
-        // Draw source
         const srcCanvas = document.createElement('canvas')
         srcCanvas.width = srcW; srcCanvas.height = srcH
         const srcCtx = srcCanvas.getContext('2d', { willReadFrequently: true })
         srcCtx.drawImage(img, 0, 0)
 
-        // ── Step 1: Surface blur (denoise / skin smoothing) ──────────────
-        onProgress?.(10, 'Smoothing skin & removing noise...')
+        // Step 1 — Edge-preserving bilateral denoise (removes noise before sharpening)
+        onProgress?.(10, 'Removing noise...')
         let iData = srcCtx.getImageData(0, 0, srcW, srcH)
         iData = await applySurfaceBlur(iData, srcW, srcH, cfg.blur.radius, cfg.blur.sigmaColor, onProgress)
 
-        // ── Step 2: Unsharp mask pass 1 (fine detail recovery) ───────────
-        onProgress?.(52, 'Recovering fine details...')
+        // Step 2 — Multi-scale luminance USM (THE restoration: recovers blur/detail)
+        onProgress?.(50, 'Restoring detail — 3 frequency bands...')
         await yieldToMain()
-        let pixArr = iData.data
-        const fineBlur = boxBlur(pixArr, srcW, srcH, 1)
-        pixArr = unsharpMask(pixArr, fineBlur, cfg.detail.amount, cfg.detail.threshold)
+        let pixArr = multiScaleUSM(iData.data, srcW, srcH, cfg.usm)
 
-        // ── Step 3: Clarity (local micro-contrast) ────────────────────────
-        onProgress?.(60, 'Boosting clarity & local contrast...')
+        // Step 3 — Subtle color grade (tone curve + gentle saturation ONLY)
+        onProgress?.(70, 'Subtle color correction...')
         await yieldToMain()
-        pixArr = applyClarity(pixArr, srcW, srcH, cfg.clarity)
-
-        // ── Step 4: Color grading (tone curve + saturation + vibrance) ────
-        onProgress?.(70, 'Mastering colors & tone...')
-        await yieldToMain()
-        pixArr = applyColorEnhance(pixArr, cfg)
-
-        // Write back to source canvas
+        pixArr = applyColorGrade(pixArr, cfg)
         srcCtx.putImageData(new ImageData(pixArr, srcW, srcH), 0, 0)
 
-        // ── Step 5: Upscale (high-quality bicubic emulation) ─────────────
-        onProgress?.(78, 'Upscaling to high definition...')
+        // Step 4 — High-quality upscale
+        onProgress?.(78, 'Upscaling to HD...')
         await yieldToMain()
         const outCanvas = document.createElement('canvas')
         outCanvas.width = outW; outCanvas.height = outH
@@ -304,30 +301,28 @@ async function enhanceOnCanvas(imgSrc, scale = 2, category = 'portrait', onProgr
         outCtx.imageSmoothingQuality = 'high'
         outCtx.drawImage(srcCanvas, 0, 0, outW, outH)
 
-        // ── Step 6: Unsharp mask pass 2 (crisp edge sharpening post-upscale)
-        onProgress?.(88, 'Applying crisp edge sharpening...')
+        // Step 5 — Post-upscale sharpening (restore crispness after scaling)
+        onProgress?.(88, 'Final sharpening...')
         await yieldToMain()
-        let outPix = outCtx.getImageData(0, 0, outW, outH).data
-        const edgeBlur = boxBlur(outPix, outW, outH, cfg.sharpen.radius * scale)
-        outPix = unsharpMask(outPix, edgeBlur, cfg.sharpen.amount, cfg.sharpen.threshold)
-        outCtx.putImageData(new ImageData(outPix, outW, outH), 0, 0)
+        const outPix = outCtx.getImageData(0, 0, outW, outH)
+        const sharpened = multiScaleUSM(outPix.data, outW, outH, cfg.postUsm)
+        outCtx.putImageData(new ImageData(sharpened, outW, outH), 0, 0)
 
         onProgress?.(97, 'Finalizing...')
         await yieldToMain()
 
         outCanvas.toBlob(blob => {
           if (blob) { onProgress?.(100, 'Enhancement complete!'); resolve(blob) }
-          else reject(new Error('Failed to create output blob'))
+          else reject(new Error('Failed to export image'))
         }, 'image/jpeg', 0.97)
-
       } catch (err) { reject(err) }
     }
-    img.onerror = () => reject(new Error('Could not load image. Check format.'))
+    img.onerror = () => reject(new Error('Could not load image.'))
     img.src = imgSrc
   })
 }
 
-// ── Programmatic download via FileReader (data URL) ───────────────────────────
+// ── Download helper ────────────────────────────────────────────────────────────
 function downloadBlob(blob, filename) {
   const reader = new FileReader()
   reader.onloadend = () => {
@@ -342,7 +337,7 @@ function downloadBlob(blob, filename) {
   reader.readAsDataURL(blob)
 }
 
-// ── Compare Slider Component ───────────────────────────────────────────────────
+// ── Compare Slider Component ────────────────────────────────────────────────────
 function CompareSlider({ before, after, height = 420 }) {
   const [pos, setPos] = useState(50)
   const [dragging, setDragging] = useState(false)
@@ -396,7 +391,7 @@ function CompareSlider({ before, after, height = 420 }) {
   )
 }
 
-// ── Main Component ─────────────────────────────────────────────────────────────
+// ── Main Component ──────────────────────────────────────────────────────────────
 export default function ImageEnhancer() {
   const [activeCategory, setActiveCategory] = useState(0)
   const [image, setImage] = useState(null)
@@ -477,7 +472,7 @@ export default function ImageEnhancer() {
   const handleDownload = () => {
     if (!resultBlob || !image) return
     const baseName = image.name.replace(/\.[^.]+$/, '').trim() || 'image'
-    const fileName = `enhanced_${scale}x_${baseName}.png`
+    const fileName = `enhanced_${scale}x_${baseName}.jpg`
     downloadBlob(resultBlob, fileName)
   }
 
@@ -512,14 +507,14 @@ export default function ImageEnhancer() {
   return (
     <>
       <SEO
-        title="AI Photo Enhancer — Studio Quality Online"
-        description="Clean, smooth, and upscale your photos with studio-quality surface blur and unsharp masking. 100% private in-browser editing."
+        title="AI Photo Enhancer — Restore Sharpness & Clarity Online"
+        description="Restore blurry photos to crystal clarity. Multi-scale detail recovery removes noise and sharpens edges without touching colors. 100% private in-browser."
         canonical="/image-enhancer"
       />
       <ToolLayout
         toolSlug="image-enhancer"
-        title="Premium AI Photo Enhancer"
-        description="Achieve Photoshop-like clarity. Our smart surface blur removes noise while recovering ultra-sharp edges and vibrant colors."
+        title="AI Photo Enhancer & Restorer"
+        description="Recover lost detail from blurry photos. Multi-scale frequency restoration sharpens edges, removes noise, and upscales resolution — all in your browser."
         breadcrumb="Photo Enhancer"
       >
 
@@ -553,7 +548,6 @@ export default function ImageEnhancer() {
                 onDragLeave={() => setDropOver(false)}
                 onClick={() => inputRef.current?.click()}
               >
-                {/* Decorative blobs */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-orange-100 rounded-bl-full opacity-50 blur-2xl group-hover:scale-125 transition-transform duration-700 pointer-events-none"></div>
 
                 <input ref={inputRef} type="file" accept="image/*" className="hidden"
@@ -570,7 +564,7 @@ export default function ImageEnhancer() {
 
                 <div className="text-center space-y-1.5 relative z-10">
                   <p className="text-xl font-black text-slate-800">Upload your Photo</p>
-                  <p className="text-sm font-medium text-slate-400">Transform noisy photos into smooth studio shots.</p>
+                  <p className="text-sm font-medium text-slate-400">Restore blur, recover detail, sharpen edges.</p>
                 </div>
 
                 <button className="w-full max-w-[260px] py-4 rounded-2xl font-black text-white text-sm shadow-xl shadow-orange-500/30 transition-all hover:scale-105 relative z-10"
@@ -621,7 +615,7 @@ export default function ImageEnhancer() {
                   </div>
                   <div>
                     <h3 className="font-black text-slate-800 tracking-wide">{resultPreview ? 'Review Result' : 'Studio Engine Processing...'}</h3>
-                    <p className="text-[11px] text-slate-500 font-medium">Bilateral Denoise & Unsharp Mask Applied</p>
+                    <p className="text-[11px] text-slate-500 font-medium">Multi-Scale Detail Restoration · 3 Frequency Bands</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
@@ -637,7 +631,7 @@ export default function ImageEnhancer() {
 
               {/* Compare area */}
               <div ref={compareRef}
-                className="relative select-none overflow-hidden bg-[url('https://camo.githubusercontent.com/9dc370e051ae1dbdf0df4b42ccbfffeb929a5027581db39fbde86b728ae5c1a7/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f7468756d622f352f35632f496d6167655f636865636b6572626f6172642e7376672f3132303070782d496d6167655f636865636b6572626f6172642e7376672e706e67')] bg-[length:24px_24px] bg-slate-100"
+                className="relative select-none overflow-hidden bg-slate-100"
                 style={{ minHeight: 500, cursor: resultPreview ? 'col-resize' : 'default' }}
                 onMouseDown={() => resultPreview && setCompareDragging(true)}
                 onTouchStart={() => resultPreview && setCompareDragging(true)}
@@ -675,10 +669,9 @@ export default function ImageEnhancer() {
                   </div>
                 )}
 
-                {/* Processing Overlay (Scanning Effect) */}
+                {/* Processing Overlay */}
                 {processing && !resultPreview && (
                   <div className="absolute inset-0 z-30 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
-                    {/* Fake scan line */}
                     <div className="absolute inset-x-0 h-1 bg-orange-500 shadow-[0_0_20px_rgba(255,109,63,1)] opacity-70"
                       style={{ top: `${progress}%`, transition: 'top 0.1s linear' }}></div>
 
@@ -697,7 +690,7 @@ export default function ImageEnhancer() {
 
                       <div className="text-center w-full">
                         <p className="font-bold text-white text-lg tracking-wide">{stepMsg}</p>
-                        <p className="text-white/60 text-xs mt-1.5 font-medium">Bilateral filtering matrix running...</p>
+                        <p className="text-white/60 text-xs mt-1.5 font-medium">Multi-scale frequency restoration running...</p>
                       </div>
                     </div>
                   </div>
@@ -717,13 +710,13 @@ export default function ImageEnhancer() {
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
-                  Save Masterpiece ({scale}× Resolution)
+                  Save Enhanced Image ({scale}× Resolution)
                 </button>
 
-                {/* Adjustments context */}
+                {/* Config */}
                 <div className="bg-white border border-slate-200 rounded-2xl flex flex-col justify-center px-5 py-3 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Upscale Config</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Upscale</span>
                     <span className="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md">{processingTime}s</span>
                   </div>
                   <div className="mt-2 flex gap-2 w-full">
@@ -744,24 +737,24 @@ export default function ImageEnhancer() {
           </div>
         )}
 
-        {/* ── SEO Content ─────────────────────────────────────────────────── */}
+        {/* SEO Content */}
         <div className="seo-content mt-12 bg-white rounded-3xl border border-slate-200 p-8 md:p-12 shadow-sm">
           <img src="/images/tools/image-enhancer-tool.png" alt="AI Image Enhancer Tool Interface"
-            title="Premium Image Cleanup" loading="lazy"
+            title="Premium Image Restoration" loading="lazy"
             className="w-full h-auto rounded-2xl shadow-md mb-10 border border-slate-100" />
 
           <div className="prose prose-slate max-w-none text-base text-slate-600 space-y-6">
-            <h2 className="text-3xl font-black text-slate-800 tracking-tight">Achieve the "Photoshop-Clean" Look Instantly</h2>
-            <p>Most online enhancement tools simply boost contrast or stretch pixels, which often magnifies ugly ISO noise and compression artifacts. Our new <strong>Studio Engine</strong> completely rethinks browser-based image processing. We've implemented advanced graphic algorithms traditionally reserved for expensive desktop software like Adobe Lightroom or Photoshop directly into your browser.</p>
+            <h2 className="text-3xl font-black text-slate-800 tracking-tight">Restore Blurry Photos to Crystal Clarity</h2>
+            <p>Unlike tools that just boost contrast or saturate colors, our AI Photo Enhancer uses <strong>Multi-Scale Frequency Restoration</strong> — a technique borrowed from professional image processing pipelines. It analyzes your photo across three frequency bands simultaneously and recovers lost detail at each level.</p>
 
-            <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">1. Edge-Preserving Surface Blur</h3>
-            <p>Our core innovation is a custom JS-based <em>Bilateral Filter</em> approximation. Unlike a standard blur that ruins an image, a bilateral filter is "edge-aware". It aggressively smooths out flat surfaces (like grainy skin, pixelated sky, or noisy backgrounds) while completely protecting sharp transitions (like eyelashes, text, or hard object edges). This is the secret to getting that pristine, premium "AI" look.</p>
+            <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">1. Edge-Preserving Denoise</h3>
+            <p>First, a bilateral filter smooths out ISO noise and compression artifacts while preserving all sharp edges. Unlike Gaussian blur, it only blurs areas with similar colors, leaving hair, text, and object boundaries untouched.</p>
 
-            <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">2. Intelligent Edge Recovery</h3>
-            <p>After compressing the noise, the tool applies a finely tuned <em>Unsharp Mask</em> exclusively targeting the high-contrast thresholds. This step acts like a micro-contrast injection, making hair, textures, and text snap back into ultra-high-definition clarity.</p>
+            <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">2. Multi-Scale Luminance USM</h3>
+            <p>The core restoration engine applies Unsharp Masking across three different frequency scales — fine (radius 1px), medium (radius 3px), and broad (radius 9px). Each scale recovers a different level of detail: skin pores, hair edges, and overall structure. Crucially, all sharpening operates only on the <em>luminance channel</em>, so your colors stay perfectly natural with zero halos.</p>
 
-            <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">3. Studio Color Mastering</h3>
-            <p>Finally, we apply an S-curve contrast mathematical function and a smart vibrance algorithm. Instead of just turning up saturation (which causes skin to look bright orange), our vibrance logic only boosts colors that are inherently undersaturated, protecting skin tones and already-vivid areas.</p>
+            <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">3. Gentle Color Correction</h3>
+            <p>Finally, a very subtle tone curve (brightness 1.02, contrast 1.06) and luminosity-preserving saturation are applied. This is intentionally minimal — the restoration itself provides the visible improvement, not color boosting.</p>
           </div>
         </div>
       </ToolLayout>
