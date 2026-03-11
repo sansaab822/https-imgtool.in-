@@ -234,8 +234,8 @@ async function applySurfaceBlur(srcData, w, h, radius, sigmaColor, onProgress) {
           const cDist = (r1 - r0) ** 2 + (g1 - g0) ** 2 + (b1 - b0) ** 2
           const spW = 1.0 - (Math.abs(dx) + Math.abs(dy)) / (2 * radius + 1)
           const cW = cDist < sigmaColorSq ? 1.0 - cDist / sigmaColorSq : 0
-          const w = spW * cW
-          rS += r1 * w; gS += g1 * w; bS += b1 * w; wS += w
+          const wt = spW * cW
+          rS += r1 * wt; gS += g1 * wt; bS += b1 * wt; wS += wt
         }
       }
       if (wS > 0) {
