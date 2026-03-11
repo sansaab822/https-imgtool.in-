@@ -167,9 +167,10 @@ export default function BgRemover() {
             const bgRemovalModule = await import('@imgly/background-removal')
             const removeBg = bgRemovalModule.removeBackground
 
-            // Only pass output config — no publicPath, no model (let library auto-select)
+            // Use 'small' model for faster inference (~2.5× faster, still high quality)
             const resultBlob = await removeBg(image.file, {
-                output: { format: 'image/png' },
+                model: 'small',
+                output: { format: 'image/png', quality: 0.9 },
             })
 
             stopProgress()
@@ -354,21 +355,30 @@ export default function BgRemover() {
                                 <div
                                     ref={compareRef}
                                     className="relative select-none overflow-hidden"
-                                    style={{ minHeight: 380, cursor: displayUrl ? 'col-resize' : 'default', ...CHECKER }}
+                                    style={{ minHeight: 380, cursor: displayUrl ? 'col-resize' : 'default' }}
                                     onMouseDown={() => displayUrl && setIsDragging(true)}
                                     onTouchStart={() => displayUrl && setIsDragging(true)}
                                 >
-                                    {/* Original */}
-                                    <img src={image.url} alt="Original" className="absolute inset-0 w-full h-full object-contain pointer-events-none" />
+                                    {/* Checker background — always visible so transparent cutout shows correctly */}
+                                    <div className="absolute inset-0" style={CHECKER} />
 
-                                    {/* Result with bg applied (clip left→compareX) */}
+                                    {/* Original — clipped to LEFT side of slider only */}
+                                    <img
+                                        src={image.url}
+                                        alt="Original"
+                                        className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+                                        style={displayUrl ? { clipPath: `inset(0 ${100 - compareX}% 0 0)` } : {}}
+                                    />
+
+                                    {/* Result — clipped to RIGHT side of slider */}
                                     {displayUrl && (
                                         <div
                                             className="absolute inset-0 pointer-events-none overflow-hidden"
                                             style={{ clipPath: `inset(0 0 0 ${compareX}%)` }}
                                         >
-                                            <div className="absolute inset-0" style={getContainerStyle(bgColor)} />
-                                            <img src={displayUrl} alt="Result" className="absolute inset-0 w-full h-full object-contain" />
+                                            {/* Solid/gradient background layer (behind transparent cutout) */}
+                                            <div className="absolute inset-0" style={bgColor !== 'transparent' ? getContainerStyle(bgColor) : {}} />
+                                            <img src={displayUrl} alt="Background removed result" className="absolute inset-0 w-full h-full object-contain" />
                                         </div>
                                     )}
 
