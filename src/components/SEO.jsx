@@ -84,11 +84,19 @@ export default function SEO({
                 {JSON.stringify(webSiteSchema)}
             </script>
 
-            {/* Structured Data — page-specific (optional) */}
+            {/* Structured Data — page-specific (optional: single object or array) */}
             {schema && (
-                <script type="application/ld+json">
-                    {JSON.stringify(schema)}
-                </script>
+                Array.isArray(schema)
+                    ? schema.map((s, i) => (
+                        <script key={i} type="application/ld+json">
+                            {JSON.stringify(s)}
+                        </script>
+                    ))
+                    : (
+                        <script type="application/ld+json">
+                            {JSON.stringify(schema)}
+                        </script>
+                    )
             )}
         </Helmet>
     )
