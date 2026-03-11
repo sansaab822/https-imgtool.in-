@@ -89,8 +89,8 @@ export default function HomePage() {
     return (
         <>
             <SEO
-                title="IMG Tool - Free Online Image & PDF Tools (100% Secure)"
-                description="All-in-one online image tools. Convert AVIF, HEIC, WebP, PNG, JPG, PDF and more. Resize, Crop, Compress, and Edit images in your browser. No upload needed."
+                title="IMG Tool (imgtool) | Free Image Converter & Photo Tool Online"
+                description="Use IMG Tool (imgtool), the best free online image converter and photo tool. Fast, private photo converter online. Discover imgtools for editing, resizing, and converting images and PDFs."
                 canonical="/"
                 schema={homeSchema}
             />
@@ -103,11 +103,11 @@ export default function HomePage() {
                         100% Free &amp; Secure • Client-Side Processing
                     </span>
                     <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
-                        Your All-in-One <br /><span className="gradient-text">Image Toolkit</span>
+                        Your All-in-One <br /><span className="gradient-text">IMG Tool & Image Converter</span>
                     </h1>
                     <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-10">
-                        Convert, Resize, Compress, and Edit images instantly. <br className="hidden md:block" />
-                        We support AVIF, HEIC, WebP, PDF, and 50+ other formats.
+                        The ultimate online photo tool to convert, resize, compress, and edit instantly. <br className="hidden md:block" />
+                        A completely private photo converter online supporting AVIF, HEIC, WebP, PDF, and 50+ other formats.
                     </p>
                     {/* Search */}
                     <div className="max-w-xl mx-auto relative">

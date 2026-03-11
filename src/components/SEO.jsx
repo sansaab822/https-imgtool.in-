@@ -9,7 +9,7 @@ const orgSchema = {
     name: 'IMG Tool',
     url: SITE_URL,
     logo: `${SITE_URL}/favicon.svg`,
-    description: 'Free online image & PDF tools. Convert, resize, compress, crop and edit images in your browser. 100% private — no upload to servers.',
+    description: 'Free online image & PDF tools. Convert, resize, compress, crop and edit photos in your browser. The best photo converter online and image tool. 100% private.',
     contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer support',
@@ -36,8 +36,9 @@ const webSiteSchema = {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function SEO({
-    title = 'IMG Tool - Free Online Image & PDF Tools',
-    description = 'Convert, resize, compress, and edit images online for free. No upload needed — 100% client-side processing.',
+    title = 'IMG Tool (imgtool) | Free Image Converter & Photo Tool Online',
+    description = 'Use IMG Tool (imgtool), the best free online image converter and photo tool. Fast, private photo converter online. Discover imgtools for editing, resizing, and converting images and PDFs.',
+    keywords = 'imgtool, img tool, imgtools, img tools, image tool, photo tool, image converter, photo converter online, free image tools, pdf tool',
     canonical,
     ogImage = `${SITE_URL}/og-home.png`,
     noIndex = false,
@@ -50,6 +51,7 @@ export default function SEO({
         <Helmet>
             <title>{fullTitle}</title>
             <meta name="description" content={description} />
+            {keywords && <meta name="keywords" content={keywords} />}
             {noIndex && <meta name="robots" content="noindex,nofollow" />}
             {!noIndex && <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />}
             <link rel="canonical" href={url} />
