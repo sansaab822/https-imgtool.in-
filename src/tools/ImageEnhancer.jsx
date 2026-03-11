@@ -26,269 +26,303 @@ const CATEGORIES = [
   },
 ]
 
-// ── Per-category color & filter config ──────────────────────────────────
+// ── Per-category enhancement config (PREMIUM tuning) ─────────────────────
 const CFG = {
   portrait: {
-    color: { brightness: 1.05, contrast: 1.08, saturation: 1.02, gamma: 0.95 },
-    blur: { radius: 3, sigmaColor: 45 },
-    sharpen: { amount: 0.6, radius: 1, threshold: 10 }
+    // Tone: lift shadows, recover highlights, strong S-curve
+    brightness: 1.08, contrast: 1.30, shadowLift: 18, highlightRecover: 0.92,
+    // Color
+    saturation: 1.35, vibrance: 1.55, warmth: 8,
+    // Clarity (local contrast / micro-contrast strength)
+    clarity: 0.55,
+    // Surface blur (skin smoothing)
+    blur: { radius: 3, sigmaColor: 50 },
+    // Unsharp mask (sharpening)
+    sharpen: { amount: 1.2, radius: 1, threshold: 8 },
+    // Fine detail pass
+    detail: { amount: 0.7, radius: 0, threshold: 4 },
   },
   object: {
-    color: { brightness: 1.02, contrast: 1.15, saturation: 1.10, gamma: 0.98 },
+    brightness: 1.05, contrast: 1.35, shadowLift: 10, highlightRecover: 0.95,
+    saturation: 1.40, vibrance: 1.45, warmth: 0,
+    clarity: 0.70,
     blur: { radius: 2, sigmaColor: 30 },
-    sharpen: { amount: 0.8, radius: 1, threshold: 5 }
+    sharpen: { amount: 1.5, radius: 1, threshold: 5 },
+    detail: { amount: 0.9, radius: 0, threshold: 3 },
   },
   scenery: {
-    color: { brightness: 1.05, contrast: 1.15, saturation: 1.25, gamma: 0.95 },
-    blur: { radius: 2, sigmaColor: 25 },
-    sharpen: { amount: 1.0, radius: 2, threshold: 8 }
+    brightness: 1.06, contrast: 1.40, shadowLift: 12, highlightRecover: 0.88,
+    saturation: 1.55, vibrance: 1.70, warmth: -5,
+    clarity: 0.80,
+    blur: { radius: 2, sigmaColor: 28 },
+    sharpen: { amount: 1.6, radius: 2, threshold: 6 },
+    detail: { amount: 1.0, radius: 0, threshold: 4 },
   },
   pets: {
-    color: { brightness: 1.02, contrast: 1.12, saturation: 1.08, gamma: 0.98 },
-    blur: { radius: 2, sigmaColor: 35 },
-    sharpen: { amount: 0.9, radius: 1.5, threshold: 6 }
+    brightness: 1.04, contrast: 1.28, shadowLift: 14, highlightRecover: 0.93,
+    saturation: 1.30, vibrance: 1.40, warmth: 5,
+    clarity: 0.60,
+    blur: { radius: 2, sigmaColor: 38 },
+    sharpen: { amount: 1.4, radius: 1.5, threshold: 5 },
+    detail: { amount: 0.8, radius: 0, threshold: 3 },
   },
   text: {
-    color: { brightness: 1.0, contrast: 1.30, saturation: 0.9, gamma: 1.05 },
-    blur: { radius: 1, sigmaColor: 50 },
-    sharpen: { amount: 1.5, radius: 1, threshold: 0 }
+    brightness: 1.0, contrast: 1.60, shadowLift: 5, highlightRecover: 1.0,
+    saturation: 0.85, vibrance: 1.0, warmth: 0,
+    clarity: 1.0,
+    blur: { radius: 1, sigmaColor: 60 },
+    sharpen: { amount: 2.2, radius: 1, threshold: 0 },
+    detail: { amount: 1.5, radius: 0, threshold: 0 },
   },
 }
 
-// ── 1. Color Grading ────────────────────────────────────────────────────────
-function applyColorEnhance(data, category) {
-  const out = new Uint8ClampedArray(data.length)
-  const cfg = CFG[category].color || CFG.portrait.color
-
-  for (let i = 0; i < data.length; i += 4) {
-    let r = data[i], g = data[i + 1], b = data[i + 2]
-
-    // Brightness
-    r *= cfg.brightness; g *= cfg.brightness; b *= cfg.brightness
-
-    // Contrast (S-Curve)
-    const c = cfg.contrast
-    r = ((r / 255 - 0.5) * c + 0.5) * 255
-    g = ((g / 255 - 0.5) * c + 0.5) * 255
-    b = ((b / 255 - 0.5) * c + 0.5) * 255
-
-    // Vibrance
-    const avg = (r + g + b) / 3
-    const maxC = Math.max(r, g, b)
-    const sat = maxC > 0 ? 1 - (3 * avg) / (r + g + b + 0.001) : 0
-    const vibranceAmt = (1 - sat) * (cfg.saturation - 1) * 0.5
-    r = r + (r - avg) * vibranceAmt
-    g = g + (g - avg) * vibranceAmt
-    b = b + (b - avg) * vibranceAmt
-
-    // Gamma
-    if (cfg.gamma !== 1.0) {
-      r = 255 * Math.pow(Math.max(0, Math.min(255, r)) / 255, cfg.gamma)
-      g = 255 * Math.pow(Math.max(0, Math.min(255, g)) / 255, cfg.gamma)
-      b = 255 * Math.pow(Math.max(0, Math.min(255, b)) / 255, cfg.gamma)
-    }
-
-    out[i] = Math.min(255, Math.max(0, r))
-    out[i + 1] = Math.min(255, Math.max(0, g))
-    out[i + 2] = Math.min(255, Math.max(0, b))
-    out[i + 3] = data[i + 3]
-  }
-  return out
-}
-
-// ── Yield for UI updates ────────────────────────────────────────────────────
+// ── Yield for UI updates ──────────────────────────────────────────────────
 const yieldToMain = () => new Promise(resolve => setTimeout(resolve, 0))
 
-// ── 2. "Surface Blur" (Approximate Bilateral) for Skin/Noise Smoothing ────────
-// Blurs pixels only if their color difference is within sigmaColor.
-// Acts like Photoshop's Surface Blur.
-async function applySurfaceBlur(srcData, w, h, radius, sigmaColor, onProgress) {
-  const src = srcData.data
-  const dst = new Uint8ClampedArray(src.length)
-  const sigmaColorSq = sigmaColor * sigmaColor * 3 // Approx RGB distance squared
+// ── 1. Lookup Table Builder (fast per-pixel transform) ─────────────────────
+// Pre-computes 256-value LUT for brightness, S-curve contrast, gamma
+function buildLUT(brightness, contrast, shadowLift, highlightRecover) {
+  const lut = new Uint8ClampedArray(256)
+  for (let i = 0; i < 256; i++) {
+    let v = i / 255
 
-  const chunkHeight = Math.max(1, Math.floor(h / 10))
+    // 1a. Shadow lift (raise blacks slightly)
+    v = v + (shadowLift / 255) * (1 - v) * (1 - v)
 
-  for (let y = 0; y < h; y++) {
-    if (y % chunkHeight === 0) {
-      onProgress(30 + (y / h) * 40, 'Cleaning noise & smoothing surfaces...')
-      await yieldToMain()
-    }
+    // 1b. Highlight recovery (compress near-white)
+    if (v > 0.75) v = 0.75 + (v - 0.75) * highlightRecover
 
-    for (let x = 0; x < w; x++) {
-      const idx = (y * w + x) * 4
-      const r0 = src[idx], g0 = src[idx + 1], b0 = src[idx + 2]
+    // 1c. Brightness
+    v *= brightness
 
-      let rSum = 0, gSum = 0, bSum = 0, wSum = 0
+    // 1d. Sigmoid S-curve (proper photographic contrast)
+    // Maps 0-1 → 0-1 with S-shaped curve controlled by `contrast`
+    const k = contrast  // 1.0 = no change, 1.5 = strong, 2.0 = very strong
+    v = (v - 0.5) * k + 0.5
 
-      for (let dy = -radius; dy <= radius; dy++) {
-        const ny = y + dy
-        if (ny < 0 || ny >= h) continue
-        for (let dx = -radius; dx <= radius; dx++) {
-          const nx = x + dx
-          if (nx < 0 || nx >= w) continue
-
-          const nIdx = (ny * w + nx) * 4
-          const r1 = src[nIdx], g1 = src[nIdx + 1], b1 = src[nIdx + 2]
-
-          const colorDistSq = (r1 - r0) * (r1 - r0) + (g1 - g0) * (g1 - g0) + (b1 - b0) * (b1 - b0)
-
-          // Spatial weight (linear hat)
-          const spatialWeight = 1.0 - (Math.abs(dx) + Math.abs(dy)) / (2 * radius + 1)
-          // Color weight (drop off fast if different color)
-          const colorWeight = colorDistSq < sigmaColorSq ? 1.0 - (colorDistSq / sigmaColorSq) : 0
-
-          const weight = spatialWeight * colorWeight
-
-          rSum += r1 * weight
-          gSum += g1 * weight
-          bSum += b1 * weight
-          wSum += weight
-        }
-      }
-
-      if (wSum > 0) {
-        dst[idx] = rSum / wSum
-        dst[idx + 1] = gSum / wSum
-        dst[idx + 2] = bSum / wSum
-        dst[idx + 3] = src[idx + 3]
-      } else {
-        dst[idx] = r0; dst[idx + 1] = g0; dst[idx + 2] = b0; dst[idx + 3] = src[idx + 3]
-      }
-    }
+    lut[i] = Math.min(255, Math.max(0, Math.round(v * 255)))
   }
-
-  return new ImageData(dst, w, h)
+  return lut
 }
 
-// ── 3. High-Pass Unsharp Mask for Edge Recovery ──────────────────────────────
-async function applyUnsharpMask(srcData, w, h, amount, radius, threshold, onProgress) {
-  const src = srcData.data
-  const blurred = new Uint8ClampedArray(src.length)
+// ── 2. Color Grading (Saturation + Vibrance + Warmth) ─────────────────────
+function applyColorEnhance(src, cfg) {
   const dst = new Uint8ClampedArray(src.length)
+  const lut = buildLUT(cfg.brightness, cfg.contrast, cfg.shadowLift, cfg.highlightRecover)
 
-  // Fast Box Blur for unsharp mask base
-  const chunkHeight = Math.max(1, Math.floor(h / 5))
-  const r = Math.floor(radius)
+  for (let i = 0; i < src.length; i += 4) {
+    let r = src[i], g = src[i + 1], b = src[i + 2]
 
+    // Warmth (slight red/yellow push for portraits, or cool for scenery)
+    r = Math.min(255, r + cfg.warmth)
+    b = Math.min(255, Math.max(0, b - cfg.warmth * 0.5))
+
+    // Apply tone LUT
+    r = lut[Math.min(255, Math.max(0, r))]
+    g = lut[Math.min(255, Math.max(0, g))]
+    b = lut[Math.min(255, Math.max(0, b))]
+
+    // Saturation (full HSL-based)
+    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
+    r = luma + (r - luma) * cfg.saturation
+    g = luma + (g - luma) * cfg.saturation
+    b = luma + (b - luma) * cfg.saturation
+
+    // Vibrance — boost undersaturated areas more (protects already-saturated skin)
+    const avg = (r + g + b) / 3
+    const maxC = Math.max(r, g, b)
+    const satLevel = maxC > 0 ? (maxC - Math.min(r, g, b)) / maxC : 0
+    const vibrancePush = (1 - satLevel) * (cfg.vibrance - 1.0)  // stronger for desaturated
+    r = r + (r - avg) * vibrancePush
+    g = g + (g - avg) * vibrancePush
+    b = b + (b - avg) * vibrancePush
+
+    dst[i] = Math.min(255, Math.max(0, r))
+    dst[i + 1] = Math.min(255, Math.max(0, g))
+    dst[i + 2] = Math.min(255, Math.max(0, b))
+    dst[i + 3] = src[i + 3]
+  }
+  return dst
+}
+
+// ── 3. Fast Box Blur (for both bilateral base and unsharp masks) ───────────
+function boxBlur(src, w, h, radius) {
+  const dst = new Uint8ClampedArray(src.length)
+  const r = Math.max(1, Math.floor(radius))
+  // Horizontal pass
+  const tmp = new Uint8ClampedArray(src.length)
   for (let y = 0; y < h; y++) {
-    if (y % chunkHeight === 0) {
-      onProgress(70 + (y / h) * 10, 'Recovering sharp details...')
-      await yieldToMain()
-    }
     for (let x = 0; x < w; x++) {
-      let rSum = 0, gSum = 0, bSum = 0, count = 0
-      for (let dy = -r; dy <= r; dy++) {
-        const ny = Math.min(h - 1, Math.max(0, y + dy))
-        for (let dx = -r; dx <= r; dx++) {
-          const nx = Math.min(w - 1, Math.max(0, x + dx))
-          const idx = (ny * w + nx) * 4
-          rSum += src[idx]; gSum += src[idx + 1]; bSum += src[idx + 2]
-          count++
-        }
+      let rS = 0, gS = 0, bS = 0, n = 0
+      for (let dx = -r; dx <= r; dx++) {
+        const nx = Math.min(w - 1, Math.max(0, x + dx))
+        const idx = (y * w + nx) * 4
+        rS += src[idx]; gS += src[idx + 1]; bS += src[idx + 2]; n++
       }
-      const outIdx = (y * w + x) * 4
-      blurred[outIdx] = rSum / count
-      blurred[outIdx + 1] = gSum / count
-      blurred[outIdx + 2] = bSum / count
+      const o = (y * w + x) * 4
+      tmp[o] = rS / n; tmp[o + 1] = gS / n; tmp[o + 2] = bS / n; tmp[o + 3] = src[o + 3]
     }
   }
+  // Vertical pass
+  for (let x = 0; x < w; x++) {
+    for (let y = 0; y < h; y++) {
+      let rS = 0, gS = 0, bS = 0, n = 0
+      for (let dy = -r; dy <= r; dy++) {
+        const ny = Math.min(h - 1, Math.max(0, y + dy))
+        const idx = (ny * w + x) * 4
+        rS += tmp[idx]; gS += tmp[idx + 1]; bS += tmp[idx + 2]; n++
+      }
+      const o = (y * w + x) * 4
+      dst[o] = rS / n; dst[o + 1] = gS / n; dst[o + 2] = bS / n; dst[o + 3] = tmp[o + 3]
+    }
+  }
+  return dst
+}
 
-  // Combine
+// ── 4. Unsharp Mask (with threshold) ──────────────────────────────────────
+function unsharpMask(src, blurred, amount, threshold) {
+  const dst = new Uint8ClampedArray(src.length)
   for (let i = 0; i < src.length; i += 4) {
-    const rD = src[i] - blurred[i]
-    const gD = src[i + 1] - blurred[i + 1]
-    const bD = src[i + 2] - blurred[i + 2]
-
-    // Threshold check (only sharpen strong edges)
-    if (Math.abs(rD) > threshold || Math.abs(gD) > threshold || Math.abs(bD) > threshold) {
-      dst[i] = Math.min(255, Math.max(0, src[i] + amount * rD))
-      dst[i + 1] = Math.min(255, Math.max(0, src[i + 1] + amount * gD))
-      dst[i + 2] = Math.min(255, Math.max(0, src[i + 2] + amount * bD))
-    } else {
-      dst[i] = src[i]; dst[i + 1] = src[i + 1]; dst[i + 2] = src[i + 2]
+    for (let c = 0; c < 3; c++) {
+      const diff = src[i + c] - blurred[i + c]
+      dst[i + c] = Math.min(255, Math.max(0,
+        Math.abs(diff) > threshold
+          ? src[i + c] + diff * amount
+          : src[i + c]
+      ))
     }
     dst[i + 3] = src[i + 3]
   }
+  return dst
+}
 
+// ── 5. Clarity (Local Contrast / Micro-Contrast) ─────────────────────────
+// High-pass overlay blended at moderate strength — lifts midtone detail pop
+function applyClarity(src, w, h, strength) {
+  // Use a large-radius blur as the base, then add the difference back
+  const largeBlur = boxBlur(src, w, h, 8)
+  const dst = new Uint8ClampedArray(src.length)
+  for (let i = 0; i < src.length; i += 4) {
+    for (let c = 0; c < 3; c++) {
+      const diff = src[i + c] - largeBlur[i + c]
+      dst[i + c] = Math.min(255, Math.max(0, src[i + c] + diff * strength))
+    }
+    dst[i + 3] = src[i + 3]
+  }
+  return dst
+}
+
+// ── 6. Surface Blur (Edge-Preserving Smooth for skin/noise) ───────────────
+async function applySurfaceBlur(srcData, w, h, radius, sigmaColor, onProgress) {
+  const src = srcData.data
+  const dst = new Uint8ClampedArray(src.length)
+  const sigmaColorSq = sigmaColor * sigmaColor * 3
+  const chunk = Math.max(1, Math.floor(h / 10))
+
+  for (let y = 0; y < h; y++) {
+    if (y % chunk === 0) { onProgress(20 + (y / h) * 30, 'Smoothing surfaces...'); await yieldToMain() }
+    for (let x = 0; x < w; x++) {
+      const idx = (y * w + x) * 4
+      const r0 = src[idx], g0 = src[idx + 1], b0 = src[idx + 2]
+      let rS = 0, gS = 0, bS = 0, wS = 0
+      for (let dy = -radius; dy <= radius; dy++) {
+        const ny = y + dy; if (ny < 0 || ny >= h) continue
+        for (let dx = -radius; dx <= radius; dx++) {
+          const nx = x + dx; if (nx < 0 || nx >= w) continue
+          const nIdx = (ny * w + nx) * 4
+          const r1 = src[nIdx], g1 = src[nIdx + 1], b1 = src[nIdx + 2]
+          const cDist = (r1 - r0) ** 2 + (g1 - g0) ** 2 + (b1 - b0) ** 2
+          const spW = 1.0 - (Math.abs(dx) + Math.abs(dy)) / (2 * radius + 1)
+          const cW = cDist < sigmaColorSq ? 1.0 - cDist / sigmaColorSq : 0
+          const w = spW * cW
+          rS += r1 * w; gS += g1 * w; bS += b1 * w; wS += w
+        }
+      }
+      if (wS > 0) {
+        dst[idx] = rS / wS; dst[idx + 1] = gS / wS; dst[idx + 2] = bS / wS
+      } else {
+        dst[idx] = r0; dst[idx + 1] = g0; dst[idx + 2] = b0
+      }
+      dst[idx + 3] = src[idx + 3]
+    }
+  }
   return new ImageData(dst, w, h)
 }
 
-
-// ── Main enhancement pipeline (Smart Clean & Sharpen) ─────────────────────────
+// ── MAIN PIPELINE ─────────────────────────────────────────────────────────
 async function enhanceOnCanvas(imgSrc, scale = 2, category = 'portrait', onProgress) {
   return new Promise((resolve, reject) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
-
     img.onload = async () => {
       try {
         const cfg = CFG[category] || CFG.portrait
+        const srcW = img.naturalWidth, srcH = img.naturalHeight
+        const outW = srcW * scale, outH = srcH * scale
 
-        onProgress?.(5, 'Analyzing image...')
+        onProgress?.(5, 'Analyzing photo...')
         await yieldToMain()
 
-        const srcW = img.naturalWidth
-        const srcH = img.naturalHeight
-        const outW = srcW * scale
-        const outH = srcH * scale
-
+        // Draw source
         const srcCanvas = document.createElement('canvas')
         srcCanvas.width = srcW; srcCanvas.height = srcH
-        const srcCtx = srcCanvas.getContext('2d', { alpha: false, willReadFrequently: true })
+        const srcCtx = srcCanvas.getContext('2d', { willReadFrequently: true })
         srcCtx.drawImage(img, 0, 0)
 
-        // Step 1: Denoise & Clean (Surface Blur) on original resolution
-        // (Doing this before upscale prevents noise from magnifying)
-        onProgress?.(15, 'Preparing noise profile...')
-        await yieldToMain()
-        let srcData = srcCtx.getImageData(0, 0, srcW, srcH)
-        srcData = await applySurfaceBlur(srcData, srcW, srcH, cfg.blur.radius, cfg.blur.sigmaColor, onProgress)
-        srcCtx.putImageData(srcData, 0, 0)
+        // ── Step 1: Surface blur (denoise / skin smoothing) ──────────────
+        onProgress?.(10, 'Smoothing skin & removing noise...')
+        let iData = srcCtx.getImageData(0, 0, srcW, srcH)
+        iData = await applySurfaceBlur(iData, srcW, srcH, cfg.blur.radius, cfg.blur.sigmaColor, onProgress)
 
-        // Step 2: Color Grading
-        onProgress?.(75, 'Mastering colors...')
+        // ── Step 2: Unsharp mask pass 1 (fine detail recovery) ───────────
+        onProgress?.(52, 'Recovering fine details...')
         await yieldToMain()
-        srcData = srcCtx.getImageData(0, 0, srcW, srcH)
-        const colorData = applyColorEnhance(srcData.data, category)
-        srcCtx.putImageData(new ImageData(colorData, srcW, srcH), 0, 0)
+        let pixArr = iData.data
+        const fineBlur = boxBlur(pixArr, srcW, srcH, 1)
+        pixArr = unsharpMask(pixArr, fineBlur, cfg.detail.amount, cfg.detail.threshold)
 
-        // Step 3: Upscaling (Bicubic high quality emulation)
-        onProgress?.(80, 'Upscaling to High Def...')
+        // ── Step 3: Clarity (local micro-contrast) ────────────────────────
+        onProgress?.(60, 'Boosting clarity & local contrast...')
+        await yieldToMain()
+        pixArr = applyClarity(pixArr, srcW, srcH, cfg.clarity)
+
+        // ── Step 4: Color grading (tone curve + saturation + vibrance) ────
+        onProgress?.(70, 'Mastering colors & tone...')
+        await yieldToMain()
+        pixArr = applyColorEnhance(pixArr, cfg)
+
+        // Write back to source canvas
+        srcCtx.putImageData(new ImageData(pixArr, srcW, srcH), 0, 0)
+
+        // ── Step 5: Upscale (high-quality bicubic emulation) ─────────────
+        onProgress?.(78, 'Upscaling to high definition...')
         await yieldToMain()
         const outCanvas = document.createElement('canvas')
         outCanvas.width = outW; outCanvas.height = outH
-        const outCtx = outCanvas.getContext('2d', { alpha: false, willReadFrequently: true })
+        const outCtx = outCanvas.getContext('2d', { willReadFrequently: true })
         outCtx.imageSmoothingEnabled = true
         outCtx.imageSmoothingQuality = 'high'
         outCtx.drawImage(srcCanvas, 0, 0, outW, outH)
 
-        // Step 4: High-Pass Sharpen (Unsharp Mask) on High Res canvas
-        // This recovers the edges the blur may have softened
-        onProgress?.(90, 'Applying crisp edge contrast...')
+        // ── Step 6: Unsharp mask pass 2 (crisp edge sharpening post-upscale)
+        onProgress?.(88, 'Applying crisp edge sharpening...')
         await yieldToMain()
-        let outData = outCtx.getImageData(0, 0, outW, outH)
-        outData = await applyUnsharpMask(outData, outW, outH, cfg.sharpen.amount, cfg.sharpen.radius * scale, cfg.sharpen.threshold, onProgress)
-        outCtx.putImageData(outData, 0, 0)
+        let outPix = outCtx.getImageData(0, 0, outW, outH).data
+        const edgeBlur = boxBlur(outPix, outW, outH, cfg.sharpen.radius * scale)
+        outPix = unsharpMask(outPix, edgeBlur, cfg.sharpen.amount, cfg.sharpen.threshold)
+        outCtx.putImageData(new ImageData(outPix, outW, outH), 0, 0)
 
-        onProgress?.(98, 'Finalizing asset...')
+        onProgress?.(97, 'Finalizing...')
         await yieldToMain()
 
-        // Export
         outCanvas.toBlob(blob => {
-          if (blob) {
-            onProgress?.(100, 'Enhancement complete!')
-            resolve(blob)
-          } else {
-            reject(new Error('Failed to create output blob'))
-          }
-        }, 'image/png', 1.0)
+          if (blob) { onProgress?.(100, 'Enhancement complete!'); resolve(blob) }
+          else reject(new Error('Failed to create output blob'))
+        }, 'image/jpeg', 0.97)
 
-      } catch (err) {
-        reject(err)
-      }
+      } catch (err) { reject(err) }
     }
-    img.onerror = () => reject(new Error('Could not load image. Check extensions.'))
+    img.onerror = () => reject(new Error('Could not load image. Check format.'))
     img.src = imgSrc
   })
 }
