@@ -90,8 +90,10 @@
       window.addEventListener(evt, loadThirdPartyScripts, { once: true, passive: true });
     });
     
-    // Fallback if no interaction happens after 3.5s
-    setTimeout(loadThirdPartyScripts, 3500);
+    // Fallback if no interaction happens after 8.5s post-load
+    window.addEventListener('load', () => {
+      setTimeout(loadThirdPartyScripts, 8500);
+    });
   </script>
 
   <!-- Meta Description and Keywords -->
