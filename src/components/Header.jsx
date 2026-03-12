@@ -97,6 +97,7 @@ export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false)
     const [mobileToolsOpen, setMobileToolsOpen] = useState(false)
     const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+    const [desktopToolsOpen, setDesktopToolsOpen] = useState(false)
     const [darkMode, setDarkMode] = useState(getInitialDark)
 
     // Search state
@@ -105,6 +106,7 @@ export default function Header() {
     const [activeIdx, setActiveIdx] = useState(0)
 
     const searchRef = useRef(null)
+    const megaMenuRef = useRef(null)
     const inputRef = useRef(null)
     const mobileInputRef = useRef(null)
     const location = useLocation()
@@ -115,6 +117,7 @@ export default function Header() {
         setMobileOpen(false)
         setMobileToolsOpen(false)
         setMobileSearchOpen(false)
+        setDesktopToolsOpen(false)
         setQuery('')
         setSearchOpen(false)
     }, [location])
@@ -140,11 +143,14 @@ export default function Header() {
         return () => window.removeEventListener('keydown', handler)
     }, [])
 
-    // Close search dropdown on outside click
+    // Close search dropdown and desktop tools menu on outside click
     useEffect(() => {
         const handler = (e) => {
             if (searchRef.current && !searchRef.current.contains(e.target)) {
                 setSearchOpen(false)
+            }
+            if (megaMenuRef.current && !megaMenuRef.current.contains(e.target)) {
+                setDesktopToolsOpen(false)
             }
         }
         document.addEventListener('mousedown', handler)
@@ -185,19 +191,9 @@ export default function Header() {
 
                     {/* ── LEFT: Logo ─────────────────────────────────────── */}
                     <Link to="/" className="flex items-center gap-2 flex-shrink-0 group" aria-label="IMG Tool Home">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <rect width="32" height="32" rx="8" fill="url(#lg1)" />
-                            <rect x="6" y="6" width="8" height="8" rx="2" fill="white" fillOpacity="0.9" />
-                            <rect x="18" y="6" width="8" height="8" rx="2" fill="white" fillOpacity="0.6" />
-                            <rect x="6" y="18" width="8" height="8" rx="2" fill="white" fillOpacity="0.6" />
-                            <rect x="18" y="18" width="8" height="8" rx="2" fill="white" fillOpacity="0.9" />
-                            <defs>
-                                <linearGradient id="lg1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                                    <stop stopColor="#2563EB" />
-                                    <stop offset="1" stopColor="#7C3AED" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                        <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-lg flex items-center justify-center text-lg shadow-lg shadow-indigo-900/20">
+                            <i className="fas fa-layer-group" aria-hidden="true"></i>
+                        </div>
                         <span className="text-[17px] font-black text-slate-800 dark:text-white tracking-tight leading-none">
                             IMG <span className="text-blue-600">Tool</span>
                         </span>
@@ -279,12 +275,14 @@ export default function Header() {
                     {/* ── RIGHT: Desktop nav ─────────────────────────────── */}
                     <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
                         {/* Tools mega-menu trigger */}
-                        <div className="group relative px-3 py-1">
-                            <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-blue-600 transition-colors">
-                                Tools <i className="fas fa-chevron-down text-[9px] opacity-50 group-hover:rotate-180 transition-transform duration-300"></i>
+                        <div ref={megaMenuRef} className="relative px-3 py-1">
+                            <button 
+                                onClick={() => setDesktopToolsOpen(!desktopToolsOpen)}
+                                className={`flex items-center gap-1 text-sm font-semibold transition-colors ${desktopToolsOpen ? 'text-blue-600' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600'}`}>
+                                Tools <i className={`fas fa-chevron-down text-[9px] opacity-50 transition-transform duration-300 ${desktopToolsOpen ? 'rotate-180' : ''}`}></i>
                             </button>
                             {/* Mega menu */}
-                            <div className="fixed top-[60px] left-0 w-full opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-250 ease-out pointer-events-none group-hover:pointer-events-auto flex justify-center z-[999]">
+                            <div className={`fixed top-[60px] left-0 w-full transition-all duration-250 ease-out flex justify-center z-[999] ${desktopToolsOpen ? 'opacity-100 visible translate-y-0 pointer-events-auto' : 'opacity-0 invisible translate-y-2 pointer-events-none'}`}>
                                 <div className="mt-1 w-full max-w-5xl px-4">
                                     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden ring-1 ring-black/5 p-7 max-h-[75vh] overflow-y-auto">
                                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">

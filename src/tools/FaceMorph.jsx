@@ -114,7 +114,7 @@ export default function FaceMorph() {
                         <div className="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col items-center">
                             <h2 className="font-bold text-slate-800 mb-4 w-full"><i className="fas fa-hand-pointer text-blue-500 mr-2"></i>Click to set focus point</h2>
                             <div className="relative inline-block cursor-crosshair max-w-full" onClick={handleCanvasClick}>
-                                <img src={result || image.img.src} alt="" className="max-h-[500px] w-auto border border-slate-200 shadow-sm" />
+                                <img src={result || image.img.src} alt="" className="max-h-[300px] md:max-h-[500px] w-auto border border-slate-200 shadow-sm" />
                                 {/* Targeting reticle */}
                                 <div className="absolute w-6 h-6 border-2 border-red-500 rounded-full shadow-[0_0_0_1px_rgba(255,255,255,0.5)] transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                                     style={{ left: `${clickPos.x * 100}%`, top: `${clickPos.y * 100}%` }}>

@@ -129,7 +129,7 @@ export default function SscPhoto() {
                                         <i className="fas fa-xmark mr-1"></i>Remove
                                     </button>
                                 </div>
-                                <div className="bg-slate-50 rounded-xl p-3 flex items-center justify-center min-h-[250px]">
+                                <div className="bg-slate-50 rounded-xl p-3 flex items-center justify-center min-h-[150px] md:min-h-[250px]">
                                     <div className="relative inline-block">
                                         <img ref={imgRef} src={photo.url} alt="Photo Preview" className="max-h-72 mx-auto block object-contain rounded-lg" crossOrigin="anonymous" />
                                         {/* Live text overlay preview */}

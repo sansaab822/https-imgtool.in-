@@ -162,7 +162,7 @@ export default function ImageToArt() {
                                             ref={previewRef}
                                             src={image.url}
                                             alt="Preview"
-                                            className="max-h-[400px] max-w-full object-contain rounded-lg transition-all"
+                                            className="max-h-[250px] md:max-h-[400px] max-w-full object-contain rounded-lg transition-all"
                                             style={{ filter: getPreviewFilter() }}
                                         />
                                     </div>

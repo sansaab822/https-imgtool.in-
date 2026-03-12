@@ -356,7 +356,7 @@ export default function PanCardPhoto() {
                                 </div>
 
                                 {/* Preview */}
-                                <div className="p-6 flex items-center justify-center bg-slate-50 min-h-[280px]">
+                                <div className="p-6 flex items-center justify-center bg-slate-50 min-h-[200px] md:min-h-[280px]">
                                     <div className="flex items-start gap-8">
                                         {/* Original */}
                                         <div className="text-center space-y-2">

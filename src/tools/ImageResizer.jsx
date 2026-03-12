@@ -225,7 +225,7 @@ export default function ImageResizer() {
                                     </div>
                                 ) : (
                                     <div className="bg-slate-50 rounded-xl p-3 flex items-center justify-center min-h-[200px]">
-                                        <img ref={imgRef} src={result?.url || image.url} alt="Preview" className="max-h-[350px] max-w-full object-contain rounded-lg" />
+                                        <img ref={imgRef} src={result?.url || image.url} alt="Preview" className="max-h-[250px] md:max-h-[350px] max-w-full object-contain rounded-lg" />
                                     </div>
                                 )}
 

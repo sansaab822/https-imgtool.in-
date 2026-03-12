@@ -183,7 +183,7 @@ export default function PdfToImage({ to = 'jpg' }) {
                                         className="text-xs text-slate-400 hover:text-red-500"><i className="fas fa-xmark mr-1"></i>Remove</button>
                                 </div>
                                 <div className="p-3 bg-slate-100 flex justify-center">
-                                    <img src={previewPage.url} alt="Page 1 preview" className="max-h-[400px] rounded-lg shadow-lg border border-slate-200" />
+                                    <img src={previewPage.url} alt="Page 1 preview" className="max-h-[250px] md:max-h-[400px] rounded-lg shadow-lg border border-slate-200" />
                                 </div>
                                 <div className="px-4 py-2 bg-blue-50 border-t border-blue-100 text-xs text-blue-700 text-center">
                                     <i className="fas fa-eye mr-1"></i> First page preview — Select pages below to export

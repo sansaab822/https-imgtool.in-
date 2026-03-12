@@ -458,7 +458,7 @@ export default function PdfCrop() {
                                 )}
 
                                 {/* Main Canvas */}
-                                <div className="p-4 bg-[#e8ecf0] flex items-center justify-center min-h-[350px]">
+                                <div className="p-4 bg-[#e8ecf0] flex items-center justify-center min-h-[250px] md:min-h-[350px]">
                                     <div className="relative shadow-2xl rounded-lg overflow-hidden" style={{ lineHeight: 0 }}>
                                         <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }} />
                                         <canvas ref={overlayRef}
