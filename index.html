@@ -56,18 +56,43 @@
     gtag('config', 'G-GLVTW6Y2WH', { 'send_page_view': true });
   </script>
 
-  <!-- Google AdSense (async, non-blocking) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9944098162008719"
-    crossorigin="anonymous"></script>
+  <!-- Defer Heavy Third-Party Scripts (AdSense & Translate) until interaction -->
+  <script>
+    let thirdPartyLoaded = false;
+    function loadThirdPartyScripts() {
+      if (thirdPartyLoaded) return;
+      thirdPartyLoaded = true;
 
-  <!-- Google Translate -->
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element');
+      // 1. Load Google AdSense
+      const adScript = document.createElement('script');
+      adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9944098162008719";
+      adScript.async = true;
+      adScript.crossOrigin = "anonymous";
+      document.head.appendChild(adScript);
+
+      // 2. Load Google Translate
+      window.googleTranslateElementInit = function() {
+        new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'google_translate_element');
+      };
+      const translateScript = document.createElement('script');
+      translateScript.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      translateScript.async = true;
+      document.head.appendChild(translateScript);
+
+      // Remove listeners
+      ['scroll', 'mousemove', 'touchstart', 'click', 'keydown'].forEach(evt => {
+        window.removeEventListener(evt, loadThirdPartyScripts, { passive: true });
+      });
     }
+
+    // Attach listeners
+    ['scroll', 'mousemove', 'touchstart', 'click', 'keydown'].forEach(evt => {
+      window.addEventListener(evt, loadThirdPartyScripts, { once: true, passive: true });
+    });
+    
+    // Fallback if no interaction happens after 3.5s
+    setTimeout(loadThirdPartyScripts, 3500);
   </script>
-  <script type="text/javascript"
-    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <!-- Meta Description and Keywords -->
   <meta name="description"
@@ -80,7 +105,18 @@
 
 <body>
   <div id="google_translate_element" style="display: none;"></div>
-  <div id="root"></div>
+  <div id="root">
+    <div style="min-height: 100vh; display: flex; flex-direction: column; background-color: #ffffff;">
+      <header style="height: 64px; background: #ffffff; border-bottom: 1px solid #e2e8f0;"></header>
+      <main style="flex: 1; display: flex; align-items: center; justify-content: center; background-color: #f8fafc;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+              <div style="width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; max-width: 100%; animation: spin 1s linear infinite;"></div>
+              <p style="color: #64748b; font-size: 14px; font-weight: 500; font-family: system-ui, -apple-system, sans-serif; margin: 0;">Loading IMG Tool...</p>
+          </div>
+      </main>
+    </div>
+    <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
