@@ -1224,6 +1224,61 @@
     </url>
 
     <url>
+        <loc>https://imgtool.in/blog/how-to-compress-images-without-losing-quality</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://imgtool.in/images/tools/image-compressor-example.png</image:loc>
+            <image:title>How to Compress Images Without Losing Quality</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://imgtool.in/blog/best-image-formats-web-jpeg-vs-png-vs-webp</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://imgtool.in/images/tools/image-converter-example.png</image:loc>
+            <image:title>Best Image Formats for Web: JPEG vs PNG vs WebP</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://imgtool.in/blog/resize-images-social-media-platforms-2025</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://imgtool.in/images/tools/social-resizer-example.png</image:loc>
+            <image:title>How to Resize Images for Social Media Platforms in 2025</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://imgtool.in/blog/what-is-image-compression-website-speed</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://imgtool.in/images/tools/image-resizer-example.png</image:loc>
+            <image:title>What is Image Compression and Why it Matters for Website Speed</image:title>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://imgtool.in/blog/convert-video-to-gif-online-step-by-step</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://imgtool.in/images/tools/gif-maker-example.png</image:loc>
+            <image:title>How to Convert Video to GIF Online — Step by Step Guide</image:title>
+        </image:image>
+    </url>
+
+    <url>
         <loc>https://imgtool.in/about-us</loc>
         <lastmod>2025-11-30</lastmod>
         <changefreq>monthly</changefreq>

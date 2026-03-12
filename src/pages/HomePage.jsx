@@ -149,8 +149,8 @@ export default function HomePage() {
         <>
             {/* ── SEO Head ──────────────────────────────────────────────── */}
             <SEO
-                title="Free Online Image Tools — Compress, Resize, Convert & Edit Photos | IMG Tool"
-                description="150+ free online image tools — compress image, resize photo, passport size photo maker, remove background, convert JPG PNG WEBP & more. No signup. Works on mobile."
+                title="Free Image Tools Online — Compress, Resize, Crop | ImgTool"
+                description="Use 150+ free online image tools to compress, resize, crop, remove backgrounds, and convert formats (JPG, PNG, WEBP, HEIC) instantly in your browser."
                 keywords="compress image online, resize image, passport size photo maker, reduce image size in kb, image converter online free, ssc photo resize, ibps photo size"
                 canonical="/"
                 schema={homeSchema}

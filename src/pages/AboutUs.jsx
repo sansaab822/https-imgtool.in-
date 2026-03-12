@@ -14,8 +14,8 @@ export default function AboutUs() {
                         <h2 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-3">
                             <i className="fas fa-layer-group text-blue-600"></i> Who We Are
                         </h2>
-                        <p className="text-slate-600 leading-relaxed">IMG Tool is a free online platform that provides powerful image and PDF conversion tools. We believe that professional-grade image editing tools should be accessible to everyone — without subscriptions, logins, or complicated software.</p>
-                        <p className="text-slate-600 leading-relaxed mt-4">Our tools process everything <strong>locally in your browser</strong>. This means your files never leave your device — ensuring 100% privacy and security.</p>
+                        <p className="text-slate-600 leading-relaxed">Hi, I am Sanjeev, the solo developer behind IMG Tool. I built this platform because I was tired of "free" image converters that hit you with hidden paywalls, flooded your screen with intrusive popups, or forced you to upload private ID documents to unknown cloud servers just to shrink a photo by a few kilobytes. IMG Tool started as a small personal project to resize my own exam photos, and it has now grown into a comprehensive suite of 150+ dedicated image and PDF utilities.</p>
+                        <p className="text-slate-600 leading-relaxed mt-4">Every tool on this website—from image compressors to format converters—operates <strong>100% locally in your browser</strong> using HTML5 Canvas and WebAssembly. Your files never leave your device, guaranteeing absolute privacy and zero upload wait times.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
                         {[
@@ -32,8 +32,8 @@ export default function AboutUs() {
                     </div>
                     <div className="bg-white rounded-2xl border border-slate-200 p-8">
                         <h2 className="text-2xl font-bold text-slate-800 mb-4">Our Mission</h2>
-                        <p className="text-slate-600 leading-relaxed">We built IMG Tool to solve a simple problem: the best image conversion tools online either cost money, require sign-ups, or upload your private files to external servers. We believe in a better way — one that respects your privacy and your time.</p>
-                        <p className="text-slate-600 leading-relaxed mt-4">Our platform supports 70+ conversion formats and editing tools, all running directly in your browser using modern Web APIs like Canvas, WebAssembly, and File APIs.</p>
+                        <p className="text-slate-600 leading-relaxed">Our mission is straightforward: to provide the fastest, most reliable, and secure online image utilities completely free of charge. Whether you are a student resizing a signature for a government form, a photographer converting RAW files to JPG, or a web developer optimizing WebP assets, IMG Tool provides a streamlined, no-nonsense interface to get the job done instantly.</p>
+                        <p className="text-slate-600 leading-relaxed mt-4">Currently featuring over 150+ distinct tools, we remain committed to a subscription-free model. Enjoy seamless compression and editing, entirely private and lightning fast.</p>
                     </div>
                 </div>
             </div>
