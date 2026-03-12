@@ -47,7 +47,7 @@ const HIGH_PRIORITY_SLUGS = new Set([
     'collage-maker', 'text-to-handwriting', 'meme-generator', 'gif-maker',
     'combine-images-side-by-side', 'add-watermark-to-image',
     'merge-images-vertically', 'rotate-image-custom-angle',
-    'flip-image-horizontally', 'instagram-safe-zones',
+    'flip-image-horizontally', 'instagram-safe-zones', 'ai-old-photo-restorer',
 ])
 
 // Auto-generate tool entries from toolsData ───────────────────────────────────

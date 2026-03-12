@@ -159,7 +159,7 @@ export default function PolaroidEffect() {
                         <li>Dark backgrounds (charcoal, navy) make white Polaroid frames pop</li>
                         <li>Keep captions short — the font is large and space is limited</li>
                     </ul>
-                    <p className="text-slate-600 mt-4">Also try: <a href="/collage-maker" className="text-blue-600 hover:underline">Collage Maker</a> · <a href="/add-drop-shadow" className="text-blue-600 hover:underline">Add Drop Shadow</a> · <a href="/image-to-art" className="text-blue-600 hover:underline">Image to Art</a></p>
+                    <p className="text-slate-600 mt-4">Also try: <a href="/ai-old-photo-restorer" className="text-blue-600 hover:underline">AI Old Photo Restorer</a> · <a href="/collage-maker" className="text-blue-600 hover:underline">Collage Maker</a> · <a href="/add-drop-shadow" className="text-blue-600 hover:underline">Add Drop Shadow</a></p>
                 </div>
             </ToolLayout>
         </>

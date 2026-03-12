@@ -163,6 +163,13 @@ export default function FaceMorph() {
                     </div>
                 )}
 
+                <div className="bg-white rounded-2xl border border-blue-100 p-6 mb-6 bg-blue-50/50">
+                    <p className="text-sm text-slate-600">
+                        <i className="fas fa-lightbulb text-amber-500 mr-2"></i>
+                        <strong>Pro Tip:</strong> Have severely scratched or faded vintage photos? Try our new <a href="/ai-old-photo-restorer" className="text-blue-600 hover:underline font-semibold">AI Old Photo Restorer</a> tool for advanced defect removal and color revival.
+                    </p>
+                </div>
+
                 <canvas ref={canvasRef} className="hidden" />
 
             </ToolLayout>

@@ -755,6 +755,11 @@ export default function ImageEnhancer() {
 
             <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">3. Gentle Color Correction</h3>
             <p>Finally, a very subtle tone curve (brightness 1.02, contrast 1.06) and luminosity-preserving saturation are applied. This is intentionally minimal — the restoration itself provides the visible improvement, not color boosting.</p>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mt-8">
+              <h3 className="text-lg font-bold text-amber-900 mb-2 flex items-center gap-2"><i className="fas fa-history"></i> Restoring Vintage Photos?</h3>
+              <p className="text-amber-800 text-sm">If you have severely scratched or faded old family photos, check out our dedicated <a href="/ai-old-photo-restorer" className="text-amber-700 font-bold underline hover:text-amber-900">AI Old Photo Restorer</a> tool built specifically for digitizing and repairing analog film damage.</p>
+            </div>
           </div>
         </div>
       </ToolLayout>

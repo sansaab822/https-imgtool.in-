@@ -81,6 +81,7 @@ const StickerAddVirtual = lazy(() => import('./tools/StickerAddVirtual'))
 // AI Tools
 const AIDenoiser = lazy(() => import('./tools/AIDenoiser'))
 const AIColorizer = lazy(() => import('./tools/AIColorizer'))
+const AIOldPhotoRestorer = lazy(() => import('./tools/AIOldPhotoRestorer'))
 
 // New Shared Category Tools
 const GovernmentPhotoResizer = lazy(() => import('./tools/GovernmentPhotoResizer'))
@@ -259,6 +260,7 @@ export default function App() {
           {/* AI Tools */}
           <Route path="/ai-denoiser" element={<AIDenoiser />} />
           <Route path="/ai-colorizer" element={<AIColorizer />} />
+          <Route path="/ai-old-photo-restorer" element={<AIOldPhotoRestorer />} />
 
           {/* ── Govt Exam Photo Resizers ── */}
           <Route path="/ssc-cgl-photo-resizer" element={<GovernmentPhotoResizer slug="ssc-cgl-photo-resizer" examName="SSC CGL" width={275} height={354} minKb={20} maxKb={50} extraInfo="Staff Selection Commission — Combined Graduate Level" />} />

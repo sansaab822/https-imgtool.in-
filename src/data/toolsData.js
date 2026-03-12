@@ -147,6 +147,7 @@ export const tools = [
     // ── AI Tools ─────────────────────────────────────────────────
     { slug: 'ai-denoiser', name: 'AI Denoiser', category: 'ai-tools', icon: 'fa-wind', color: 'indigo', description: 'Reduce image noise and blur using smart algorithms.' },
     { slug: 'ai-colorizer', name: 'AI Colorizer', category: 'ai-tools', icon: 'fa-fill-drip', color: 'purple', description: 'Colorize black-and-white photos using smart colorization.' },
+    { slug: 'ai-old-photo-restorer', name: 'AI Old Photo Restorer', category: 'ai-tools', icon: 'fa-history', color: 'amber', description: 'Restore old, faded, or scratched photos instantly using smart filters.' },
 
     // ── Utility (additions) ───────────────────────────────────────
     // ── Utility - QR Code (additions) ───────────────────────────────────────
