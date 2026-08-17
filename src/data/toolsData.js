@@ -88,7 +88,7 @@ export const tools = [
     { slug: 'image-to-art', name: 'Image to Art', category: 'editors', icon: 'fa-palette', color: 'purple', description: 'Transform photos into artistic masterpieces.' },
     { slug: 'passport-size-photo', name: 'Passport Photo', category: 'editors', icon: 'fa-id-card', color: 'blue', description: 'Create passport size photos instantly.' },
     { slug: 'image-converter', name: 'Image Converter', category: 'editors', icon: 'fa-exchange-alt', color: 'indigo', description: 'Universal image format converter.' },
-    { slug: 'all-image-converters', name: 'All Tools', category: 'editors', icon: 'fa-th-large', color: 'slate', description: 'Browse all 70+ image tools.' },
+    { slug: 'all-image-converters', name: 'All Tools', category: 'editors', icon: 'fa-th-large', color: 'slate', description: 'Browse all 150+ image tools.' },
 
     // ── Special Tools ────────────────────────────────────────────
     { slug: '3d-text-to-stl-generator', name: '3D Text to STL', category: 'special', icon: 'fa-cube', color: 'purple', description: 'Generate 3D text STL files for 3D printing.' },
@@ -145,9 +145,9 @@ export const tools = [
     { slug: 'sticker-add-virtual', name: 'Sticker Add to Photo', category: 'fun-effects', icon: 'fa-star', color: 'pink', description: 'Add fun stickers, hats, glasses and speech bubbles to photos.' },
 
     // ── AI Tools ─────────────────────────────────────────────────
-    { slug: 'ai-denoiser', name: 'AI Denoiser', category: 'ai-tools', icon: 'fa-wind', color: 'indigo', description: 'Reduce image noise and blur using smart algorithms.' },
-    { slug: 'ai-colorizer', name: 'AI Colorizer', category: 'ai-tools', icon: 'fa-fill-drip', color: 'purple', description: 'Colorize black-and-white photos using smart colorization.' },
-    { slug: 'ai-old-photo-restorer', name: 'AI Old Photo Restorer', category: 'ai-tools', icon: 'fa-history', color: 'amber', description: 'Restore old, faded, or scratched photos instantly using smart filters.' },
+    { slug: 'ai-denoiser', name: 'Noise Reduction Filter', category: 'ai-tools', icon: 'fa-wind', color: 'indigo', description: 'Reduce image noise and grain using multi-pass canvas smoothing filters.' },
+    { slug: 'ai-colorizer', name: 'Photo Colorizer', category: 'ai-tools', icon: 'fa-fill-drip', color: 'purple', description: 'Add color tones to black-and-white photos using gradient colorization.' },
+    { slug: 'ai-old-photo-restorer', name: 'Old Photo Restorer', category: 'ai-tools', icon: 'fa-history', color: 'amber', description: 'Restore old, faded, or scratched photos using multi-pass canvas filters.' },
 
     // ── Utility (additions) ───────────────────────────────────────
     // ── Utility - QR Code (additions) ───────────────────────────────────────
@@ -223,7 +223,7 @@ export const categories = [
     { id: 'editors', name: 'Editors & Utilities', icon: 'fa-wand-magic-sparkles', color: 'purple' },
     { id: 'image-editing', name: 'Image Editing', icon: 'fa-edit', color: 'blue' },
     { id: 'fun-effects', name: 'Fun Effects', icon: 'fa-magic', color: 'pink' },
-    { id: 'ai-tools', name: 'AI Tools', icon: 'fa-robot', color: 'indigo' },
+    { id: 'ai-tools', name: 'Photo Filters', icon: 'fa-robot', color: 'indigo' },
     { id: 'special', name: 'Special Tools', icon: 'fa-star', color: 'orange' },
     { id: 'video-tools', name: 'Video Tools', icon: 'fa-video', color: 'violet' },
     { id: 'utility', name: 'Utility Tools', icon: 'fa-tools', color: 'teal' },

@@ -1,4 +1,10 @@
+# Allow all crawlers full access
 User-agent: *
 Allow: /
 
+# Block common bot traps
+Disallow: /dist/
+Disallow: /.git/
+
+# Sitemap location
 Sitemap: https://imgtool.in/sitemap.xml

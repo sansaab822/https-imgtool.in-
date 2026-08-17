@@ -20,7 +20,7 @@ export default function AIColorizer() {
         reader.readAsDataURL(file)
     }
 
-    // Simulated B&W Colorization
+    // Canvas-based B&W colorization using gradient overlays
     const colorize = () => {
         if (!image) return
         setIsProcessing(true)
@@ -67,13 +67,13 @@ export default function AIColorizer() {
 
             setResult(canvas.toDataURL('image/jpeg', 0.95))
             setIsProcessing(false)
-        }, 1500) // Fake AI loading delay
+        }, 400) // Brief delay for canvas processing
     }
 
     return (
         <>
-            <SEO title="AI Old Photo Colorizer Online Free — Turn Black & White to Color" description="Instantly add lifelike colors to old black and white photos online. AI-powered photo colorization tool. Free, secure, browser-based." canonical="/ai-colorizer" />
-            <ToolLayout toolSlug="ai-colorizer" title="AI Photo Colorizer" description="Breathe life into old black & white photos. Apply smart colorization gradients instantly." breadcrumb="AI Colorizer">
+            <SEO title="Photo Colorizer Online Free — Add Color to Black & White Photos" description="Add color tones to old black and white photos using gradient colorization online. Free, secure, browser-based." canonical="/ai-colorizer" />
+            <ToolLayout toolSlug="ai-colorizer" title="Photo Colorizer" description="Add color tones to black & white photos. Apply gradient colorization effects to vintage images instantly." breadcrumb="Photo Colorizer">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = e => loadImg(e.target.files[0]); i.click() }}
@@ -121,7 +121,7 @@ export default function AIColorizer() {
                             <div className="w-4 h-4 rounded-full bg-orange-400 animate-bounce" style={{ animationDelay: '150ms' }}></div>
                             <div className="w-4 h-4 rounded-full bg-yellow-400 animate-bounce" style={{ animationDelay: '300ms' }}></div>
                         </div>
-                        <p className="font-bold text-slate-700">Analyzing depth and adding intelligent colors...</p>
+                        <p className="font-bold text-slate-700">Applying color gradients...</p>
                     </div>
                 )}
 
@@ -141,7 +141,7 @@ export default function AIColorizer() {
                 <div className="bg-white rounded-2xl border border-blue-100 p-6 mb-6 bg-blue-50/50">
                     <p className="text-sm text-slate-600">
                         <i className="fas fa-lightbulb text-amber-500 mr-2"></i>
-                        <strong>Pro Tip:</strong> Have severely scratched or faded vintage photos? Try our new <a href="/ai-old-photo-restorer" className="text-blue-600 hover:underline font-semibold">AI Old Photo Restorer</a> tool for advanced defect removal and color revival.
+                        <strong>Pro Tip:</strong> Have severely scratched or faded vintage photos? Try our <a href="/ai-old-photo-restorer" className="text-blue-600 hover:underline font-semibold">Old Photo Restorer</a> tool for advanced defect removal and color revival.
                     </p>
                 </div>
 

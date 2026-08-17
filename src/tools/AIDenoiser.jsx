@@ -21,27 +21,27 @@ export default function AIDenoiser() {
         reader.readAsDataURL(file)
     }
 
-    // Simulated "AI Denoise" using a multi-pass canvas filter technique for smoothing
+    // Multi-pass canvas filter technique for noise reduction / smoothing
     const processImage = () => {
         if (!image) return
         setIsProcessing(true)
-        setProgressText('Initializing neural filters...')
+        setProgressText('Preparing image...')
 
         let blurAmt = intensity === 'low' ? 1 : intensity === 'medium' ? 2 : 4
 
         setTimeout(() => {
-            setProgressText('Applying noise reduction masks...')
+            setProgressText('Applying noise reduction...')
             setTimeout(() => {
                 const W = image.img.width, H = image.img.height
                 const canvas = canvasRef.current
                 canvas.width = W; canvas.height = H
                 const ctx = canvas.getContext('2d')
 
-                // 1. Draw original
+                // Pass 1: Gaussian blur to smooth noise
                 ctx.filter = `blur(${blurAmt}px)`
                 ctx.drawImage(image.img, 0, 0)
 
-                // 2. Blend back some original detail to preserve edges (unsharp mask technique variation)
+                // Pass 2: Overlay original to restore edge detail (unsharp mask variation)
                 ctx.globalCompositeOperation = 'overlay'
                 ctx.globalAlpha = 0.3
                 ctx.filter = 'contrast(120%) brightness(105%)'
@@ -53,14 +53,14 @@ export default function AIDenoiser() {
 
                 setResult(canvas.toDataURL('image/jpeg', 0.95))
                 setIsProcessing(false)
-            }, 1000) // fake processing delay for "AI" feel
-        }, 600)
+            }, 300)
+        }, 200)
     }
 
     return (
         <>
-            <SEO title="AI Image Denoiser Online Free — Reduce Photo Noise & Grain" description="Reduce grain and noise from your images using smart smoothing filters online. Clean up low-light photos for free." canonical="/ai-denoiser" />
-            <ToolLayout toolSlug="ai-denoiser" title="AI Image Denoiser" description="Reduce grain and color noise from low-light photos. Smooths backgrounds while preserving edges." breadcrumb="AI Denoiser">
+            <SEO title="Noise Reduction Filter Online Free — Reduce Photo Noise & Grain" description="Reduce grain and noise from your images using smart smoothing filters online. Clean up low-light photos for free." canonical="/ai-denoiser" />
+            <ToolLayout toolSlug="ai-denoiser" title="Noise Reduction Filter" description="Reduce grain and color noise from low-light photos. Smooths backgrounds while preserving edges using canvas filters." breadcrumb="Noise Reduction">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = e => loadImg(e.target.files[0]); i.click() }}
@@ -96,7 +96,7 @@ export default function AIDenoiser() {
 
                 {image && !isProcessing && !result && (
                     <button onClick={processImage} className="btn-primary w-full py-4 text-lg rounded-2xl flex items-center justify-center gap-2 mb-6 bg-gradient-to-r from-violet-600 to-fuchsia-600 border-none">
-                        <i className="fas fa-bolt text-yellow-300"></i> Start AI Denoising
+                        <i className="fas fa-bolt text-yellow-300"></i> Start Noise Reduction
                     </button>
                 )}
 
@@ -142,7 +142,7 @@ export default function AIDenoiser() {
                 <div className="bg-white rounded-2xl border border-blue-100 p-6 mb-6 bg-blue-50/50">
                     <p className="text-sm text-slate-600">
                         <i className="fas fa-lightbulb text-amber-500 mr-2"></i>
-                        <strong>Pro Tip:</strong> Have severely scratched or faded vintage photos? Try our new <a href="/ai-old-photo-restorer" className="text-blue-600 hover:underline font-semibold">AI Old Photo Restorer</a> tool for advanced defect removal and color revival.
+                        <strong>Pro Tip:</strong> Have severely scratched or faded vintage photos? Try our <a href="/ai-old-photo-restorer" className="text-blue-600 hover:underline font-semibold">Old Photo Restorer</a> tool for advanced defect removal and color revival.
                     </p>
                 </div>
 

@@ -25,17 +25,17 @@ export default function AIOldPhotoRestorer() {
         reader.readAsDataURL(file)
     }
 
-    // Advanced canvas logic to simulate photo restoration
+    // Advanced canvas logic for photo restoration using multi-pass filters
     const processImage = () => {
         if (!image) return
         setIsProcessing(true)
-        setProgressText('Analyzing image damage...')
+        setProgressText('Analyzing image...')
 
-        // Set realistic timeouts for the "AI Processing" feel
+        // Staged processing for multi-pass canvas operations
         setTimeout(() => {
-            setProgressText('Removing scratches, tears, and noise...')
+            setProgressText('Smoothing noise and defects...')
             setTimeout(() => {
-                setProgressText('Color grading and enhancing facial details...')
+                setProgressText('Enhancing contrast and colors...')
                 setTimeout(() => {
                     const W = image.img.width, H = image.img.height
                     const canvas = canvasRef.current
@@ -70,9 +70,9 @@ export default function AIOldPhotoRestorer() {
 
                     setResult(canvas.toDataURL('image/jpeg', 0.95))
                     setIsProcessing(false)
-                }, 1200)
-            }, 1200)
-        }, 1000)
+                }, 400)
+            }, 400)
+        }, 300)
     }
 
     // Split slider logic
@@ -103,10 +103,10 @@ export default function AIOldPhotoRestorer() {
         "@graph": [
             {
                 "@type": "SoftwareApplication",
-                "name": "AI Old Photo Restorer",
+                "name": "Old Photo Restorer",
                 "applicationCategory": "MultimediaApplication",
                 "operatingSystem": "Any",
-                "description": "Restore old, damaged, faded, or scratched photos instantly online using AI. Free tool to enhance vintage memories.",
+                "description": "Restore old, damaged, faded, or scratched photos instantly online using advanced canvas filters. Free tool to enhance vintage memories.",
                 "url": "https://imgtool.in/ai-old-photo-restorer",
                 "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
             },
@@ -115,7 +115,7 @@ export default function AIOldPhotoRestorer() {
                 "itemListElement": [
                     { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://imgtool.in" },
                     { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://imgtool.in/all-image-converters" },
-                    { "@type": "ListItem", "position": 3, "name": "AI Old Photo Restorer", "item": "https://imgtool.in/ai-old-photo-restorer" }
+                    { "@type": "ListItem", "position": 3, "name": "Old Photo Restorer", "item": "https://imgtool.in/ai-old-photo-restorer" }
                 ]
             },
             {
@@ -123,8 +123,8 @@ export default function AIOldPhotoRestorer() {
                 "mainEntity": [
                     {
                         "@type": "Question",
-                        "name": "How does the AI Old Photo Restorer work?",
-                        "acceptedAnswer": { "@type": "Answer", "text": "Our tool uses advanced client-side filtering algorithms to smooth out noise, reduce the visibility of scratches, and intelligently boost contrast and color saturation to breathe life back into faded vintage photos." }
+                        "name": "How does the Old Photo Restorer work?",
+                        "acceptedAnswer": { "@type": "Answer", "text": "Our tool uses multi-pass client-side canvas filtering algorithms to smooth out noise, reduce the visibility of scratches, and boost contrast and color saturation to breathe life back into faded vintage photos." }
                     },
                     {
                         "@type": "Question",
@@ -142,10 +142,10 @@ export default function AIOldPhotoRestorer() {
     }
 
     return (
-        <ToolLayout toolSlug="ai-old-photo-restorer" title="AI Old Photo Restorer" description="Breathe life back into vintage photos. Automatically reduce scratches, blur, and fading using smart restoration filters." breadcrumb="AI Photo Restorer">
+        <ToolLayout toolSlug="ai-old-photo-restorer" title="Old Photo Restorer" description="Breathe life back into vintage photos. Reduce scratches, blur, and fading using multi-pass restoration filters." breadcrumb="Photo Restorer">
             <SEO 
-                title="AI Old Photo Restorer Online Free — Repair Vintage Photos" 
-                description="Restore old, scratched, faded, or damaged family photos instantly. 100% free online AI photo restoration tool with no watermarks and full privacy." 
+                title="Old Photo Restorer Online Free — Repair Vintage Photos" 
+                description="Restore old, scratched, faded, or damaged family photos instantly. 100% free online photo restoration tool with no watermarks and full privacy." 
                 canonical="/ai-old-photo-restorer" 
             />
             <script type="application/ld+json">{JSON.stringify(schemaData)}</script>

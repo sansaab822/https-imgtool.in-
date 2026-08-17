@@ -33,13 +33,13 @@ export default function AllToolsPage() {
         <>
             <SEO
                 title="All Image & PDF Tools - IMG Tool"
-                description="Browse all 70+ free online image and PDF tools. Convert, compress, resize, crop, and edit images in your browser."
+                description="Browse all 150+ free online image and PDF tools. Convert, compress, resize, crop, and edit images in your browser."
                 canonical="/all-image-converters"
             />
             <div className="bg-gradient-to-br from-slate-900 to-blue-900 text-white py-20">
                 <div className="max-w-5xl mx-auto px-4 text-center">
                     <h1 className="text-4xl md:text-5xl font-extrabold mb-4">All Image &amp; PDF Tools</h1>
-                    <p className="text-blue-200 text-lg mb-8">70+ free tools, all processing happens in your browser</p>
+                    <p className="text-blue-200 text-lg mb-8">150+ free tools, all processing happens in your browser</p>
                     <div className="max-w-lg mx-auto relative">
                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i className="fas fa-search text-slate-400"></i>
