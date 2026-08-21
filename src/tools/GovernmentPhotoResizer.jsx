@@ -229,49 +229,169 @@ export default function GovernmentPhotoResizer({
                     </div>
                 </div>
 
-                {/* SEO Content */}
-                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">{examName} Photo Resizer — Exact {width}×{height}px, {minKb}–{maxKb}KB</h2>
-                        <p>
-                            Applying for <strong>{examName}</strong> requires submitting a passport-size photograph that matches very specific technical requirements. The application portal typically demands a photo that is exactly <strong>{width}×{height} pixels</strong> in dimension and between <strong>{minKb}KB and {maxKb}KB</strong> in file size. Photos that exceed these limits are automatically rejected by the portal's upload validator, forcing candidates to redo the process. Our free online tool makes this entire task effortless — upload your photo, and we automatically resize, crop, and compress it to meet the exact specification.
-                        </p>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Why Exact Specifications Matter</h3>
-                        <p>
-                            Government exam portals in India use automated form validators. When you upload a photo, the system checks both the pixel dimensions and the file size. If your photo is even slightly out of range — for example 201×231px instead of {width}×{height}px — the submission will be rejected. Similarly, a file that is {maxKb + 1}KB when the maximum is {maxKb}KB will cause an error. This tool takes the guesswork out of the equation by applying a smart compression algorithm that targets the ideal file size within the accepted range while maintaining the best possible image quality.
-                        </p>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use This Tool</h3>
-                        <ol className="list-decimal pl-5 space-y-2">
-                            <li><strong>Upload your photo:</strong> Drag and drop or click to select any clear, front-facing photograph. JPG, PNG, and WebP are all supported.</li>
-                            <li><strong>Select output format:</strong> JPG is recommended for most government exam portals as it gives the best compression.</li>
-                            <li><strong>Click Resize &amp; Compress:</strong> Our tool automatically resizes to exactly {width}×{height}px and adjusts the quality to bring the file size within the {minKb}–{maxKb}KB range.</li>
-                            <li><strong>Download:</strong> Save the processed photo and upload it directly to the {examName} application form.</li>
-                        </ol>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Frequently Asked Questions</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <h4 className="font-bold text-slate-700">Does this tool work for the latest {examName} notification?</h4>
-                                <p className="mt-1">Our tool is built to match the standard specifications that have been stable across recent {examName} cycles. However, we always recommend cross-checking with the latest official notification as specifications can occasionally change.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Will the photo quality be good enough for application?</h4>
-                                <p className="mt-1">Yes. We use a smart binary-search compression algorithm that finds the highest quality setting that still fits within the {minKb}–{maxKb}KB range. The output is always the best quality achievable within the size limit.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Is my photo safe to upload here?</h4>
-                                <p className="mt-1">Absolutely. This tool runs entirely in your web browser using the HTML5 Canvas API. Your photo is never sent to any server. It is processed locally on your device and then downloaded directly to you.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">What if my compressed photo is still rejected by the portal?</h4>
-                                <p className="mt-1">Try switching to JPG format if you used PNG, as JPG typically produces smaller files for photos. Also ensure your browser is up-to-date. If you need a passport photo from scratch, use our <a href="/passport-size-photo" className="text-blue-600 hover:underline">Passport Size Photo Maker</a> first.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {/* SEO Content — unique per exam when available */}
+                <SeoContent slug={slug} examName={examName} width={width} height={height} minKb={minKb} maxKb={maxKb} />
             </ToolLayout>
         </>
+    )
+}
+
+/* ── Unique Content Renderer ────────────────────────────────────────────── */
+import { EXAM_CONTENT } from '../data/examContentData'
+
+function SeoContent({ slug, examName, width, height, minKb, maxKb }) {
+    const data = EXAM_CONTENT[slug]
+
+    // ── Fallback: original template for exams without unique content ──────
+    if (!data) {
+        return (
+            <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">{examName} Photo Resizer — Exact {width}×{height}px, {minKb}–{maxKb}KB</h2>
+                    <p>
+                        Applying for <strong>{examName}</strong> requires submitting a passport-size photograph that matches very specific technical requirements. The application portal typically demands a photo that is exactly <strong>{width}×{height} pixels</strong> in dimension and between <strong>{minKb}KB and {maxKb}KB</strong> in file size. Photos that exceed these limits are automatically rejected by the portal's upload validator, forcing candidates to redo the process. Our free online tool makes this entire task effortless — upload your photo, and we automatically resize, crop, and compress it to meet the exact specification.
+                    </p>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use This Tool</h3>
+                    <ol className="list-decimal pl-5 space-y-2">
+                        <li><strong>Upload your photo:</strong> Drag and drop or click to select any clear, front-facing photograph. JPG, PNG, and WebP are all supported.</li>
+                        <li><strong>Select output format:</strong> JPG is recommended for most government exam portals.</li>
+                        <li><strong>Click Resize &amp; Compress:</strong> Our tool automatically resizes to exactly {width}×{height}px and adjusts the quality to bring the file size within the {minKb}–{maxKb}KB range.</li>
+                        <li><strong>Download:</strong> Save the processed photo and upload it directly to the {examName} application form.</li>
+                    </ol>
+                    <p className="text-xs text-slate-400 mt-4"><em>Always verify photo specifications from the latest official notification before uploading your application.</em></p>
+                </div>
+            </div>
+        )
+    }
+
+    // ── Rich unique content for exams with data ──────────────────────────
+    return (
+        <div className="seo-content mt-12 space-y-6">
+            {/* Introduction */}
+            <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">{examName} Photo Resizer — Exact {width}×{height}px, {minKb}–{maxKb}KB</h2>
+                    <p>{data.intro}</p>
+
+                    {/* Authority & Portal */}
+                    {(data.authority || data.portalNote) && (
+                        <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 not-prose">
+                            {data.authority && (
+                                <p className="text-sm text-blue-800"><i className="fas fa-building mr-2 text-blue-500"></i><strong>Conducting Body:</strong> {data.authority}</p>
+                            )}
+                            {data.portalNote && (
+                                <p className="text-sm text-blue-700 mt-1"><i className="fas fa-globe mr-2 text-blue-400"></i>{data.portalNote}</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Requirements Table */}
+            {data.requirements && data.requirements.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-clipboard-check text-green-500"></i> {examName} Photo Requirements
+                    </h3>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                            <tbody>
+                                {data.requirements.map((req, i) => (
+                                    <tr key={i} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                                        <td className="py-2.5 px-4 font-semibold text-slate-700 whitespace-nowrap">{req.label}</td>
+                                        <td className="py-2.5 px-4 text-slate-600">{req.value}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+
+            {/* Why Specifications Matter */}
+            {data.whyMatters && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-exclamation-triangle text-amber-500"></i> Why These Specifications Matter
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{data.whyMatters}</p>
+                </div>
+            )}
+
+            {/* Preparation Tips */}
+            {data.preparationTips && data.preparationTips.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-camera text-indigo-500"></i> How to Prepare Your {examName} Photo
+                    </h3>
+                    <ul className="space-y-2.5">
+                        {data.preparationTips.map((tip, i) => (
+                            <li key={i} className="flex gap-2 text-sm text-slate-600">
+                                <i className="fas fa-check text-green-500 mt-1 flex-shrink-0"></i>
+                                <span>{tip}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {/* Common Mistakes */}
+            {data.commonMistakes && data.commonMistakes.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-times-circle text-red-500"></i> Common Mistakes to Avoid
+                    </h3>
+                    <div className="space-y-3">
+                        {data.commonMistakes.map((item, i) => (
+                            <div key={i} className="bg-red-50/50 border border-red-100 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-red-800"><i className="fas fa-ban text-red-400 mr-1.5"></i>{item.mistake}</p>
+                                <p className="text-sm text-slate-600 mt-1 pl-5">{item.detail}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* FAQs */}
+            {data.faqs && data.faqs.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-question-circle text-blue-500"></i> Frequently Asked Questions
+                    </h3>
+                    <div className="space-y-4">
+                        {data.faqs.map((faq, i) => (
+                            <div key={i}>
+                                <h4 className="font-bold text-sm text-slate-700">{faq.q}</h4>
+                                <p className="text-sm text-slate-600 mt-1">{faq.a}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Related Tools */}
+            {data.relatedTools && data.relatedTools.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-tools text-purple-500"></i> Related Tools
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                        {data.relatedTools.map((tool, i) => (
+                            <a key={i} href={tool.href} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-lg text-sm text-slate-700 hover:text-indigo-700 transition-all">
+                                <i className="fas fa-arrow-right text-xs"></i> {tool.label}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Verification Note */}
+            {data.verificationNote && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex gap-3">
+                    <i className="fas fa-info-circle text-amber-500 mt-0.5 flex-shrink-0"></i>
+                    <p className="text-sm text-amber-800">{data.verificationNote}</p>
+                </div>
+            )}
+        </div>
     )
 }
