@@ -214,43 +214,138 @@ export default function CompressToSize({
                     </div>
                 </div>
 
-                {/* SEO Content */}
-                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Compress Image to Exactly {displayTarget} Online</h2>
-                        <p>
-                            Many Indian government job portals, university admissions, and competitive examination forms require you to upload a photograph within a very specific file size limit — exactly <strong>{displayTarget}</strong>. If your image is even slightly over the limit, the portal rejects it. If it is too small, it may look pixelated or low-quality on the printed application. This free tool automates the entire process by using a smart quality-adjustment algorithm to precisely target {displayTarget}.
-                        </p>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How Does the Compression Work?</h3>
-                        <p>
-                            When you upload your image, our tool uses the browser's built-in Canvas API to re-render the image at its original resolution. It then applies a binary-search algorithm across JPEG quality levels (from 1% to 99%) to find the exact quality setting that produces a file as close to {displayTarget} as possible. This approach preserves the visual quality of your photo while reliably hitting the required file size range, far more accurately than a simple quality slider.
-                        </p>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Common Uses for {displayTarget} Images</h3>
-                        <ul className="list-disc pl-5 space-y-1">
-                            <li>SSC, IBPS, SBI, UPSC, and Railway exam photo uploads</li>
-                            <li>University admission form photograph requirements</li>
-                            <li>Passport and visa application digital photo submissions</li>
-                            <li>Government employee ID and verification portals</li>
-                            <li>Email attachments with strict size limits</li>
-                        </ul>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
-                        <div className="space-y-3">
-                            <div>
-                                <h4 className="font-bold text-slate-700">Does compressing reduce my photo quality a lot?</h4>
-                                <p className="mt-1">Our algorithm always uses the highest quality setting that still fits within {displayTarget}. For most passport-sized photos, any quality reduction is invisible to the naked eye.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">What formats are supported for input?</h4>
-                                <p className="mt-1">You can upload JPG, PNG, WebP, BMP, and most other standard image formats. The output will be in JPG or PNG based on your selection.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Is my image uploaded to a server?</h4>
-                                <p className="mt-1">No. All compression runs locally in your browser using HTML5 Canvas. Your image never leaves your device. See our <a href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</a> for details.</p>
-                            </div>
+                {/* SEO Content — unique per size when available */}
+                <CompressSeoContent slug={slug} displayTarget={displayTarget} />
+            </ToolLayout>
+        </>
+    )
+}
+
+/* ── Unique Content Renderer ────────────────────────────────────────────── */
+import { COMPRESS_CONTENT } from '../data/compressContentData'
+
+function CompressSeoContent({ slug, displayTarget }) {
+    const data = COMPRESS_CONTENT[slug]
+
+    // ── Fallback: original template ──────
+    if (!data) {
+        return (
+            <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">Compress Image to Exactly {displayTarget} Online</h2>
+                    <p>
+                        Many Indian government job portals, university admissions, and competitive examination forms require you to upload a photograph within a very specific file size limit — exactly <strong>{displayTarget}</strong>. If your image is even slightly over the limit, the portal rejects it. If it is too small, it may look pixelated or low-quality on the printed application. This free tool automates the entire process by using a smart quality-adjustment algorithm to precisely target {displayTarget}.
+                    </p>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">How Does the Compression Work?</h3>
+                    <p>
+                        When you upload your image, our tool uses the browser's built-in Canvas API to re-render the image at its original resolution. It then applies a binary-search algorithm across JPEG quality levels (from 1% to 99%) to find the exact quality setting that produces a file as close to {displayTarget} as possible. This approach preserves the visual quality of your photo while reliably hitting the required file size range, far more accurately than a simple quality slider.
+                    </p>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">Common Uses for {displayTarget} Images</h3>
+                    <ul className="list-disc pl-5 space-y-1">
+                        <li>SSC, IBPS, SBI, UPSC, and Railway exam photo uploads</li>
+                        <li>University admission form photograph requirements</li>
+                        <li>Passport and visa application digital photo submissions</li>
+                        <li>Government employee ID and verification portals</li>
+                        <li>Email attachments with strict size limits</li>
+                    </ul>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
+                    <div className="space-y-3">
+                        <div>
+                            <h4 className="font-bold text-slate-700">Does compressing reduce my photo quality a lot?</h4>
+                            <p className="mt-1">Our algorithm always uses the highest quality setting that still fits within {displayTarget}. For most passport-sized photos, any quality reduction is invisible to the naked eye.</p>
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-slate-700">What formats are supported for input?</h4>
+                            <p className="mt-1">You can upload JPG, PNG, WebP, BMP, and most other standard image formats. The output will be in JPG or PNG based on your selection.</p>
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-slate-700">Is my image uploaded to a server?</h4>
+                            <p className="mt-1">No. All compression runs locally in your browser using HTML5 Canvas. Your image never leaves your device. See our <a href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</a> for details.</p>
                         </div>
                     </div>
                 </div>
-            </ToolLayout>
-        </>
+            </div>
+        )
+    }
+
+    // ── Rich unique content ──────────────────────────
+    return (
+        <div className="seo-content mt-12 space-y-6">
+            {/* Introduction & When it matters */}
+            <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">Compress Image to {displayTarget}</h2>
+                    <p>{data.intro}</p>
+                    
+                    <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 not-prose mt-6">
+                        <h3 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
+                            <i className="fas fa-info-circle text-blue-500"></i> When This Exact Size Matters
+                        </h3>
+                        <p className="text-sm text-blue-800 leading-relaxed">{data.whenItMatters}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Practical Guidance */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                    <i className="fas fa-lightbulb text-amber-500"></i> Practical Compression Guidance for {displayTarget}
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{data.practicalGuidance}</p>
+                
+                <div className="mt-4 pt-4 border-t border-slate-100">
+                    <h4 className="text-sm font-bold text-slate-700 mb-2">How to Use This Tool:</h4>
+                    <ol className="list-decimal pl-5 space-y-1.5 text-sm text-slate-600">
+                        <li><strong>Upload your image:</strong> Select your high-quality original photo.</li>
+                        <li><strong>Choose format:</strong> We recommend <strong>JPG</strong> for the best balance of quality and size at {displayTarget}.</li>
+                        <li><strong>Verify preview:</strong> Our smart algorithm will automatically target {displayTarget}. Check the preview to ensure the quality is acceptable.</li>
+                        <li><strong>Download:</strong> Save the optimized image directly to your device.</li>
+                    </ol>
+                </div>
+            </div>
+
+            {/* Common Mistakes */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i className="fas fa-times-circle text-red-500"></i> Common Mistakes at {displayTarget}
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                    {data.commonMistakes.map((item, i) => (
+                        <div key={i} className="bg-red-50/50 border border-red-100 rounded-lg p-4">
+                            <p className="text-sm font-bold text-red-800 mb-1.5"><i className="fas fa-ban text-red-400 mr-1.5"></i>{item.mistake}</p>
+                            <p className="text-sm text-slate-600">{item.detail}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* FAQs */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i className="fas fa-question-circle text-indigo-500"></i> Frequently Asked Questions
+                </h3>
+                <div className="space-y-4">
+                    {data.faqs.map((faq, i) => (
+                        <div key={i}>
+                            <h4 className="font-bold text-sm text-slate-700">{faq.q}</h4>
+                            <p className="text-sm text-slate-600 mt-1">{faq.a}</p>
+                        </div>
+                    ))}
+                    <div>
+                        <h4 className="font-bold text-sm text-slate-700">Is my image uploaded to a server?</h4>
+                        <p className="text-sm text-slate-600 mt-1">No. All processing happens locally in your browser. We never upload, store, or see your files.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Related Tools */}
+            <div className="bg-slate-50 rounded-xl p-4 flex flex-wrap gap-3 justify-center border border-slate-200">
+                <a href="/image-compressor" className="text-sm text-blue-600 hover:text-blue-800 hover:underline">General Image Compressor</a>
+                <span className="text-slate-300">•</span>
+                <a href="/image-resizer" className="text-sm text-blue-600 hover:text-blue-800 hover:underline">Resize Dimensions</a>
+                <span className="text-slate-300">•</span>
+                <a href="/crop-image" className="text-sm text-blue-600 hover:text-blue-800 hover:underline">Crop Image</a>
+            </div>
+        </div>
     )
 }
