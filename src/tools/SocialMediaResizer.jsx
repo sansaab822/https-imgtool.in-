@@ -226,42 +226,134 @@ export default function SocialMediaResizer({
                     </div>
                 </div>
 
-                {/* SEO Content */}
-                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Resize Photo for {platform} {mediaType} — {width}×{height}px</h2>
-                        <p>
-                            {platform} requires specific image dimensions for the best visual result. The ideal size for a {platform} {mediaType} is <strong>{width}×{height} pixels</strong>. If you upload an image with the wrong dimensions, {platform} will automatically crop or squish it, often in an unflattering way. Our free online resizer gives you full control — choose how your image is fitted (cover, contain, or stretch) and download the perfectly sized file ready to upload.
-                        </p>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Why Image Dimensions Matter on {platform}</h3>
-                        <p>
-                            Each social media platform renders images differently based on the device. {platform} uses {width}×{height}px for {mediaType.toLowerCase()}s across all devices. When you upload a correctly sized image, it displays sharply without any compression artifacts. Incorrectly sized images get re-processed by {platform}'s servers, which can introduce blurriness, unexpected cropping, or visual artifacts that make your profile look unprofessional.
-                        </p>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use</h3>
-                        <ol className="list-decimal pl-5 space-y-2">
-                            <li><strong>Upload your image</strong> — drag and drop or click to browse</li>
-                            <li><strong>Choose fit mode</strong> — "Cover" fills the full canvas (may crop); "Fit" shows the whole image with background padding; "Stretch" fills exactly</li>
-                            <li><strong>Select format</strong> — JPG for photos, PNG for logos/text with transparency</li>
-                            <li><strong>Click Resize</strong> and then <strong>Download</strong> your perfectly sized photo</li>
-                        </ol>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
-                        <div className="space-y-3">
-                            <div>
-                                <h4 className="font-bold text-slate-700">Does {platform} compress my image after I upload it?</h4>
-                                <p className="mt-1">Yes, {platform} applies its own compression. Uploading at exactly {width}×{height}px minimizes the re-compression and keeps your image as sharp as possible.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Can I use PNG for my {platform} {mediaType}?</h4>
-                                <p className="mt-1">Yes. PNG preserves better quality for logos and text, but results in larger file sizes. JPG is recommended for photographs.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Does this tool upload my image to a server?</h4>
-                                <p className="mt-1">No. All processing happens locally in your browser. Your image is never uploaded anywhere.</p>
-                            </div>
+                {/* SEO Content — unique per platform when available */}
+                <SocialSeoContent slug={slug} platform={platform} mediaType={mediaType} width={width} height={height} />
+            </ToolLayout>
+        </>
+    )
+}
+
+/* ── Unique Content Renderer ────────────────────────────────────────────── */
+import { SOCIAL_CONTENT } from '../data/socialMediaContentData'
+
+function SocialSeoContent({ slug, platform, mediaType, width, height }) {
+    const data = SOCIAL_CONTENT[slug]
+
+    // ── Fallback: original template ──────
+    if (!data) {
+        return (
+            <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">Resize Photo for {platform} {mediaType} — {width}×{height}px</h2>
+                    <p>
+                        {platform} requires specific image dimensions for the best visual result. The ideal size for a {platform} {mediaType} is <strong>{width}×{height} pixels</strong>. If you upload an image with the wrong dimensions, {platform} will automatically crop or squish it, often in an unflattering way. Our free online resizer gives you full control — choose how your image is fitted (cover, contain, or stretch) and download the perfectly sized file ready to upload.
+                    </p>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use</h3>
+                    <ol className="list-decimal pl-5 space-y-2">
+                        <li><strong>Upload your image</strong> — drag and drop or click to browse</li>
+                        <li><strong>Choose fit mode</strong> — "Cover" fills the full canvas (may crop); "Fit" shows the whole image with background padding; "Stretch" fills exactly</li>
+                        <li><strong>Select format</strong> — JPG for photos, PNG for logos/text with transparency</li>
+                        <li><strong>Click Resize</strong> and then <strong>Download</strong> your perfectly sized photo</li>
+                    </ol>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
+                    <div className="space-y-3">
+                        <div>
+                            <h4 className="font-bold text-slate-700">Does {platform} compress my image after I upload it?</h4>
+                            <p className="mt-1">Yes, {platform} applies its own compression. Uploading at exactly {width}×{height}px minimizes the re-compression and keeps your image as sharp as possible.</p>
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-slate-700">Does this tool upload my image to a server?</h4>
+                            <p className="mt-1">No. All processing happens locally in your browser. Your image is never uploaded anywhere.</p>
                         </div>
                     </div>
                 </div>
-            </ToolLayout>
-        </>
+            </div>
+        )
+    }
+
+    // ── Rich unique content ──────────────────────────
+    return (
+        <div className="seo-content mt-12 space-y-6">
+            {/* Introduction */}
+            <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">Resize Photo for {platform} {mediaType} — {width}×{height}px</h2>
+                    <p>{data.intro}</p>
+
+                    <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 not-prose mt-4">
+                        <h3 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
+                            <i className="fas fa-info-circle text-blue-500"></i> Why Correct Sizing Matters
+                        </h3>
+                        <p className="text-sm text-blue-800 leading-relaxed">{data.whyMatters}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Preparation Tips */}
+            {data.preparationTips && data.preparationTips.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-camera text-indigo-500"></i> How to Prepare Your {platform} {mediaType}
+                    </h3>
+                    <ul className="space-y-2.5">
+                        {data.preparationTips.map((tip, i) => (
+                            <li key={i} className="flex gap-2 text-sm text-slate-600">
+                                <i className="fas fa-check text-green-500 mt-1 flex-shrink-0"></i>
+                                <span>{tip}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {/* Common Mistakes */}
+            {data.commonMistakes && data.commonMistakes.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-times-circle text-red-500"></i> Common Mistakes to Avoid
+                    </h3>
+                    <div className="space-y-3">
+                        {data.commonMistakes.map((item, i) => (
+                            <div key={i} className="bg-red-50/50 border border-red-100 rounded-lg p-3">
+                                <p className="text-sm font-semibold text-red-800"><i className="fas fa-ban text-red-400 mr-1.5"></i>{item.mistake}</p>
+                                <p className="text-sm text-slate-600 mt-1 pl-5">{item.detail}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* FAQs */}
+            {data.faqs && data.faqs.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-question-circle text-blue-500"></i> Frequently Asked Questions
+                    </h3>
+                    <div className="space-y-4">
+                        {data.faqs.map((faq, i) => (
+                            <div key={i}>
+                                <h4 className="font-bold text-sm text-slate-700">{faq.q}</h4>
+                                <p className="text-sm text-slate-600 mt-1">{faq.a}</p>
+                            </div>
+                        ))}
+                        <div>
+                            <h4 className="font-bold text-sm text-slate-700">Does this tool upload my image to a server?</h4>
+                            <p className="text-sm text-slate-600 mt-1">No. All processing happens entirely in your browser. Your image is never sent to any server.</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Related Tools */}
+            {data.relatedTools && data.relatedTools.length > 0 && (
+                <div className="bg-slate-50 rounded-xl p-4 flex flex-wrap gap-3 justify-center border border-slate-200">
+                    {data.relatedTools.map((tool, i) => (
+                        <a key={i} href={tool.href} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 rounded-lg text-sm text-slate-700 hover:text-indigo-700 transition-all">
+                            <i className="fas fa-arrow-right text-xs"></i> {tool.label}
+                        </a>
+                    ))}
+                </div>
+            )}
+        </div>
     )
 }
