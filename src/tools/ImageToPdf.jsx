@@ -22,7 +22,7 @@ const MARGINS = [
     { id: 'large', label: 'Large', value: 25 },
 ]
 
-export default function ImageToPdf() {
+export default function ImageToPdf({ from = 'jpg' }) {
     const [images, setImages] = useState([])
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0])
     const [orient, setOrient] = useState('portrait')
@@ -117,10 +117,16 @@ export default function ImageToPdf() {
         setProcessing(false)
     }
 
+    const FORMAT_NAMES = { jpg: 'JPG', png: 'PNG', webp: 'WebP', heic: 'HEIC', gif: 'GIF', svg: 'SVG' }
+    const fromName = FORMAT_NAMES[from] || from.toUpperCase()
+    const slug = `${from}-to-pdf`
+    const seoTitle = `${fromName} to PDF Converter — Free Online`
+    const seoDesc = `Convert ${fromName} images to PDF online for free. Combine multiple ${fromName} files into a single PDF with page size, orientation, margin, and quality controls. 100% private.`
+
     return (
         <>
-            <SEO title="Image to PDF Converter - Free Online" description="Convert multiple images to a single PDF. Supports reordering, page sizes, orientation, margin, and quality control. Free & private." canonical="/images-to-pdf" />
-            <ToolLayout toolSlug="images-to-pdf" title="Images to PDF" description="Combine multiple images into a single PDF with page size, orientation, margin, and quality controls." breadcrumb="Images to PDF">
+            <SEO title={seoTitle} description={seoDesc} canonical={`/${slug}`} />
+            <ToolLayout toolSlug={slug} title={`${fromName} to PDF`} description={seoDesc} breadcrumb={`${fromName} to PDF`}>
                 <div className="grid lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-4">
                         <div
@@ -272,82 +278,120 @@ export default function ImageToPdf() {
                     </div>
                 </div>
 
-                <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                    <img
-                        src="/images/tools/image-to-pdf-tool.png"
-                        alt="Online Image to PDF Converter Interface"
-                        title="Convert Images to PDF Documents"
-                        loading="lazy"
-                        className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
-                    />
+                {/* SEO Content — unique per source format */}
+                <ImageToPdfSeoContent from={from} fromName={fromName} />
+            </ToolLayout>
+        </>
+    )
+}
 
-                    <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">The Ultimate Tool to Convert Images to PDF</h2>
-                        <p>
-                            In today's digital workspace, sharing multiple photographs or scanned documents as individual image files can be incredibly frustrating for the recipient. Sending ten separate JPG or PNG files over email often leads to disorganized attachments that are difficult to print or review in a logical order. The most professional and universally accepted solution is to combine these images into a single, cohesive PDF document. Our Image to PDF Converter is engineered specifically to solve this problem, allowing you to seamlessly merge dozens of pictures into a perfectly formatted, easily shareable file in just a few clicks.
-                        </p>
+/* ── Unique Content Renderer ────────────────────────────────────────────── */
+import { IMAGE_TO_PDF_CONTENT } from '../data/converterContentData'
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Why Combine Pictures into a PDF?</h3>
-                        <p>
-                            The Portable Document Format (PDF) was designed to look exactly the same regardless of what device, operating system, or software the viewer is using. When you convert your images to PDF, you guarantee that your presentation slides, scanned receipts, portfolio artwork, or assignment pages will be viewed precisely as you intended. Furthermore, a single multi-page PDF is significantly easier for clients, teachers, or colleagues to download and archive compared to a messy folder of scattered JPEGs.
-                        </p>
+function ImageToPdfSeoContent({ from, fromName }) {
+    const data = IMAGE_TO_PDF_CONTENT[`${from}-to-pdf`]
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Complete Layout Control</h3>
-                        <p>
-                            Unlike basic converters that haphazardly slap your photos onto a page, our tool provides desktop-grade layout controls directly in your browser. Whether you are generating a formal US Letter sized business report or compiling an A4 portfolio, you have complete authority over the final output. You can force all pages into portrait or landscape mode, or let our "Auto" feature intelligently rotate the page depending on the dimensions of each individual image. We also provide granular control over page margins and image scaling—choose "Fit" to ensure nothing is cut off, or "Fill" to stretch the image edge-to-edge for stunning, borderless presentations.
-                        </p>
-                        <p>
-                            If you ever need to reverse this process and extract pages from a document back into standalone images, you can easily use our companion <a href="/pdf-to-image" className="text-violet-600 hover:underline">PDF to Image Converter</a>. Alternatively, if you already have several smaller PDF files that need to be grouped together, our <a href="/merge-pdf" className="text-violet-600 hover:underline">Merge PDF Tool</a> is perfectly suited for combining existing documents.
-                        </p>
+    if (!data) {
+        return (
+            <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">Convert {fromName} Images to PDF</h2>
+                    <p>Combine multiple {fromName} images into a single, well-organized PDF document. Choose page size, orientation, margins, and quality — all processing happens in your browser.</p>
+                    <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use</h3>
+                    <ol className="list-decimal pl-5 space-y-2">
+                        <li><strong>Upload your {fromName} files</strong> — drag and drop or click to browse</li>
+                        <li><strong>Reorder pages</strong> — drag thumbnails to set the correct page order</li>
+                        <li><strong>Adjust settings</strong> — choose page size, orientation, margins, and quality</li>
+                        <li><strong>Click Create PDF</strong> and download your compiled document</li>
+                    </ol>
+                </div>
+            </div>
+        )
+    }
 
-                        <img
-                            src="/images/tools/image-to-pdf-example.png"
-                            alt="Illustration showing scattered photos organized into a single PDF binder"
-                            title="Visualizing Image to PDF Compilation"
-                            loading="lazy"
-                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
-                        />
+    return (
+        <div className="seo-content mt-12 space-y-6">
+            {/* Introduction */}
+            <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
+                    <h2 className="text-2xl font-bold text-slate-800">Convert {fromName} Images to PDF</h2>
+                    <p>{data.intro}</p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Secure, Private, and Client-Side</h3>
-                        <p>
-                            When dealing with scanned bank statements, medical records, or signed contracts, data privacy is paramount. Many free online PDF converters force you to upload your sensitive documents to remote servers where they may be stored indefinitely. Our architecture is fundamentally different. We utilize advanced JavaScript libraries to process all image compilation and PDF generation entirely on your local device. Because your files never actually leave your computer or phone, you can convert highly confidential materials with 100% peace of mind, knowing that interception or data leaks are technically impossible.
-                        </p>
+                    <div className="bg-violet-50 border border-violet-100 rounded-lg p-4 not-prose mt-4">
+                        <h3 className="text-sm font-bold text-violet-900 mb-2 flex items-center gap-2">
+                            <i className="fas fa-info-circle text-violet-500"></i> Why Convert {fromName} to PDF?
+                        </h3>
+                        <p className="text-sm text-violet-800 leading-relaxed">{data.whyConvert}</p>
+                    </div>
+                </div>
+            </div>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Key Conversion Capabilities</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Drag & Drop Reordering:</strong> Before generating the document, visually rearrange the order of your pages simply by clicking and dragging the image thumbnails into the correct sequence.</li>
-                            <li><strong>Adjustable Compression:</strong> Use the quality slider to dial in the perfect balance between high-fidelity visual sharpness and smaller, email-friendly final file sizes.</li>
-                            <li><strong>Universal Format Support:</strong> Import JPG, PNG, WebP, and standard image formats simultaneously, and let the tool automatically normalize them into the PDF structure.</li>
-                            <li><strong>Document Metatags:</strong> Embed an optional, searchable Title directly into the metadata of the compiled file to ensure professional presentation in business environments.</li>
-                            <li><strong>Zero Uploads Required:</strong> Enjoy blazing-fast conversion speeds regardless of your internet connection, since all processing happens locally inside your browser cache.</li>
-                        </ul>
+            {/* Format Note */}
+            {data.formatNote && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-file-image text-violet-500"></i> {fromName} Format Considerations
+                    </h3>
+                    <p className="text-sm text-slate-600">{data.formatNote}</p>
+                    {data.bestFor && (
+                        <div className="mt-3 bg-slate-50 rounded-lg p-3">
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Best For</p>
+                            <p className="text-sm text-slate-700">{data.bestFor}</p>
+                        </div>
+                    )}
+                </div>
+            )}
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Common Questions</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <h4 className="font-bold text-slate-700">How do I rearrange the order of the photos?</h4>
-                                <p className="mt-1">Once you have uploaded your images, you will see a grid of thumbnails. Simply click and hold your mouse (or drag your finger on mobile) on an image, and drag it to the desired position. The tiny number at the bottom of each thumbnail indicates its final page number.</p>
+            {/* Tips */}
+            {data.tips && data.tips.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                        <i className="fas fa-lightbulb text-amber-500"></i> Tips for Best Results
+                    </h3>
+                    <ul className="space-y-2.5">
+                        {data.tips.map((tip, i) => (
+                            <li key={i} className="flex gap-2 text-sm text-slate-600">
+                                <i className="fas fa-check text-green-500 mt-1 flex-shrink-0"></i>
+                                <span>{tip}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {/* FAQs */}
+            {data.faqs && data.faqs.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <i className="fas fa-question-circle text-blue-500"></i> Frequently Asked Questions
+                    </h3>
+                    <div className="space-y-4">
+                        {data.faqs.map((faq, i) => (
+                            <div key={i}>
+                                <h4 className="font-bold text-sm text-slate-700">{faq.q}</h4>
+                                <p className="text-sm text-slate-600 mt-1">{faq.a}</p>
                             </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">What is the difference between "Fit" and "Fill" image modes?</h4>
-                                <p className="mt-1">"Fit (no crop)" ensures that your entire image is visible on the page, even if that means leaving blank white space around the edges. "Fill (may crop)" will expand the image to cover the entire printable area of the page, but might slice off the edges of your photo if its aspect ratio doesn't perfectly match the paper size.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Why is the resulting PDF file so large?</h4>
-                                <p className="mt-1">If you upload twenty high-resolution 12-megapixel smartphone photos, combining them into a PDF will naturally create a very large file. To reduce the final size, try lowering the "Image Quality" slider in the settings panel before generating the document.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Can I convert images to PDF on my iPhone or Android device?</h4>
-                                <p className="mt-1">Absolutely. Because the tool runs entirely in the browser using web standards, it functions flawlessly on modern mobile browsers like Safari and Chrome without requiring you to install a dedicated app.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Are there any limits on how many images I can upload at once?</h4>
-                                <p className="mt-1">While we do not impose strict artificial limits, your web browser's memory dictates how many images can be processed simultaneously. Most modern computers can comfortably handle compiling 50-100 standard images into a single document without crashing.</p>
-                            </div>
+                        ))}
+                        <div>
+                            <h4 className="font-bold text-sm text-slate-700">Does this tool upload my files to a server?</h4>
+                            <p className="text-sm text-slate-600 mt-1">No. All processing happens entirely in your browser. Your images are never sent to any server.</p>
                         </div>
                     </div>
                 </div>
-            </ToolLayout>
-        </>
+            )}
+
+            {/* Related Tools */}
+            <div className="bg-slate-50 rounded-xl p-4 flex flex-wrap gap-3 justify-center border border-slate-200">
+                <a href="/image-compressor" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-violet-50 border border-slate-200 hover:border-violet-200 rounded-lg text-sm text-slate-700 hover:text-violet-700 transition-all">
+                    <i className="fas fa-arrow-right text-xs"></i> Compress Image
+                </a>
+                <a href="/merge-pdf" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-violet-50 border border-slate-200 hover:border-violet-200 rounded-lg text-sm text-slate-700 hover:text-violet-700 transition-all">
+                    <i className="fas fa-arrow-right text-xs"></i> Merge PDF
+                </a>
+                <a href="/pdf-to-jpg" className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-violet-50 border border-slate-200 hover:border-violet-200 rounded-lg text-sm text-slate-700 hover:text-violet-700 transition-all">
+                    <i className="fas fa-arrow-right text-xs"></i> PDF to JPG
+                </a>
+            </div>
+        </div>
     )
 }
