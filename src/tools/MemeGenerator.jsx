@@ -149,19 +149,6 @@ export default function MemeGenerator() {
                     </div>
                 )}
                 <canvas ref={canvasRef} className="hidden" />
-
-                <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
-                    <h2 className="text-2xl font-bold text-slate-800 mb-4">Free Meme Generator Online</h2>
-                    <p className="text-slate-600">Create memes online by adding customizable text in the classic Impact font style. Upload any image and add top and bottom captions with white text and black stroke — the iconic meme format. Customize font size, text color, and stroke color. Generate in seconds and download as JPG. No account, no watermark, no limits.</p>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Tips for Better Memes</h3>
-                    <ul className="list-disc list-inside text-slate-600 space-y-2">
-                        <li>Keep text short for maximum impact — 5 words or less per line</li>
-                        <li>All-caps text is the classic meme format (applied automatically)</li>
-                        <li>White text with black stroke works on both light and dark images</li>
-                        <li>Use the "Caption Only" template for single bottom text memes</li>
-                    </ul>
-                    <p className="text-slate-600 mt-4">Also try: <a href="/gif-maker" className="text-blue-600 hover:underline">GIF Maker</a> · <a href="/add-watermark-to-image" className="text-blue-600 hover:underline">Add Watermark</a> · <a href="/sticker-add-virtual" className="text-blue-600 hover:underline">Add Stickers</a></p>
-                </div>
             </ToolLayout>
         </>
     )

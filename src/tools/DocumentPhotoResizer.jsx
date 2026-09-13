@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import SEO from '../components/SEO'
 import ToolLayout from '../components/ToolLayout'
+import { documentContentData } from '../data/documentContentData'
 
 /**
  * DocumentPhotoResizer — shared component for document/ID photo resizers.
@@ -209,35 +210,65 @@ export default function DocumentPhotoResizer({
                 {/* SEO Content */}
                 <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">{docName} Photo Resizer — {width}×{height}px Online</h2>
-                        <p>
-                            Different government-issued documents and official forms require photographs in very specific digital formats. For <strong>{docName}</strong> applications, the required photo dimensions are <strong>{width}×{height} pixels</strong> with a file size between <strong>{minKb}KB and {maxKb}KB</strong>. Submitting a photo that doesn't match these exact specs leads to rejection during online form scrutiny. Our tool handles all the technical details automatically — just upload any clear photo and get a perfectly sized file ready for your application.
-                        </p>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Step-by-Step Guide</h3>
-                        <ol className="list-decimal pl-5 space-y-2">
-                            <li>Upload your photo — ideally a clear, well-lit portrait against a light background</li>
-                            <li>Select JPG format (most portals require JPG/JPEG)</li>
-                            <li>Click "Resize Photo" — the tool resizes to {width}×{height}px and compresses to {minKb}–{maxKb}KB</li>
-                            <li>Download and use directly in your {docName} application form</li>
-                        </ol>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Important Tips</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li>Use a recent, clear photo that shows your face clearly against a light or white background</li>
-                            <li>Avoid glasses, hats, or other accessories that obscure your face</li>
-                            <li>Make sure the original photo has good brightness and contrast before uploading</li>
-                            <li>JPG format is accepted on almost all official Indian government portals</li>
-                        </ul>
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
-                        <div className="space-y-3">
-                            <div>
-                                <h4 className="font-bold text-slate-700">Does this tool crop my face automatically?</h4>
-                                <p className="mt-1">The tool center-crops or scales your image to fit {width}×{height}px. For best results, upload a photo where your face is already centered and framed appropriately.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Is there any cost to use this?</h4>
-                                <p className="mt-1">This tool is completely free with no registration required. For more photo tools, explore our <a href="/passport-size-photo" className="text-blue-600 hover:underline">Passport Photo Maker</a> or <a href="/image-compressor" className="text-blue-600 hover:underline">Image Compressor</a>.</p>
-                            </div>
-                        </div>
+                        {documentContentData[slug] ? (
+                            <>
+                                <h2 className="text-2xl font-bold text-slate-800">{documentContentData[slug].title}</h2>
+                                <p>{documentContentData[slug].intro}</p>
+
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">Common Use Cases</h3>
+                                <ul className="list-disc pl-5 space-y-2">
+                                    {documentContentData[slug].useCases.map((uc, i) => <li key={i}>{uc}</li>)}
+                                </ul>
+
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">Photo Preparation Guide</h3>
+                                <p>{documentContentData[slug].prepGuide}</p>
+
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">Dimensions & File Size</h3>
+                                <p>{documentContentData[slug].sizeExplanation}</p>
+                                
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
+                                <div className="space-y-3">
+                                    {documentContentData[slug].faqs.map((faq, i) => (
+                                        <div key={i}>
+                                            <h4 className="font-bold text-slate-700">{faq.q}</h4>
+                                            <p className="mt-1">{faq.a}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <h2 className="text-2xl font-bold text-slate-800">{docName} Photo Resizer — {width}×{height}px Online</h2>
+                                <p>
+                                    Different government-issued documents and official forms require photographs in very specific digital formats. For <strong>{docName}</strong> applications, the required photo dimensions are <strong>{width}×{height} pixels</strong> with a file size between <strong>{minKb}KB and {maxKb}KB</strong>. Submitting a photo that doesn't match these exact specs leads to rejection during online form scrutiny. Our tool handles all the technical details automatically — just upload any clear photo and get a perfectly sized file ready for your application.
+                                </p>
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">Step-by-Step Guide</h3>
+                                <ol className="list-decimal pl-5 space-y-2">
+                                    <li>Upload your photo — ideally a clear, well-lit portrait against a light background</li>
+                                    <li>Select JPG format (most portals require JPG/JPEG)</li>
+                                    <li>Click "Resize Photo" — the tool resizes to {width}×{height}px and compresses to {minKb}–{maxKb}KB</li>
+                                    <li>Download and use directly in your {docName} application form</li>
+                                </ol>
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">Important Tips</h3>
+                                <ul className="list-disc pl-5 space-y-2">
+                                    <li>Use a recent, clear photo that shows your face clearly against a light or white background</li>
+                                    <li>Avoid glasses, hats, or other accessories that obscure your face</li>
+                                    <li>Make sure the original photo has good brightness and contrast before uploading</li>
+                                    <li>JPG format is accepted on almost all official Indian government portals</li>
+                                </ul>
+                                <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
+                                <div className="space-y-3">
+                                    <div>
+                                        <h4 className="font-bold text-slate-700">Does this tool crop my face automatically?</h4>
+                                        <p className="mt-1">The tool center-crops or scales your image to fit {width}×{height}px. For best results, upload a photo where your face is already centered and framed appropriately.</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-slate-700">Is there any cost to use this?</h4>
+                                        <p className="mt-1">This tool is completely free with no registration required. For more photo tools, explore our <a href="/passport-size-photo" className="text-blue-600 hover:underline">Passport Photo Maker</a> or <a href="/image-compressor" className="text-blue-600 hover:underline">Image Compressor</a>.</p>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </ToolLayout>

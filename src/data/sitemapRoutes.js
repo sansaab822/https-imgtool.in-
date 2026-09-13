@@ -69,13 +69,6 @@ const routes = [
         changefreq: 'daily',
         priority: 1.0,
     },
-    {
-        loc: '/all-image-converters',
-        lastmod: TODAY,
-        changefreq: 'weekly',
-        priority: 0.8,
-    },
-
     // ──────────────────────────────────────────────────────────────────
     // ALL TOOLS — auto-generated from toolsData.js
     // ──────────────────────────────────────────────────────────────────
@@ -88,12 +81,6 @@ const routes = [
         loc: '/blog',
         lastmod: TODAY,
         changefreq: 'weekly',
-        priority: 0.6,
-    },
-    {
-        loc: '/blog/resize-photo-signature-govt-exam',
-        lastmod: '2025-12-28',
-        changefreq: 'monthly',
         priority: 0.6,
     },
     ...blogPosts.map(post => ({
@@ -114,6 +101,7 @@ const routes = [
     { loc: '/contact-us', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
     { loc: '/privacy-policy', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
     { loc: '/terms-of-service', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
+    { loc: '/disclaimer', lastmod: '2025-11-30', changefreq: 'monthly', priority: 0.5 },
 ]
 
 // ─── Exports ──────────────────────────────────────────────────────────────────

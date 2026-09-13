@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { tools } from '../data/toolsData'
+import { lightweightContentData } from '../data/lightweightContentData'
 
 const colorMap = {
     indigo: 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white',
@@ -70,6 +71,50 @@ export default function ToolLayout({ children, toolSlug, title, description, bre
             {/* Tool Content */}
             <div className="max-w-5xl mx-auto px-4 py-8">
                 {children}
+
+                {/* Lightweight Tool SEO Content (auto-injected) */}
+                {toolSlug && lightweightContentData[toolSlug] && (
+                    <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                        <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
+                            <h2 className="text-2xl font-bold text-slate-800">{lightweightContentData[toolSlug].title}</h2>
+                            
+                            {lightweightContentData[toolSlug].whatItDoes && (
+                                <>
+                                    <h3 className="text-lg font-bold text-slate-800 mt-4">What it does</h3>
+                                    <p>{lightweightContentData[toolSlug].whatItDoes}</p>
+                                </>
+                            )}
+                            
+                            {lightweightContentData[toolSlug].whenToUse && (
+                                <>
+                                    <h3 className="text-lg font-bold text-slate-800 mt-4">When to use it</h3>
+                                    <p>{lightweightContentData[toolSlug].whenToUse}</p>
+                                </>
+                            )}
+                            
+                            {lightweightContentData[toolSlug].howToUse && (
+                                <>
+                                    <h3 className="text-lg font-bold text-slate-800 mt-4">How to use</h3>
+                                    <p>{lightweightContentData[toolSlug].howToUse}</p>
+                                </>
+                            )}
+                            
+                            {lightweightContentData[toolSlug].tips && (
+                                <>
+                                    <h3 className="text-lg font-bold text-slate-800 mt-4">Practical Tips</h3>
+                                    <p>{lightweightContentData[toolSlug].tips}</p>
+                                </>
+                            )}
+
+                            {lightweightContentData[toolSlug].limitations && (
+                                <>
+                                    <h3 className="text-lg font-bold text-slate-800 mt-4">Limitations & Considerations</h3>
+                                    <p>{lightweightContentData[toolSlug].limitations}</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Related Tools */}

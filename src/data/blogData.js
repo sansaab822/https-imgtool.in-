@@ -164,7 +164,7 @@ export const blogPosts = [
     {
         id: 6,
         slug: 'resize-images-social-media-platforms-2025',
-        title: 'How to Resize Images for Social Media Platforms in 2025',
+        title: 'How to Resize Images for Social Media Platforms in 2026',
         date: 'March 8, 2026',
         author: 'Sanjeev',
         excerpt: 'Avoid awkward cropping and blurry posts. Here are the exact dimensions you need for Instagram, Facebook, LinkedIn, and Twitter.',
@@ -244,7 +244,7 @@ export const blogPosts = [
             <p>GIFs are heavy files because they store every single frame as an individual image. A 10-second 4K video converted to a GIF could be 100MB! To prevent this, you should first trim your video down to just the essential 2-4 seconds.</p>
 
             <h3>Step 2: Use an In-Browser Converter</h3>
-            <p>You don't need Adobe Premiere. Navigate to a powerful <a href="/video-converter" class="text-blue-600 font-semibold hover:underline">Video to GIF Converter</a>. When you use an in-browser tool powered by FFmpeg (WebASM), the heavy lifting is done by your computer's CPU, keeping your personal videos completely private.</p>
+            <p>You don't need Adobe Premiere. Navigate to a powerful <a href="/gif-maker" class="text-blue-600 font-semibold hover:underline">Video to GIF Converter</a>. When you use an in-browser tool powered by FFmpeg (WebASM), the heavy lifting is done by your computer's CPU, keeping your personal videos completely private.</p>
 
             <h3>Step 3: Dial in the Settings</h3>
             <ul>

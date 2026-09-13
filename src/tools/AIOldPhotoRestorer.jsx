@@ -246,27 +246,6 @@ export default function AIOldPhotoRestorer() {
                 </div>
             )}
 
-            {/* SEO Article Area */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 seo-content text-slate-700 leading-relaxed mb-6">
-                <h2 className="text-2xl font-bold text-slate-800 mb-4">How to Restore Old Photos Online for Free</h2>
-                <p className="mb-4">Do you have boxes of vintage family photos that have faded, yellowed, or gathered scratches over the decades? Bringing those memories back to life shouldn't require hiring expensive professionals or purchasing complex premium editing software. With our <strong>Free AI Old Photo Restorer</strong> tool, you can automatically digitize and repair your most cherished memories in seconds.</p>
-                
-                <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">AI Photo Restoration Features</h3>
-                <ul className="list-disc pl-6 mb-4 space-y-2">
-                    <li><strong>Scratch & Tear Reduction:</strong> Intelligent smoothing algorithms help blend away minor creases, dust, and micro-scratches from old film scans.</li>
-                    <li><strong>Color Revival & Correction:</strong> Fix severe sepia tones, yellowing, and fading by recalculating natural contrast and saturation curves.</li>
-                    <li><strong>Grain & Noise Removal:</strong> Smooths out high-ISO noise typical in old 35mm film or poorly lit vintage photography.</li>
-                    <li><strong>Sharpening:</strong> Applies unsharp mask logic to bring back soft edge details in faces and landscapes.</li>
-                </ul>
-
-                <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">100% Private, Safe, & Secure</h3>
-                <p className="mb-4">Your family's memories are personal. Unlike complex mobile apps that secretly upload your images to cloud servers to process them, our tool is built using modern WebGL and HTML5 Canvas technology. <strong>All restoration filtering is processed mathematically right inside your web browser.</strong> The photo file never leaves your computer or phone, ensuring 100% data privacy.</p>
-
-                <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Tips for the Best Photo Restoration Results</h3>
-                <p className="mb-4">To get the absolute best results from our AI tool, try to provide it with the highest quality scan possible. If you are scanning an old photograph physically, use your scanner's highest DPI setting (minimum 600 DPI is recommended). If you are taking a photo of an old photo using your smartphone, try to ensure even lighting without glare or reflections.</p>
-                <p className="mb-4">You can combine this tool with our <Link to="/ai-denoiser" className="text-blue-600 hover:underline">AI Denoiser</Link> or our <Link to="/image-enhancer" className="text-blue-600 hover:underline">Image Enhancer</Link> if you want to apply more manual adjustments post-restoration.</p>
-            </div>
-
             <canvas ref={canvasRef} className="hidden" />
         </ToolLayout>
     )
