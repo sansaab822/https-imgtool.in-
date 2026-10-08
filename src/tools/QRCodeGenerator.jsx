@@ -86,7 +86,7 @@ export default function QRCodeGenerator() {
 
     return (
         <>
-            <SEO title="Create QR Code with Logo Inside Online Free" description="Generate high-resolution QR codes with a custom logo embedded in the center. Customize colors. Free, instant browser-based QR generator." canonical="/qr-code-generator" />
+            <SEO title="Create QR Code with Logo Inside Online Free" description="Generate high-resolution QR codes with a custom logo embedded in the center. Customize colors. Free, quick browser-based QR generator." canonical="/qr-code-generator" />
             <ToolLayout toolSlug="qr-code-generator" title="QR Code Generator with Logo" description="Create custom QR codes with an embedded logo and custom colors. Download as high-res PNG." breadcrumb="QR Code Generator">
 
                 <div className="grid md:grid-cols-2 gap-8 mb-6">
@@ -161,12 +161,12 @@ export default function QRCodeGenerator() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Create Custom QR Code with Logo</h2>
-                    <p className="text-slate-600">Generate high-resolution (1024x1024) QR codes instantly. By using High (H-level) error correction, this tool allows you to safely embed your company logo or icon directly in the center of the QR code without breaking scannability. Customize the foreground and background colors to match your brand identity.</p>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Best Scannability Practices</h3>
+                    <p className="text-slate-600">Generate high-resolution (1024x1024) QR codes quickly. By using High (H-level) error correction, this tool allows you to safely embed your company logo or icon directly in the center of the QR code without breaking scannability. Customize the foreground and background colors to match your brand identity.</p>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">optimal Scannability Practices</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
-                        <li>Ensure high contrast between foreground and background (dark on light is best)</li>
+                        <li>Ensure high contrast between foreground and background (dark on light is optimal)</li>
                         <li>Keep the logo size under 30% to prevent covering too many data modules</li>
-                        <li>Always test-scan the downloaded code with your phone camera before printing</li>
+                        <li>consistently test-scan the downloaded code with your phone camera before printing</li>
                         <li>Use simple URLs if possible (fewer characters = less dense dots = easier to scan)</li>
                     </ul>
                 </div>

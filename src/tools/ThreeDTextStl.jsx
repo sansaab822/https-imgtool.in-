@@ -252,7 +252,7 @@ export default function ThreeDTextStl() {
                             Three-dimensional text has become one of the most popular projects for desktop 3D printing enthusiasts. Name signs for bedrooms, custom labels for workshop shelves, logo prototypes for startups, keyrings with initials, decorative business card holders — the applications for 3D extruded text are genuinely endless. Yet for many beginners, the path from "I want some 3D text" to holding a physical printed object felt intimidating because it seemed to require knowledge of complex CAD software like Blender, Fusion 360, or Tinkercad.
                         </p>
                         <p>
-                            Our 3D Text to STL Generator eliminates that entire learning barrier. Type your text, choose a font and depth, preview it in real-time 3D, and export a print-ready STL file. The whole process takes under a minute, even if you have never touched 3D modeling software in your life. The output is a standard binary STL mesh that works in every slicer: Ultimaker Cura, PrusaSlicer, Bambu Studio, Chitubox, and any other slicing program you prefer.
+                            Our 3D Text to STL Generator eliminates that entire learning barrier. Type your text, choose a font and depth, preview it in real-time 3D, and export a print-ready STL file. The whole process takes under a minute, even if you have not touched 3D modeling software in your life. The output is a standard binary STL mesh that works in every slicer: Ultimaker Cura, PrusaSlicer, Bambu Studio, Chitubox, and any other slicing program you prefer.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Understanding STL Files and Why They Are the Standard</h3>
@@ -260,7 +260,7 @@ export default function ThreeDTextStl() {
                             STL stands for Stereolithography, named after the original 3D printing technology patented in 1986. Despite the age of the format, it remains the universal language of desktop 3D printing because of its simplicity: an STL file is simply a list of triangles that together form the surface of a 3D object. Every slicer in the world can read STL, including free ones like Cura and professional ones like Materialise Magics.
                         </p>
                         <p>
-                            Our tool exports specifically in <strong>binary STL format</strong>, which is far more compact than the older ASCII STL format. A binary STL for a four-letter word is typically under 500KB — small enough to email, share easily, or store dozens on a USB drive. Once imported into your slicer, you can scale it, orient it for the best layer adhesion, add supports if needed, and send it to your printer.
+                            Our tool exports specifically in <strong>binary STL format</strong>, which is far more compact than the older ASCII STL format. A binary STL for a four-letter word is typically under 500KB — small enough to email, share easily, or store dozens on a USB drive. Once imported into your slicer, you can scale it, orient it for the optimal layer adhesion, add supports if needed, and send it to your printer.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Choosing the Right Settings for Your Print</h3>
@@ -277,12 +277,12 @@ export default function ThreeDTextStl() {
                             <strong>Font choices:</strong> Helvetiker Bold is the most reliable choice for 3D printing because its thick, consistent stroke widths print cleanly at any scale. Gentilis has a more serif, literary character. Optimer sits between them — a clean geometric typeface that is great for logos and branding applications. All fonts generate manifold, watertight geometry ready for printing without repair.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Slicing Tips for Perfect 3D Text</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Slicing Tips for excellent 3D Text</h3>
                         <p>
                             When you import your STL into your slicer, orient the text so the flat back face is on the print bed. This eliminates the need for support structures entirely and gives you the cleanest possible top surface finish. Most slicers will auto-orient the model correctly, but verify by looking at the side view.
                         </p>
                         <p>
-                            For materials: <strong>PLA</strong> is the easiest choice for decorative text — it prints at low temperatures, requires no heated enclosure, and is available in hundreds of colors. <strong>PETG</strong> is better if the sign will be outdoors or in a warm environment like a car dashboard. <strong>ASA</strong> and <strong>ABS</strong> offer the best UV resistance and heat resistance for outdoor use but require an enclosure and more tuning. For resin printers, the STL imports directly into Chitubox or Lychee Slicer — resin-printed text has exceptional surface detail and is great for jewelry-scale items.
+                            For materials: <strong>PLA</strong> is the easiest choice for decorative text — it prints at low temperatures, requires no heated enclosure, and is available in hundreds of colors. <strong>PETG</strong> is better if the sign will be outdoors or in a warm environment like a car dashboard. <strong>ASA</strong> and <strong>ABS</strong> offer the optimal UV resistance and heat resistance for outdoor use but require an enclosure and more tuning. For resin printers, the STL imports directly into Chitubox or Lychee Slicer — resin-printed text has exceptional surface detail and is great for jewelry-scale items.
                         </p>
                         <p>
                             After your print, fill any layer lines with a quick sand using 220-grit followed by 400-grit sandpaper, then prime and paint if desired. Even basic Rustoleum primer and spray paint transforms the appearance of PLA text into something that looks like professional injection-molded plastic. For metallic finishing, rub-and-buff metallic wax applied to sanded PLA text is one of the easiest and most impressive post-processing techniques available.

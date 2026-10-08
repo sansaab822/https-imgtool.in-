@@ -124,13 +124,13 @@ export default function WorksheetConverter() {
         <>
             <SEO
                 title="Worksheet Converter — Convert CSV, JSON, TSV, Markdown Free"
-                description="Convert between CSV, JSON, TSV, and Markdown table formats instantly. Free online worksheet converter. Paste data or upload a file and convert in one click."
+                description="Convert between CSV, JSON, TSV, and Markdown table formats quickly. Free online worksheet converter. Paste data or upload a file and convert in one click."
                 canonical="/worksheet-converter"
             />
             <ToolLayout
                 toolSlug="worksheet-converter"
                 title="Worksheet Converter"
-                description="Convert between CSV, JSON, TSV, and Markdown table formats instantly. No software needed."
+                description="Convert between CSV, JSON, TSV, and Markdown table formats quickly. No software needed."
                 breadcrumb="Worksheet Converter"
             >
                 {/* Format Selector */}
@@ -218,7 +218,7 @@ export default function WorksheetConverter() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Worksheet Format Converter</h2>
-                    <p className="text-slate-600">Convert data between CSV, JSON, TSV, and Markdown table formats instantly in your browser. No file upload needed — your data stays private. Perfect for developers, data analysts, and anyone working with spreadsheet data.</p>
+                    <p className="text-slate-600">Convert data between CSV, JSON, TSV, and Markdown table formats quickly in your browser. No file upload needed — your data stays private. Ideal for developers, data analysts, and anyone working with spreadsheet data.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Supported Conversions</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li><strong>CSV to JSON</strong> — Convert spreadsheet exports to JSON API format</li>

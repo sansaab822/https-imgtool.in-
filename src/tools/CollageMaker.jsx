@@ -124,7 +124,7 @@ export default function CollageMaker() {
     return (
         <>
             <SEO
-                title="Free Online Collage Maker — Create Photo Collages Instantly"
+                title="Free Online Collage Maker — Create Photo Collages quickly"
                 description="Create beautiful photo collages online with multiple layouts. Choose from 2x2 grid, side-by-side, or custom layouts. Download as high-quality JPG. Free, no signup."
                 canonical="/collage-maker"
                 schema={{
@@ -139,7 +139,7 @@ export default function CollageMaker() {
             <ToolLayout
                 toolSlug="collage-maker"
                 title="Collage Maker"
-                description="Create beautiful photo collages with multiple layouts. Download as high-quality JPG instantly."
+                description="Create beautiful photo collages with multiple layouts. Download as high-quality JPG quickly."
                 breadcrumb="Collage Maker"
             >
                 {/* Layout Selector */}
@@ -263,7 +263,7 @@ export default function CollageMaker() {
                 {/* SEO Content */}
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Free Online Collage Maker</h2>
-                    <p className="text-slate-600">Create stunning photo collages directly in your browser without any software installation. Our collage maker supports multiple layouts including 2x2 grids, side-by-side comparisons, and asymmetric designs perfect for social media, family albums, and presentations.</p>
+                    <p className="text-slate-600">Create stunning photo collages directly in your browser without any software installation. Our collage maker supports multiple layouts including 2x2 grids, side-by-side comparisons, and asymmetric designs Ideal for social media, family albums, and presentations.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">How to Make a Photo Collage</h3>
                     <ol className="list-decimal list-inside text-slate-600 space-y-2">
                         <li>Select a layout that fits the number of photos you want to combine</li>
@@ -279,9 +279,9 @@ export default function CollageMaker() {
                         <li><strong>Smart cropping</strong> — images auto-fit each cell with cover scaling</li>
                         <li><strong>Rounded corners</strong> — toggle for a modern or classic look</li>
                         <li><strong>High resolution output</strong> — 900×900px JPG at 92% quality</li>
-                        <li><strong>100% private</strong> — all processing done in your browser, no uploads</li>
+                        <li><strong>fully private</strong> — all processing done in your browser, no uploads</li>
                     </ul>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Perfect For</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Ideal for</h3>
                     <p className="text-slate-600">Instagram posts, WhatsApp status, Facebook memories, wedding albums, travel diaries, before-and-after comparisons, recipe cards, and school project presentations. Our collage maker is completely free with no watermarks added to your output.</p>
                     <p className="text-slate-600 mt-4">You can also use our <a href="/image-resizer" className="text-blue-600 hover:underline">Image Resizer</a> to prepare photos before making a collage, or our <a href="/image-compressor" className="text-blue-600 hover:underline">Image Compressor</a> to reduce the final collage file size.</p>
                 </div>

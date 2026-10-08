@@ -187,7 +187,7 @@ export default function RemovePdfWatermark() {
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">PDF Watermark Remover</h2>
                     <p className="text-slate-600">Remove watermarks from PDF files by re-rendering each page onto a fresh canvas with your chosen background color. This works by painting over transparent or light-colored watermarks that are placed as overlays on PDF pages.</p>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">When It Works Best</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">When It Works optimal</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Light gray or transparent watermarks on white backgrounds</li>
                         <li>Scanned PDFs with page-wide watermark stamps</li>

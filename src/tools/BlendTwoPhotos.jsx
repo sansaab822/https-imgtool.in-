@@ -108,7 +108,7 @@ export default function BlendTwoPhotos() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Blend Two Photos Together Online</h2>
-                    <p className="text-slate-600">Blend and overlay two photos using 14 different CSS/Canvas blend modes. Control the opacity of the second image to mix photos seamlessly. The tool uses the HTML5 Canvas globalCompositeOperation API — the same technology used in professional image editors like Photoshop — to apply blend effects instantly in your browser.</p>
+                    <p className="text-slate-600">Blend and overlay two photos using 14 different CSS/Canvas blend modes. Control the opacity of the second image to mix photos seamlessly. The tool uses the HTML5 Canvas globalCompositeOperation API — the same technology used in professional image editors like Photoshop — to apply blend effects quickly in your browser.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Blend Mode Guide</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-1">
                         <li><strong>Normal</strong>: Simple opacity mix (most common)</li>

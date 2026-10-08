@@ -294,8 +294,8 @@ export default function PdfToImage({ to = 'jpg' }) {
                         </div>
 
                         <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-xl border border-red-100 p-4 space-y-2">
-                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-shield-halved text-red-500 mr-2"></i>Premium Features</h4>
-                            {['Full page preview loading', 'Page-by-page selection', 'DPI quality control (72–300)', 'JPG & PNG output formats', 'Download all as ZIP', '100% browser-based — no uploads'].map(f => (
+                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-shield-halved text-red-500 mr-2"></i>Features</h4>
+                            {['Full page preview loading', 'Page-by-page selection', 'DPI quality control (72–300)', 'JPG & PNG output formats', 'Download all as ZIP', 'Fully browser-based — no uploads'].map(f => (
                                 <div key={f} className="flex items-center gap-2 text-xs text-slate-600">
                                     <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
                                 </div>
@@ -359,7 +359,7 @@ function PdfToImageSeoContent({ to, toName }) {
             {data.tips && data.tips.length > 0 && (
                 <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
                     <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
-                        <i className="fas fa-lightbulb text-amber-500"></i> Tips for Best Results
+                        <i className="fas fa-lightbulb text-amber-500"></i> Tips for Excellent Results
                     </h3>
                     <ul className="space-y-2.5">
                         {data.tips.map((tip, i) => (
@@ -387,7 +387,7 @@ function PdfToImageSeoContent({ to, toName }) {
                         ))}
                         <div>
                             <h4 className="font-bold text-sm text-slate-700">Does this tool upload my PDF to a server?</h4>
-                            <p className="text-sm text-slate-600 mt-1">No. The PDF is processed entirely in your browser using JavaScript. Your file is never sent to any server.</p>
+                            <p className="text-sm text-slate-600 mt-1">No. The PDF is processed entirely in your browser using JavaScript. Your file is not sent to any server.</p>
                         </div>
                     </div>
                 </div>

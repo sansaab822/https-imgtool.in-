@@ -71,7 +71,7 @@ export default function CompressToSize({
     const isRange = minKb && maxKb && minKb !== maxKb
     const displayTarget = isRange ? `${minKb}–${maxKb}KB` : `${targetKb}KB`
     const title = seoTitle || `Compress Image to ${displayTarget} — Free Online Tool`
-    const desc = seoDesc || `Compress any image to exactly ${displayTarget} online for free. Perfect for government exam forms, job portals, and online applications. 100% private, browser-based.`
+    const desc = seoDesc || `Compress any image to exactly ${displayTarget} online for free. Ideal for government exam forms, job portals, and online applications. Fully private, browser-based.`
 
     const loadImage = useCallback((file) => {
         if (!file || !file.type.startsWith('image/')) {
@@ -121,7 +121,7 @@ export default function CompressToSize({
                             <div className="flex items-center gap-2 text-sm">
                                 <i className="fas fa-lock text-green-500 w-4"></i>
                                 <span className="text-slate-600">Privacy:</span>
-                                <span className="font-bold text-green-700">100% browser-based</span>
+                                <span className="font-bold text-green-700">Fully browser-based</span>
                             </div>
                         </div>
 
@@ -252,7 +252,7 @@ function CompressSeoContent({ slug, displayTarget }) {
                     <div className="space-y-3">
                         <div>
                             <h4 className="font-bold text-slate-700">Does compressing reduce my photo quality a lot?</h4>
-                            <p className="mt-1">Our algorithm always uses the highest quality setting that still fits within {displayTarget}. For most passport-sized photos, any quality reduction is invisible to the naked eye.</p>
+                            <p className="mt-1">Our algorithm consistently uses the highest quality setting that still fits within {displayTarget}. For most passport-sized photos, any quality reduction is invisible to the naked eye.</p>
                         </div>
                         <div>
                             <h4 className="font-bold text-slate-700">What formats are supported for input?</h4>
@@ -260,7 +260,7 @@ function CompressSeoContent({ slug, displayTarget }) {
                         </div>
                         <div>
                             <h4 className="font-bold text-slate-700">Is my image uploaded to a server?</h4>
-                            <p className="mt-1">No. All compression runs locally in your browser using HTML5 Canvas. Your image never leaves your device. See our <a href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</a> for details.</p>
+                            <p className="mt-1">No. All compression runs locally in your browser using HTML5 Canvas. Your image not leaves your device. See our <a href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</a> for details.</p>
                         </div>
                     </div>
                 </div>
@@ -297,7 +297,7 @@ function CompressSeoContent({ slug, displayTarget }) {
                     <h4 className="text-sm font-bold text-slate-700 mb-2">How to Use This Tool:</h4>
                     <ol className="list-decimal pl-5 space-y-1.5 text-sm text-slate-600">
                         <li><strong>Upload your image:</strong> Select your high-quality original photo.</li>
-                        <li><strong>Choose format:</strong> We recommend <strong>JPG</strong> for the best balance of quality and size at {displayTarget}.</li>
+                        <li><strong>Choose format:</strong> We recommend <strong>JPG</strong> for the optimal balance of quality and size at {displayTarget}.</li>
                         <li><strong>Verify preview:</strong> Our smart algorithm will automatically target {displayTarget}. Check the preview to ensure the quality is acceptable.</li>
                         <li><strong>Download:</strong> Save the optimized image directly to your device.</li>
                     </ol>
@@ -333,7 +333,7 @@ function CompressSeoContent({ slug, displayTarget }) {
                     ))}
                     <div>
                         <h4 className="font-bold text-sm text-slate-700">Is my image uploaded to a server?</h4>
-                        <p className="text-sm text-slate-600 mt-1">No. All processing happens locally in your browser. We never upload, store, or see your files.</p>
+                        <p className="text-sm text-slate-600 mt-1">No. All processing happens locally in your browser. We not upload, store, or see your files.</p>
                     </div>
                 </div>
             </div>

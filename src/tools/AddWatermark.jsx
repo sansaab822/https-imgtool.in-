@@ -95,7 +95,7 @@ export default function AddWatermark() {
 
     return (
         <>
-            <SEO title="Add Watermark to Image Online Free — Text Watermark Tool" description="Add transparent text watermark to images online. Custom position, opacity, color, and rotation. Free, no upload, works in browser instantly." canonical="/add-watermark-to-image" />
+            <SEO title="Add Watermark to Image Online Free — Text Watermark Tool" description="Add transparent text watermark to images online. Custom position, opacity, color, and rotation. Free, no upload, works in browser quickly." canonical="/add-watermark-to-image" />
             <ToolLayout toolSlug="add-watermark-to-image" title="Add Watermark to Image" description="Add transparent text watermarks to your photos. Customizable position, opacity, color, and rotation." breadcrumb="Add Watermark">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">

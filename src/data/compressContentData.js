@@ -1,11 +1,11 @@
 export const COMPRESS_CONTENT = {
     'compress-image-20kb-30kb': {
         intro: "Targeting the narrow 20KB to 30KB file size range can be tricky. This exact bracket is frequently required by Indian recruitment portals (such as IBPS and SBI) for signature and thumb impression uploads. Our tool accurately targets 25KB as the sweet spot, ensuring your image is neither rejected for being too small nor too large.",
-        practicalGuidance: "For files this small, the original dimensions matter. If you try to compress a 4K photograph down to 25KB, the result will be highly pixelated or blurred. It is best to first crop the image closely to the subject (like a face or signature) and optionally reduce its dimensions before compression.",
+        practicalGuidance: "For files this small, the original dimensions matter. If you try to compress a 4K photograph down to 25KB, the result will be highly pixelated or blurred. It is optimal to first crop the image closely to the subject (like a face or signature) and optionally reduce its dimensions before compression.",
         whenItMatters: "Portals with a 20-30KB strict range use automated validators. An image of 19.9KB or 30.1KB will trigger an immediate error. Aiming for the middle (25KB) guarantees successful processing.",
         commonMistakes: [
             { mistake: "Starting with a massive image", detail: "Compressing a 10MB photo straight to 25KB causes severe quality loss. Use our Image Resizer first to bring the dimensions down." },
-            { mistake: "Using PNG instead of JPG", detail: "PNG is a lossless format and struggles to compress to such tiny sizes. Switching to JPG almost always provides better quality at 25KB." }
+            { mistake: "Using PNG instead of JPG", detail: "PNG is a lossless format and struggles to compress to such tiny sizes. Switching to JPG almost consistently provides better quality at 25KB." }
         ],
         faqs: [
             { q: "What if my compressed image is still rejected?", a: "Ensure your image is exactly in JPG format, as some portals strictly forbid PNG or WebP even if the file size is correct." },
@@ -14,14 +14,14 @@ export const COMPRESS_CONTENT = {
     },
     'compress-image-to-30kb': {
         intro: "A 30KB file size limit is a standard constraint for many digital application forms, particularly for candidate signatures, thumbprints, or small passport photographs. Our utility compresses your image to fit comfortably under this 30KB threshold while minimizing visual artifacts.",
-        practicalGuidance: "To achieve the best results at 30KB, select the JPG format. JPG uses a compression algorithm optimized for photographs and smooth gradients. For line art or text (like a scanned signature), PNG might work, but it often exceeds the 30KB limit, making JPG the safer choice.",
+        practicalGuidance: "To achieve the Excellent results at 30KB, select the JPG format. JPG uses a compression algorithm optimized for photographs and smooth gradients. For line art or text (like a scanned signature), PNG might work, but it often exceeds the 30KB limit, making JPG the safer choice.",
         whenItMatters: "Websites enforce a 30KB maximum to save server storage and ensure fast loading times for thousands of applicants. Exceeding this limit, even by 1KB, usually results in a 'File Too Large' error.",
         commonMistakes: [
             { mistake: "Leaving too much white space", detail: "Extra white space around a signature wastes precious kilobytes. Crop the image tightly before compressing." },
             { mistake: "Ignoring the minimum size requirement", detail: "Many portals that ask for 'Max 30KB' also have a hidden minimum (like 10KB). Make sure the final output isn't too small." }
         ],
         faqs: [
-            { q: "Can I compress any image to 30KB?", a: "Yes, but large or highly detailed photos will lose significant quality. It's best used for small dimensions like signatures (140x60px)." },
+            { q: "Can I compress any image to 30KB?", a: "Yes, but large or highly detailed photos will lose significant quality. It's optimal used for small dimensions like signatures (140x60px)." },
             { q: "Is the final size exactly 30KB?", a: "The tool targets slightly below 30KB (usually around 28-29KB) to ensure it securely passes strict upload validators." }
         ]
     },
@@ -31,20 +31,20 @@ export const COMPRESS_CONTENT = {
         whenItMatters: "Admissions and state job portals use 40KB as a middle-ground limit—small enough to store cheaply, but large enough to keep faces recognizable on admit cards.",
         commonMistakes: [
             { mistake: "Uploading a dark photo", detail: "Dark areas often compress poorly and show 'blocky' artifacts. Ensure your original photo is well-lit before compressing to 40KB." },
-            { mistake: "Using third-party messaging apps first", detail: "Images forwarded through messaging apps are already heavily compressed. Re-compressing them to 40KB can ruin the quality completely. Always use the original camera file." }
+            { mistake: "Using third-party messaging apps first", detail: "Images forwarded through messaging apps are already heavily compressed. Re-compressing them to 40KB can ruin the quality completely. consistently use the original camera file." }
         ],
         faqs: [
             { q: "Will the dimensions of my photo change?", a: "No. This tool only reduces the file size (in kilobytes). The width and height in pixels remain exactly as you uploaded them." },
-            { q: "How do I know if the quality is acceptable?", a: "Always use the preview feature before downloading. Ensure facial features or text remain legible." }
+            { q: "How do I know if the quality is acceptable?", a: "consistently use the preview feature before downloading. Ensure facial features or text remain legible." }
         ]
     },
     'compress-image-to-60kb': {
-        intro: "A 60KB limit is a generous size for passport photographs but a strict one for scanned documents like ID proofs or marksheets. Whether you are applying for a university or updating a profile, this tool efficiently compresses your image to just under 60KB.",
+        intro: "A 60KB limit is a generous size for passport photographs but a strict one for scanned documents like ID proofs or marksheets. if you are applying for a university or updating a profile, this tool efficiently compresses your image to just under 60KB.",
         practicalGuidance: "If you are compressing a scanned document (like an Aadhaar card or marksheet) to 60KB, legibility is your main concern. Convert the image to grayscale before compression if color isn't strictly required, as black-and-white images compress much more efficiently.",
-        whenItMatters: "Many public service commissions (like WBCS) specify file sizes up to 60KB for candidate photographs. A file measuring 60.5KB will be instantly rejected by their database validators.",
+        whenItMatters: "Many public service commissions (like WBCS) specify file sizes up to 60KB for candidate photographs. A file measuring 60.5KB will be quickly rejected by their database validators.",
         commonMistakes: [
             { mistake: "Compressing high-resolution scans", detail: "Scanning a document at 600 DPI and trying to compress it to 60KB will result in illegible text. Scan at 150-200 DPI instead." },
-            { mistake: "Not verifying text readability", detail: "Always zoom in on the compressed image to ensure that crucial information like names, dates, and ID numbers can still be read clearly." }
+            { mistake: "Not verifying text readability", detail: "consistently zoom in on the compressed image to ensure that crucial information like names, dates, and ID numbers can still be read clearly." }
         ],
         faqs: [
             { q: "Is 60KB enough for a clear ID proof?", a: "Yes, provided the original image is cropped to just the card itself and scanned at a reasonable resolution (like 150 DPI)." },
@@ -53,7 +53,7 @@ export const COMPRESS_CONTENT = {
     },
     'compress-image-to-70kb': {
         intro: "The 70KB limit is specifically used by certain specialized application portals and older legacy systems. This tool safely compresses your digital photo or scanned file to meet the 70KB requirement without unnecessary quality degradation.",
-        practicalGuidance: "At 70KB, you can comfortably maintain a high-quality passport photo. The algorithm will dynamically find the best JPEG quality setting (usually between 60% and 85%) that fits just under the 70KB threshold.",
+        practicalGuidance: "At 70KB, you can comfortably maintain a high-quality passport photo. The algorithm will dynamically find the optimal JPEG quality setting (usually between 60% and 85%) that fits just under the 70KB threshold.",
         whenItMatters: "Targeting exactly 70KB ensures you utilize the maximum allowed data limit for your image, resulting in the best possible clarity for the reviewer or automated OCR systems.",
         commonMistakes: [
             { mistake: "Uploading full-page documents", detail: "A full A4 page compressed to 70KB will likely have unreadable text. Crop the document to only the necessary sections." },

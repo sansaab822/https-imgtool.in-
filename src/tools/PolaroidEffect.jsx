@@ -81,7 +81,7 @@ export default function PolaroidEffect() {
     return (
         <>
             <SEO title="Polaroid Photo Effect Online Free — Turn Photo Into Polaroid" description="Turn any photo into a vintage Polaroid frame online. Add caption, choose frame color, rotation angle, and background. Free browser-based Polaroid generator." canonical="/polaroid-photo-effect" />
-            <ToolLayout toolSlug="polaroid-photo-effect" title="Polaroid Photo Effect" description="Turn any photo into a vintage Polaroid frame with caption and rotation. Download instantly." breadcrumb="Polaroid Effect">
+            <ToolLayout toolSlug="polaroid-photo-effect" title="Polaroid Photo Effect" description="Turn any photo into a vintage Polaroid frame with caption and rotation. Download quickly." breadcrumb="Polaroid Effect">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = e => loadImg(e.target.files[0]); i.click() }}
@@ -151,10 +151,10 @@ export default function PolaroidEffect() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Turn Photo Into Polaroid Online Free</h2>
-                    <p className="text-slate-600">Create a vintage Polaroid-style photo frame from any image in seconds. Add a handwritten-style caption, choose your frame color (classic white, cream, or black), set the rotation angle for that authentic vintage tilt, and select the background color. Perfect for Instagram posts, digital scrapbooking, and nostalgic photo sharing.</p>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Tips for Best Results</h3>
+                    <p className="text-slate-600">Create a vintage Polaroid-style photo frame from any image in seconds. Add a handwritten-style caption, choose your frame color (classic white, cream, or black), set the rotation angle for that authentic vintage tilt, and select the background color. Ideal for Instagram posts, digital scrapbooking, and nostalgic photo sharing.</p>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Tips for Excellent results</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
-                        <li>Square photos (1:1 ratio) work best in the Polaroid frame</li>
+                        <li>Square photos (1:1 ratio) work optimal in the Polaroid frame</li>
                         <li>Use a slight rotation (-3° to -5°) for the most authentic look</li>
                         <li>Dark backgrounds (charcoal, navy) make white Polaroid frames pop</li>
                         <li>Keep captions short — the font is large and space is limited</li>

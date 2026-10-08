@@ -79,7 +79,7 @@ export default function MemeGenerator() {
 
     return (
         <>
-            <SEO title="Meme Generator Online Free — Add Text to Any Image" description="Create memes online by adding Impact-style top/bottom text to any image. Customize font size, color, and stroke. Free, instant, no signup required." canonical="/meme-generator" />
+            <SEO title="Meme Generator Online Free — Add Text to Any Image" description="Create memes online by adding Impact-style top/bottom text to any image. Customize font size, color, and stroke. Free, quick, no signup required." canonical="/meme-generator" />
             <ToolLayout toolSlug="meme-generator" title="Meme Generator" description="Add Impact-style top and bottom text to any image. The classic meme creator online." breadcrumb="Meme Generator">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">

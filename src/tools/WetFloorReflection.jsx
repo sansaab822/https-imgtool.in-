@@ -131,7 +131,7 @@ export default function WetFloorReflection() {
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Wet Floor Reflection Effect Online</h2>
                     <p className="text-slate-600">Add a professional wet floor mirror reflection to any image. The tool flips the bottom portion of your image and applies a gradient opacity fade, creating the illusion of a reflective surface below. Used widely in product photography, app store screenshots, and portfolio presentations. All processing happens in your browser using HTML5 Canvas.</p>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Best Practices</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">optimal Practices</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Products on white background give the cleanest reflection look</li>
                         <li>50-70% reflection height creates the most realistic effect</li>

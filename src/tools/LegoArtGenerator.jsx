@@ -107,7 +107,7 @@ export default function LegoArtGenerator() {
 
     return (
         <>
-            <SEO title="Lego Art Generator — Turn Photo into Toy Bricks Online Free" description="Convert any image into a Lego brick mosaic style art online. Choose classic, vibrant, or grayscale brick palettes. Fun, free, instant download." canonical="/lego-art-generator" />
+            <SEO title="Lego Art Generator — Turn Photo into Toy Bricks Online Free" description="Convert any image into a Lego brick mosaic style art online. Choose classic, vibrant, or grayscale brick palettes. Fun, free, quick download." canonical="/lego-art-generator" />
             <ToolLayout toolSlug="lego-art-generator" title="Lego Bricks Art Generator" description="Turn your photos into a masterpiece made of toy building blocks. Select grid size and colors." breadcrumb="Lego Art">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">

@@ -106,7 +106,7 @@ export default function FaceMorph() {
 
     return (
         <>
-            <SEO title="Face Photo Morph & Distort Effect Online Free" description="Morph, bulge, and pinch faces in photos online. Click on any part of the image to distort it instantly. Fun free photo warping tool perfect for memes." canonical="/face-morph" />
+            <SEO title="Face Photo Morph & Distort Effect Online Free" description="Morph, bulge, and pinch faces in photos online. Click on any part of the image to distort it quickly. Fun free photo warping tool Ideal for memes." canonical="/face-morph" />
             <ToolLayout toolSlug="face-morph" title="Face Distort & Morph" description="Create funny morphs by pinching or bulging parts of a photo. Click the image to set the center point." breadcrumb="Face Morph">
 
                 {image ? (

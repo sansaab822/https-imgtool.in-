@@ -56,13 +56,13 @@ export default function ToolLayout({ children, toolSlug, title, description, bre
                     <p className="text-slate-500 text-lg max-w-2xl mx-auto">{description}</p>
                     <div className="flex flex-wrap justify-center gap-3 mt-4">
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-green-50 text-green-700 rounded-full">
-                            <i className="fas fa-shield-alt"></i> No Upload — 100% Private
+                            <i className="fas fa-shield-alt"></i> Local Processing
                         </span>
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full">
-                            <i className="fas fa-bolt"></i> Instant Processing
+                            <i className="fas fa-bolt"></i> No Server Upload
                         </span>
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full">
-                            <i className="fas fa-check-circle"></i> Free Forever
+                            <i className="fas fa-check-circle"></i> Free Utility
                         </span>
                     </div>
                 </div>

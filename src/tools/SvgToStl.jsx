@@ -264,7 +264,7 @@ export default function SvgToStl() {
                         {/* Tips */}
                         <div className="bg-gradient-to-br from-violet-50 to-indigo-50 rounded-xl border border-violet-100 p-4 space-y-2">
                             <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-lightbulb text-amber-500 mr-2"></i>Tips</h4>
-                            {['Simple SVGs with filled paths work best', 'Increase depth for thicker models', 'Scale controls model size', 'Binary STL is widely compatible'].map(t => (
+                            {['Simple SVGs with filled paths work optimal', 'Increase depth for thicker models', 'Scale controls model size', 'Binary STL is widely compatible'].map(t => (
                                 <div key={t} className="flex items-start gap-2 text-xs text-slate-600">
                                     <i className="fas fa-check text-green-500 mt-0.5 flex-shrink-0"></i> {t}
                                 </div>
@@ -277,12 +277,12 @@ export default function SvgToStl() {
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
                         <h2 className="text-2xl font-bold text-slate-800">Transform Flat Vectors into 3D Printable Models</h2>
                         <p>
-                            Historically, bridging the gap between 2D graphic design and 3D modeling required expensive CAD software and a steep learning curve. Graphic designers comfortable with Adobe Illustrator or Inkscape often struggled to bring their flat logos or icons into the physical world via 3D printing. Our SVG to STL Converter eliminates this technical barrier. By leveraging advanced web-based rendering engines, this tool allows you to take any clean, path-based Scalable Vector Graphic (SVG) and instantly extrude it into a solid, 3D-printable stereolithography (STL) file—entirely within your browser.
+                            Historically, bridging the gap between 2D graphic design and 3D modeling required expensive CAD software and a steep learning curve. Graphic designers comfortable with Adobe Illustrator or Inkscape often struggled to bring their flat logos or icons into the physical world via 3D printing. Our SVG to STL Converter eliminates this technical barrier. By leveraging advanced web-based rendering engines, this tool allows you to take any clean, path-based Scalable Vector Graphic (SVG) and quickly extrude it into a solid, 3D-printable stereolithography (STL) file—entirely within your browser.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Perfect for Emblems, Cookie Cutters, and Keychains</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Ideal for Emblems, Cookie Cutters, and Keychains</h3>
                         <p>
-                            The ability to rapidly turn 2D paths into 3D geometry opens up a world of practical applications. Hobbyists frequently use this tool to design custom cookie cutters; simply draw the outline in a vector program, export to SVG, extrude it here, and send it to your 3D printer. It is also the perfect workflow for creating bespoke keychains, company logos for desk displays, custom stencils, or intricate decorative panels for larger maker projects.
+                            The ability to rapidly turn 2D paths into 3D geometry opens up a world of practical applications. Hobbyists frequently use this tool to design custom cookie cutters; simply draw the outline in a vector program, export to SVG, extrude it here, and send it to your 3D printer. It is also the excellent workflow for creating bespoke keychains, company logos for desk displays, custom stencils, or intricate decorative panels for larger maker projects.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Interactive 3D Preview Environment</h3>
@@ -297,7 +297,7 @@ export default function SvgToStl() {
                         <ul className="list-disc pl-5 space-y-2">
                             <li><strong>Extrude Depth:</strong> This slider controls the "thickness" (the Z-axis dimension) of your final 3D part. A value of 2 might be suitable for a thin emblem, while a value of 20 would create a chunky, standalone block.</li>
                             <li><strong>Scale Factor:</strong> SVGs are notoriously tricky when it comes to physical scale (pixels vs. millimeters). The Scale slider lets you proportionally shrink or enlarge the entire model to better fit your 3D printer's build volume.</li>
-                            <li><strong>Center Model at Origin:</strong> SVGs often contain invisible canvas padding that shifts the actual drawing away from the center coordinates (0,0). Keeping this box checked ensures your 3D model is perfectly centered on the build plate, which prevents issues when importing the STL into your slicer software.</li>
+                            <li><strong>Center Model at Origin:</strong> SVGs often contain invisible canvas padding that shifts the actual drawing away from the center coordinates (0,0). Keeping this box checked ensures your 3D model is Accurately centered on the build plate, which prevents issues when importing the STL into your slicer software.</li>
                             <li><strong>Preview Color:</strong> If your SVG does not have explicit color data embedded in its paths, the preview will render using the color selected here. This is purely for visual aid in the browser; STL files do not inherently store color data for 3D printing.</li>
                         </ul>
 
@@ -306,7 +306,7 @@ export default function SvgToStl() {
                             Converting complex bezier curves into dense 3D triangular meshes is a computationally heavy task. Rather than uploading your proprietary designs to a cloud server—which raises privacy concerns and introduces unnecessary latency—our tool utilizes WebAssembly and JavaScript to perform the complex mathematical tessellation directly on your computer's CPU/GPU. This guarantees that your original vector files remain completely private and offline. Furthermore, we export the final STL in its standard "Binary" format, resulting in a much smaller file size that is universally compatible with slicers like Cura, PrusaSlicer, and Chitubox.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Troubleshooting & Best Practices</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Troubleshooting & optimal Practices</h3>
                         <div className="space-y-4">
                             <div>
                                 <h4 className="font-bold text-slate-700">Why does my 3D model look hollow or broken?</h4>

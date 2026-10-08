@@ -16,7 +16,7 @@ export const documentContentData = {
     },
     'voter-id-photo-resizer': {
         title: 'Voter ID (EPIC) Photo Resizer Online',
-        intro: 'Applying for a new Voter ID (EPIC) or correcting details via the NVSP (National Voter\'s Service Portal) requires a photograph that meets strict Election Commission guidelines. This tool instantly resizes your image to the required specifications.',
+        intro: 'Applying for a new Voter ID (EPIC) or correcting details via the NVSP (National Voter\'s Service Portal) requires a photograph that meets strict Election Commission guidelines. This tool quickly resizes your image to the required specifications.',
         useCases: [
             'New Voter ID registration (Form 6)',
             'Correction of entries (Form 8)',
@@ -106,7 +106,7 @@ export const documentContentData = {
     },
     'signature-resize-140x60': {
         title: 'Signature Photo Resizer (140x60 pixels)',
-        intro: 'A digital signature is mandatory for almost every online application, from SSC and IBPS exams to PAN card and Driving Licence applications. The most common requirement is a 140x60 pixel dimension. This tool perfectly crops and compresses your signature to fit these exact rules.',
+        intro: 'A digital signature is mandatory for almost every online application, from SSC and IBPS exams to PAN card and Driving Licence applications. The most common requirement is a 140x60 pixel dimension. This tool Accurately crops and compresses your signature to fit these exact rules.',
         useCases: [
             'SSC, IBPS, UPSC exam forms',
             'PAN Card and Aadhaar online updates',

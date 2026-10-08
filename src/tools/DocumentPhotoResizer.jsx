@@ -36,14 +36,14 @@ async function resizeAndCompress(imgEl, width, height, minKb, maxKb, mime) {
 
     return new Promise((resolve) => {
         const target = (minKb + maxKb) / 2
-        let lo = 0.05, hi = 0.99, best = null
+        let lo = 0.05, hi = 0.99, optimal = null
         function attempt(q) {
             canvas.toBlob((blob) => {
                 const kb = blob.size / 1024
-                if (!best || Math.abs(kb - target) < Math.abs(best.size / 1024 - target)) best = blob
+                if (!optimal || Math.abs(kb - target) < Math.abs(optimal.size / 1024 - target)) optimal = blob
                 if (kb > maxKb && q > lo + 0.005) { hi = q; attempt((q + lo) / 2) }
                 else if (kb < minKb && q < hi - 0.005) { lo = q; attempt((q + hi) / 2) }
-                else resolve(best)
+                else resolve(optimal)
             }, mime, q)
         }
         attempt(0.85)
@@ -71,7 +71,7 @@ export default function DocumentPhotoResizer({
     const inputRef = useRef()
 
     const title = seoTitle || `${docName} Photo Resizer — ${width}×${height}px, ${minKb}–${maxKb}KB`
-    const desc = seoDesc || `Resize your photo to exact ${docName} specifications: ${width}×${height}px, ${minKb}–${maxKb}KB. Free, fast, 100% private — no upload to server.`
+    const desc = seoDesc || `Resize your photo to exact ${docName} specifications: ${width}×${height}px, ${minKb}–${maxKb}KB. Free, fast, fully private — no upload to server.`
 
     const loadImage = useCallback((file) => {
         if (!file || !file.type.startsWith('image/')) {
@@ -201,8 +201,8 @@ export default function DocumentPhotoResizer({
                             </button>
                         </div>
                         <div className="bg-teal-50 border border-teal-100 rounded-xl p-4 text-xs text-teal-700 space-y-1">
-                            <p className="font-bold flex items-center gap-1"><i className="fas fa-shield-alt"></i> 100% Secure & Private</p>
-                            <p>Photo never leaves your device. Processed in your web browser.</p>
+                            <p className="font-bold flex items-center gap-1"><i className="fas fa-shield-alt"></i> fully private & Private</p>
+                            <p>Photo not leaves your device. Processed in your web browser.</p>
                         </div>
                     </div>
                 </div>
@@ -240,7 +240,7 @@ export default function DocumentPhotoResizer({
                             <>
                                 <h2 className="text-2xl font-bold text-slate-800">{docName} Photo Resizer — {width}×{height}px Online</h2>
                                 <p>
-                                    Different government-issued documents and official forms require photographs in very specific digital formats. For <strong>{docName}</strong> applications, the required photo dimensions are <strong>{width}×{height} pixels</strong> with a file size between <strong>{minKb}KB and {maxKb}KB</strong>. Submitting a photo that doesn't match these exact specs leads to rejection during online form scrutiny. Our tool handles all the technical details automatically — just upload any clear photo and get a perfectly sized file ready for your application.
+                                    Different government-issued documents and official forms require photographs in very specific digital formats. For <strong>{docName}</strong> applications, the required photo dimensions are <strong>{width}×{height} pixels</strong> with a file size between <strong>{minKb}KB and {maxKb}KB</strong>. Submitting a photo that doesn't match these exact specs leads to rejection during online form scrutiny. Our tool handles all the technical details automatically — just upload any clear photo and get a Accurately sized file ready for your application.
                                 </p>
                                 <h3 className="text-lg font-bold text-slate-800 mt-6">Step-by-Step Guide</h3>
                                 <ol className="list-decimal pl-5 space-y-2">
@@ -260,7 +260,7 @@ export default function DocumentPhotoResizer({
                                 <div className="space-y-3">
                                     <div>
                                         <h4 className="font-bold text-slate-700">Does this tool crop my face automatically?</h4>
-                                        <p className="mt-1">The tool center-crops or scales your image to fit {width}×{height}px. For best results, upload a photo where your face is already centered and framed appropriately.</p>
+                                        <p className="mt-1">The tool center-crops or scales your image to fit {width}×{height}px. For Excellent results, upload a photo where your face is already centered and framed appropriately.</p>
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-slate-700">Is there any cost to use this?</h4>

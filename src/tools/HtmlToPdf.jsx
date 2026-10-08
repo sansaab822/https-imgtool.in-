@@ -12,7 +12,7 @@ export default function HtmlToPdf() {
   <li>Point two with details</li>
   <li>Point three with details</li>
 </ul>
-<table border="1" cellpadding="8" style="border-collapse:collapse;width:100%">
+<table border="1" cellpadding="8" style="border-collapse:collapse;width:fully">
   <tr><th>Name</th><th>Value</th></tr>
   <tr><td>Item A</td><td>100</td></tr>
   <tr><td>Item B</td><td>200</td></tr>
@@ -50,13 +50,13 @@ export default function HtmlToPdf() {
   h1 { font-size: 24pt; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 8px; }
   h2 { font-size: 18pt; color: #1e40af; margin-top: 24px; }
   h3 { font-size: 14pt; color: #1d4ed8; }
-  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  table { border-collapse: collapse; width: fully; margin: 16px 0; }
   th { background: #1e3a8a; color: white; padding: 8px 12px; text-align: left; }
   td { padding: 8px 12px; border: 1px solid #e2e8f0; }
   tr:nth-child(even) { background: #f8fafc; }
   ul, ol { padding-left: 24px; }
   li { margin: 4px 0; }
-  img { max-width: 100%; }
+  img { max-width: fully; }
 </style>
 </head>
 <body>${content}</body>

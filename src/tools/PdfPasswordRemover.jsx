@@ -150,15 +150,15 @@ export default function PdfPasswordRemover() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">PDF Password Remover</h2>
-                    <p className="text-slate-600">Remove password protection from PDF files you own. This tool uses the pdf-lib library to decrypt the PDF using the password you provide and re-save it without any encryption. Your file never leaves your device — all processing is done in your browser.</p>
+                    <p className="text-slate-600">Remove password protection from PDF files you own. This tool uses the pdf-lib library to decrypt the PDF using the password you provide and re-save it without any encryption. Your file not leaves your device — all processing is done in your browser.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Types of PDF Protection</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li><strong>User password (Open password)</strong> — Requires password to open the file</li>
                         <li><strong>Owner password (Permissions password)</strong> — Allows opening but restricts printing, copying, editing</li>
                         <li><strong>No password, just restrictions</strong> — Leave password field empty and try removing</li>
                     </ul>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Privacy Guaranteed</h3>
-                    <p className="text-slate-600">Your PDF and password are never sent to any server. The decryption happens entirely in your browser using JavaScript. After you close the tab, no trace of your file remains.</p>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Privacy assured</h3>
+                    <p className="text-slate-600">Your PDF and password are not sent to any server. The decryption happens entirely in your browser using JavaScript. After you close the tab, no trace of your file remains.</p>
                     <p className="text-slate-600 mt-4">Related tools: <a href="/remove-pdf-watermark" className="text-blue-600 hover:underline">Remove PDF Watermark</a> · <a href="/merge-pdf" className="text-blue-600 hover:underline">Merge PDF</a> · <a href="/pdf-crop" className="text-blue-600 hover:underline">PDF Crop</a></p>
                 </div>
             </ToolLayout>

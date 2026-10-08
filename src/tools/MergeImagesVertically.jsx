@@ -44,7 +44,7 @@ export default function MergeImagesVertically() {
     return (
         <>
             <SEO title="Merge Images Vertically Online — Stack Photos Together Free" description="Stack and merge multiple images vertically online. Combine photos one on top of another with gap control. Free, browser-based image stacker tool." canonical="/merge-images-vertically" />
-            <ToolLayout toolSlug="merge-images-vertically" title="Merge Images Vertically" description="Stack multiple images on top of each other. Control gap, alignment, and background. Instant download." breadcrumb="Merge Images Vertically">
+            <ToolLayout toolSlug="merge-images-vertically" title="Merge Images Vertically" description="Stack multiple images on top of each other. Control gap, alignment, and background. Quick download." breadcrumb="Merge Images Vertically">
 
                 <div
                     onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.multiple = true; i.onchange = e => Array.from(e.target.files).forEach(addImage); i.click() }}

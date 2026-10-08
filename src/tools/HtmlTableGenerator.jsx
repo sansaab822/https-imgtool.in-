@@ -12,9 +12,9 @@ const SAMPLE_DATA = [
 
 function dataToHtml(rows, hasHeader, borderStyle, theme) {
     const themes = {
-        default: { table: 'border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;', th: 'background: #2563eb; color: white; padding: 10px 14px; text-align: left; border: 1px solid #1d4ed8;', td: 'padding: 10px 14px; border: 1px solid #e2e8f0;', tr_even: 'background: #f8fafc;' },
-        dark: { table: 'border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; background: #1e293b;', th: 'background: #334155; color: #f1f5f9; padding: 10px 14px; text-align: left; border: 1px solid #475569;', td: 'padding: 10px 14px; border: 1px solid #334155; color: #e2e8f0;', tr_even: 'background: #1a2535;' },
-        minimal: { table: 'border-collapse: collapse; width: 100%; font-family: Arial, sans-serif;', th: 'border-bottom: 2px solid #1e293b; padding: 10px 14px; text-align: left; font-weight: bold;', td: 'border-bottom: 1px solid #e2e8f0; padding: 10px 14px;', tr_even: '' },
+        default: { table: 'border-collapse: collapse; width: fully; font-family: Arial, sans-serif;', th: 'background: #2563eb; color: white; padding: 10px 14px; text-align: left; border: 1px solid #1d4ed8;', td: 'padding: 10px 14px; border: 1px solid #e2e8f0;', tr_even: 'background: #f8fafc;' },
+        dark: { table: 'border-collapse: collapse; width: fully; font-family: Arial, sans-serif; background: #1e293b;', th: 'background: #334155; color: #f1f5f9; padding: 10px 14px; text-align: left; border: 1px solid #475569;', td: 'padding: 10px 14px; border: 1px solid #334155; color: #e2e8f0;', tr_even: 'background: #1a2535;' },
+        minimal: { table: 'border-collapse: collapse; width: fully; font-family: Arial, sans-serif;', th: 'border-bottom: 2px solid #1e293b; padding: 10px 14px; text-align: left; font-weight: bold;', td: 'border-bottom: 1px solid #e2e8f0; padding: 10px 14px;', tr_even: '' },
     }
     const t = themes[theme] || themes.default
     let html = `<table style="${t.table}">\n`
@@ -242,7 +242,7 @@ export default function HtmlTableGenerator() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">HTML Table Generator</h2>
-                    <p className="text-slate-600">Create professional HTML tables, Markdown tables, and CSV files instantly without writing any code. Our visual table editor lets you add rows and columns, import CSV data, and export in multiple formats ready to use in websites, documentation, or spreadsheets.</p>
+                    <p className="text-slate-600">Create professional HTML tables, Markdown tables, and CSV files quickly without writing any code. Our visual table editor lets you add rows and columns, import CSV data, and export in multiple formats ready to use in websites, documentation, or spreadsheets.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Use Cases</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Generate HTML tables for websites and email templates</li>

@@ -3,9 +3,9 @@ export const lightweightContentData = {
     'combine-images-side-by-side': {
         title: 'Combine Images Side by Side',
         whatItDoes: 'This tool stitches two images together horizontally to create a single side-by-side comparison image.',
-        whenToUse: 'Perfect for creating "Before and After" shots, comparing two products, or making split-screen collages for social media.',
-        howToUse: 'Upload your left image and right image. The tool automatically resizes them to match heights, then merges them side-by-side. You can download the combined photo instantly.',
-        tips: 'For the best results, try to use images with similar lighting and subject framing so the side-by-side comparison looks natural.'
+        whenToUse: 'Use this to create "Before and After" shots, comparing two products, or making split-screen collages for social media.',
+        howToUse: 'Upload your left image and right image. The tool automatically resizes them to match heights, then merges them side-by-side. You can download the combined photo.',
+        tips: 'For the most realistic results, try to use images with similar lighting and subject framing so the side-by-side comparison looks natural.'
     },
     'add-watermark-to-image': {
         title: 'Add Watermark to Photo',
@@ -23,13 +23,13 @@ export const lightweightContentData = {
     'blend-two-photos': {
         title: 'Blend Two Photos Together',
         whatItDoes: 'Mixes two images by overlaying them and adjusting their transparency (opacity).',
-        whenToUse: 'Great for creating artistic double exposures, ghost effects, or subtle background textures.',
-        tips: 'Using a high-contrast black and white photo as the base and a colorful texture (like a galaxy or forest) on top often yields the best double-exposure results.'
+        whenToUse: 'Use this to create artistic double exposures, ghost effects, or subtle background textures.',
+        tips: 'Using a high-contrast black and white photo as the base and a colorful texture (like a galaxy or forest) on top usually yields a strong double-exposure result.'
     },
     'rotate-image-custom-angle': {
         title: 'Rotate Image by Custom Angle',
         whatItDoes: 'Rotates your image precisely by any degree (not just 90 or 180 degrees).',
-        whenToUse: 'Perfect for straightening crooked horizons in landscape photos or creating angled artistic compositions.',
+        whenToUse: 'Use this to straighten crooked horizons in landscape photos or to create angled artistic compositions.',
         howToUse: 'Upload your photo and use the slider to adjust the rotation angle from 0 to 360 degrees. The background space created by rotation will be transparent (if saved as PNG) or white (if saved as JPG).'
     },
     'flip-image-horizontally': {
@@ -47,7 +47,7 @@ export const lightweightContentData = {
     'add-drop-shadow': {
         title: 'Add Drop Shadow to PNG',
         whatItDoes: 'Applies a clean, customizable drop shadow to objects with transparent backgrounds.',
-        whenToUse: 'Ideal for e-commerce product shots, UI elements, or graphic design assets that need to pop off the page.',
+        whenToUse: 'Use this for e-commerce product shots, UI elements, or graphic design assets that need to pop off the page.',
         limitations: 'Your uploaded image MUST have a transparent background (PNG format) for the shadow to wrap around the object. If you upload a JPG, the shadow will just apply to the rectangular border.'
     },
     'wet-floor-reflection': {
@@ -59,7 +59,7 @@ export const lightweightContentData = {
     'zoomed-inset-image': {
         title: 'Zoomed Inset Magnifier',
         whatItDoes: 'Creates a small circular overlay that magnifies a specific detail of your main image.',
-        whenToUse: 'Excellent for product tutorials, highlighting a hidden detail, or showing macro textures in a larger scene.',
+        whenToUse: 'Use this for product tutorials, highlighting a hidden detail, or showing macro textures in a larger scene.',
         howToUse: 'Upload your image, click on the area you want to magnify, and adjust the zoom level. The tool will place a magnifier lens effect over that spot.'
     },
     'instagram-safe-zones': {
@@ -79,7 +79,7 @@ export const lightweightContentData = {
     'gif-maker': {
         title: 'Animated GIF Maker',
         whatItDoes: 'Combines a sequence of still images into a moving, animated GIF file.',
-        whenToUse: 'Great for creating stop-motion animations, simple slideshows, or reaction GIFs from burst photos.',
+        whenToUse: 'Use this to create stop-motion animations, simple slideshows, or reaction GIFs from burst photos.',
         limitations: 'GIFs are restricted to 256 colors. Complex photos may appear slightly grainy when converted to GIF, which is normal for the format. For high-quality video, consider MP4 instead.'
     },
     'lego-art-generator': {
@@ -91,8 +91,8 @@ export const lightweightContentData = {
     'warhol-poster-effect': {
         title: 'Andy Warhol Pop-Art Effect',
         whatItDoes: 'Transforms a single photo into a 2x2 grid with high-contrast, wildly different color palettes.',
-        whenToUse: 'Perfect for creating retro, 1960s Pop Art posters from portraits or simple objects.',
-        tips: 'This effect works best on high-contrast portraits with simple, uncluttered backgrounds.'
+        whenToUse: 'Use this to create retro, 1960s Pop Art posters from portraits or simple objects.',
+        tips: 'This effect works optimal on high-contrast portraits with simple, uncluttered backgrounds.'
     },
     'emoji-mosaic': {
         title: 'Emoji Mosaic Generator',
@@ -103,7 +103,7 @@ export const lightweightContentData = {
     'jigsaw-puzzle-maker': {
         title: 'Jigsaw Puzzle Maker',
         whatItDoes: 'Overlays a jigsaw puzzle cut pattern onto your photo, dividing it into puzzle pieces.',
-        whenToUse: 'Great for creating custom printable puzzles, social media grids, or fun visual effects.',
+        whenToUse: 'Use this to create custom printable puzzles, social media grids, or visual effects.',
         tips: 'You can choose between different puzzle complexities (e.g., 4x4 vs 10x10). The downloaded image can be printed on cardstock and physically cut along the lines.'
     },
     'face-morph': {
@@ -115,8 +115,8 @@ export const lightweightContentData = {
     'sticker-add-virtual': {
         title: 'Add Virtual Stickers to Photo',
         whatItDoes: 'Lets you drag, drop, scale, and rotate fun clip-art stickers (like sunglasses, hats, or speech bubbles) onto your photo.',
-        whenToUse: 'Perfect for creating fun party photos, hiding a photobomber, or adding comic-book flair to a picture.',
-        tips: 'You can use the rotate handle on the stickers to angle them perfectly onto a tilted head.'
+        whenToUse: 'Use this to create party photos, hide a photobomber, or add comic-book flair to a picture.',
+        tips: 'You can use the rotate handle on the stickers to angle them Accurately onto a tilted head.'
     },
 
     // ── AI Tools ──
@@ -135,7 +135,7 @@ export const lightweightContentData = {
     'ai-old-photo-restorer': {
         title: 'Old Photo Restorer',
         whatItDoes: 'Cleans up scratches, dust, and sepia fading from vintage photographs using intelligent canvas filters.',
-        whenToUse: 'Ideal for digitizing old physical photo albums that have suffered from wear and tear over the decades.',
+        whenToUse: 'Use this when digitizing old physical photo albums that have suffered from wear and tear over the decades.',
         howToUse: 'Scan or take a high-quality, glare-free picture of your old photo first. Upload it here, and the tool will attempt to balance the contrast and smooth out minor scratches.'
     }
 };

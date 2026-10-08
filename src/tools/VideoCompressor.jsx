@@ -101,13 +101,13 @@ export default function VideoCompressor() {
         <>
             <SEO
                 title="Video Compressor Online — Reduce Video File Size Free"
-                description="Compress video files online for free. Reduce video size without heavy software. Works in browser, no upload to server, 100% private. Download compressed video instantly."
+                description="Compress video files online for free. Reduce video size without heavy software. Works in browser, no upload to server, fully private. Download compressed video quickly."
                 canonical="/video-compressor"
             />
             <ToolLayout
                 toolSlug="video-compressor"
                 title="Video Compressor"
-                description="Reduce video file size directly in your browser. No upload, 100% private."
+                description="Reduce video file size directly in your browser. No upload, fully private."
                 breadcrumb="Video Compressor"
             >
                 {/* Upload */}
@@ -145,7 +145,7 @@ export default function VideoCompressor() {
                         <div className="flex items-center gap-4">
                             <span className="text-sm text-slate-500 w-20">Smallest</span>
                             <input type="range" min="0.3" max="1" step="0.1" value={quality} onChange={e => setQuality(+e.target.value)} className="flex-1 slider-range" />
-                            <span className="text-sm text-slate-500 w-20 text-right">Best Quality</span>
+                            <span className="text-sm text-slate-500 w-20 text-right">optimal Quality</span>
                         </div>
                         <div className="flex justify-between mt-3">
                             <span className="text-xs text-slate-400">Resolution scale: {Math.round(quality * 100)}%</span>
@@ -216,9 +216,9 @@ export default function VideoCompressor() {
                         <li>Select compression level (lower = smaller file, higher = better quality)</li>
                         <li>The video is re-rendered at reduced resolution using HTML5 Canvas</li>
                         <li>MediaRecorder captures the canvas output and saves as compressed WebM</li>
-                        <li>Download the compressed file instantly</li>
+                        <li>Download the compressed file quickly</li>
                     </ol>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Tips for Best Results</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Tips for Excellent results</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>For social media sharing: use 50-60% quality setting</li>
                         <li>For email attachments: use 30-40% quality setting</li>

@@ -508,7 +508,7 @@ export default function ImageEnhancer() {
     <>
       <SEO
         title="AI Photo Enhancer — Restore Sharpness & Clarity Online"
-        description="Restore blurry photos to crystal clarity. Multi-scale detail recovery removes noise and sharpens edges without touching colors. 100% private in-browser."
+        description="Restore blurry photos to crystal clarity. Multi-scale detail recovery removes noise and sharpens edges without touching colors. fully private in-browser."
         canonical="/image-enhancer"
       />
       <ToolLayout
@@ -751,7 +751,7 @@ export default function ImageEnhancer() {
             <p>First, a bilateral filter smooths out ISO noise and compression artifacts while preserving all sharp edges. Unlike Gaussian blur, it only blurs areas with similar colors, leaving hair, text, and object boundaries untouched.</p>
 
             <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">2. Multi-Scale Luminance USM</h3>
-            <p>The core restoration engine applies Unsharp Masking across three different frequency scales — fine (radius 1px), medium (radius 3px), and broad (radius 9px). Each scale recovers a different level of detail: skin pores, hair edges, and overall structure. Crucially, all sharpening operates only on the <em>luminance channel</em>, so your colors stay perfectly natural with zero halos.</p>
+            <p>The core restoration engine applies Unsharp Masking across three different frequency scales — fine (radius 1px), medium (radius 3px), and broad (radius 9px). Each scale recovers a different level of detail: skin pores, hair edges, and overall structure. Crucially, all sharpening operates only on the <em>luminance channel</em>, so your colors stay Accurately natural with zero halos.</p>
 
             <h3 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">3. Gentle Color Correction</h3>
             <p>Finally, a very subtle tone curve (brightness 1.02, contrast 1.06) and luminosity-preserving saturation are applied. This is intentionally minimal — the restoration itself provides the visible improvement, not color boosting.</p>

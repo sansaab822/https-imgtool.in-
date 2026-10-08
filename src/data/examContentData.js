@@ -50,7 +50,7 @@ const EXAM_CONTENT = {
             { mistake: 'Uploading the same photo for photo and signature fields', detail: 'The signature upload has different dimensions (140×60px). Mixing up the two uploads is a common error.' },
         ],
         faqs: [
-            { q: 'Is the SSC CGL photo specification the same for all SSC exams?', a: 'Most SSC exams (CGL, CHSL, MTS, CPO) now use the OTR system with 275×354px photo specs. However, signature dimensions differ. Always verify from the specific exam notification on ssc.gov.in.' },
+            { q: 'Is the SSC CGL photo specification the same for all SSC exams?', a: 'Most SSC exams (CGL, CHSL, MTS, CPO) now use the OTR system with 275×354px photo specs. However, signature dimensions differ. always verify from the specific exam notification on ssc.gov.in.' },
             { q: 'Can I use the same photo for SSC CGL Tier 1 and Tier 2?', a: 'Yes. Once uploaded through OTR, the same photo is used across all tiers of the exam. You don\'t need to re-upload unless SSC asks for an update.' },
             { q: 'My photo was accepted during registration but rejected at document verification. Why?', a: 'The online system only checks dimensions and file size. At document verification, the examiner also checks photo recency, face visibility, background colour, and whether the photo matches your physical appearance.' },
         ],
@@ -131,7 +131,7 @@ const EXAM_CONTENT = {
             { href: '/passport-size-photo', label: 'Passport Size Photo Maker' },
             { href: '/image-compressor', label: 'Image Compressor' },
         ],
-        verificationNote: 'SSC GD photo specifications may vary between notification cycles. Always verify from the latest SSC GD Constable notification on ssc.gov.in.',
+        verificationNote: 'SSC GD photo specifications may vary between notification cycles. always verify from the latest SSC GD Constable notification on ssc.gov.in.',
     },
 
     'ssc-mts-photo-resizer': {
@@ -201,7 +201,7 @@ const EXAM_CONTENT = {
             { href: '/ssc-gd-photo-resizer', label: 'SSC GD Photo Resizer' },
             { href: '/crop-image', label: 'Crop Image Tool' },
         ],
-        verificationNote: 'Signature specifications (140×60px, 10–20KB) have been consistent across recent SSC exam cycles. Always verify from the latest exam notification.',
+        verificationNote: 'Signature specifications (140×60px, 10–20KB) have been consistent across recent SSC exam cycles. consistently verify from the latest exam notification.',
     },
 
     'ibps-po-photo-resizer': {
@@ -349,7 +349,7 @@ const EXAM_CONTENT = {
         whyMatters: 'SBI Clerk is a high-volume recruitment. During peak registration days, the portal may be slow. Having your photo and documents pre-prepared saves time and avoids timeout errors during upload.',
         preparationTips: [
             'Prepare your photo and signature files in advance. SBI\'s portal can be slow during the first and last days of registration.',
-            'Keep the file size close to 30–40KB for optimal quality within the 20–50KB range.',
+            'Keep the file size close to 30–40KB for best quality within the 20–50KB range.',
             'If applying for both SBI Clerk and SBI PO, the same photo file can be used for both.',
         ],
         commonMistakes: [
@@ -402,7 +402,7 @@ const EXAM_CONTENT = {
             { href: '/image-compressor', label: 'Image Compressor' },
             { href: '/crop-image', label: 'Crop Image Tool' },
         ],
-        verificationNote: 'UPSC photo specifications may be updated in the exam notification or the ORA (One-Time Registration) guidelines on upsconline.nic.in. Always verify before uploading.',
+        verificationNote: 'UPSC photo specifications may be updated in the exam notification or the ORA (One-Time Registration) guidelines on upsconline.nic.in. always verify before uploading.',
     },
 
     'neet-photo-resizer': {
@@ -421,7 +421,7 @@ const EXAM_CONTENT = {
         preparationTips: [
             'Get a 3.5cm × 4.5cm passport-size photo taken at a studio. Ask for the digital copy at maximum resolution.',
             'Some NEET notification cycles require a postcard-size photo (4" × 6") with your name and date written on it — this is a separate physical requirement, not the online upload.',
-            'The 413×531 pixel specification is larger than SSC (275×354) or IBPS (200×230). Use a high-resolution original for best results.',
+            'The 413×531 pixel specification is larger than SSC (275×354) or IBPS (200×230). Use a high-resolution original for Excellent results.',
             'NTA may require photos with date printed on them in some cycles — check the specific year\'s notification.',
         ],
         commonMistakes: [
@@ -439,7 +439,7 @@ const EXAM_CONTENT = {
             { href: '/passport-size-photo', label: 'Passport Size Photo Maker' },
             { href: '/image-compressor', label: 'Image Compressor' },
         ],
-        verificationNote: 'NEET photo requirements may change between notification cycles. Always verify from the latest NTA NEET notification on neet.nta.nic.in.',
+        verificationNote: 'NEET photo requirements may change between notification cycles. consistently verify from the latest NTA NEET notification on neet.nta.nic.in.',
     },
 
     'jee-main-photo-resizer': {
@@ -585,7 +585,7 @@ const EXAM_CONTENT = {
             { mistake: 'Photo with accessories', detail: 'Avoid wearing dark glasses, heavy jewellery, or head coverings (except religious) in the photo.' },
         ],
         faqs: [
-            { q: 'Is Rajasthan Police photo size the same for Constable and SI?', a: 'Typically yes, but always verify from the specific recruitment notification. Different cadres may have separate portals.' },
+            { q: 'Is Rajasthan Police photo size the same for Constable and SI?', a: 'Typically yes, but consistently verify from the specific recruitment notification. Different cadres may have separate portals.' },
         ],
         relatedTools: [
             { href: '/up-police-photo-resizer', label: 'UP Police Photo Resizer' },
@@ -664,7 +664,7 @@ const EXAM_CONTENT = {
         ],
         whyMatters: 'GATE\'s 480×640px specification is the largest among common Indian exams — 4.6× larger than IBPS\'s 200×230px. However, the maximum file size is only 40KB, which means high JPEG compression is needed. This creates a challenging balance: the large dimensions require more pixels, but the small file size limit requires aggressive compression. This tool\'s binary-search algorithm is particularly useful here, finding the highest quality that fits within 40KB.',
         preparationTips: [
-            'GATE uses a very large dimension (480×640) with a small max file size (40KB). Start with a high-quality original and let this tool find the optimal compression.',
+            'GATE uses a very large dimension (480×640) with a small max file size (40KB). Start with a high-quality original and let this tool find the best compression.',
             'Aim for the 30–35KB range to balance quality and file size compliance.',
             'The organizing IIT changes each year — check the current year\'s GATE portal for the exact upload interface.',
         ],
@@ -698,7 +698,7 @@ const EXAM_CONTENT = {
         ],
         whyMatters: 'GDS recruitment uses a merit-based selection (no written exam in recent cycles). Document verification is the primary selection stage, making photo compliance and clarity critical. Since GDS posts are in rural areas, document verification may happen at divisional postal offices with basic printing facilities.',
         preparationTips: [
-            'GDS recruitment is merit-based (10th class marks). Ensure your documents, including the photo, are perfect since document verification is the main selection stage.',
+            'GDS recruitment is merit-based (10th class marks). Ensure your documents, including the photo, are excellent since document verification is the main selection stage.',
             'Keep multiple copies of the same photo file — GDS applications sometimes require re-upload during correction windows.',
         ],
         commonMistakes: [

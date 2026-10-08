@@ -112,7 +112,7 @@ export default function WarholPosterEffect() {
             <ToolLayout toolSlug="warhol-poster-effect" title="Warhol Pop Art Poster" description="Create a classic Andy Warhol style 4-panel pop art poster from your portrait." breadcrumb="Warhol Pop Art">
 
                 <div className="bg-amber-50 rounded-xl border border-amber-200 p-4 mb-6 text-sm text-amber-800">
-                    <i className="fas fa-info-circle mr-2"></i>For best results, use a photo with a <strong>solid or light background</strong> and high contrast on the face.
+                    <i className="fas fa-info-circle mr-2"></i>For Excellent results, use a photo with a <strong>solid or light background</strong> and high contrast on the face.
                 </div>
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">

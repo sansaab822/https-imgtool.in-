@@ -37,8 +37,8 @@ export default function FlipImage() {
 
     return (
         <>
-            <SEO title="Flip Image Horizontally Mirror Online — Free Flip Tool" description="Flip images horizontally or vertically online. Mirror photos left-right or up-down. Free, browser-based, instant download." canonical="/flip-image-horizontally" />
-            <ToolLayout toolSlug="flip-image-horizontally" title="Flip Image (Mirror)" description="Flip images horizontally (mirror), vertically, or both. Instant, browser-based." breadcrumb="Flip Image">
+            <SEO title="Flip Image Horizontally Mirror Online — Free Flip Tool" description="Flip images horizontally or vertically online. Mirror photos left-right or up-down. Free, browser-based, quick download." canonical="/flip-image-horizontally" />
+            <ToolLayout toolSlug="flip-image-horizontally" title="Flip Image (Mirror)" description="Flip images horizontally (mirror), vertically, or both. Quick, browser-based." breadcrumb="Flip Image">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = e => loadImg(e.target.files[0]); i.click() }}
@@ -96,7 +96,7 @@ export default function FlipImage() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Flip Image Online — Mirror or Vertical Flip</h2>
-                    <p className="text-slate-600">Flip or mirror your images horizontally or vertically online for free. Horizontal flipping (left-right mirror) is the most common operation — it creates a mirror reflection of your photo. Vertical flipping turns the image upside down. You can also apply both to rotate 180° while creating a full mirror effect. Processing is instant and done in your browser with the HTML5 Canvas API.</p>
+                    <p className="text-slate-600">Flip or mirror your images horizontally or vertically online for free. Horizontal flipping (left-right mirror) is the most common operation — it creates a mirror reflection of your photo. Vertical flipping turns the image upside down. You can also apply both to rotate 180° while creating a full mirror effect. Processing is quick and done in your browser with the HTML5 Canvas API.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Common Uses</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Fix selfies that appear mirrored from front camera</li>

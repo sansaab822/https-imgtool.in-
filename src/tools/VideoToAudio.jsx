@@ -72,7 +72,7 @@ export default function VideoToAudio() {
         <>
             <SEO
                 title="Video to Audio Extractor — Extract Audio from Video Free"
-                description="Extract audio from any video file online. Convert MP4, WebM, MOV to audio format. Free, no upload, works in browser. Download audio track instantly."
+                description="Extract audio from any video file online. Convert MP4, WebM, MOV to audio format. Free, no upload, works in browser. Download audio track quickly."
                 canonical="/video-to-audio"
             />
             <ToolLayout
@@ -146,7 +146,7 @@ export default function VideoToAudio() {
 
                 <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4 mb-6 text-sm text-amber-800">
                     <i className="fas fa-info-circle mr-2"></i>
-                    <strong>Browser Compatibility:</strong> This tool works best in Google Chrome and Microsoft Edge. Firefox may have limited audio capture support. The audio is extracted as WebM/Opus format.
+                    <strong>Browser Compatibility:</strong> This tool works optimal in Google Chrome and Microsoft Edge. Firefox may have limited audio capture support. The audio is extracted as WebM/Opus format.
                 </div>
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">

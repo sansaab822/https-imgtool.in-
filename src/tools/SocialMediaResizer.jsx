@@ -39,7 +39,7 @@ export default function SocialMediaResizer({
 
     const isSquare = width === height
     const title = seoTitle || `${platform} ${mediaType} Resizer — ${width}×${height}px Online`
-    const desc = seoDesc || `Resize your photo to the perfect ${platform} ${mediaType} dimensions (${width}×${height}px) online for free. Instant, private, no login required.`
+    const desc = seoDesc || `Resize your photo to the excellent ${platform} ${mediaType} dimensions (${width}×${height}px) online for free. Quick, private, no login required.`
 
     const loadImage = useCallback((file) => {
         if (!file || !file.type.startsWith('image/')) {
@@ -246,14 +246,14 @@ function SocialSeoContent({ slug, platform, mediaType, width, height }) {
                 <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
                     <h2 className="text-2xl font-bold text-slate-800">Resize Photo for {platform} {mediaType} — {width}×{height}px</h2>
                     <p>
-                        {platform} requires specific image dimensions for the best visual result. The ideal size for a {platform} {mediaType} is <strong>{width}×{height} pixels</strong>. If you upload an image with the wrong dimensions, {platform} will automatically crop or squish it, often in an unflattering way. Our free online resizer gives you full control — choose how your image is fitted (cover, contain, or stretch) and download the perfectly sized file ready to upload.
+                        {platform} requires specific image dimensions for the optimal visual result. The ideal size for a {platform} {mediaType} is <strong>{width}×{height} pixels</strong>. If you upload an image with the wrong dimensions, {platform} will automatically crop or squish it, often in an unflattering way. Our free online resizer gives you full control — choose how your image is fitted (cover, contain, or stretch) and download the Accurately sized file ready to upload.
                     </p>
                     <h3 className="text-lg font-bold text-slate-800 mt-6">How to Use</h3>
                     <ol className="list-decimal pl-5 space-y-2">
                         <li><strong>Upload your image</strong> — drag and drop or click to browse</li>
                         <li><strong>Choose fit mode</strong> — "Cover" fills the full canvas (may crop); "Fit" shows the whole image with background padding; "Stretch" fills exactly</li>
                         <li><strong>Select format</strong> — JPG for photos, PNG for logos/text with transparency</li>
-                        <li><strong>Click Resize</strong> and then <strong>Download</strong> your perfectly sized photo</li>
+                        <li><strong>Click Resize</strong> and then <strong>Download</strong> your Accurately sized photo</li>
                     </ol>
                     <h3 className="text-lg font-bold text-slate-800 mt-6">FAQs</h3>
                     <div className="space-y-3">
@@ -263,7 +263,7 @@ function SocialSeoContent({ slug, platform, mediaType, width, height }) {
                         </div>
                         <div>
                             <h4 className="font-bold text-slate-700">Does this tool upload my image to a server?</h4>
-                            <p className="mt-1">No. All processing happens locally in your browser. Your image is never uploaded anywhere.</p>
+                            <p className="mt-1">No. All processing happens locally in your browser. Your image is not uploaded anywhere.</p>
                         </div>
                     </div>
                 </div>
@@ -338,7 +338,7 @@ function SocialSeoContent({ slug, platform, mediaType, width, height }) {
                         ))}
                         <div>
                             <h4 className="font-bold text-sm text-slate-700">Does this tool upload my image to a server?</h4>
-                            <p className="text-sm text-slate-600 mt-1">No. All processing happens entirely in your browser. Your image is never sent to any server.</p>
+                            <p className="text-sm text-slate-600 mt-1">No. All processing happens entirely in your browser. Your image is not sent to any server.</p>
                         </div>
                     </div>
                 </div>

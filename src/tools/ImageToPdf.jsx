@@ -121,7 +121,7 @@ export default function ImageToPdf({ from = 'jpg' }) {
     const fromName = FORMAT_NAMES[from] || from.toUpperCase()
     const slug = `${from}-to-pdf`
     const seoTitle = `${fromName} to PDF Converter — Free Online`
-    const seoDesc = `Convert ${fromName} images to PDF online for free. Combine multiple ${fromName} files into a single PDF with page size, orientation, margin, and quality controls. 100% private.`
+    const seoDesc = `Convert ${fromName} images to PDF online for free. Combine multiple ${fromName} files into a single PDF with page size, orientation, margin, and quality controls. Fully private.`
 
     return (
         <>
@@ -335,7 +335,7 @@ function ImageToPdfSeoContent({ from, fromName }) {
                     <p className="text-sm text-slate-600">{data.formatNote}</p>
                     {data.bestFor && (
                         <div className="mt-3 bg-slate-50 rounded-lg p-3">
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Best For</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1">Ideal For</p>
                             <p className="text-sm text-slate-700">{data.bestFor}</p>
                         </div>
                     )}
@@ -346,7 +346,7 @@ function ImageToPdfSeoContent({ from, fromName }) {
             {data.tips && data.tips.length > 0 && (
                 <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
                     <h3 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
-                        <i className="fas fa-lightbulb text-amber-500"></i> Tips for Best Results
+                        <i className="fas fa-lightbulb text-amber-500"></i> Tips for Excellent Results
                     </h3>
                     <ul className="space-y-2.5">
                         {data.tips.map((tip, i) => (
@@ -374,7 +374,7 @@ function ImageToPdfSeoContent({ from, fromName }) {
                         ))}
                         <div>
                             <h4 className="font-bold text-sm text-slate-700">Does this tool upload my files to a server?</h4>
-                            <p className="text-sm text-slate-600 mt-1">No. All processing happens entirely in your browser. Your images are never sent to any server.</p>
+                            <p className="text-sm text-slate-600 mt-1">No. All processing happens entirely in your browser. Your images are not sent to any server.</p>
                         </div>
                     </div>
                 </div>

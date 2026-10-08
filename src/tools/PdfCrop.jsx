@@ -277,7 +277,7 @@ export default function PdfCrop() {
         setProcessing(true)
         setError('')
         try {
-            // FIX: re-read file fresh → new ArrayBuffer, never detached
+            // FIX: re-read file fresh → new ArrayBuffer, not detached
             const freshBuf = await pdfFileRef.current.arrayBuffer()
             const { PDFDocument } = await import('pdf-lib')
             const pdfDocLib = await PDFDocument.load(freshBuf)
@@ -317,7 +317,7 @@ export default function PdfCrop() {
         <>
             <SEO
                 title="PDF Crop Tool - Visually Crop PDF Pages Free Online"
-                description="Crop PDF pages visually. Draw crop area with mouse or set margins, apply to one or all pages, batch download. Free, 100% private — no upload."
+                description="Crop PDF pages visually. Draw crop area with mouse or set margins, apply to one or all pages, batch download. Free, fully private — no upload."
                 canonical="/pdf-crop"
             />
             <ToolLayout
@@ -348,13 +348,13 @@ export default function PdfCrop() {
                                     </div>
                                     <div className="text-center space-y-1">
                                         <p className="text-xl font-bold text-slate-700">Drop PDF here or <span className="text-amber-600">browse</span></p>
-                                        <p className="text-slate-400 text-sm">Draw crop area visually — no upload, 100% private</p>
+                                        <p className="text-slate-400 text-sm">Draw crop area visually — no upload, fully private</p>
                                     </div>
                                     <div className="flex flex-wrap justify-center gap-4 text-xs text-slate-400">
                                         <span><i className="fas fa-mouse-pointer mr-1 text-amber-400"></i>Draw crop area</span>
                                         <span><i className="fas fa-layer-group mr-1 text-amber-400"></i>All pages at once</span>
                                         <span><i className="fas fa-ruler mr-1 text-blue-400"></i>Margin mode</span>
-                                        <span><i className="fas fa-lock mr-1 text-green-400"></i>100% Private</span>
+                                        <span><i className="fas fa-lock mr-1 text-green-400"></i>Fully Private</span>
                                     </div>
                                 </div>
                             </div>
@@ -460,7 +460,7 @@ export default function PdfCrop() {
                                 {/* Main Canvas */}
                                 <div className="p-4 bg-[#e8ecf0] flex items-center justify-center min-h-[250px] md:min-h-[350px]">
                                     <div className="relative shadow-2xl rounded-lg overflow-hidden" style={{ lineHeight: 0 }}>
-                                        <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }} />
+                                        <canvas ref={canvasRef} style={{ display: 'block', maxWidth: 'fully' }} />
                                         <canvas ref={overlayRef}
                                             className="absolute top-0 left-0 w-full h-full"
                                             style={{ cursor: mode === 'draw' ? 'crosshair' : 'default', touchAction: 'none' }}
@@ -644,22 +644,33 @@ export default function PdfCrop() {
                 {/* SEO Content */}
                 <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Visual PDF Crop Tool — Trim Pages Precisely</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based PDF Cropping</h2>
                         <p>
-                            Our advanced PDF Crop tool lets you visually select the area you want to keep on any PDF page, without the need for any desktop software. Simply upload your PDF, draw a crop region on the live canvas preview, and download the cropped document instantly — all processing happens locally in your browser.
+                            PDF cropping allows you to define a new bounding box (the 'CropBox') for pages in a PDF document. This visually hides the content outside the box without actually deleting the underlying data. It is primarily used to remove unnecessary whitespace, scanner borders, or crop marks before printing or screen viewing.
                         </p>
-                        <h3 className="text-lg font-bold text-slate-800">Two Cropping Modes</h3>
+                        
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Operation Modes</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Draw Mode:</strong> Click and drag on the document preview to draw a crop box visually. The tool calculates the coordinates relative to the PDF's point system.</li>
+                            <li><strong>Margin Mode:</strong> Define numeric trims (in points) from the top, right, bottom, and left edges. This is useful for standardizing margins across a document.</li>
+                        </ul>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Application Scope</h3>
                         <p>
-                            Use <strong>Draw mode</strong> to manually drag a crop rectangle over the exact area you want to keep. Switch to <strong>Margin Trim mode</strong> to uniformly trim a fixed number of points from each edge — perfect for removing scanner borders or standardizing whitespace across a document.
+                            You can choose to apply the crop coordinates only to the currently visible page or to all pages in the document simultaneously. Applying to all pages is the most common use case for fixing scanner artifacts or standardizing the reading area on e-readers and tablets.
                         </p>
-                        <h3 className="text-lg font-bold text-slate-800">Apply to One Page or All Pages</h3>
-                        <p>
-                            You can apply the crop to just the current page or to every page in the document simultaneously. When cropping all pages, the same crop box coordinates are applied to each page, making it ideal for batch-trimming scanned documents or standardizing margins across a report.
-                        </p>
-                        <h3 className="text-lg font-bold text-slate-800">100% Private — No Upload</h3>
-                        <p>
-                            The entire PDF processing pipeline runs inside your browser using <strong>PDF.js</strong> for rendering and <strong>pdf-lib</strong> for editing. Your documents never leave your device, ensuring complete privacy.
-                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <h4 className="font-bold text-slate-700">Does cropping a PDF reduce the file size?</h4>
+                                <p className="mt-1">Usually, no. Cropping a PDF generally just alters the metadata telling the viewer which part of the page to display. The hidden text or image data outside the crop box is often retained in the file structure.</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-slate-700">Is my PDF sent to a server?</h4>
+                                <p className="mt-1">No. The file is parsed and edited entirely within your browser using Javascript. No data is uploaded or stored remotely.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </ToolLayout>

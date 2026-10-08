@@ -28,7 +28,7 @@ export default function AadhaarPrint() {
         const canvas = document.createElement('canvas')
         canvas.width = img.naturalWidth; canvas.height = img.naturalHeight
         const ctx = canvas.getContext('2d')
-        if (gray) ctx.filter = 'grayscale(100%)'
+        if (gray) ctx.filter = 'grayscale(fully)'
         ctx.drawImage(img, 0, 0)
         ctx.filter = 'none'
         return canvas.toDataURL('image/jpeg', 0.95)
@@ -51,7 +51,7 @@ export default function AadhaarPrint() {
         pdf.text('Aadhaar Card Print — A4 Sheet', a4W / 2, 15, { align: 'center' })
         pdf.setFontSize(8)
         pdf.setTextColor(150)
-        pdf.text(`${copies} copies · Print at 100% scale · Do not scale to fit`, a4W / 2, 22, { align: 'center' })
+        pdf.text(`${copies} copies · Print at fully scale · Do not scale to fit`, a4W / 2, 22, { align: 'center' })
 
         // Load images
         let frontDataUrl = null, backDataUrl = null
@@ -134,7 +134,7 @@ export default function AadhaarPrint() {
                                     </p>
                                     {img ? (
                                         <div className="relative rounded-xl overflow-hidden border-2 border-blue-200 group">
-                                            <img src={img} alt={label} className="w-full h-44 object-cover" style={{ filter: grayscale ? 'grayscale(100%)' : 'none' }} />
+                                            <img src={img} alt={label} className="w-full h-44 object-cover" style={{ filter: grayscale ? 'grayscale(fully)' : 'none' }} />
                                             <button onClick={() => setter(null)}
                                                 className="absolute top-2 right-2 w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <i className="fas fa-xmark"></i>
@@ -214,9 +214,9 @@ export default function AadhaarPrint() {
                         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 p-4 space-y-2">
                             <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-lightbulb text-amber-500 mr-2"></i>Print Tips</h4>
                             {[
-                                'Set printer scale to 100% (actual size)',
+                                'Set printer scale to fully (actual size)',
                                 'Use plain A4 paper (80gsm or higher)',
-                                'Select "Best" quality in print settings',
+                                'Select "optimal" quality in print settings',
                                 'Cut along dotted border lines',
                                 'Grayscale mode saves ink',
                             ].map(t => (
@@ -271,7 +271,7 @@ export default function AadhaarPrint() {
                             </div>
                             <div className="flex items-start gap-3 text-sm">
                                 <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold flex-shrink-0 text-xs">4</span>
-                                <p><strong>Click "Generate Print Sheet"</strong> and download the PDF. Open it in any PDF viewer and send it to your printer at 100% scale (actual size), not "fit to page."</p>
+                                <p><strong>Click "Generate Print Sheet"</strong> and download the PDF. Open it in any PDF viewer and send it to your printer at fully scale (actual size), not "fit to page."</p>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
                                 <span className="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold flex-shrink-0 text-xs">5</span>
@@ -279,12 +279,12 @@ export default function AadhaarPrint() {
                             </div>
                         </div>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Printing Tips for the Best Results</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Printing Tips for the Excellent results</h3>
                         <p>
-                            The single most critical step in getting a correctly sized printout is ensuring your PDF viewer does not automatically rescale the document to "fit" on the page. In Adobe Acrobat Reader, choose "Actual Size" under Page Sizing. In Windows' built-in PDF viewer, look for the scaling dropdown and set it to 100%. On Mac, choose "Scale: 100%" in the print dialog. Ignoring this step is the most common reason cards come out the wrong size, even when the PDF itself is correctly formatted.
+                            The single most critical step in getting a correctly sized printout is ensuring your PDF viewer does not automatically rescale the document to "fit" on the page. In Adobe Acrobat Reader, choose "Actual Size" under Page Sizing. In Windows' built-in PDF viewer, look for the scaling dropdown and set it to fully. On Mac, choose "Scale: fully" in the print dialog. Ignoring this step is the most common reason cards come out the wrong size, even when the PDF itself is correctly formatted.
                         </p>
                         <p>
-                            For the best print quality, use 80gsm or heavier paper stock. Thinner paper can cause the ink to bleed or appear slightly faded. If you are submitting a copy as an official document, print in color for clarity and keep your originals safe. For informal submissions or internal copies, the grayscale mode works perfectly. Remember that a printed Aadhaar is considered a valid document for identity verification under UIDAI guidelines when self-attested.
+                            For the optimal print quality, use 80gsm or heavier paper stock. Thinner paper can cause the ink to bleed or appear slightly faded. If you are submitting a copy as an official document, print in color for clarity and keep your originals safe. For informal submissions or internal copies, the grayscale mode works Accurately. Remember that a printed Aadhaar is considered a valid document for identity verification under UIDAI guidelines when self-attested.
                         </p>
                         <p>
                             If you need to scan your Aadhaar card photo and it is slightly tilted or has a colored background, you can use our <a href="/crop-image" className="text-blue-600 hover:underline">Crop Image Tool</a> to straighten and clean it up before uploading it here. For other official ID-sized photo tasks, our <a href="/passport-photo-maker" className="text-blue-600 hover:underline">Passport Photo Maker</a> can help generate properly formatted photographs for Aadhaar enrollment or passport applications.
@@ -294,15 +294,15 @@ export default function AadhaarPrint() {
                         <div className="space-y-4">
                             <div>
                                 <h4 className="font-bold text-slate-700">Is my Aadhaar data safe when I use this tool?</h4>
-                                <p className="mt-1">Absolutely. This tool operates entirely within your browser. The images you upload never leave your device and are never transmitted to any server. All the PDF generation happens locally using JavaScript, meaning your sensitive information stays 100% private.</p>
+                                <p className="mt-1">Absolutely. This tool operates entirely within your browser. The images you upload not leave your device and are not transmitted to any server. All the PDF generation happens locally using JavaScript, meaning your sensitive information stays fully private.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Why does my printout come out the wrong size?</h4>
-                                <p className="mt-1">The most common cause is the "fit to page" or "scale to fit" setting in your printer dialog. Always print at exactly 100% scale or "Actual Size" to get the correct 85.6×54mm output. Never allow your printer software to auto-resize the PDF.</p>
+                                <p className="mt-1">The most common cause is the "fit to page" or "scale to fit" setting in your printer dialog. consistently print at exactly fully scale or "Actual Size" to get the correct 85.6×54mm output. not allow your printer software to auto-resize the PDF.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Can I print just the front side without a back?</h4>
-                                <p className="mt-1">Yes. The tool works perfectly if you upload only the front, only the back, or both. If you upload just one side, it will arrange multiple copies of that single image neatly across the A4 sheet with cutting guides.</p>
+                                <p className="mt-1">Yes. The tool works Accurately if you upload only the front, only the back, or both. If you upload just one side, it will arrange multiple copies of that single image neatly across the A4 sheet with cutting guides.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">What paper size does this generate for?</h4>

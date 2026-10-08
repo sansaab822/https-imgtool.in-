@@ -87,7 +87,7 @@ export default function BlogPost() {
                     <div className="text-center sm:text-left">
                         <h3 className="font-bold text-slate-800 text-lg mb-1">{author}</h3>
                         <p className="text-slate-500 leading-relaxed text-sm">
-                            The IMG Tool team builds 100% free, private, browser-based tools to help you convert, optimize, and manage your images and PDFs without relying on sketchy cloud uploads.
+                            The IMG Tool team builds fully free, private, browser-based tools to help you convert, optimize, and manage your images and PDFs without relying on sketchy cloud uploads.
                         </p>
                     </div>
                 </div>

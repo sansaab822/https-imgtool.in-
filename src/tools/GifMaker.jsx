@@ -74,8 +74,8 @@ export default function GifMaker() {
 
     return (
         <>
-            <SEO title="GIF Maker from Images Online — Animated GIF Creator Free" description="Create animated GIFs from multiple images online. Control frame delay, order, and download instantly. Free browser-based GIF maker from photos." canonical="/gif-maker" />
-            <ToolLayout toolSlug="gif-maker" title="GIF Maker" description="Create animated GIFs from a series of images. Control frame speed and order. Download instantly." breadcrumb="GIF Maker">
+            <SEO title="GIF Maker from Images Online — Animated GIF Creator Free" description="Create animated GIFs from multiple images online. Control frame delay, order, and download quickly. Free browser-based GIF maker from photos." canonical="/gif-maker" />
+            <ToolLayout toolSlug="gif-maker" title="GIF Maker" description="Create animated GIFs from a series of images. Control frame speed and order. Download quickly." breadcrumb="GIF Maker">
 
                 <div
                     onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.multiple = true; i.onchange = e => addFrames(e.target.files); i.click() }}
@@ -147,7 +147,7 @@ export default function GifMaker() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Create Animated GIF from Images Online</h2>
-                    <p className="text-slate-600">Turn a series of images into an animated GIF in seconds. Upload your frames (any order), arrange them via drag and hover controls, set the delay between frames, and click to encode. Uses the open-source gif.js library for client-side GIF encoding — no file upload required. Perfect for animations, reactions, product carousels, and social media content.</p>
+                    <p className="text-slate-600">Turn a series of images into an animated GIF in seconds. Upload your frames (any order), arrange them via drag and hover controls, set the delay between frames, and click to encode. Uses the open-source gif.js library for client-side GIF encoding — no file upload required. Ideal for animations, reactions, product carousels, and social media content.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Frame Delay Guide</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li><strong>100ms (10fps)</strong>: Smooth animation</li>

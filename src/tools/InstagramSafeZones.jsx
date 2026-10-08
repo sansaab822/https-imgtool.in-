@@ -100,7 +100,7 @@ export default function InstagramSafeZones() {
                             <div className="flex flex-col items-center gap-3">
                                 <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center"><i className="fas fa-mobile-alt text-pink-400 text-2xl"></i></div>
                                 <p className="font-semibold text-slate-700">Drop your Reel / Story image</p>
-                                <p className="text-xs text-slate-400">Best with 9:16 (1080×1920) images</p>
+                                <p className="text-xs text-slate-400">optimal with 9:16 (1080×1920) images</p>
                             </div>
                         )}
                     </div>
@@ -147,7 +147,7 @@ export default function InstagramSafeZones() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Instagram Reel Safe Zones Overlay Tool</h2>
-                    <p className="text-slate-600">Add safe zone guides to your Instagram Reel, Story, TikTok and YouTube Shorts images. The colored overlay shows which parts of your image may be hidden by platform UI elements (like the caption area, like/comment buttons, and profile info). Content in the highlighted safe zone area will always be visible to viewers.</p>
+                    <p className="text-slate-600">Add safe zone guides to your Instagram Reel, Story, TikTok and YouTube Shorts images. The colored overlay shows which parts of your image may be hidden by platform UI elements (like the caption area, like/comment buttons, and profile info). Content in the highlighted safe zone area will consistently be visible to viewers.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Platform Safe Zone Guidelines</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li><strong>Instagram Reels</strong>: Keep important content out of top 12% and bottom 12%</li>

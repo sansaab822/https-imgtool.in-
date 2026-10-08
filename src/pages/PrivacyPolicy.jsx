@@ -3,14 +3,14 @@ import SEO from '../components/SEO'
 export default function PrivacyPolicy() {
     return (
         <>
-            <SEO title="Privacy Policy - IMG Tool" description="IMG Tool privacy policy — we never upload your images to our servers." canonical="/privacy-policy" />
+            <SEO title="Privacy Policy - IMG Tool" description="IMG Tool privacy policy — we not upload your images to our servers." canonical="/privacy-policy" />
             <div className="max-w-4xl mx-auto px-4 py-16">
                 <h1 className="text-4xl font-extrabold text-slate-800 mb-2">Privacy Policy</h1>
                 <p className="text-slate-500 mb-10">Last updated: February 2026</p>
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8 flex gap-4">
                     <i className="fas fa-shield-alt text-blue-600 text-2xl mt-1 flex-shrink-0"></i>
                     <div>
-                        <h3 className="font-bold text-blue-800 mb-1">TL;DR — Your Files Never Leave Your Device</h3>
+                        <h3 className="font-bold text-blue-800 mb-1">TL;DR — Your Files not Leave Your Device</h3>
                         <p className="text-blue-700 text-sm">All image processing happens entirely in your browser using JavaScript. We do not store, transmit, or have access to any files you process on IMG Tool.</p>
                     </div>
                 </div>

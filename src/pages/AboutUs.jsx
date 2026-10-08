@@ -15,13 +15,13 @@ export default function AboutUs() {
                             <i className="fas fa-layer-group text-blue-600"></i> Who We Are
                         </h2>
                         <p className="text-slate-600 leading-relaxed">Hi, I am Sanjeev, the solo developer behind IMG Tool. I built this platform because I was tired of "free" image converters that hit you with hidden paywalls, flooded your screen with intrusive popups, or forced you to upload private ID documents to unknown cloud servers just to shrink a photo by a few kilobytes. IMG Tool started as a small personal project to resize my own exam photos, and it has now grown into a comprehensive suite of 150+ dedicated image and PDF utilities.</p>
-                        <p className="text-slate-600 leading-relaxed mt-4">Every tool on this website—from image compressors to format converters—operates <strong>100% locally in your browser</strong> using HTML5 Canvas and WebAssembly. Your files never leave your device, guaranteeing absolute privacy and zero upload wait times.</p>
+                        <p className="text-slate-600 leading-relaxed mt-4">Every tool on this website—from image compressors to format converters—operates <strong>fully locally in your browser</strong> using HTML5 Canvas and WebAssembly. Your files not leave your device, guaranteeing absolute privacy and zero upload wait times.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
                         {[
-                            { icon: 'fa-shield-alt', color: 'text-indigo-600', bg: 'bg-indigo-50', title: 'Privacy First', desc: 'All processing happens on your device. We never see your files.' },
+                            { icon: 'fa-shield-alt', color: 'text-indigo-600', bg: 'bg-indigo-50', title: 'Privacy First', desc: 'All processing happens on your device. We not see your files.' },
                             { icon: 'fa-bolt', color: 'text-yellow-600', bg: 'bg-yellow-50', title: 'Lightning Fast', desc: 'No server round-trips. Instantaneous results powered by your hardware.' },
-                            { icon: 'fa-heart', color: 'text-red-500', bg: 'bg-red-50', title: 'Free Forever', desc: 'No subscriptions, no watermarks, no limits. Always 100% free.' },
+                            { icon: 'fa-heart', color: 'text-red-500', bg: 'bg-red-50', title: 'Free indefinitely', desc: 'No subscriptions, no watermarks, no limits. consistently fully free.' },
                         ].map(f => (
                             <div key={f.title} className={`${f.bg} rounded-2xl p-6 text-center`}>
                                 <div className={`${f.color} text-4xl mb-3`}><i className={`fas ${f.icon}`}></i></div>
@@ -32,7 +32,7 @@ export default function AboutUs() {
                     </div>
                     <div className="bg-white rounded-2xl border border-slate-200 p-8">
                         <h2 className="text-2xl font-bold text-slate-800 mb-4">Our Mission</h2>
-                        <p className="text-slate-600 leading-relaxed">Our mission is straightforward: to provide the fastest, most reliable, and secure online image utilities completely free of charge. Whether you are a student resizing a signature for a government form, a photographer converting RAW files to JPG, or a web developer optimizing WebP assets, IMG Tool provides a streamlined, no-nonsense interface to get the job done instantly.</p>
+                        <p className="text-slate-600 leading-relaxed">Our mission is straightforward: to provide the fastest, most reliable, and secure online image utilities completely free of charge. if you are a student resizing a signature for a government form, a photographer converting RAW files to JPG, or a web developer optimizing WebP assets, IMG Tool provides a streamlined, no-nonsense interface to get the job done quickly.</p>
                         <p className="text-slate-600 leading-relaxed mt-4">Currently featuring over 150+ distinct tools, we remain committed to a subscription-free model. Enjoy seamless compression and editing, entirely private and lightning fast.</p>
                     </div>
                 </div>

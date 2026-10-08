@@ -81,7 +81,7 @@ export default function JigsawPuzzleMaker() {
 
     return (
         <>
-            <SEO title="Turn Photo into Jigsaw Puzzle Online Free" description="Add realistic jigsaw puzzle cut lines over your images online. Free jigsaw puzzle effect generator. Specify grid sizes and instantly download." canonical="/jigsaw-puzzle-maker" />
+            <SEO title="Turn Photo into Jigsaw Puzzle Online Free" description="Add realistic jigsaw puzzle cut lines over your images online. Free jigsaw puzzle effect generator. Specify grid sizes and quickly download." canonical="/jigsaw-puzzle-maker" />
             <ToolLayout toolSlug="jigsaw-puzzle-maker" title="Jigsaw Puzzle Creator" description="Add realistic puzzle piece cut lines overlay to your images." breadcrumb="Jigsaw Maker">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">

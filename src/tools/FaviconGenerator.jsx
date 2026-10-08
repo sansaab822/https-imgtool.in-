@@ -87,7 +87,7 @@ export default function FaviconGenerator() {
         <>
             <SEO
                 title="Favicon Generator — Create Favicon.ico & PNG Icons Free"
-                description="Generate favicon.ico and PNG icons in all sizes (16x16, 32x32, 180x180, 192x192, 512x512) from any image. Free, instant, no signup required."
+                description="Generate favicon.ico and PNG icons in all sizes (16x16, 32x32, 180x180, 192x192, 512x512) from any image. Free, quick, no signup required."
                 canonical="/favicon-generator"
                 schema={{
                     '@context': 'https://schema.org',
@@ -100,7 +100,7 @@ export default function FaviconGenerator() {
             <ToolLayout
                 toolSlug="favicon-generator"
                 title="Favicon Generator"
-                description="Generate favicon and app icons in all sizes from any image. Perfect for websites & PWAs."
+                description="Generate favicon and app icons in all sizes from any image. Ideal for websites & PWAs."
                 breadcrumb="Favicon Generator"
             >
                 {/* Upload */}
@@ -123,7 +123,7 @@ export default function FaviconGenerator() {
                                     <i className="fas fa-star text-orange-400 text-2xl"></i>
                                 </div>
                                 <p className="font-semibold text-slate-700">Drop your logo or image here</p>
-                                <p className="text-sm text-slate-400">PNG with transparent background works best</p>
+                                <p className="text-sm text-slate-400">PNG with transparent background works optimal</p>
                             </div>
                         )}
                     </div>

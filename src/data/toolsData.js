@@ -1,10 +1,10 @@
 // Central registry of all tools for IMG Tool
 export const tools = [
     // ── Modern Formats ──────────────────────────────────────────
-    { slug: 'avif-to-jpg', name: 'AVIF to JPG', from: 'avif', to: 'jpg', category: 'modern-formats', icon: 'fa-file-image', color: 'indigo', description: 'Convert AVIF images to universal JPG format instantly.' },
+    { slug: 'avif-to-jpg', name: 'AVIF to JPG', from: 'avif', to: 'jpg', category: 'modern-formats', icon: 'fa-file-image', color: 'indigo', description: 'Convert AVIF images to universal JPG format quickly.' },
     { slug: 'avif-to-png', name: 'AVIF to PNG', from: 'avif', to: 'png', category: 'modern-formats', icon: 'fa-file-image', color: 'indigo', description: 'Convert AVIF to lossless PNG format.' },
     { slug: 'avif-to-webp', name: 'AVIF to WebP', from: 'avif', to: 'webp', category: 'modern-formats', icon: 'fa-globe', color: 'green', description: 'Convert AVIF to Google\'s WebP format.' },
-    { slug: 'heic-to-jpg', name: 'HEIC to JPG', from: 'heic', to: 'jpg', category: 'modern-formats', icon: 'fa-mobile-alt', color: 'blue', description: 'Convert iPhone HEIC photos to JPG instantly.' },
+    { slug: 'heic-to-jpg', name: 'HEIC to JPG', from: 'heic', to: 'jpg', category: 'modern-formats', icon: 'fa-mobile-alt', color: 'blue', description: 'Convert iPhone HEIC photos to JPG quickly.' },
     { slug: 'heic-to-png', name: 'HEIC to PNG', from: 'heic', to: 'png', category: 'modern-formats', icon: 'fa-mobile-alt', color: 'blue', description: 'Convert HEIC to transparent PNG.' },
     { slug: 'heic-to-webp', name: 'HEIC to WebP', from: 'heic', to: 'webp', category: 'modern-formats', icon: 'fa-mobile-alt', color: 'blue', description: 'Optimize iPhone images for the web.' },
     { slug: 'heic-to-gif', name: 'HEIC to GIF', from: 'heic', to: 'gif', category: 'modern-formats', icon: 'fa-mobile-alt', color: 'blue', description: 'Convert HEIC images to animated GIF format.' },
@@ -86,7 +86,7 @@ export const tools = [
     { slug: 'bg-remover', name: 'Background Remover', category: 'editors', icon: 'fa-eraser', color: 'purple', description: 'Remove backgrounds from images automatically.' },
     { slug: 'image-enhancer', name: 'Image Enhancer', category: 'editors', icon: 'fa-sliders-h', color: 'yellow', description: 'Enhance image quality with advanced filters.' },
     { slug: 'image-to-art', name: 'Image to Art', category: 'editors', icon: 'fa-palette', color: 'purple', description: 'Transform photos into artistic masterpieces.' },
-    { slug: 'passport-size-photo', name: 'Passport Photo', category: 'editors', icon: 'fa-id-card', color: 'blue', description: 'Create passport size photos instantly.' },
+    { slug: 'passport-size-photo', name: 'Passport Photo', category: 'editors', icon: 'fa-id-card', color: 'blue', description: 'Create passport size photos quickly.' },
     { slug: 'image-converter', name: 'Image Converter', category: 'editors', icon: 'fa-exchange-alt', color: 'indigo', description: 'Universal image format converter.' },
     { slug: 'all-image-converters', name: 'All Tools', category: 'editors', icon: 'fa-th-large', color: 'slate', description: 'Browse all 150+ image tools.' },
 
@@ -191,10 +191,10 @@ export const tools = [
     { slug: 'compress-image-20kb-30kb', name: 'Compress Image to 20–30KB', category: 'compress-to-size', icon: 'fa-weight', color: 'orange', description: 'Compress image to between 20KB and 30KB range.' },
 
     // ── Social Media Resizers ───────────────────────────────────────────────
-    { slug: 'whatsapp-dp-resize', name: 'WhatsApp DP Resize 500×500', category: 'social-media-tools', icon: 'fa-whatsapp', color: 'green', description: 'Resize photo to perfect WhatsApp DP size 500×500px without crop.' },
+    { slug: 'whatsapp-dp-resize', name: 'WhatsApp DP Resize 500×500', category: 'social-media-tools', icon: 'fa-whatsapp', color: 'green', description: 'Resize photo to excellent WhatsApp DP size 500×500px without crop.' },
     { slug: 'whatsapp-status-photo-resize', name: 'WhatsApp Status Photo Resize', category: 'social-media-tools', icon: 'fa-whatsapp', color: 'green', description: 'Resize photo to WhatsApp Status size 750×1334px.' },
     { slug: 'instagram-profile-photo-resize', name: 'Instagram Profile Photo Resize', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to Instagram profile size 110×110px.' },
-    { slug: 'instagram-post-resize', name: 'Instagram Post Resize 1080×1080', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to perfect Instagram square post size.' },
+    { slug: 'instagram-post-resize', name: 'Instagram Post Resize 1080×1080', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to excellent Instagram square post size.' },
     { slug: 'instagram-reels-thumbnail-resize', name: 'Instagram Reels Thumbnail Resize', category: 'social-media-tools', icon: 'fa-instagram', color: 'pink', description: 'Resize photo to Instagram Reels thumbnail 1080×1920px.' },
     { slug: 'facebook-profile-photo-resize', name: 'Facebook Profile Photo Resize', category: 'social-media-tools', icon: 'fa-facebook', color: 'blue', description: 'Resize photo to Facebook profile size 170×170px.' },
     { slug: 'facebook-cover-photo-resize', name: 'Facebook Cover Photo Resize', category: 'social-media-tools', icon: 'fa-facebook', color: 'blue', description: 'Resize photo to Facebook cover 851×315px.' },

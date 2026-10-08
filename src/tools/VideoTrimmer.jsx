@@ -94,13 +94,13 @@ export default function VideoTrimmer() {
         <>
             <SEO
                 title="Video Trimmer Online — Cut & Trim Video Free"
-                description="Trim and cut videos online for free. Set start and end points to extract any clip from your video. No upload, works in browser. Download trimmed video instantly."
+                description="Trim and cut videos online for free. Set start and end points to extract any clip from your video. No upload, works in browser. Download trimmed video quickly."
                 canonical="/video-trimmer"
             />
             <ToolLayout
                 toolSlug="video-trimmer"
                 title="Video Trimmer"
-                description="Trim and cut video clips to the exact segment you need. 100% in-browser, no upload."
+                description="Trim and cut video clips to the exact segment you need. fully in-browser, no upload."
                 breadcrumb="Video Trimmer"
             >
                 {/* Upload */}
@@ -207,7 +207,7 @@ export default function VideoTrimmer() {
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Common Uses</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Remove unwanted beginning or end of a recording</li>
-                        <li>Extract the best moment from a longer video</li>
+                        <li>Extract the optimal moment from a longer video</li>
                         <li>Create short clips for social media stories</li>
                         <li>Remove awkward silences from video recordings</li>
                     </ul>

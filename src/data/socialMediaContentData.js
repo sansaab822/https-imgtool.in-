@@ -25,7 +25,7 @@ export const SOCIAL_CONTENT = {
         intro: "WhatsApp Status photos are displayed in a full-screen vertical format on mobile devices. The recommended resolution is 750×1334 pixels (a 9:16 portrait aspect ratio), which matches the display area on most smartphones. Uploading at this exact size prevents WhatsApp from auto-scaling or cropping your image.",
         whyMatters: "When a status image doesn't match the vertical aspect ratio, WhatsApp either adds blurred background bars or zooms and crops the image to fill the screen. This often cuts off parts of the image or reduces sharpness. A correctly sized 750×1334px image fills the entire status screen cleanly.",
         preparationTips: [
-            "Use a vertical (portrait) orientation photo for the best result.",
+            "Use a vertical (portrait) orientation photo for the optimal result.",
             "Leave some breathing room at the top and bottom — the status bar and reply area may overlap your image on some devices.",
             "High-contrast images and bold text work best since status viewers typically glance quickly.",
             "Avoid very dark images — they can blend into the status UI on dark-mode devices."
@@ -67,7 +67,7 @@ export const SOCIAL_CONTENT = {
     },
     'instagram-post-resize': {
         intro: "Instagram's classic square post format uses 1080×1080 pixels. While Instagram now supports portrait and landscape posts, the square format remains the most consistent across feed layouts, previews, and the profile grid. This tool resizes your photo to the exact 1080×1080px square.",
-        whyMatters: "Your profile grid on Instagram shows all posts as square thumbnails regardless of the original orientation. A post designed as a square ensures the most important part of your image is always visible in the grid preview without unexpected cropping.",
+        whyMatters: "Your profile grid on Instagram shows all posts as square thumbnails regardless of the original orientation. A post designed as a square ensures the most important part of your image is consistently visible in the grid preview without unexpected cropping.",
         preparationTips: [
             "Keep the main subject centered — Instagram's grid preview crops from the center of the image.",
             "Use vibrant, high-contrast visuals since Instagram compresses uploads; high-contrast images survive compression better.",
@@ -79,7 +79,7 @@ export const SOCIAL_CONTENT = {
             { mistake: "Using very low-resolution source images", detail: "Instagram displays feed posts at 1080px wide. Source images below 600px will appear noticeably pixelated." }
         ],
         faqs: [
-            { q: "Does Instagram still prefer square posts?", a: "Instagram supports multiple aspect ratios, but the profile grid always shows square thumbnails. Square posts give you the most control over how they appear everywhere." },
+            { q: "Does Instagram still prefer square posts?", a: "Instagram supports multiple aspect ratios, but the profile grid consistently shows square thumbnails. Square posts give you the most control over how they appear everywhere." },
             { q: "What format should I use for Instagram posts?", a: "JPG at high quality (90%+) is ideal for photographs. Use PNG if your post has text with sharp edges or logos with flat colors." }
         ],
         relatedTools: [
@@ -110,7 +110,7 @@ export const SOCIAL_CONTENT = {
         ]
     },
     'facebook-profile-photo-resize': {
-        intro: "Facebook displays profile photos at 170×170 pixels on desktop and 128×128 pixels on mobile. The image is always rendered as a circle. Uploading a clean, centered 170×170px image gives you the best control over how your profile appears across all Facebook surfaces — timeline, comments, Messenger, and search results.",
+        intro: "Facebook displays profile photos at 170×170 pixels on desktop and 128×128 pixels on mobile. The image is consistently rendered as a circle. Uploading a clean, centered 170×170px image gives you the best control over how your profile appears across all Facebook surfaces — timeline, comments, Messenger, and search results.",
         whyMatters: "Your Facebook profile photo appears in dozens of places: next to every comment you make, in Messenger threads, in search results, and on your timeline. At 170px, details are small. A blurry or poorly cropped photo can make your profile look neglected, especially in professional or business contexts.",
         preparationTips: [
             "Use a simple headshot or logo — complex backgrounds become noise at 170px.",
@@ -198,7 +198,7 @@ export const SOCIAL_CONTENT = {
         ]
     },
     'twitter-profile-photo-resize': {
-        intro: "Twitter (now X) displays profile photos at 400×400 pixels, rendered as a circle. Your profile photo appears next to every tweet, reply, retweet, and DM. On a fast-scrolling timeline, a clear and distinctive 400×400px profile image helps followers instantly recognize your posts.",
+        intro: "Twitter (now X) displays profile photos at 400×400 pixels, rendered as a circle. Your profile photo appears next to every tweet, reply, retweet, and DM. On a fast-scrolling timeline, a clear and distinctive 400×400px profile image helps followers quickly recognize your posts.",
         whyMatters: "On Twitter/X, users scroll quickly through hundreds of tweets. Your profile photo is one of the primary ways people identify your posts at a glance. A blurry, generic, or incorrectly cropped photo makes your account less recognizable and can reduce engagement.",
         preparationTips: [
             "Use a distinctive, high-contrast image — it needs to be recognizable at timeline size (about 48px).",
@@ -229,7 +229,7 @@ export const SOCIAL_CONTENT = {
             "Avoid fine text or detailed imagery in the edges — they may be cropped entirely on mobile."
         ],
         commonMistakes: [
-            { mistake: "Placing important text in the corners", detail: "The corners of the 2560×1440 canvas are only visible on TV displays. Desktop and mobile users will never see content placed there." },
+            { mistake: "Placing important text in the corners", detail: "The corners of the 2560×1440 canvas are only visible on TV displays. Desktop and mobile users will not see content placed there." },
             { mistake: "Using an image smaller than 2048×1152", detail: "YouTube requires a minimum of 2048×1152px. Smaller images will be rejected during upload." }
         ],
         faqs: [

@@ -88,7 +88,7 @@ export default function PdfToExcel() {
     return (
         <>
             <SEO title="PDF to Excel/CSV Converter — Extract Tables from PDF Free" description="Extract tables from PDF and convert to CSV or Excel online. Free, no upload, browser-based PDF to spreadsheet converter. Works with structured PDFs." canonical="/pdf-to-excel" />
-            <ToolLayout toolSlug="pdf-to-excel" title="PDF to Excel / CSV" description="Extract tables from PDF files and download as CSV. 100% in-browser, no upload required." breadcrumb="PDF to Excel">
+            <ToolLayout toolSlug="pdf-to-excel" title="PDF to Excel / CSV" description="Extract tables from PDF files and download as CSV. fully in-browser, no upload required." breadcrumb="PDF to Excel">
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onDragOver={e => { e.preventDefault(); setIsDragging(true) }} onDragLeave={() => setIsDragging(false)} onDrop={handleDrop}
                         onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = '.pdf,application/pdf'; i.onchange = e => handleFile(e.target.files[0]); i.click() }}
@@ -105,7 +105,7 @@ export default function PdfToExcel() {
                                     <i className="fas fa-table text-red-400 text-2xl"></i>
                                 </div>
                                 <p className="font-semibold text-slate-700">Drop a PDF to extract its tables</p>
-                                <p className="text-sm text-slate-400">Works best with structured, text-based PDFs</p>
+                                <p className="text-sm text-slate-400">Works optimal with structured, text-based PDFs</p>
                             </div>
                         )}
                     </div>
@@ -167,10 +167,10 @@ export default function PdfToExcel() {
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">PDF to Excel / CSV Converter</h2>
                     <p className="text-slate-600">Extract tables from PDF files and convert them to CSV format that can be opened in Excel, Google Sheets, or any spreadsheet application. Our tool uses pdfjs to read the PDF text and group it into rows and columns based on position, detecting table structure automatically.</p>
-                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Best Results</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Excellent results</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
-                        <li>Works best with <strong>text-based PDFs</strong> (not scanned images)</li>
-                        <li>PDFs with clearly aligned columns and rows give the best output</li>
+                        <li>Works optimal with <strong>text-based PDFs</strong> (not scanned images)</li>
+                        <li>PDFs with clearly aligned columns and rows give the optimal output</li>
                         <li>Government reports, financial statements, and data exports work great</li>
                         <li>Scanned PDFs require OCR software for accurate extraction</li>
                     </ul>

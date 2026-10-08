@@ -112,7 +112,7 @@ export const PDF_TO_IMAGE_CONTENT = {
         ]
     },
     'pdf-to-png': {
-        intro: "Converting PDF pages to PNG gives you lossless, pixel-perfect images of each page. PNG is the preferred format when you need to extract diagrams, charts, technical drawings, or any content where text sharpness and fine detail matter more than file size. PNG also preserves clean edges on text, making it ideal for documentation and presentation workflows.",
+        intro: "Converting PDF pages to PNG gives you lossless, exact images of each page. PNG is the preferred format when you need to extract diagrams, charts, technical drawings, or any content where text sharpness and fine detail matter more than file size. PNG also preserves clean edges on text, making it ideal for documentation and presentation workflows.",
         whyConvert: "When extracting content from technical documents, research papers, or design files, JPG compression can blur fine lines and text edges. PNG preserves every pixel exactly as rendered, making it the right choice for academic citations, UI documentation, and any context where visual fidelity is more important than file size.",
         formatNote: "PNG files are significantly larger than JPG for the same content because PNG uses lossless compression. A single 300 DPI page can easily exceed 5MB in PNG format. If file size is a concern and the content is primarily photographs, consider using JPG instead.",
         tips: [
@@ -130,7 +130,7 @@ export const PDF_TO_IMAGE_CONTENT = {
         whyConvert: "Some legacy systems, email templates, and older web platforms specifically require GIF format. Converting a PDF page to GIF creates a lightweight, universally supported image that works even in the most basic image viewers and HTML email clients.",
         formatNote: "GIF supports only 256 colors per image. This means photographic PDF pages will lose color accuracy and may show visible banding. However, for black-and-white text documents, simple forms, and monochrome diagrams, GIF produces very compact files with acceptable quality.",
         tips: [
-            "GIF works best for simple, text-heavy, or monochrome PDF pages.",
+            "GIF is ideal for simple, text-heavy, or monochrome PDF pages.",
             "For colorful or photographic PDFs, use JPG instead to preserve color accuracy.",
             "72 DPI is usually sufficient for GIF since the format's color limitation already constrains quality."
         ],
@@ -146,6 +146,6 @@ export const MISSING_CONVERTER_INTROS = {
     'webp-to-ico': "Website favicons are typically expected in ICO format for maximum browser compatibility, including older versions of Internet Explorer. If your logo or icon exists only as a WebP file — common when working with modern web assets — converting it to ICO lets you create a proper favicon that works across all browsers, including those that don't support WebP.",
     'png-to-ico': "Creating a favicon for your website usually requires an ICO file. If your logo is in PNG format, converting it to ICO produces a proper multi-resolution icon file that browsers use for tab icons, bookmarks, and shortcut thumbnails. ICO files can contain multiple sizes (16×16 to 256×256) in a single file, ensuring your icon looks sharp at every display size.",
     'png-to-svg': "Converting a PNG raster image to SVG vector format is useful when you need a scalable version of a logo, icon, or simple graphic. Note that this conversion traces the pixel data into vector paths — it works well for simple shapes, logos with solid colors, and line art, but complex photographs will not produce useful SVG output.",
-    'jpg-to-ico': "If your website logo exists only as a JPG photograph, converting it to ICO format creates a compatible favicon file. Keep in mind that favicons are displayed at very small sizes (16–48 pixels), so complex photographs will look unclear at icon size. Simple, high-contrast images with bold shapes work best as favicons.",
+    'jpg-to-ico': "If your website logo exists only as a JPG photograph, converting it to ICO format creates a compatible favicon file. Keep in mind that favicons are displayed at very small sizes (16–48 pixels), so complex photographs will look unclear at icon size. Simple, high-contrast images with bold shapes work well as favicons.",
     'jpg-to-svg': "Converting a JPG photograph to SVG vector format uses image tracing to approximate the pixel data with vector paths. This works reasonably well for simple graphics, logos, and illustrations with distinct edges, but detailed photographs will produce very large SVG files with limited practical benefit. For photographs, raster formats (JPG, PNG, WebP) remain the better choice."
 }

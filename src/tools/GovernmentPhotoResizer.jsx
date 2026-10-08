@@ -25,16 +25,16 @@ function compressToKbRange(canvas, minKb, maxKb, mime = 'image/jpeg') {
             canvas.toBlob((b) => resolve(b), mime)
             return
         }
-        let lo = 0.05, hi = 0.99, best = null
+        let lo = 0.05, hi = 0.99, optimal = null
         function attempt(q) {
             canvas.toBlob((blob) => {
                 const kb = blob.size / 1024
-                if (!best || Math.abs(kb - (minKb + maxKb) / 2) < Math.abs(best.size / 1024 - (minKb + maxKb) / 2)) {
-                    best = blob
+                if (!optimal || Math.abs(kb - (minKb + maxKb) / 2) < Math.abs(optimal.size / 1024 - (minKb + maxKb) / 2)) {
+                    optimal = blob
                 }
                 if (kb > maxKb && q > lo + 0.01) attempt((q + lo) / 2)
                 else if (kb < minKb && q < hi - 0.01) { lo = q; attempt((q + hi) / 2) }
-                else resolve(best)
+                else resolve(optimal)
             }, mime, q)
         }
         attempt(0.85)
@@ -64,7 +64,7 @@ export default function GovernmentPhotoResizer({
     const inputRef = useRef()
 
     const title = seoTitle || `${examName} Photo Resizer — ${width}×${height}px, ${minKb}–${maxKb}KB`
-    const desc = seoDesc || `Resize your photo to exact ${examName} specifications: ${width}×${height} pixels, ${minKb}–${maxKb}KB. Free, fast, 100% private — processed in your browser.`
+    const desc = seoDesc || `Resize your photo to exact ${examName} specifications: ${width}×${height} pixels, ${minKb}–${maxKb}KB. Free, fast, fully private — processed in your browser.`
 
     const loadImage = useCallback((file) => {
         if (!file || !file.type.startsWith('image/')) {
@@ -223,8 +223,8 @@ export default function GovernmentPhotoResizer({
                             </button>
                         </div>
                         <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 text-xs text-indigo-700 space-y-1">
-                            <p className="font-bold flex items-center gap-1"><i className="fas fa-shield-alt"></i> 100% Private</p>
-                            <p>Your photo never leaves your device. All processing happens in your browser.</p>
+                            <p className="font-bold flex items-center gap-1"><i className="fas fa-shield-alt"></i> fully Private</p>
+                            <p>Your photo not leaves your device. All processing happens in your browser.</p>
                         </div>
                     </div>
                 </div>
@@ -258,7 +258,7 @@ function SeoContent({ slug, examName, width, height, minKb, maxKb }) {
                         <li><strong>Click Resize &amp; Compress:</strong> Our tool automatically resizes to exactly {width}×{height}px and adjusts the quality to bring the file size within the {minKb}–{maxKb}KB range.</li>
                         <li><strong>Download:</strong> Save the processed photo and upload it directly to the {examName} application form.</li>
                     </ol>
-                    <p className="text-xs text-slate-400 mt-4"><em>Always verify photo specifications from the latest official notification before uploading your application.</em></p>
+                    <p className="text-xs text-slate-400 mt-4"><em>consistently verify photo specifications from the latest official notification before uploading your application.</em></p>
                 </div>
             </div>
         )

@@ -106,7 +106,7 @@ export default function AIOldPhotoRestorer() {
                 "name": "Old Photo Restorer",
                 "applicationCategory": "MultimediaApplication",
                 "operatingSystem": "Any",
-                "description": "Restore old, damaged, faded, or scratched photos instantly online using advanced canvas filters. Free tool to enhance vintage memories.",
+                "description": "Restore old, damaged, faded, or scratched photos quickly online using advanced canvas filters. Free tool to enhance vintage memories.",
                 "url": "https://imgtool.in/ai-old-photo-restorer",
                 "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
             },
@@ -129,11 +129,11 @@ export default function AIOldPhotoRestorer() {
                     {
                         "@type": "Question",
                         "name": "Is my old photo uploaded to a server?",
-                        "acceptedAnswer": { "@type": "Answer", "text": "No. All restoration filtering is processed locally in your web browser. Your private family photos never leave your device." }
+                        "acceptedAnswer": { "@type": "Answer", "text": "No. All restoration filtering is processed locally in your web browser. Your private family photos not leave your device." }
                     },
                     {
                         "@type": "Question",
-                        "name": "How can I get the best results?",
+                        "name": "How can I get the Excellent results?",
                         "acceptedAnswer": { "@type": "Answer", "text": "Scan your old photos at the highest DPI possible (e.g., 600 DPI) before using the tool. Try the 'Low' intensity for subtle enhancements, or 'High' for heavily damaged or faded images." }
                     }
                 ]
@@ -145,7 +145,7 @@ export default function AIOldPhotoRestorer() {
         <ToolLayout toolSlug="ai-old-photo-restorer" title="Old Photo Restorer" description="Breathe life back into vintage photos. Reduce scratches, blur, and fading using multi-pass restoration filters." breadcrumb="Photo Restorer">
             <SEO 
                 title="Old Photo Restorer Online Free — Repair Vintage Photos" 
-                description="Restore old, scratched, faded, or damaged family photos instantly. 100% free online photo restoration tool with no watermarks and full privacy." 
+                description="Restore old, scratched, faded, or damaged family photos quickly. fully free online photo restoration tool with no watermarks and full privacy." 
                 canonical="/ai-old-photo-restorer" 
             />
             <script type="application/ld+json">{JSON.stringify(schemaData)}</script>

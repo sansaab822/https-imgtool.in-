@@ -10,7 +10,7 @@ const PAN_H_MM = 35   // height in mm
 
 const OUTPUT_OPTS = [
     { id: 'jpg', label: 'JPG', mime: 'image/jpeg', ext: 'jpg', desc: 'Smaller file, ideal for online upload' },
-    { id: 'png', label: 'PNG', mime: 'image/png', ext: 'png', desc: 'Lossless, best quality for printing' },
+    { id: 'png', label: 'PNG', mime: 'image/png', ext: 'png', desc: 'Lossless, optimal quality for printing' },
 ]
 
 const DPI_OPTS = [
@@ -138,7 +138,7 @@ export default function PanCardPhoto() {
             shCtx.fillStyle = '#4a5568'
             shCtx.font = `bold ${mmToPx(6, dpi)}px Arial`
             shCtx.textAlign = 'center'
-            shCtx.fillText('PAN Card Photos — Print Ready (100% Scale)', a4W / 2, mmToPx(12, dpi))
+            shCtx.fillText('PAN Card Photos — Print Ready (fully Scale)', a4W / 2, mmToPx(12, dpi))
 
             shCtx.fillStyle = '#a0aec0'
             shCtx.font = `${mmToPx(4, dpi)}px Arial`
@@ -172,7 +172,7 @@ export default function PanCardPhoto() {
             // Footer
             shCtx.fillStyle = '#a0aec0'
             shCtx.font = `${mmToPx(3.5, dpi)}px Arial`
-            shCtx.fillText('Cut along dashed lines · Do NOT scale — print at 100% (Actual Size)', a4W / 2, startY + totalH + mmToPx(8, dpi))
+            shCtx.fillText('Cut along dashed lines · Do NOT scale — print at fully (Actual Size)', a4W / 2, startY + totalH + mmToPx(8, dpi))
 
             const sheetDataUrl = sheetCanvas.toDataURL('image/jpeg', 0.92)
 
@@ -186,7 +186,7 @@ export default function PanCardPhoto() {
             pdf.setFontSize(11); pdf.setTextColor(80)
             pdf.text('PAN Card Photos — Print Ready', a4Wmm / 2, 12, { align: 'center' })
             pdf.setFontSize(7); pdf.setTextColor(150)
-            pdf.text(`Size: ${PAN_W_MM}×${PAN_H_MM}mm · ${copies.label} · Print at 100% scale`, a4Wmm / 2, 18, { align: 'center' })
+            pdf.text(`Size: ${PAN_W_MM}×${PAN_H_MM}mm · ${copies.label} · Print at fully scale`, a4Wmm / 2, 18, { align: 'center' })
 
             const imgDataUrl4Pdf = singleCanvas.toDataURL('image/jpeg', 0.96)
             const totalWmm = cols * PAN_W_MM + (cols - 1) * gapMm
@@ -205,7 +205,7 @@ export default function PanCardPhoto() {
                 }
             }
             pdf.setFontSize(7); pdf.setTextColor(160)
-            pdf.text('Cut along dotted lines · Print at 100% scale on A4 paper', a4Wmm / 2, a4Hmm - 12, { align: 'center' })
+            pdf.text('Cut along dotted lines · Print at fully scale on A4 paper', a4Wmm / 2, a4Hmm - 12, { align: 'center' })
 
             const pdfBlob = pdf.output('blob')
             const pdfUrl = URL.createObjectURL(pdfBlob)
@@ -260,7 +260,7 @@ export default function PanCardPhoto() {
                 "mainEntity": [
                     { "@type": "Question", "name": "What is the correct size for a PAN card photo?", "acceptedAnswer": { "@type": "Answer", "text": "The official NSDL and UTI requirement for a PAN card application photo is 25mm (width) × 35mm (height), with a white background and a minimum resolution of 200 DPI." } },
                     { "@type": "Question", "name": "Can I use a mobile photo for PAN card?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can upload any clear selfie or portrait photo (JPG, PNG, WebP). Our tool will crop it to the correct 25×35mm ratio and resize it to match the required DPI." } },
-                    { "@type": "Question", "name": "Is my photo safe when I use this tool?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. This tool runs entirely in your browser using JavaScript. Your photo is never uploaded to any server and stays private on your device throughout the entire process." } },
+                    { "@type": "Question", "name": "Is my photo safe when I use this tool?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. This tool runs entirely in your browser using JavaScript. Your photo is not uploaded to any server and stays private on your device throughout the entire process." } },
                 ]
             }
         ]
@@ -270,7 +270,7 @@ export default function PanCardPhoto() {
         <>
             <SEO
                 title="PAN Card Photo Resizer — Correct 25×35mm Size, Free Online"
-                description="Resize your photo to the exact PAN card dimensions: 25mm × 35mm at 300 DPI. NSDL/UTI compliant. Download a single photo or print 4–8 copies on A4 paper. 100% free, browser-based."
+                description="Resize your photo to the exact PAN card dimensions: 25mm × 35mm at 300 DPI. NSDL/UTI compliant. Download a single photo or print 4–8 copies on A4 paper. fully free, browser-based."
                 canonical="/pan-card-photo"
             />
             <script
@@ -281,7 +281,7 @@ export default function PanCardPhoto() {
             <ToolLayout
                 toolSlug="pan-card-photo"
                 title="PAN Card Photo Resizer"
-                description="Resize your photo to the official NSDL/UTI PAN card dimensions (25×35mm) and download a print-ready A4 sheet. 100% browser-based — your image never leaves your device."
+                description="Resize your photo to the official NSDL/UTI PAN card dimensions (25×35mm) and download a print-ready A4 sheet. fully browser-based — your image not leaves your device."
                 breadcrumb="PAN Card Photo"
             >
                 <div className="grid lg:grid-cols-3 gap-6">
@@ -303,7 +303,7 @@ export default function PanCardPhoto() {
                             <i className="fas fa-info-circle mt-0.5 flex-shrink-0 text-amber-500" />
                             <div>
                                 <strong>Official PAN Card Photo Size:</strong> 25mm × 35mm, white background, minimum 200 DPI.
-                                Upload any portrait/selfie — we'll auto-crop and resize to fit perfectly.
+                                Upload any portrait/selfie — we'll auto-crop and resize to fit Accurately.
                             </div>
                         </div>
 
@@ -330,7 +330,7 @@ export default function PanCardPhoto() {
                                         {[
                                             { icon: 'fa-ruler-combined', label: '25×35mm', sub: 'Exact NSDL size' },
                                             { icon: 'fa-print', label: '300 DPI', sub: 'Print ready' },
-                                            { icon: 'fa-shield-alt', label: '100% Private', sub: 'Browser only' },
+                                            { icon: 'fa-shield-alt', label: 'fully Private', sub: 'Browser only' },
                                         ].map(f => (
                                             <div key={f.label} className="bg-white rounded-xl border border-slate-100 p-3 shadow-sm">
                                                 <i className={`fas ${f.icon} text-orange-400 mb-1`} />
@@ -540,8 +540,8 @@ export default function PanCardPhoto() {
                                 <i className="fas fa-lightbulb text-amber-500" /> Print Tips
                             </h4>
                             {[
-                                'Print PDF at 100% scale — never "Fit to Page"',
-                                'Use glossy or matte photo paper for best results',
+                                'Print PDF at fully scale — not "Fit to Page"',
+                                'Use glossy or matte photo paper for Excellent results',
                                 'Cut cleanly along the dashed border lines',
                                 'Keep face centred, neutral expression, no glasses',
                                 'White background is mandatory for PAN applications',
@@ -570,7 +570,7 @@ export default function PanCardPhoto() {
                         </h2>
                         <p>
                             A PAN (Permanent Account Number) card is one of the most essential financial identity documents in India.
-                            Whether you are applying fresh, reapplying after a lost card, or requesting corrections, NSDL and UTI —
+                            if you are applying fresh, reapplying after a lost card, or requesting corrections, NSDL and UTI —
                             the two official agencies that process PAN applications — have strict rules about the photograph you submit.
                             The required dimensions are 25mm wide by 35mm tall, with a minimum resolution of 200 DPI and a pure white
                             background. Most smartphones take photos that are several megabytes in size and nowhere near these
@@ -582,7 +582,7 @@ export default function PanCardPhoto() {
                             studio photo, or an existing passport-style photograph — and the tool automatically crops it to the correct
                             25×35mm aspect ratio, scales it to your chosen DPI (200, 300, or 600), and lets you save it as either a
                             JPG or a lossless PNG file. The entire process takes under ten seconds and happens entirely within your
-                            browser. Your photo is never sent to any server.
+                            browser. Your photo is not sent to any server.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">
@@ -623,10 +623,10 @@ export default function PanCardPhoto() {
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">
-                            Preparing the Perfect PAN Card Photo at Home
+                            Preparing the excellent PAN Card Photo at Home
                         </h3>
                         <p>
-                            Taking your own photo at home is perfectly acceptable for a PAN card application — you do not need to
+                            Taking your own photo at home is Accurately acceptable for a PAN card application — you do not need to
                             visit a studio. However, a few simple steps will dramatically improve the quality:
                         </p>
                         <ul className="list-disc pl-5 space-y-2">
@@ -640,15 +640,15 @@ export default function PanCardPhoto() {
                             Printing the PDF Sheet Correctly
                         </h3>
                         <p>
-                            The single most critical rule for printing the generated PDF is: <strong>always print at 100% scale</strong>.
+                            The single most critical rule for printing the generated PDF is: <strong>consistently print at fully scale</strong>.
                             In Adobe Acrobat Reader, this setting appears as "Actual size" in the page sizing options. In Windows'
                             built-in PDF viewer or Microsoft Edge, look for the scale dropdown and manually type "100". On a Mac,
-                            the print dialog has a "Scale: 100%" option. If your printer software scales the page to "Fit to Printable
+                            the print dialog has a "Scale: fully" option. If your printer software scales the page to "Fit to Printable
                             Area" or similar, your 25mm photos will come out the wrong size and your application may be rejected.
-                            Always verify by measuring one printed photo with a ruler before cutting all of them.
+                            consistently verify by measuring one printed photo with a ruler before cutting all of them.
                         </p>
                         <p>
-                            For a more complete set of identity photo tools, you can also explore our <a href="/passport-size-photo" className="text-orange-500 hover:underline">Passport Size Photo Maker</a> for international photo formats, or our <a href="/aadhaar-card-print-setting-a4" className="text-orange-500 hover:underline">Aadhaar Print A4 Tool</a> to generate perfectly scaled Aadhaar card print sheets. If you need to reduce your file size after generating the photo, our <a href="/image-compressor" className="text-orange-500 hover:underline">Image Compressor</a> can help you meet online portal upload limits.
+                            For a more complete set of identity photo tools, you can also explore our <a href="/passport-size-photo" className="text-orange-500 hover:underline">Passport Size Photo Maker</a> for international photo formats, or our <a href="/aadhaar-card-print-setting-a4" className="text-orange-500 hover:underline">Aadhaar Print A4 Tool</a> to generate Accurately scaled Aadhaar card print sheets. If you need to reduce your file size after generating the photo, our <a href="/image-compressor" className="text-orange-500 hover:underline">Image Compressor</a> can help you meet online portal upload limits.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">
@@ -694,14 +694,14 @@ export default function PanCardPhoto() {
                                 <p className="mt-1">
                                     No. There are absolutely no watermarks, logos, or branding of any kind added to your generated photo
                                     or PDF. The output is a completely clean, professional image suitable for official government submissions.
-                                    It is also 100% free to use, with no account required.
+                                    It is also fully free to use, with no account required.
                                 </p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Does the tool crop my face automatically?</h4>
                                 <p className="mt-1">
                                     The tool performs a center crop of your image to match the 25×35mm aspect ratio. It shows you a face
-                                    position guide overlay on the preview so you can see whether your face is well-centred. For best results,
+                                    position guide overlay on the preview so you can see whether your face is well-centred. For Excellent results,
                                     make sure your face is centred in your original photo before uploading, and that there is a reasonable
                                     amount of space above your head and below your chin.
                                 </p>

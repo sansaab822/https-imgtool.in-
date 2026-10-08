@@ -63,10 +63,10 @@ export default function AddDropShadow() {
     return (
         <>
             <SEO title="Add Drop Shadow to PNG Image Online Free" description="Add customizable drop shadow to transparent PNG images online. Set shadow offset, blur, color, and opacity. Free browser-based shadow generator." canonical="/add-drop-shadow" />
-            <ToolLayout toolSlug="add-drop-shadow" title="Add Drop Shadow" description="Add a customizable drop shadow to PNG images. Works best with transparent PNGs. Browser-based." breadcrumb="Add Drop Shadow">
+            <ToolLayout toolSlug="add-drop-shadow" title="Add Drop Shadow" description="Add a customizable drop shadow to PNG images. Works optimal with transparent PNGs. Browser-based." breadcrumb="Add Drop Shadow">
 
                 <div className="bg-amber-50 rounded-xl border border-amber-200 p-4 mb-6 text-sm text-amber-800">
-                    <i className="fas fa-info-circle mr-2"></i>For best results, upload a <strong>transparent PNG</strong> — the shadow will appear around the subject with no background.
+                    <i className="fas fa-info-circle mr-2"></i>For Excellent results, upload a <strong>transparent PNG</strong> — the shadow will appear around the subject with no background.
                 </div>
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
@@ -146,11 +146,11 @@ export default function AddDropShadow() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Add Drop Shadow to PNG Image Online</h2>
-                    <p className="text-slate-600">Add a professional drop shadow effect to transparent PNG images directly in your browser. Control the shadow's X/Y offset, blur radius, color, and opacity. The tool automatically expands the canvas to accommodate the shadow so nothing is cropped. Works best with transparent PNGs — perfect for product photos, icons, UI elements, and sticker packs.</p>
+                    <p className="text-slate-600">Add a professional drop shadow effect to transparent PNG images directly in your browser. Control the shadow's X/Y offset, blur radius, color, and opacity. The tool automatically expands the canvas to accommodate the shadow so nothing is cropped. Works optimal with transparent PNGs — Ideal for product photos, icons, UI elements, and sticker packs.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Shadow Style Guide</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li><strong>Soft shadow</strong>: High blur (30-40px), low opacity (30-40%)</li>
-                        <li><strong>Hard shadow</strong>: Zero or low blur, high opacity (70-100%)</li>
+                        <li><strong>Hard shadow</strong>: Zero or low blur, high opacity (70-fully)</li>
                         <li><strong>Floating effect</strong>: Large offset (10-20px), medium blur</li>
                         <li><strong>Glow effect</strong>: Use colored shadow (blue/purple), zero offset, high blur</li>
                     </ul>

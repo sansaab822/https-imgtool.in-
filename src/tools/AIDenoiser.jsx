@@ -71,7 +71,7 @@ export default function AIDenoiser() {
                             <div className="flex flex-col items-center gap-3">
                                 <div className="w-16 h-16 bg-violet-100 rounded-2xl flex items-center justify-center"><i className="fas fa-magic text-violet-500 text-2xl"></i></div>
                                 <p className="font-semibold text-slate-700">Drop grainy photo to denoise</p>
-                                <p className="text-xs text-slate-400">Best for low-light, ISO noise, and grain</p>
+                                <p className="text-xs text-slate-400">ideal for low-light, ISO noise, and grain</p>
                             </div>
                         )}
                     </div>

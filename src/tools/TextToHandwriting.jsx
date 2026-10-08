@@ -218,13 +218,13 @@ export default function TextToHandwriting() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Text to Handwriting Converter</h2>
-                    <p className="text-slate-600">Convert any typed text into beautiful handwriting-style images using free Google Fonts. Perfect for notes, greeting cards, school projects, social media posts, and anywhere you want a personal, handwritten touch.</p>
+                    <p className="text-slate-600">Convert any typed text into beautiful handwriting-style images using free Google Fonts. Ideal for notes, greeting cards, school projects, social media posts, and anywhere you want a personal, handwritten touch.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Available Handwriting Fonts</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li><strong>Caveat</strong> — Casual and friendly, like everyday note-taking</li>
                         <li><strong>Dancing Script</strong> — Elegant and flowing, great for invitations</li>
                         <li><strong>Satisfy</strong> — Bold and expressive signature style</li>
-                        <li><strong>Pacifico</strong> — Fun and rounded, perfect for headings</li>
+                        <li><strong>Pacifico</strong> — Fun and rounded, Ideal for headings</li>
                         <li><strong>Sacramento</strong> — Thin and delicate calligraphy style</li>
                         <li><strong>Kalam</strong> — Indian handwriting style, supports Devanagari</li>
                     </ul>

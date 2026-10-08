@@ -119,7 +119,7 @@ export default function ColorPaletteGenerator() {
             <ToolLayout
                 toolSlug="color-palette-generator"
                 title="Color Palette Generator"
-                description="Generate harmonious color palettes or extract colors from images. Copy hex, RGB, and HSL values instantly."
+                description="Generate harmonious color palettes or extract colors from images. Copy hex, RGB, and HSL values quickly."
                 breadcrumb="Color Palette Generator"
             >
                 {/* Tabs */}
@@ -206,7 +206,7 @@ export default function ColorPaletteGenerator() {
                         <li><strong>Complementary</strong> — Two colors opposite on the color wheel. High contrast, vibrant.</li>
                         <li><strong>Triadic</strong> — Three colors evenly spaced. Balanced and visually interesting.</li>
                         <li><strong>Analogous</strong> — Three adjacent colors. Natural, harmonious look.</li>
-                        <li><strong>Shades</strong> — Five tints and shades of the same hue. Perfect for UI gradients.</li>
+                        <li><strong>Shades</strong> — Five tints and shades of the same hue. Ideal for UI gradients.</li>
                         <li><strong>Split-complementary</strong> — One base color plus two adjacent to its complement.</li>
                         <li><strong>Tetradic</strong> — Four colors in two complementary pairs. Rich and complex.</li>
                     </ul>

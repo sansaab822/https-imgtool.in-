@@ -87,7 +87,7 @@ export default function EmojiMosaic() {
     return (
         <>
             <SEO title="Photo to Emoji Mosaic Generator Online Free" description="Recreate your photos using hundreds of emojis! Convert any image to emoji art online for free. Fun, creative mosaic generator." canonical="/emoji-mosaic" />
-            <ToolLayout toolSlug="emoji-mosaic" title="Emoji Mosaic Art" description="Rebuild your photos entirely out of colorful emojis. Instant generation." breadcrumb="Emoji Mosaic">
+            <ToolLayout toolSlug="emoji-mosaic" title="Emoji Mosaic Art" description="Rebuild your photos entirely out of colorful emojis. Quick generation." breadcrumb="Emoji Mosaic">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = e => loadImg(e.target.files[0]); i.click() }}

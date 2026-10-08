@@ -20,7 +20,7 @@ export default function BlogPage() {
                             Tips, Tutorials & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Guides</span>
                         </h1>
                         <p className="text-xl text-slate-500 leading-relaxed">
-                            Discover the best ways to optimize your images, compress files, and manage PDFs securely in your browser.
+                            Discover the optimal ways to optimize your images, compress files, and manage PDFs securely in your browser.
                         </p>
                     </div>
 

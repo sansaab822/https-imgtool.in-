@@ -175,7 +175,7 @@ export default function ImageResizer() {
                                     </div>
                                     <div className="text-center">
                                         <p className="text-lg font-bold text-slate-700">Drop image to resize or <span className="text-blue-600">browse</span></p>
-                                        <p className="text-slate-400 text-sm mt-0.5">All formats supported · Pixel-perfect resize</p>
+                                        <p className="text-slate-400 text-sm mt-0.5">All formats supported · Accurate resize</p>
                                     </div>
                                 </div>
                             </div>
@@ -379,24 +379,31 @@ export default function ImageResizer() {
                     />
 
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">The Ultimate Free Image Resizer for Every Platform</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based Image Resizing</h2>
                         <p>
-                            Getting your visual content to fit perfectly across different digital platforms is a constant struggle for creators, marketers, and developers alike. Whether you are trying to upload a profile picture that keeps getting cropped awkwardly or preparing an advertising banner that requires exact pixel dimensions, a reliable image resizer is an absolute must-have utility. Our tool empowers you to scale your photographs precisely without relying on heavy desktop software. It takes the guesswork out of formatting by giving you total control over the exact width, height, and aspect ratio of your files directly within your browser.
+                            Digital platforms enforce strict dimension guidelines. When you upload an image that is too large or uses the wrong aspect ratio, social networks and CMS platforms often aggressively compress or crop it. This tool lets you manually set the exact width, height, and aspect ratio of your image before uploading, giving you control over how the final asset is displayed.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Why Precise Dimensions Matter</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">How Resizing Works Under the Hood</h3>
                         <p>
-                            Digital platforms enforce strict dimension guidelines for a reason. If you upload a massive 4K photograph as your Facebook profile picture, the social network will aggressively shrink and compress it, often resulting in a blurry, pixelated mess. Conversely, if you try to stretch a tiny thumbnail to fit a YouTube banner, it will look completely distorted. By manually adjusting the pixel dimensions of your assets prior to uploading them, you ensure that algorithms do not ruin your hard work. This process guarantees that your visuals look incredibly sharp and professional exactly where they are meant to be displayed.
+                            When you drop an image into this tool, your browser renders it onto an invisible HTML5 canvas element. Depending on the fit mode you select (Fit, Fill, or Stretch), the canvas calculates the new bounding box and redraws the image data at the new scale. Because this process uses your local machine's memory rather than a remote server, it is secure and operates with zero network latency.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Versatile Real-World Scenarios</h3>
-                        <p>
-                            This utility is designed for maximum versatility. Graphic designers use it consistently to generate multiple variations of a single master concept, exporting perfectly sized copies for Instagram stories, Twitter headers, and LinkedIn banners in seconds using our built-in preset buttons. E-commerce store owners leverage the pixel-perfect controls to ensure all product gallery thumbnails have completely uniform dimensions, which is critical for maintaining a clean, trustworthy website design. Even everyday users find it invaluable for shrinking massive smartphone photos down to more reasonable dimensions before emailing them to family members.
-                        </p>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Fit Modes Explained</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Fit (Preserve Ratio):</strong> The image scales down until it fits entirely inside your target dimensions. If the aspect ratios differ, transparent (or white) padding is added to the sides or top.</li>
+                            <li><strong>Fill (Crop to Ratio):</strong> The image scales so that it completely covers the target dimensions. Any excess image data outside the bounding box is cropped and discarded.</li>
+                            <li><strong>Stretch (Ignore Ratio):</strong> The image forces its width and height to match your targets exactly, causing the image to look squished or stretched.</li>
+                        </ul>
 
-                        <p>
-                            If you have successfully scaled your graphic but find that the resulting file size in megabytes is still too large for your specific needs, we highly recommend running the output through our dedicated <a href="/image-compressor" className="text-cyan-600 hover:underline">Image Compressor Tool</a> next. If you are preparing an image and realize the background is distracting, you can use our <a href="/bg-remover" className="text-cyan-600 hover:underline">Background Remover Tool</a> before resizing it. Or, if you simply need to convert the final asset into a document format, our <a href="/jpg-to-pdf" className="text-cyan-600 hover:underline">JPG to PDF Converter</a> is always freely accessible on imgtool.in.
-                        </p>
+                        <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 my-6">
+                            <h4 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
+                                <i className="fas fa-info-circle text-blue-500"></i> Next Steps
+                            </h4>
+                            <p className="text-sm text-blue-800 mb-0">
+                                If your resized image file is still too large in kilobytes, run it through our <a href="/image-compressor" className="font-bold underline hover:text-blue-600">Image Compressor</a>. If you need to isolate a subject before resizing, use the <a href="/bg-remover" className="font-bold underline hover:text-blue-600">Background Remover</a>.
+                            </p>
+                        </div>
 
                         <img
                             src="/images/tools/image-resizer-example.png"
@@ -406,41 +413,24 @@ export default function ImageResizer() {
                             className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
                         />
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Valuable Best Practices</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Limitations and Recommended Practices</h3>
                         <p>
-                            To achieve the best possible results when modifying your graphics, always try to scale down rather than scale up. Taking a massive 3000-pixel wide photo and shrinking it to 1000 pixels will result in a beautifully crisp image. However, taking a 300-pixel wide thumbnail and forcing it to stretch to 1000 pixels will inevitably cause severe blurriness and visual artifacting because the computer has to invent pixels that do not exist in the original file. Whenever possible, always start your workflow with the highest resolution master file you have available.
+                            Traditional resizing cannot invent missing detail. While you can technically enlarge a small file using this utility, the browser must stretch existing pixels, which inevitably leads to a blurry or blocky appearance. For crisp results, we recommend starting with a high-resolution source file and scaling down.
                         </p>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Smart Tool Capabilities</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Aspect Ratio Locking:</strong> Ensure your photos never look squished or stretched by automatically calculating the reciprocal height when you type in a new width constraint.</li>
-                            <li><strong>Social Media Presets:</strong> Instant one-click resizing for the most common digital platforms, removing the need to memorize complex dimension requirements.</li>
-                            <li><strong>Percentage Scaling:</strong> Quickly halve (50%) or double (200%) an image's size without having to do any complicated pixel math.</li>
-                            <li><strong>Intelligent Fit Modes:</strong> Choose exactly how your graphic behaves within the new boundaries—whether it should fit proportionally, stretch to fill, or crop the excess.</li>
-                            <li><strong>Local Processing Strategy:</strong> Benefit from instant, zero-latency processing as all canvas manipulations happen exclusively within your device's memory.</li>
-                        </ul>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
                         <div className="space-y-4">
                             <div>
-                                <h4 className="font-bold text-slate-700">Does changing the pixel dimensions also reduce the file size?</h4>
-                                <p className="mt-1">Yes, in the vast majority of cases, scaling down the physical dimensions (e.g., from 4000px to 1000px) significantly reduces the total amount of pixel data the file contains, naturally resulting in a much smaller file footprint stored in kilobytes or megabytes.</p>
+                                <h4 className="font-bold text-slate-700">Does changing the pixel dimensions reduce the file size?</h4>
+                                <p className="mt-1">Yes. Scaling down the physical dimensions (e.g., from 4000px to 1000px) significantly reduces the total amount of pixel data, resulting in a smaller file size in kilobytes.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">Why does my photo look distorted or squished after resizing?</h4>
-                                <p className="mt-1">Distortion occurs when you manually enter a new width and height while the "Lock Aspect Ratio" feature is disabled. If you force a rectangular landscape photo into a perfect square constraint without using a cropping mode, the visual elements will compress awkwardly to fit into the new boundaries.</p>
+                                <h4 className="font-bold text-slate-700">Why does my photo look distorted?</h4>
+                                <p className="mt-1">Distortion occurs when you manually enter a new width and height while the "Lock Aspect Ratio" feature is disabled. To prevent this, keep the lock enabled or use the 'Fill' mode to crop instead of stretch.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">What is the difference between the Fit and Fill modes?</h4>
-                                <p className="mt-1">The 'Fit' mode scales your graphic until both its width and height comfortably fit inside your targeted dimensions, adding transparent or white space to fill any gaps. The 'Fill' mode aggressively scales the graphic until the targeted area is completely covered, which often results in the edges of the image being cropped out.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Can I enlarge a tiny photo without it becoming blurry?</h4>
-                                <p className="mt-1">Traditional resizing cannot magically invent missing detail. While you can technically enlarge a small file using this utility, the browser has to stretch existing pixels, which naturally leads to a blurry or blocky appearance depending on how aggressively you try to scale it up.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Are there any limits on the formats I can upload?</h4>
-                                <p className="mt-1">Our canvas engine natively supports all standard web formats including JPEG, PNG, WebP, and BMP. You can drop any of these files onto the interface, modify their dimensions, and freely select which format you want the final downloaded file to utilize.</p>
+                                <h4 className="font-bold text-slate-700">What output formats are supported?</h4>
+                                <p className="mt-1">The canvas engine natively exports to JPEG, PNG, and WebP. You can upload most standard web formats and select your preferred output.</p>
                             </div>
                         </div>
                     </div>

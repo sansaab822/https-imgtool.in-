@@ -156,7 +156,7 @@ export default function ImageCompressor() {
 
     return (
         <>
-            <SEO title="Image Compressor - Reduce File Size Free Online" description="Compress images without losing quality. Supports JPG, PNG, WebP. Batch compression with visual comparison. 100% private." canonical="/image-compressor" />
+            <SEO title="Image Compressor - Reduce File Size Free Online" description="Compress images without losing quality. Supports JPG, PNG, WebP. Batch compression with visual comparison. Fully private." canonical="/image-compressor" />
             <ToolLayout toolSlug="image-compressor" title="Image Compressor" description="Reduce image file size while maintaining quality. Batch compress with before/after comparison." breadcrumb="Image Compressor">
                 <div className="grid lg:grid-cols-3 gap-6">
                     {/* ── Left Panel ── */}
@@ -400,7 +400,7 @@ export default function ImageCompressor() {
                                         </button>
                                     ))}
                                 </div>
-                                {outputFmt === 'avif' && <p className="text-[10px] text-amber-600 mt-1"><i className="fas fa-triangle-exclamation mr-1"></i>AVIF: best compression, may be slower</p>}
+                                {outputFmt === 'avif' && <p className="text-[10px] text-amber-600 mt-1"><i className="fas fa-triangle-exclamation mr-1"></i>AVIF: highest compression, may be slower</p>}
                                 {outputFmt === 'webp' && <p className="text-[10px] text-green-600 mt-1"><i className="fas fa-star mr-1"></i>WebP: recommended — 30% smaller than JPG</p>}
                             </div>
 
@@ -443,8 +443,8 @@ export default function ImageCompressor() {
 
                         {/* Features */}
                         <div className="bg-gradient-to-br from-orange-50 to-rose-50 rounded-xl border border-orange-100 p-4 space-y-2">
-                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-bolt text-orange-500 mr-2"></i>Premium Features</h4>
-                            {['Target-KB compress mode', 'AVIF & WebP next-gen output', 'Batch compress + ZIP download', 'Visual before/after comparison', 'Binary-search quality optimizer', '100% browser-based — no uploads'].map(f => (
+                            <h4 className="font-bold text-slate-700 text-sm"><i className="fas fa-bolt text-orange-500 mr-2"></i>Features</h4>
+                            {['Target-KB compress mode', 'AVIF & WebP next-gen output', 'Batch compress + ZIP download', 'Visual before/after comparison', 'Binary-search quality optimizer', 'Fully browser-based — no uploads'].map(f => (
                                 <div key={f} className="flex items-center gap-2 text-xs text-slate-600">
                                     <i className="fas fa-check text-green-500 flex-shrink-0"></i> {f}
                                 </div>
@@ -463,23 +463,25 @@ export default function ImageCompressor() {
                     />
 
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Advanced Image Compressor for Faster Web Performance</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based Image Compression</h2>
                         <p>
-                            In today's fast-paced digital ecosystem, the speed at which your website loads is absolutely critical for retaining visitors and ranking highly on search engines. Large, unoptimized images are the number one culprit behind slow-loading pages. Our advanced image compressor tool solves this problem instantly by intelligently reducing the file size of your photos without any visible loss in quality. Whether you are a professional photographer trying to share your portfolio or an e-commerce store owner seeking better load times, shrinking your digital assets is a non-negotiable step in your workflow.
+                            Large images increase page load times and consume unnecessary bandwidth. This tool reduces file sizes by compressing image data locally in your browser. It uses HTML5 Canvas APIs and modern format encoders (like WebP and AVIF) to optimize images without requiring server uploads.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How It Works Behind the Scenes</h3>
-                        <p>
-                            Our platform utilizes sophisticated browser-side compression algorithms. Unlike older platforms that require you to upload your personal photos to distant servers, our utility processes the raw pixel data directly within your own web browser. By smartly analyzing the pixel grid, the tool strips away redundant structural data and invisible metadata that digital cameras append to files. This translates into massive byte savings while keeping the visual fidelity completely intact. Best of all, because no files leave your device, your private data remains completely secure.
-                        </p>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Compression Methods</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Quality Mode:</strong> You manually select a quality percentage (e.g., 75%). The browser encodes the image at that specific quality level. Lower percentages result in smaller files but introduce compression artifacts (like blockiness or color banding).</li>
+                            <li><strong>Target Size Mode:</strong> You specify a maximum file size in kilobytes. The tool runs a binary search algorithm—compressing the image multiple times in the background—to find the highest possible quality setting that stays under your target KB. This is useful for strict upload limits on job portals or government forms.</li>
+                        </ul>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Real-World Applications</h3>
-                        <p>
-                            There are countless scenarios where an intelligent compressor is incredibly useful. Bloggers frequently use this tool before uploading hero graphics to WordPress, ensuring their articles load swiftly even on mobile network connections. Social media managers utilize it to shrink large campaign graphics to meet the strict auto-compression limits enforced by platforms like X and Facebook. Additionally, students often rely on our solution to compress scanned documents or huge presentation slides in order to submit their assignments through university portals that impose a strict 10MB maximum limit.
-                        </p>
-                        <p>
-                            If you find yourself frequently needing to adjust the physical dimensions of your files rather than just the byte size, you should consider using our <a href="/image-resizer" className="text-orange-600 hover:underline">Image Resizer Tool</a> first. Moreover, if your objective is simply to change formats, our <a href="/png-to-jpg" className="text-orange-600 hover:underline">PNG to JPG Converter</a> and <a href="/image-to-webp" className="text-orange-600 hover:underline">Image to WebP Converter</a> are specifically designed for rapid, seamless formatting directly within imgtool.in.
-                        </p>
+                        <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 my-6">
+                            <h4 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
+                                <i className="fas fa-info-circle text-blue-500"></i> Next Steps
+                            </h4>
+                            <p className="text-sm text-blue-800 mb-0">
+                                Compression only affects byte size, not pixel dimensions. If you need to change the physical width or height of your image, use the <a href="/image-resizer" className="font-bold underline hover:text-blue-600">Image Resizer</a>.
+                            </p>
+                        </div>
 
                         <img
                             src="/images/tools/image-compressor-example.png"
@@ -489,41 +491,29 @@ export default function ImageCompressor() {
                             className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
                         />
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Recognizable Advantages</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li>Drastically improves your website's overall page speed score on Google Core Web Vitals.</li>
-                            <li>Reduces bandwidth consumption, saving money on server hosting and data transfer costs.</li>
-                            <li>Allows for batch processing, meaning you can drop 50 photos at once and compress them all rapidly.</li>
-                            <li>Offers a real-time side-by-side visual comparison so you can ensure the quality remains perfect before downloading.</li>
-                            <li>Operates 100% locally, completely eliminating any privacy concerns or risks of data interception.</li>
-                        </ul>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Key Limitations to Keep in Mind</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Format Selection</h3>
                         <p>
-                            While our browser-based approach is incredibly efficient, there are bound to be physical limits depending on the device you are using. Attempting to compress massive batches of extremely high-resolution RAW camera files on an older mobile device might cause your browser to run out of memory. Additionally, because lossy compression permanently removes data to achieve smaller sizes, repeatedly compressing the exact same file over and over will eventually degrade the visual sharpness.
+                            The output format significantly impacts the final file size. 
+                            <strong>WebP</strong> and <strong>AVIF</strong> are modern formats that offer superior compression compared to standard JPEGs. If platform compatibility is not a concern, selecting AVIF or WebP will yield the smallest files. Note that AVIF encoding is computationally intensive and may take longer to process on older devices.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
                         <div className="space-y-4">
                             <div>
-                                <h4 className="font-bold text-slate-700">Does shrinking the file size change my image's resolution?</h4>
-                                <p className="mt-1">No, the compression process strictly targets redundant data bits to lower the storage footprint, leaving your actual pixel dimensions (like 1920x1080) completely untouched. If you also need to scale down the width and height, you will need to utilize a resizing tool.</p>
+                                <h4 className="font-bold text-slate-700">Does compression reduce image resolution?</h4>
+                                <p className="mt-1">No, the pixel dimensions (width and height) remain unchanged. Compression only reduces the file size by removing redundant data and simplifying color information.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">Which output format will result in the smallest possible file?</h4>
-                                <p className="mt-1">Generally, converting your file specifically to Next-Gen formats like WebP or AVIF will yield the absolute smallest footprint. If you must use older formats for compatibility reasons, JPG offers better compression than PNG for complex photographs.</p>
+                                <h4 className="font-bold text-slate-700">Will my transparent background be preserved?</h4>
+                                <p className="mt-1">Transparency is preserved if you select PNG or WebP as the output format. If you save a transparent image as a JPG, the transparent areas will be filled with white, as JPEG does not support alpha channels.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">Will my transparent background be preserved if I compress it?</h4>
-                                <p className="mt-1">Yes, but only if you select PNG or WebP as your target output format. If you compress a file and save it as a JPG, the transparent background will automatically be filled with solid white because the JPG format mathematically does not support an alpha-transparency layer.</p>
+                                <h4 className="font-bold text-slate-700">Why did my file size increase?</h4>
+                                <p className="mt-1">If your original file was heavily compressed previously, re-saving it at a high quality setting (e.g., 90%) may result in a larger file size. Try lowering the quality slider if this occurs.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">Are my corporate assets safe when using your platform?</h4>
-                                <p className="mt-1">Absolutely. The processing logic executes locally on your CPU and RAM infrastructure. Your highly sensitive corporate assets, proprietary graphics, or personal photographs are never uploaded to any remote server or stored in any database owned by imgtool.in.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Why did my file end up larger after compressing it?</h4>
-                                <p className="mt-1">If the file you uploaded was already heavily compressed by another utility or saved at extremely low quality previously, our engine might attempt to re-save it at the default higher quality threshold, inadvertently increasing the byte count. In such cases, use the manual slider to lower the target quality setting further.</p>
+                                <h4 className="font-bold text-slate-700">Is there a limit to how many files I can compress?</h4>
+                                <p className="mt-1">While there is no hard limit on the number of files in a batch, processing hundreds of large images simultaneously may cause your browser to run out of memory. We recommend compressing in batches of 50-100 images.</p>
                             </div>
                         </div>
                     </div>

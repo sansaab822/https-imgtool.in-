@@ -73,7 +73,7 @@ export default function StickerAddVirtual() {
 
     return (
         <>
-            <SEO title="Add Stickers and Emojis to Photos Online Free" description="Virtual sticker maker. Add emojis and stickers to your photos online. Click on the image to place stickers instantly. Free download." canonical="/sticker-add-virtual" />
+            <SEO title="Add Stickers and Emojis to Photos Online Free" description="Virtual sticker maker. Add emojis and stickers to your photos online. Click on the image to place stickers quickly. Free download." canonical="/sticker-add-virtual" />
             <ToolLayout toolSlug="sticker-add-virtual" title="Add Virtual Stickers" description="Add fun emojis and stickers directly onto your photos. Select a sticker and tap the image to place it." breadcrumb="Add Stickers">
 
                 <div className="grid md:grid-cols-[1fr_300px] gap-6 mb-6">

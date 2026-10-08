@@ -76,7 +76,7 @@ export default function CombineImagesSideBySide() {
     return (
         <>
             <SEO title="Combine Two Images Side by Side Online — Free Image Merger" description="Combine two images side by side horizontally online. Merge photos together with gap and alignment control. Free, no upload, works in browser." canonical="/combine-images-side-by-side" />
-            <ToolLayout toolSlug="combine-images-side-by-side" title="Combine Images Side by Side" description="Merge two photos horizontally with custom spacing and alignment. 100% browser-based." breadcrumb="Combine Images Side by Side">
+            <ToolLayout toolSlug="combine-images-side-by-side" title="Combine Images Side by Side" description="Merge two photos horizontally with custom spacing and alignment. fully browser-based." breadcrumb="Combine Images Side by Side">
 
                 <div className="grid sm:grid-cols-2 gap-4 mb-6">
                     <div><p className="text-xs font-bold text-slate-600 mb-2">Image 1 (Left)</p><DropZone label="Upload Left Image" img={imgA} onFile={f => loadImg(f, setImgA)} /></div>
@@ -131,7 +131,7 @@ export default function CombineImagesSideBySide() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Combine Two Images Side by Side Online</h2>
-                    <p className="text-slate-600">Merge two photos horizontally into a single image using our free online tool. Perfect for before/after comparisons, product showcases, and social media posts. Control the gap between images, vertical alignment, and background color. All processing happens in your browser — no upload, instant results.</p>
+                    <p className="text-slate-600">Merge two photos horizontally into a single image using our free online tool. Ideal for before/after comparisons, product showcases, and social media posts. Control the gap between images, vertical alignment, and background color. All processing happens in your browser — no upload, quick results.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Common Uses</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Before and after comparison photos</li>

@@ -29,7 +29,7 @@ export default function Disclaimer() {
                     <div className="bg-white rounded-2xl border border-slate-200 p-6">
                         <h2 className="text-xl font-bold text-slate-800 mb-3">3. Tool Accuracy & Limitations</h2>
                         <p className="leading-relaxed mb-4">
-                            While we strive for precise functionality, the result of image compression, file conversion, and resizing may vary depending on the original file\'s metadata, format, and browser capabilities. The "Target KB" compression tools provide close approximations but cannot guarantee exact byte-level matches due to how JPEG/WebP compression algorithms function. Always review your processed files before using them for official or critical purposes, such as government exam applications.
+                            While we strive for precise functionality, the result of image compression, file conversion, and resizing may vary depending on the original file\'s metadata, format, and browser capabilities. The "Target KB" compression tools provide close approximations but cannot guarantee exact byte-level matches due to how JPEG/WebP compression algorithms function. consistently review your processed files before using them for official or critical purposes, such as government exam applications.
                         </p>
                     </div>
 

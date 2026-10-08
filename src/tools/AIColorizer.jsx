@@ -32,7 +32,7 @@ export default function AIColorizer() {
             const ctx = canvas.getContext('2d')
 
             // Draw original grayscale image
-            ctx.filter = 'grayscale(100%) contrast(110%)'
+            ctx.filter = 'grayscale(fully) contrast(110%)'
             ctx.drawImage(image.img, 0, 0)
 
             // Apply color wash based on tone
@@ -73,7 +73,7 @@ export default function AIColorizer() {
     return (
         <>
             <SEO title="Photo Colorizer Online Free — Add Color to Black & White Photos" description="Add color tones to old black and white photos using gradient colorization online. Free, secure, browser-based." canonical="/ai-colorizer" />
-            <ToolLayout toolSlug="ai-colorizer" title="Photo Colorizer" description="Add color tones to black & white photos. Apply gradient colorization effects to vintage images instantly." breadcrumb="Photo Colorizer">
+            <ToolLayout toolSlug="ai-colorizer" title="Photo Colorizer" description="Add color tones to black & white photos. Apply gradient colorization effects to vintage images quickly." breadcrumb="Photo Colorizer">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
                     <div onClick={() => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = e => loadImg(e.target.files[0]); i.click() }}

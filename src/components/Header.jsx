@@ -297,7 +297,7 @@ export default function Header() {
                                             <MegaMenuCol title="Utility Tools" icon="fa-tools" iconColor="text-teal-500" items={megaMenuItems.utility} hoverColor="teal" />
                                         </div>
                                         <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
-                                            <span className="text-xs text-slate-400"><i className="fas fa-check-circle text-green-500 mr-1"></i>Free Forever</span>
+                                            <span className="text-xs text-slate-400"><i className="fas fa-check-circle text-green-500 mr-1"></i>Browser-based utilities</span>
                                             <Link to="/all-image-converters" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
                                                 View All 150+ Tools <i className="fas fa-arrow-right"></i>
                                             </Link>

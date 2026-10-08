@@ -235,7 +235,7 @@ export default function PassportPhoto() {
             if (lastY < a4H - 15) {
                 pdf.setFontSize(8)
                 pdf.setTextColor(150)
-                pdf.text('Print at 100% scale. Do NOT "Fit to Page" or "Scale to Fit".', a4W / 2, lastY + 8, { align: 'center' })
+                pdf.text('Print at actual size. Do NOT "Fit to Page" or "Scale to Fit".', a4W / 2, lastY + 8, { align: 'center' })
             }
 
             const blob = pdf.output('blob')
@@ -526,24 +526,24 @@ export default function PassportPhoto() {
                     />
 
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Generate Perfect Passport and ID Photos at Home</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">Generate Compliant Passport and ID Photos at Home</h2>
                         <p>
-                            Applying for a new passport, securing a travel visa, or registering for official government examinations often comes with notoriously strict photograph requirements. Historically, this meant taking time out of your day to visit a professional photography studio or a local pharmacy, paying premium prices for a simple sheet of four photos. With our online Passport Size Photo Maker, you can bypass the studio entirely. By combining advanced browser-based image cropping with precise millimeter-accurate PDF generation, you can transform a casual selfie taken in your living room into a perfectly formatted, print-ready document in less than a minute.
+                            Applying for a new passport, securing a travel visa, or registering for official examinations often involves strict photograph requirements. Historically, this meant visiting a professional studio or pharmacy for printed photos. With this Passport Size Photo Maker, you can prepare the files yourself. By combining browser-based image cropping with accurate PDF generation, you can format a casual portrait into a print-ready document in just a few steps.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">A Comprehensive Library of Official Dimensions</h3>
                         <p>
-                            One of the most frustrating aspects of bureaucratic applications is that every country and institution seems to require a slightly different photo size. A standard Schengen Visa demands a neat 35×45mm vertical rectangle, while a US Passport requires a perfectly square 2×2 inch (51×51mm) crop. Our utility comes pre-loaded with an extensive directory of official dimensions covering global passports, international visas, driver's licenses, and specific regional requirements like Indian PAN cards or UPSC/SSC examination formats. If your specific requirement isn't listed, simply select the "Custom" option to manually input the exact width and height you need.
+                            Different countries and institutions require specific photo sizes. A standard Schengen Visa demands a 35×45mm rectangle, while a US Passport requires an exactly square 2×2 inch (51×51mm) crop. This utility includes an extensive directory of official dimensions covering global passports, international visas, driver's licenses, and regional requirements like Indian PAN cards or UPSC/SSC exams. If your specific requirement isn't listed, simply select the "Custom" option to manually input the required width and height.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Advanced AI Background Eraser</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">AI Background Removal</h3>
                         <p>
-                            One of the most common reasons a passport application photograph is rejected by authorities is due to a dark, cluttered, or non-compliant background behind your head. Our tool integrates advanced, purely browser-based AI to automatically erase messy backgrounds flawlessly with a single click. Once stripped, you can utilize our studio selector to place a perfectly clean white, gray, or soft blue canvas back behind your head.
+                            A common reason a passport photograph is rejected is due to a dark, cluttered, or non-compliant background. This tool integrates purely browser-based AI to help you clear messy backgrounds locally. Once the background is removed, you can use the studio selector to place a clean white, gray, or soft blue canvas behind the subject.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Preparing Your Photo for Printing</h3>
                         <p>
-                            Once you have aligned your face using our intuitive visual guides, the tool doesn't just give you a single cropped image—it automatically generates a professional, high-resolution PDF document perfectly sized for standard A4 printer paper. You can choose whether you need a quick strip of four photos, or a full sheet of 24. We even automatically draw light, dotted cutting lines around each portrait so you know exactly where to trim with your scissors. Simply download the PDF and send it to your home printer or a local print shop.
+                            After aligning your face using the visual guides, the tool generates a high-resolution PDF document properly sized for standard A4 printer paper. You can choose to generate a quick strip of four photos or a full sheet of 24. It also draws light, dotted cutting lines around each portrait to guide you when trimming. Simply download the PDF and send it to your home printer or a local print shop.
                         </p>
 
                         <img
@@ -554,19 +554,18 @@ export default function PassportPhoto() {
                             className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
                         />
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Tips for a Successfully Accepted Photograph</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Tips for a Compliant Photograph</h3>
                         <p>
-                            Even with perfect cropping and a pure white background, your photo can still be rejected if you don't follow basic biometric guidelines. Always ensure you are facing the camera directly, not angled to the side. Maintain a neutral facial expression—no wide smiles or frowning. Ensure both of your ears are visible, and remove any bulky glasses that might cause glare or obscure your eyes. Finally, make sure the original photograph was taken in a well-lit environment so there are no harsh, distracting shadows.
+                            Even with accurate cropping and a pure white background, your photo can still be rejected if you don't follow basic biometric guidelines. Ensure you are facing the camera directly, not angled to the side. Maintain a neutral facial expression—no wide smiles or frowning. Ensure both of your ears are visible, and remove any bulky glasses that might cause glare or obscure your eyes. Finally, make sure the original photograph was taken in a well-lit environment so there are no harsh, distracting shadows.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Essential Features</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Core Capabilities</h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Biometric Guidelines:</strong> The preview canvas features a helpful oval overlay designed to ensure your head and shoulders take up the correct percentage of the final cropped frame.</li>
-                            <li><strong>Interactive Cropper:</strong> Precisely zoom and reposition your photo, controlling exactly how it fits inside the required official borders.</li>
-                            <li><strong>Smart Generation:</strong> Choose precise number of copies. Our PDF generator automatically structures dynamic layouts from 1 single photo up to a 50 piece grid layout spanning multiple sheets.</li>
-                            <li><strong>100% Data Privacy:</strong> Because this tool utilizes JavaScript to manipulate the canvas locally in your browser, your personal face data and identification photos are never uploaded to any remote server.</li>
+                            <li><strong>Biometric Guidelines:</strong> The preview canvas features a helpful oval overlay designed to help you ensure the head and shoulders take up the correct percentage of the frame.</li>
+                            <li><strong>Interactive Cropper:</strong> Zoom and reposition your photo, controlling how it fits inside the official borders.</li>
+                            <li><strong>Smart Generation:</strong> Choose the number of copies needed. The PDF generator structures dynamic layouts from a single photo up to a grid layout spanning multiple sheets.</li>
+                            <li><strong>Complete Data Privacy:</strong> Because this tool utilizes JavaScript to manipulate the canvas locally in your browser, your personal face data and identification photos are not uploaded to any remote server.</li>
                         </ul>
-
                     </div>
                 </div>
             </ToolLayout>

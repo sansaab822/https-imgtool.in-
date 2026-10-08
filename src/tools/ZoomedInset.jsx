@@ -78,7 +78,7 @@ export default function ZoomedInset() {
 
     return (
         <>
-            <SEO title="Zoomed Inset Image Creator Online — Add Magnifier Overlay" description="Create a zoomed inset magnifier on any image online. Select a region, set zoom level and position. Perfect for tutorials, manuals, product photos. Free." canonical="/zoomed-inset-image" />
+            <SEO title="Zoomed Inset Image Creator Online — Add Magnifier Overlay" description="Create a zoomed inset magnifier on any image online. Select a region, set zoom level and position. Ideal for tutorials, manuals, product photos. Free." canonical="/zoomed-inset-image" />
             <ToolLayout toolSlug="zoomed-inset-image" title="Zoomed Inset Creator" description="Add a zoomed magnifier inset overlay to any image. Set region, zoom level, and inset position." breadcrumb="Zoomed Inset">
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-6">
@@ -163,7 +163,7 @@ export default function ZoomedInset() {
 
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 mt-4 prose max-w-none">
                     <h2 className="text-2xl font-bold text-slate-800 mb-4">Create Zoomed Inset on Image Online</h2>
-                    <p className="text-slate-600">Add a zoomed-in magnifier inset to highlight important details in any image. Perfect for tutorials, instruction manuals, product close-ups, UI screenshots, and technical documentation. The tool draws a highlighted region box on the original image, then renders a zoomed version of that region as an inset overlay connected by a dotted line.</p>
+                    <p className="text-slate-600">Add a zoomed-in magnifier inset to highlight important details in any image. Ideal for tutorials, instruction manuals, product close-ups, UI screenshots, and technical documentation. The tool draws a highlighted region box on the original image, then renders a zoomed version of that region as an inset overlay connected by a dotted line.</p>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Common Uses</h3>
                     <ul className="list-disc list-inside text-slate-600 space-y-2">
                         <li>Software tutorials showing button locations</li>
