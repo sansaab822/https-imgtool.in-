@@ -1,4 +1,41 @@
 export const lightweightContentData = {
+    // ── Core Image Editors (Batch 1) ──
+    'image-resizer': {
+        title: 'Image Resizer',
+        whatItDoes: 'Changes the dimensions of your image to exact pixel sizes using local browser processing.',
+        whenToUse: 'Use this when a website requires a specific width and height, or when preparing photos for social media headers and posts.',
+        howToUse: 'Upload your image, choose a social media preset (like Instagram or YouTube), or enter a custom width and height. You can select the output format (JPG, PNG, or WebP).',
+        tips: 'The tool offers three modes: "Fit" scales the image to fit the box without cutting anything off, "Fill" fills the box but crops the edges, and "Stretch" ignores proportions to perfectly match the dimensions.'
+    },
+    'image-compressor': {
+        title: 'Image Compressor',
+        whatItDoes: 'Reduces the file size of your images entirely in your browser without uploading to a server.',
+        whenToUse: 'Use this to speed up your website, save storage space, or shrink photos to meet strict upload limits (like "under 200KB").',
+        howToUse: 'Upload one or multiple images. You can use the Quality slider (Light, Balanced, Maximum) or specify an exact target size (e.g., 200 KB). Download the results individually or as a ZIP file.',
+        limitations: 'Compression involves a trade-off. Extreme compression will introduce visible blocky artifacts. Use the before/after slider on the results to ensure the quality remains acceptable.'
+    },
+    'crop-image': {
+        title: 'Crop Image',
+        whatItDoes: 'Allows you to cut away the outer edges of a photo to reframe the subject.',
+        whenToUse: 'Use this to remove distractions, change the composition, or force a photo into a specific shape like a square (1:1).',
+        howToUse: 'Drag the handles on the image to select the crop area. You can use the "Transform" tools to rotate or flip the image before cropping.',
+        tips: 'Click one of the ratio buttons (like 16:9 or 1:1) to lock the crop box proportions. Select "Free" if you want to draw a custom shape without ratio constraints.'
+    },
+    'bg-remover': {
+        title: 'Background Remover',
+        whatItDoes: 'Isolates the main subject of your photo and deletes the background, leaving it transparent or replacing it with a color.',
+        whenToUse: 'Essential for creating clean product photos for e-commerce, making YouTube thumbnails, or designing graphics.',
+        howToUse: 'Upload your photo and wait for the AI to process it. Once removed, you can download it as a transparent PNG, or select a solid color or gradient background before downloading.',
+        limitations: 'The tool uses a lightweight WebAssembly AI model that runs locally in your browser, meaning your image data is not uploaded to any external server. However, an active internet connection is required the first time you use it so the browser can download the necessary model files. It may occasionally struggle with complex edges like loose hair against a similar-colored background.'
+    },
+    'image-enhancer': {
+        title: 'Image Enhancer',
+        whatItDoes: 'Applies automated multi-scale sharpening, denoising, and color correction based on the type of photo.',
+        whenToUse: 'Use this to quickly improve dull, slightly soft, or poorly lit photos without needing professional editing software.',
+        howToUse: 'Upload your image and select the category that best matches it (Portrait, Object, Scenery, Pets, or Text). The tool will automatically calculate the best brightness, contrast, and sharpening filters for that category.',
+        limitations: 'This tool filters and improves existing pixels; it cannot miraculously restore destroyed details, unblur severe motion blur, or increase the actual resolution of the image.'
+    },
+
     // ── Image Editing Tools ──
     'combine-images-side-by-side': {
         title: 'Combine Images Side by Side',
