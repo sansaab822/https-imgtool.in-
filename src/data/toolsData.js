@@ -21,7 +21,6 @@ export const tools = [
     { slug: 'png-to-jpg', name: 'PNG to JPG', from: 'png', to: 'jpg', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Convert PNG to compressed JPG format.' },
     { slug: 'png-to-webp', name: 'PNG to WebP', from: 'png', to: 'webp', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Convert PNG to modern WebP format.' },
     { slug: 'png-to-ico', name: 'PNG to ICO', from: 'png', to: 'ico', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Convert PNG to ICO favicon.' },
-    { slug: 'png-to-svg', name: 'PNG to SVG', from: 'png', to: 'svg', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Trace PNG to scalable SVG vector.' },
     { slug: 'png-to-bmp', name: 'PNG to BMP', from: 'png', to: 'bmp', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Convert PNG to BMP format.' },
     { slug: 'png-to-gif', name: 'PNG to GIF', from: 'png', to: 'gif', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Convert PNG to animated GIF.' },
     { slug: 'png-to-tiff', name: 'PNG to TIFF', from: 'png', to: 'tiff', category: 'converters', icon: 'fa-image', color: 'blue', description: 'Convert PNG to TIFF format.' },
@@ -32,7 +31,6 @@ export const tools = [
     { slug: 'jpg-to-png', name: 'JPG to PNG', from: 'jpg', to: 'png', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Convert JPG to lossless PNG format.' },
     { slug: 'jpg-to-webp', name: 'JPG to WebP', from: 'jpg', to: 'webp', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Convert JPG to modern WebP format.' },
     { slug: 'jpg-to-ico', name: 'JPG to ICO', from: 'jpg', to: 'ico', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Convert JPG to ICO favicon.' },
-    { slug: 'jpg-to-svg', name: 'JPG to SVG', from: 'jpg', to: 'svg', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Trace JPG to scalable SVG.' },
     { slug: 'jpg-to-bmp', name: 'JPG to BMP', from: 'jpg', to: 'bmp', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Convert JPG to BMP format.' },
     { slug: 'jpg-to-gif', name: 'JPG to GIF', from: 'jpg', to: 'gif', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Convert JPG to GIF format.' },
     { slug: 'jpg-to-tiff', name: 'JPG to TIFF', from: 'jpg', to: 'tiff', category: 'converters', icon: 'fa-file-image', color: 'orange', description: 'Convert JPG to TIFF format.' },
@@ -68,9 +66,7 @@ export const tools = [
     { slug: 'tiff-to-png', name: 'TIFF to PNG', from: 'tiff', to: 'png', category: 'converters', icon: 'fa-file-image', color: 'yellow', description: 'Convert TIFF to PNG format.' },
     { slug: 'tiff-to-webp', name: 'TIFF to WebP', from: 'tiff', to: 'webp', category: 'converters', icon: 'fa-file-image', color: 'yellow', description: 'Convert TIFF to modern WebP format.' },
 
-    // ── Standard Converters: RAW/CR2 ─────────────────────────────
-    { slug: 'raw-to-jpg', name: 'RAW to JPG', from: 'raw', to: 'jpg', category: 'converters', icon: 'fa-camera', color: 'slate', description: 'Convert RAW camera files to JPG format.' },
-    { slug: 'cr2-to-jpg', name: 'CR2 to JPG', from: 'cr2', to: 'jpg', category: 'converters', icon: 'fa-camera', color: 'slate', description: 'Convert Canon CR2 RAW to JPG format.' },
+
 
     // ── PDF Tools ───────────────────────────────────────────────
     { slug: 'pdf-to-jpg', name: 'PDF to JPG', from: 'pdf', to: 'jpg', category: 'pdf-tools', icon: 'fa-file-pdf', color: 'red', description: 'Extract PDF pages as high-quality JPG images.' },
@@ -109,7 +105,6 @@ export const tools = [
     // ── PDF Tools (additions) ────────────────────────────────────
     { slug: 'pdf-to-excel', name: 'PDF to Excel/CSV', category: 'pdf-tools', icon: 'fa-table', color: 'red', description: 'Extract tables from PDF and convert to Excel or CSV.' },
     { slug: 'html-to-pdf', name: 'HTML/Markdown to PDF', category: 'pdf-tools', icon: 'fa-code', color: 'red', description: 'Convert HTML or Markdown text to a styled PDF.' },
-    { slug: 'remove-pdf-watermark', name: 'Remove PDF Watermark', category: 'pdf-tools', icon: 'fa-tint-slash', color: 'red', description: 'Remove watermarks from scanned PDF pages.' },
     { slug: 'pdf-password-remover', name: 'PDF Password Remover', category: 'pdf-tools', icon: 'fa-unlock', color: 'red', description: 'Remove password protection from PDF files you own.' },
 
     // ── Utility Tools ────────────────────────────────────────────
@@ -144,10 +139,7 @@ export const tools = [
     { slug: 'face-morph', name: 'Face Morph / Blend', category: 'fun-effects', icon: 'fa-user-friends', color: 'purple', description: 'Blend and morph two faces together into one photo.' },
     { slug: 'sticker-add-virtual', name: 'Sticker Add to Photo', category: 'fun-effects', icon: 'fa-star', color: 'pink', description: 'Add fun stickers, hats, glasses and speech bubbles to photos.' },
 
-    // ── AI Tools ─────────────────────────────────────────────────
-    { slug: 'ai-denoiser', name: 'Noise Reduction Filter', category: 'ai-tools', icon: 'fa-wind', color: 'indigo', description: 'Reduce image noise and grain using multi-pass canvas smoothing filters.' },
-    { slug: 'ai-colorizer', name: 'Photo Colorizer', category: 'ai-tools', icon: 'fa-fill-drip', color: 'purple', description: 'Add color tones to black-and-white photos using gradient colorization.' },
-    { slug: 'ai-old-photo-restorer', name: 'Old Photo Restorer', category: 'ai-tools', icon: 'fa-history', color: 'amber', description: 'Restore old, faded, or scratched photos using multi-pass canvas filters.' },
+
 
     // ── Utility (additions) ───────────────────────────────────────
     // ── Utility - QR Code (additions) ───────────────────────────────────────
@@ -223,7 +215,7 @@ export const categories = [
     { id: 'editors', name: 'Editors & Utilities', icon: 'fa-wand-magic-sparkles', color: 'purple' },
     { id: 'image-editing', name: 'Image Editing', icon: 'fa-edit', color: 'blue' },
     { id: 'fun-effects', name: 'Fun Effects', icon: 'fa-magic', color: 'pink' },
-    { id: 'ai-tools', name: 'Photo Filters', icon: 'fa-robot', color: 'indigo' },
+
     { id: 'special', name: 'Special Tools', icon: 'fa-star', color: 'orange' },
     { id: 'video-tools', name: 'Video Tools', icon: 'fa-video', color: 'violet' },
     { id: 'utility', name: 'Utility Tools', icon: 'fa-tools', color: 'teal' },

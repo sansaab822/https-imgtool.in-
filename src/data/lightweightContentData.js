@@ -154,25 +154,5 @@ export const lightweightContentData = {
         whatItDoes: 'Lets you drag, drop, scale, and rotate fun clip-art stickers (like sunglasses, hats, or speech bubbles) onto your photo.',
         whenToUse: 'Use this to create party photos, hide a photobomber, or add comic-book flair to a picture.',
         tips: 'You can use the rotate handle on the stickers to angle them Accurately onto a tilted head.'
-    },
-
-    // ── AI Tools ──
-    'ai-denoiser': {
-        title: 'AI Image Denoiser & Smoother',
-        whatItDoes: 'Uses advanced canvas smoothing and noise-reduction algorithms to remove grain and color noise from low-light photos.',
-        whenToUse: 'Use this on photos taken at night, in dark rooms, or with high ISO settings that appear grainy or speckled.',
-        limitations: 'Heavy denoising can sometimes soften fine details (like hair or fabric textures). Adjust the strength slider to find the balance between smooth skin and retaining detail.'
-    },
-    'ai-colorizer': {
-        title: 'Black & White Photo Colorizer',
-        whatItDoes: 'Applies neural colorization patterns to infer and add color to grayscale or vintage black-and-white photos.',
-        whenToUse: 'Bringing old family archives, historical photos, or artistic B&W shots to life with realistic color tones.',
-        limitations: 'AI colorization is an educated guess based on shading and textures; it cannot know the true historical colors (e.g., the exact color of a vintage dress).'
-    },
-    'ai-old-photo-restorer': {
-        title: 'Old Photo Restorer',
-        whatItDoes: 'Cleans up scratches, dust, and sepia fading from vintage photographs using intelligent canvas filters.',
-        whenToUse: 'Use this when digitizing old physical photo albums that have suffered from wear and tear over the decades.',
-        howToUse: 'Scan or take a high-quality, glare-free picture of your old photo first. Upload it here, and the tool will attempt to balance the contrast and smooth out minor scratches.'
     }
 };

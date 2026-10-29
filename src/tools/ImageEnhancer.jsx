@@ -758,7 +758,7 @@ export default function ImageEnhancer() {
 
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mt-8">
               <h3 className="text-lg font-bold text-amber-900 mb-2 flex items-center gap-2"><i className="fas fa-history"></i> Restoring Vintage Photos?</h3>
-              <p className="text-amber-800 text-sm">If you have severely scratched or faded old family photos, check out our dedicated <a href="/ai-old-photo-restorer" className="text-amber-700 font-bold underline hover:text-amber-900">AI Old Photo Restorer</a> tool built specifically for digitizing and repairing analog film damage.</p>
+              <p className="text-amber-800 text-sm">For scanned analog family photos or vintage prints, try adjusting the contrast, brightness, and sharpness levels directly within this enhancer to recover faded details.</p>
             </div>
           </div>
         </div>

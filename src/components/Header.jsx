@@ -73,10 +73,6 @@ const megaMenuItems = {
         { href: '/lego-art-generator', icon: 'fa-th', label: 'Lego Art' },
         { href: '/emoji-mosaic', icon: 'fa-smile-beam', label: 'Emoji Mosaic' },
     ],
-    ai: [
-        { href: '/ai-denoiser', icon: 'fa-magic', label: 'AI Denoiser' },
-        { href: '/ai-colorizer', icon: 'fa-palette', label: 'AI Colorizer' },
-    ],
 }
 
 // ── Dark mode helpers ─────────────────────────────────────────────────────────
@@ -285,11 +281,10 @@ export default function Header() {
                             <div className={`fixed top-[60px] left-0 w-full transition-all duration-250 ease-out flex justify-center z-[999] ${desktopToolsOpen ? 'opacity-100 visible translate-y-0 pointer-events-auto' : 'opacity-0 invisible translate-y-2 pointer-events-none'}`}>
                                 <div className="mt-1 w-full max-w-5xl px-4">
                                     <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden ring-1 ring-black/5 p-7 max-h-[75vh] overflow-y-auto">
-                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                                             <MegaMenuCol title="Editors" icon="fa-crop-simple" iconColor="text-blue-500" items={megaMenuItems.editors} hoverColor="blue" />
                                             <MegaMenuCol title="Image Editing" icon="fa-images" iconColor="text-cyan-500" items={megaMenuItems.imageEditing} hoverColor="cyan" />
                                             <MegaMenuCol title="Fun Effects" icon="fa-masks-theater" iconColor="text-fuchsia-500" items={megaMenuItems.funEffects} hoverColor="fuchsia" />
-                                            <MegaMenuCol title="AI Tools" icon="fa-brain" iconColor="text-rose-500" items={megaMenuItems.ai} hoverColor="rose" />
                                             <MegaMenuCol title="AI & 3D" icon="fa-wand-magic-sparkles" iconColor="text-purple-500" items={megaMenuItems.ai3d} hoverColor="purple" />
                                             <MegaMenuCol title="Converters" icon="fa-exchange-alt" iconColor="text-green-500" items={megaMenuItems.converters} hoverColor="green" />
                                             <MegaMenuCol title="PDF Tools" icon="fa-file-pdf" iconColor="text-red-500" items={megaMenuItems.pdf} hoverColor="red" />
@@ -433,7 +428,6 @@ export default function Header() {
                                 <MobileMenuSection title="Editors" items={megaMenuItems.editors} />
                                 <MobileMenuSection title="Image Editing" items={megaMenuItems.imageEditing} />
                                 <MobileMenuSection title="Fun Effects" items={megaMenuItems.funEffects} />
-                                <MobileMenuSection title="AI Tools" items={megaMenuItems.ai} />
                                 <MobileMenuSection title="AI & 3D" items={megaMenuItems.ai3d} />
                                 <MobileMenuSection title="Converters" items={megaMenuItems.converters} />
                                 <MobileMenuSection title="PDF Tools" items={megaMenuItems.pdf} />

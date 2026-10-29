@@ -43,7 +43,6 @@ const VideoMerger = lazy(() => import('./tools/VideoMerger'))
 // New PDF Tools
 const PdfToExcel = lazy(() => import('./tools/PdfToExcel'))
 const HtmlToPdf = lazy(() => import('./tools/HtmlToPdf'))
-const RemovePdfWatermark = lazy(() => import('./tools/RemovePdfWatermark'))
 const PdfPasswordRemover = lazy(() => import('./tools/PdfPasswordRemover'))
 
 // Utility Tools
@@ -79,10 +78,6 @@ const JigsawPuzzleMaker = lazy(() => import('./tools/JigsawPuzzleMaker'))
 const FaceMorph = lazy(() => import('./tools/FaceMorph'))
 const StickerAddVirtual = lazy(() => import('./tools/StickerAddVirtual'))
 
-// AI Tools
-const AIDenoiser = lazy(() => import('./tools/AIDenoiser'))
-const AIColorizer = lazy(() => import('./tools/AIColorizer'))
-const AIOldPhotoRestorer = lazy(() => import('./tools/AIOldPhotoRestorer'))
 
 // New Shared Category Tools
 const GovernmentPhotoResizer = lazy(() => import('./tools/GovernmentPhotoResizer'))
@@ -166,7 +161,6 @@ export default function App() {
           <Route path="/png-to-jpg" element={<ImageConverter from="png" to="jpg" />} />
           <Route path="/png-to-webp" element={<ImageConverter from="png" to="webp" />} />
           <Route path="/png-to-ico" element={<ImageConverter from="png" to="ico" />} />
-          <Route path="/png-to-svg" element={<ImageConverter from="png" to="svg" />} />
           <Route path="/png-to-bmp" element={<ImageConverter from="png" to="bmp" />} />
           <Route path="/png-to-gif" element={<ImageConverter from="png" to="gif" />} />
           <Route path="/png-to-tiff" element={<ImageConverter from="png" to="tiff" />} />
@@ -176,7 +170,6 @@ export default function App() {
           <Route path="/jpg-to-png" element={<ImageConverter from="jpg" to="png" />} />
           <Route path="/jpg-to-webp" element={<ImageConverter from="jpg" to="webp" />} />
           <Route path="/jpg-to-ico" element={<ImageConverter from="jpg" to="ico" />} />
-          <Route path="/jpg-to-svg" element={<ImageConverter from="jpg" to="svg" />} />
           <Route path="/jpg-to-bmp" element={<ImageConverter from="jpg" to="bmp" />} />
           <Route path="/jpg-to-gif" element={<ImageConverter from="jpg" to="gif" />} />
           <Route path="/jpg-to-tiff" element={<ImageConverter from="jpg" to="tiff" />} />
@@ -209,9 +202,6 @@ export default function App() {
           <Route path="/tiff-to-png" element={<ImageConverter from="tiff" to="png" />} />
           <Route path="/tiff-to-webp" element={<ImageConverter from="tiff" to="webp" />} />
 
-          {/* RAW/CR2 */}
-          <Route path="/raw-to-jpg" element={<ImageConverter from="raw" to="jpg" />} />
-          <Route path="/cr2-to-jpg" element={<ImageConverter from="cr2" to="jpg" />} />
 
           {/* Video Tools */}
           <Route path="/video-compressor" element={<VideoCompressor />} />
@@ -223,7 +213,6 @@ export default function App() {
           {/* New PDF Tools */}
           <Route path="/pdf-to-excel" element={<PdfToExcel />} />
           <Route path="/html-to-pdf" element={<HtmlToPdf />} />
-          <Route path="/remove-pdf-watermark" element={<RemovePdfWatermark />} />
           <Route path="/pdf-password-remover" element={<PdfPasswordRemover />} />
 
           {/* Utility Tools */}
@@ -259,10 +248,6 @@ export default function App() {
           <Route path="/face-morph" element={<FaceMorph />} />
           <Route path="/sticker-add-virtual" element={<StickerAddVirtual />} />
 
-          {/* AI Tools */}
-          <Route path="/ai-denoiser" element={<AIDenoiser />} />
-          <Route path="/ai-colorizer" element={<AIColorizer />} />
-          <Route path="/ai-old-photo-restorer" element={<AIOldPhotoRestorer />} />
 
           {/* ── Govt Exam Photo Resizers ── */}
           <Route path="/ssc-cgl-photo-resizer" element={<GovernmentPhotoResizer slug="ssc-cgl-photo-resizer" examName="SSC CGL" width={275} height={354} minKb={20} maxKb={50} extraInfo="Staff Selection Commission — Combined Graduate Level" />} />

@@ -159,7 +159,7 @@ export default function PdfPasswordRemover() {
                     </ul>
                     <h3 className="text-xl font-bold text-slate-800 mt-6 mb-3">Privacy assured</h3>
                     <p className="text-slate-600">Your PDF and password are not sent to any server. The decryption happens entirely in your browser using JavaScript. After you close the tab, no trace of your file remains.</p>
-                    <p className="text-slate-600 mt-4">Related tools: <a href="/remove-pdf-watermark" className="text-blue-600 hover:underline">Remove PDF Watermark</a> · <a href="/merge-pdf" className="text-blue-600 hover:underline">Merge PDF</a> · <a href="/pdf-crop" className="text-blue-600 hover:underline">PDF Crop</a></p>
+                    <p className="text-slate-600 mt-4">Related tools: <a href="/merge-pdf" className="text-blue-600 hover:underline">Merge PDF</a> · <a href="/pdf-crop" className="text-blue-600 hover:underline">PDF Crop</a></p>
                 </div>
             </ToolLayout>
         </>
