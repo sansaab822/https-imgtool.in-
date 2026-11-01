@@ -37,12 +37,13 @@ const ICO_SIZES = [
 ]
 
 export default function ImageConverter({ from, to }) {
-    const slug = `${from}-to-${to}`
+    const isUniversal = !from || !to
+    const slug = isUniversal ? 'image-converter' : `${from}-to-${to}`
     const tool = getToolBySlug(slug)
-    const fromName = FORMAT_NAMES[from] || from.toUpperCase()
-    const toName = FORMAT_NAMES[to] || to.toUpperCase()
-    const title = `${fromName} to ${toName} Converter`
-    const desc = tool?.description || `Convert ${fromName} images to ${toName} format free online. No upload needed — fully private.`
+    const fromName = isUniversal ? 'Image' : (FORMAT_NAMES[from] || from?.toUpperCase() || 'Image')
+    const toName = isUniversal ? 'All Formats' : (FORMAT_NAMES[to] || to?.toUpperCase() || 'JPG')
+    const title = isUniversal ? 'Universal Image Converter' : `${fromName} to ${toName} Converter`
+    const desc = tool?.description || (isUniversal ? 'Convert images between WebP, JPG, PNG, AVIF, BMP, and GIF formats in batch directly in your browser.' : `Convert ${fromName} images to ${toName} format free online. No upload needed — fully private.`)
 
     const [files, setFiles] = useState([])
     const [results, setResults] = useState([])

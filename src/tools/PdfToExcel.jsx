@@ -174,7 +174,7 @@ export default function PdfToExcel() {
                         <li>Government reports, financial statements, and data exports work great</li>
                         <li>Scanned PDFs require OCR software for accurate extraction</li>
                     </ul>
-                    <p className="text-slate-600 mt-4">Related tools: <a href="/merge-pdf" className="text-blue-600 hover:underline">Merge PDF</a> · <a href="/pdf-crop" className="text-blue-600 hover:underline">PDF Crop</a> · <a href="/html-to-pdf" className="text-blue-600 hover:underline">HTML to PDF</a></p>
+                    <p className="text-slate-600 mt-4">Related tools: <a href="/merge-pdf" className="text-blue-600 hover:underline">Merge PDF</a> · <a href="/pdf-crop" className="text-blue-600 hover:underline">PDF Crop</a> · <a href="/split-pdf" className="text-blue-600 hover:underline">Split PDF</a></p>
                 </div>
             </ToolLayout>
         </>

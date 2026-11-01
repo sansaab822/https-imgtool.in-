@@ -242,7 +242,7 @@ export default function FaviconGenerator() {
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">`}</pre>
-                    <p className="text-slate-600 mt-4">You can also use our <a href="/png-to-ico" className="text-blue-600 hover:underline">PNG to ICO converter</a> if you need traditional .ico format for older browser compatibility.</p>
+                    <p className="text-slate-600 mt-4">You can also use our <a href="/image-converter" className="text-blue-600 hover:underline">Universal Image Converter</a> if you need format conversions for web graphics.</p>
                 </div>
             </ToolLayout>
         </>

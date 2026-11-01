@@ -175,25 +175,6 @@ export default function App() {
             <Route key={path} path={path} element={<Navigate to="/image-resizer" replace />} />
           ))}
 
-          {/* Retired toy effects & video wrappers -> Core tools */}
-          {['/html-to-pdf'].map(path => (
-            <Route key={path} path={path} element={<Navigate to="/merge-pdf" replace />} />
-          ))}
-          {['/video-compressor', '/video-converter', '/video-to-audio', '/video-trimmer', '/video-merger'].map(path => (
-            <Route key={path} path={path} element={<Navigate to="/image-compressor" replace />} />
-          ))}
-          {[
-            '/wet-floor-reflection', '/lego-art-generator', '/emoji-mosaic', '/warhol-poster-effect',
-            '/jigsaw-puzzle-maker', '/face-morph', '/sticker-add-virtual', '/zoomed-inset-image',
-            '/instagram-safe-zones', '/polaroid-photo-effect', '/add-drop-shadow', '/meme-generator',
-            '/gif-maker', '/collage-maker', '/text-to-handwriting', '/combine-images-side-by-side',
-            '/add-watermark-to-image', '/merge-images-vertically', '/blend-two-photos',
-            '/rotate-image-custom-angle', '/flip-image-horizontally', '/worksheet-converter',
-            '/html-table-generator', '/color-palette-generator'
-          ].map(path => (
-            <Route key={path} path={path} element={<Navigate to="/crop-image" replace />} />
-          ))}
-
           {/* Retired low-traffic converter permutations -> Universal converter */}
           {[
             '/bmp-to-jpg', '/bmp-to-png', '/bmp-to-webp', '/bmp-to-gif',
@@ -210,6 +191,7 @@ export default function App() {
           ))}
 
           {/* 404 Catch-All */}
+          <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

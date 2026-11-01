@@ -137,8 +137,8 @@ export default function ThreeDTextStl() {
 
     return (
         <>
-            <SEO title="3D Text to STL Generator - Free Online" description="Create 3D text models and export to STL for 3D printing. Multiple fonts, bevel options, live preview. Free & private." canonical="/3d-text-to-stl" />
-            <ToolLayout toolSlug="3d-text-to-stl" title="3D Text to STL" description="Create stunning 3D text models with live preview and export to STL for 3D printing." breadcrumb="3D Text to STL">
+            <SEO title="3D Text to STL Generator - Free Online" description="Create 3D text models and export to STL for 3D printing. Multiple fonts, bevel options, live preview. Free & private." canonical="/3d-text-to-stl-generator" />
+            <ToolLayout toolSlug="3d-text-to-stl-generator" title="3D Text to STL Generator" description="Create stunning 3D text models with live preview and export to STL for 3D printing." breadcrumb="3D Text to STL">
                 <div className="grid lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-4">
                         {/* 3D Preview */}

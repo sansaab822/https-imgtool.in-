@@ -290,7 +290,7 @@ export default function SvgToStl() {
                             You shouldn't have to download a file and open it in a dedicated slicer program just to see if the extrusion worked correctly. Our tool features a built-in, fully interactive WebGL canvas. The moment you upload your SVG, the generated 3D model appears on screen. You can click and drag to rotate the model 360 degrees, pan the camera, and zoom in to inspect the geometry. As you adjust the Extrude Depth or Scale sliders, the 3D preview updates in real-time, providing immediate visual feedback so you can dial in the exact dimensions you need before exporting.
                         </p>
                         <p>
-                            If you do not currently have an SVG file but want to create a text-based 3D model (like a nameplate), you can skip the vector drawing phase entirely and use our dedicated <a href="/3d-text-stl" className="text-indigo-600 hover:underline">3D Text to STL Generator</a> instead.
+                            If you do not currently have an SVG file but want to create a text-based 3D model (like a nameplate), you can skip the vector drawing phase entirely and use our dedicated <a href="/3d-text-to-stl-generator" className="text-indigo-600 hover:underline">3D Text to STL Generator</a> instead.
                         </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-6">Understanding the Extrusion Settings</h3>

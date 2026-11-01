@@ -875,17 +875,17 @@ export default function SignatureToTransparentPng() {
                             <div className="mt-8 pt-6 border-t border-slate-200 not-prose">
                                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Related Document & Photo Tools</p>
                                 <div className="flex flex-wrap gap-2">
-                                    <a href="/signature-resize-140x60" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
+                                    <a href="/government-photo-resizer" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
                                         <i className="fas fa-signature mr-1 text-teal-600"></i> Signature Resize 140×60
                                     </a>
-                                    <a href="/ssc-signature-resizer" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
-                                        <i className="fas fa-graduation-cap mr-1 text-blue-600"></i> SSC Signature Resizer
+                                    <a href="/passport-size-photo" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
+                                        <i className="fas fa-graduation-cap mr-1 text-blue-600"></i> Passport Size Photo Maker
                                     </a>
                                     <a href="/passport-size-photo" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
                                         <i className="fas fa-id-card mr-1 text-indigo-600"></i> Passport Size Photo Maker
                                     </a>
-                                    <a href="/compress-image-to-30kb" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
-                                        <i className="fas fa-compress-arrows-alt mr-1 text-orange-600"></i> Compress Image to 30KB
+                                    <a href="/image-compressor" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
+                                        <i className="fas fa-compress-arrows-alt mr-1 text-orange-600"></i> Image Compressor (Target KB)
                                     </a>
                                     <a href="/pdf-to-jpg" className="px-3 py-1.5 bg-slate-100 hover:bg-teal-50 hover:text-teal-700 text-slate-700 rounded-lg text-xs font-medium border border-slate-200 transition-colors">
                                         <i className="fas fa-file-pdf mr-1 text-red-600"></i> PDF to JPG
