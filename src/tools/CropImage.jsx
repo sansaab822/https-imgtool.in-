@@ -267,32 +267,41 @@ export default function CropImage() {
                     </div>
                 </div>
 
-                {/* SEO Content */}
+                {/* --- Corrected SEO content block (Phase 12C Step 3) --- */}
                 <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    {/* TODO: replace src with /images/tools/screenshots/crop-image-selection.png once captured */}
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based Image Cropping</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">How the Image Cropper Works</h2>
                         <p>
-                            Image cropping involves selecting a rectangular region of an image and discarding the pixels outside of it. This tool lets you manually define a crop box or lock the selection to common aspect ratios (like 16:9 for video thumbnails or 1:1 for social media profiles) before exporting the final image.
-                        </p>
-                        
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How the Canvas Engine Works</h3>
-                        <p>
-                            When you upload an image, it is loaded into an HTML5 Canvas within your browser. When you click "Crop & Save", the tool calculates the coordinates of your crop box relative to the image's original resolution. It then extracts only those pixels and encodes them into a new file. Because all computation happens locally via Javascript, no image data is transmitted to a server.
+                            Upload an image and drag the crop handles to select the area you want to keep. The selected region is highlighted; everything outside it will be removed when you click <strong>Crop & Save</strong>.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Practical Usage</h3>
+                        <p>
+                            <strong>Aspect ratio presets</strong> lock the crop selection to a fixed proportion: Free (no constraint), 1:1, 4:3, 16:9, 3:2, 9:16, 3:4, 5:4, or 2:1. Switching preset repositions the crop box to match the chosen ratio.
+                        </p>
+
+                        <p>
+                            The <strong>Rule of Thirds grid</strong> draws a 3×3 guide overlay inside the crop area to help with composition. Toggle it with the checkbox in the right panel.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Transform Controls</h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Social Media:</strong> Forcing an image into a 1:1 or 4:5 aspect ratio ensures that platforms like Instagram will not auto-crop important parts of your photo.</li>
-                            <li><strong>Document Scanning:</strong> Removing scanner bed background or deskewing a misaligned document using the rotation controls before cropping.</li>
-                            <li><strong>Composition:</strong> Using the Rule of Thirds grid to reframe a subject and improve the visual layout of a photograph.</li>
+                            <li><strong>Rotate 90°</strong> — rotates the view 90 degrees clockwise.</li>
+                            <li><strong>180°</strong> — flips the image upside down.</li>
+                            <li><strong>Flip H / Flip V</strong> — mirrors the image horizontally or vertically.</li>
+                            <li><strong>Reset</strong> — clears all rotation and flip state.</li>
                         </ul>
+
+                        <p>
+                            Output format can be PNG, JPG, or WebP. For JPG and WebP, a quality slider is available.
+                        </p>
 
                         <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 my-6">
                             <h4 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
                                 <i className="fas fa-info-circle text-blue-500"></i> Next Steps
                             </h4>
                             <p className="text-sm text-blue-800 mb-0">
-                                Cropping removes pixels but does not scale the remaining image. If you need the final file to have specific pixel dimensions, crop it to the correct aspect ratio here, then upload the result to the <a href="/image-resizer" className="font-bold underline hover:text-blue-600">Image Resizer</a>.
+                                Cropping removes pixels but does not scale the image. If you need exact pixel dimensions, crop to the correct aspect ratio here, then use the <a href="/image-resizer" className="font-bold underline hover:text-blue-600">Image Resizer</a>.
                             </p>
                         </div>
 
@@ -300,15 +309,15 @@ export default function CropImage() {
                         <div className="space-y-4">
                             <div>
                                 <h4 className="font-bold text-slate-700">Does cropping reduce image quality?</h4>
-                                <p className="mt-1">Cropping removes surrounding pixels but does not inherently degrade the remaining ones. If you export as PNG, the remaining area is extracted losslessly. If exporting to JPEG or WebP, standard lossy compression is applied to the new file.</p>
+                                <p className="mt-1">Cropping removes surrounding pixels but does not inherently degrade the remaining ones. If you export as PNG, the remaining area is extracted losslessly. If exporting to JPG or WebP, standard lossy encoding is applied to the new file.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Why does my image look blurry after cropping?</h4>
-                                <p className="mt-1">If you crop a very small portion out of a large image and then view it on a large screen, the image viewer must stretch those few pixels to fill the screen, making it appear blurry. consistently start with the highest resolution source possible.</p>
+                                <p className="mt-1">If you crop a very small portion out of an image and view it on a large screen, the viewer stretches those few pixels across the display. Always start with a high-resolution source file whenever possible.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Can I crop to an exact pixel size?</h4>
-                                <p className="mt-1">This tool focuses on visual framing and aspect ratios. To achieve an exact pixel size, crop your image to the correct ratio first, then use an image resizer to scale it to your target dimensions.</p>
+                                <p className="mt-1">This tool focuses on visual framing and aspect ratios. To achieve an exact pixel size, crop your image to the correct ratio first, then use the <a href="/image-resizer" className="font-bold underline hover:text-blue-600">Image Resizer</a> to set exact dimensions.</p>
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,10 @@ import { Link } from 'react-router-dom'
 import { tools } from '../data/toolsData'
 import { lightweightContentData } from '../data/lightweightContentData'
 
+// These tools carry their own corrected inline seo-content block.
+// Skip the auto-injected lightweightContentData card for them to avoid duplicate sections.
+const BATCH1_SLUGS = ['image-resizer', 'image-compressor', 'crop-image', 'bg-remover', 'image-enhancer', 'signature-to-transparent-png']
+
 const colorMap = {
     indigo: 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white',
     blue: 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white',
@@ -72,8 +76,8 @@ export default function ToolLayout({ children, toolSlug, title, description, bre
             <div className="max-w-5xl mx-auto px-4 py-8">
                 {children}
 
-                {/* Lightweight Tool SEO Content (auto-injected) */}
-                {toolSlug && lightweightContentData[toolSlug] && (
+                {/* Lightweight Tool SEO Content (auto-injected, skipped for Batch 1 tools) */}
+                {toolSlug && lightweightContentData[toolSlug] && !BATCH1_SLUGS.includes(toolSlug) && (
                     <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
                         <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
                             <h2 className="text-2xl font-bold text-slate-800">{lightweightContentData[toolSlug].title}</h2>

@@ -369,68 +369,55 @@ export default function ImageResizer() {
                     </div>
                 </div>
 
+                {/* --- Corrected SEO content block (Phase 12C Step 3) --- */}
                 <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    {/* TODO: replace src with /images/tools/screenshots/image-resizer-compare.png once captured */}
                     <img
                         src="/images/tools/image-resizer-tool.png"
-                        alt="Image Resizer Tool Interface"
-                        title="Resize Images Online For Free"
+                        alt="Image Resizer compare slider showing a photo resized from its original dimensions, with ORIGINAL and RESIZED labels visible"
                         loading="lazy"
                         className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
                     />
 
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based Image Resizing</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">How the Image Resizer Works</h2>
                         <p>
-                            Digital platforms enforce strict dimension guidelines. When you upload an image that is too large or uses the wrong aspect ratio, social networks and CMS platforms often aggressively compress or crop it. This tool lets you manually set the exact width, height, and aspect ratio of your image before uploading, giving you control over how the final asset is displayed.
+                            Upload any image and set a target width and height in pixels. The <strong>lock aspect ratio</strong> button (🔒) keeps both dimensions proportional so your image does not distort. If you want a specific platform size, use the <strong>Quick Presets</strong> panel — presets are grouped into Social, Video, Print, and General categories. Clicking a preset fills in the dimensions automatically.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How Resizing Works Under the Hood</h3>
-                        <p>
-                            When you drop an image into this tool, your browser renders it onto an invisible HTML5 canvas element. Depending on the fit mode you select (Fit, Fill, or Stretch), the canvas calculates the new bounding box and redraws the image data at the new scale. Because this process uses your local machine's memory rather than a remote server, it is secure and operates with zero network latency.
-                        </p>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Fit Modes Explained</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Fit Mode</h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Fit (Preserve Ratio):</strong> The image scales down until it fits entirely inside your target dimensions. If the aspect ratios differ, transparent (or white) padding is added to the sides or top.</li>
-                            <li><strong>Fill (Crop to Ratio):</strong> The image scales so that it completely covers the target dimensions. Any excess image data outside the bounding box is cropped and discarded.</li>
-                            <li><strong>Stretch (Ignore Ratio):</strong> The image forces its width and height to match your targets exactly, causing the image to look squished or stretched.</li>
+                            <li><strong>Fit</strong> — scales the image to fit inside the target box, preserving all content. If the aspect ratios differ, the canvas shrinks to match the image rather than adding padding.</li>
+                            <li><strong>Fill</strong> — scales the image so it covers the target box exactly. Any excess image area outside the box is cropped and discarded.</li>
+                            <li><strong>Stretch</strong> — forces the image to the exact target size regardless of its original proportions. Use only when distortion is acceptable.</li>
                         </ul>
+
+                        <p>
+                            For JPG and WebP output, a quality slider (10 – 100 %) is available. PNG output is lossless and ignores the quality setting. After resizing, click <strong>Compare</strong> to drag a split slider between the original and resized version side by side.
+                        </p>
 
                         <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 my-6">
                             <h4 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
-                                <i className="fas fa-info-circle text-blue-500"></i> Next Steps
+                                <i className="fas fa-info-circle text-blue-500"></i> Tip
                             </h4>
                             <p className="text-sm text-blue-800 mb-0">
-                                If your resized image file is still too large in kilobytes, run it through our <a href="/image-compressor" className="font-bold underline hover:text-blue-600">Image Compressor</a>. If you need to isolate a subject before resizing, use the <a href="/bg-remover" className="font-bold underline hover:text-blue-600">Background Remover</a>.
+                                The <strong>Scale by Percentage</strong> buttons (25 %, 50 %, 75 %, 125 %, 150 %, 200 %) resize relative to the original dimensions — useful for halving or doubling a file without knowing the exact pixel size. If your resized image is still too large in kilobytes, run it through the <a href="/image-compressor" className="font-bold underline hover:text-blue-600">Image Compressor</a>.
                             </p>
                         </div>
-
-                        <img
-                            src="/images/tools/image-resizer-example.png"
-                            alt="Visual Example of an Image Being Resized Proportionally"
-                            title="Image Resizer Example"
-                            loading="lazy"
-                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
-                        />
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Limitations and Recommended Practices</h3>
-                        <p>
-                            Traditional resizing cannot invent missing detail. While you can technically enlarge a small file using this utility, the browser must stretch existing pixels, which inevitably leads to a blurry or blocky appearance. For crisp results, we recommend starting with a high-resolution source file and scaling down.
-                        </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
                         <div className="space-y-4">
                             <div>
                                 <h4 className="font-bold text-slate-700">Does changing the pixel dimensions reduce the file size?</h4>
-                                <p className="mt-1">Yes. Scaling down the physical dimensions (e.g., from 4000px to 1000px) significantly reduces the total amount of pixel data, resulting in a smaller file size in kilobytes.</p>
+                                <p className="mt-1">Yes. Scaling down the physical dimensions reduces the total number of pixels, which results in a smaller file. For further reduction without changing dimensions, use the Image Compressor.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Why does my photo look distorted?</h4>
-                                <p className="mt-1">Distortion occurs when you manually enter a new width and height while the "Lock Aspect Ratio" feature is disabled. To prevent this, keep the lock enabled or use the 'Fill' mode to crop instead of stretch.</p>
+                                <p className="mt-1">Distortion occurs when you enter a new width and height with the <strong>Lock Aspect Ratio</strong> button disabled and the aspect ratios do not match. Keep the lock enabled, or use Fill mode to crop rather than stretch.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">What output formats are supported?</h4>
-                                <p className="mt-1">The canvas engine natively exports to JPEG, PNG, and WebP. You can upload most standard web formats and select your preferred output.</p>
+                                <h4 className="font-bold text-slate-700">What output formats are available?</h4>
+                                <p className="mt-1">The tool exports to PNG, JPG, or WebP. You can upload any image format the browser supports as the input.</p>
                             </div>
                         </div>
                     </div>

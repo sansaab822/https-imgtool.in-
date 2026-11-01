@@ -453,67 +453,54 @@ export default function ImageCompressor() {
                     </div>
                 </div>
 
+                {/* --- Corrected SEO content block (Phase 12C Step 3) --- */}
                 <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    {/* TODO: replace src with /images/tools/screenshots/image-compressor-compare.png once captured */}
                     <img
                         src="/images/tools/image-compressor-tool.png"
-                        alt="Image Compressor Tool Interface"
-                        title="Compress Images Online"
+                        alt="Image Compressor results list showing original and compressed file sizes with percentage saved badges"
                         loading="lazy"
                         className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
                     />
 
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based Image Compression</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">How the Image Compressor Works</h2>
                         <p>
-                            Large images increase page load times and consume unnecessary bandwidth. This tool reduces file sizes by compressing image data locally in your browser. It uses HTML5 Canvas APIs and modern format encoders (like WebP and AVIF) to optimize images without requiring server uploads.
+                            Drop one or more images into the upload zone and set your target quality. The tool processes each file in the browser and shows the original size, compressed size, and percentage saved for every image in the batch.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Compression Methods</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Two Compression Modes</h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Quality Mode:</strong> You manually select a quality percentage (e.g., 75%). The browser encodes the image at that specific quality level. Lower percentages result in smaller files but introduce compression artifacts (like blockiness or color banding).</li>
-                            <li><strong>Target Size Mode:</strong> You specify a maximum file size in kilobytes. The tool runs a binary search algorithm—compressing the image multiple times in the background—to find the highest possible quality setting that stays under your target KB. This is useful for strict upload limits on job portals or government forms.</li>
+                            <li><strong>Quality Mode</strong> — you set a quality percentage (10 – 100 %). Three quick presets are labelled Light (85 %), Balanced (65 %), and Maximum (40 %). The quality slider controls how aggressively the encoder reduces the file.</li>
+                            <li><strong>Target Size mode</strong> — you enter a file size in KB, and the tool uses a binary search to find the quality level that gets closest to that target. Quick buttons are provided for 50 KB, 100 KB, 200 KB, 500 KB, and 1 MB.</li>
                         </ul>
+
+                        <p>
+                            Output format can be set to Keep Original format, JPG, WebP, PNG, or AVIF. Note that AVIF encoding may take longer in some browsers. When more than one file is in the batch, the <strong>Download All (ZIP)</strong> button packages all results into a single archive. Click <strong>Compare</strong> on any individual result to open a side-by-side slider.
+                        </p>
 
                         <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 my-6">
                             <h4 className="text-sm font-bold text-blue-900 mb-2 flex items-center gap-2">
-                                <i className="fas fa-info-circle text-blue-500"></i> Next Steps
+                                <i className="fas fa-info-circle text-blue-500"></i> Tip
                             </h4>
                             <p className="text-sm text-blue-800 mb-0">
-                                Compression only affects byte size, not pixel dimensions. If you need to change the physical width or height of your image, use the <a href="/image-resizer" className="font-bold underline hover:text-blue-600">Image Resizer</a>.
+                                Target Size mode runs up to 12 binary-search iterations per image, so it takes a moment longer than Quality Mode. Use it when you have a strict file size requirement — for example, when a platform rejects uploads above 200 KB. Compression does not change the pixel dimensions; use the <a href="/image-resizer" className="font-bold underline hover:text-blue-600">Image Resizer</a> if you also need to reduce width or height.
                             </p>
                         </div>
-
-                        <img
-                            src="/images/tools/image-compressor-example.png"
-                            alt="Visual Comparison of Before and After Image Compression"
-                            title="Image Compressor Example"
-                            loading="lazy"
-                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
-                        />
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Format Selection</h3>
-                        <p>
-                            The output format significantly impacts the final file size. 
-                            <strong>WebP</strong> and <strong>AVIF</strong> are modern formats that offer superior compression compared to standard JPEGs. If platform compatibility is not a concern, selecting AVIF or WebP will yield the smallest files. Note that AVIF encoding is computationally intensive and may take longer to process on older devices.
-                        </p>
 
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
                         <div className="space-y-4">
                             <div>
                                 <h4 className="font-bold text-slate-700">Does compression reduce image resolution?</h4>
-                                <p className="mt-1">No, the pixel dimensions (width and height) remain unchanged. Compression only reduces the file size by removing redundant data and simplifying color information.</p>
+                                <p className="mt-1">No, the pixel dimensions (width and height) remain unchanged. Compression only reduces the file size by encoding the existing pixels more efficiently.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Will my transparent background be preserved?</h4>
-                                <p className="mt-1">Transparency is preserved if you select PNG or WebP as the output format. If you save a transparent image as a JPG, the transparent areas will be filled with white, as JPEG does not support alpha channels.</p>
+                                <p className="mt-1">Transparency is preserved if you select PNG or WebP as the output format. If you save a transparent image as JPG, the transparent areas will be filled with white, as JPEG does not support alpha channels.</p>
                             </div>
                             <div>
                                 <h4 className="font-bold text-slate-700">Why did my file size increase?</h4>
-                                <p className="mt-1">If your original file was heavily compressed previously, re-saving it at a high quality setting (e.g., 90%) may result in a larger file size. Try lowering the quality slider if this occurs.</p>
-                            </div>
-                            <div>
-                                <h4 className="font-bold text-slate-700">Is there a limit to how many files I can compress?</h4>
-                                <p className="mt-1">While there is no hard limit on the number of files in a batch, processing hundreds of large images simultaneously may cause your browser to run out of memory. We recommend compressing in batches of 50-100 images.</p>
+                                <p className="mt-1">If your original file was already heavily compressed, re-saving it at a high quality setting may produce a larger file. Try lowering the quality slider, or switch to WebP or AVIF output.</p>
                             </div>
                         </div>
                     </div>

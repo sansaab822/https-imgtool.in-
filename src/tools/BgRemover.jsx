@@ -562,31 +562,43 @@ export default function BgRemover() {
                     </div>
                 )}
 
+                {/* --- Corrected SEO content block (Phase 12C Step 3) --- */}
                 <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
+                    {/* TODO: replace src with /images/tools/screenshots/bg-remover-result.png once captured */}
                     <img
                         src="/images/tools/bg-remover-tool.png"
-                        alt="AI Background Remover Tool Interface"
-                        title="Remove Backgrounds Automatically"
+                        alt="Background Remover interface with preview and replacement options"
                         loading="lazy"
                         className="w-full h-auto rounded-xl shadow-sm mb-8 border border-slate-100"
                     />
 
                     <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-5">
-                        <h2 className="text-2xl font-bold text-slate-800">Browser-Based AI Background Removal</h2>
+                        <h2 className="text-2xl font-bold text-slate-800">How the Background Remover Works</h2>
                         <p>
-                            Isolating a subject from its background used to require desktop editing software and careful manual tracing. Now, machine learning models can identify subjects and segment edges automatically. Our background remover uses WebAssembly to run an AI model directly in your browser, meaning it can process images locally without uploading them to a remote server.
+                            Upload a photo and the tool begins removing the background automatically — no button click is needed. The AI model runs locally in your browser via WebAssembly. Processing time depends on your device and the image size.
+                        </p>
+                        <p>
+                            If the AI model cannot be loaded (for example, due to a network or browser restriction), the tool falls back to a canvas-based method that samples the corner pixels to estimate a background colour and subtracts it.
                         </p>
 
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">How Local Processing Works</h3>
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Background Replacement Options</h3>
                         <p>
-                            When you load this tool for the first time, it downloads a lightweight neural network (about 15-20MB) to your browser cache. Once loaded, the inference runs entirely on your device's hardware. This approach ensures your photos—whether they are personal portraits or confidential documents—not leave your computer. Because there is no network latency after the initial model download, subsequent images are processed very quickly.
+                            After processing, you can apply a replacement background:
                         </p>
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Practical Use Cases</h3>
                         <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>E-commerce Products:</strong> Standardizing product photos against a white background for marketplaces like Amazon or eBay.</li>
-                            <li><strong>Professional Profiles:</strong> Extracting headshots for use in presentations, ID cards, or company directories.</li>
-                            <li><strong>Graphic Design:</strong> Creating transparent PNG assets to composite over different backgrounds or marketing materials.</li>
+                            <li><strong>Solid tab</strong> — choose from a set of colour swatches or pick any colour with the browser colour picker (&quot;Custom&quot;), then click <strong>Apply Custom</strong>.</li>
+                            <li><strong>Gradient tab</strong> — choose from a set of pre-built gradient presets.</li>
+                            <li><strong>Transparent</strong> (default) — keeps the background transparent (PNG output).</li>
+                        </ul>
+
+                        <p>
+                            The <strong>Edge Feather</strong> slider (0 – 20) softens the cutout boundary. Higher values blend the edges more, which can help when the subject has fine details like hair.
+                        </p>
+
+                        <h3 className="text-lg font-bold text-slate-800 mt-6">Download Options</h3>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Download Transparent PNG</strong> — always exports the raw cutout as a transparent PNG.</li>
+                            <li><strong>Download With Background</strong> — available when a solid or gradient background is applied.</li>
                         </ul>
 
                         <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 my-6">
@@ -598,37 +610,19 @@ export default function BgRemover() {
                             </p>
                         </div>
 
-                        <img
-                            src="/images/tools/bg-remover-example.png"
-                            alt="Visual Comparison of AI Background Eraser Result"
-                            title="Background Eraser Example"
-                            loading="lazy"
-                            className="w-full h-auto rounded-xl shadow-sm my-8 border border-slate-100"
-                        />
-
-                        <h3 className="text-lg font-bold text-slate-800 mt-6">Limitations and optimal Practices</h3>
-                        <p>
-                            AI segmentation relies heavily on contrast and edge definition. For the most accurate results:
-                        </p>
-                        <ul className="list-disc pl-5 space-y-2">
-                            <li><strong>Contrast is key:</strong> A subject wearing dark clothing against a light wall will segment cleanly. A subject blending into a visually noisy or similarly colored background may result in softer, less precise edges.</li>
-                            <li><strong>Lighting matters:</strong> Well-lit photos with minimal shadows provide clearer boundaries for the model to detect.</li>
-                            <li><strong>Complex edges:</strong> While the model is trained on intricate edges like hair or fur, extremely fine details may occasionally be clipped or blended depending on the source resolution.</li>
-                        </ul>
-
                         <h3 className="text-lg font-bold text-slate-800 mt-8 pt-6 border-t border-slate-100">Frequently Asked Questions</h3>
                         <div className="space-y-4">
                             <div>
-                                <h4 className="font-bold text-slate-700">Why must I download a PNG?</h4>
-                                <p className="mt-1">The PNG format supports an alpha channel, which is required to display transparency. If you save a transparent cutout as a JPG, the transparent areas will automatically be filled with solid white.</p>
+                                <h4 className="font-bold text-slate-700">Why does transparency require PNG?</h4>
+                                <p className="mt-1">The PNG format supports an alpha channel, which is required to display transparency. If you save a transparent cutout as a JPG, transparent areas will automatically be filled with solid white.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">Does the tool reduce the resolution of my subject?</h4>
-                                <p className="mt-1">No, the AI preserves the original resolution of the main subject. It only modifies or removes the pixels determined to be part of the background.</p>
+                                <h4 className="font-bold text-slate-700">Does removing the background reduce image resolution?</h4>
+                                <p className="mt-1">No, the tool preserves the original resolution of the subject. It only modifies or removes the pixels determined to be part of the background.</p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-700">What if the segmentation is inaccurate?</h4>
-                                <p className="mt-1">If the AI misses a piece of the background or cuts off part of the subject, it usually indicates low contrast or complex lighting. In these cases, adjusting the brightness or contrast of the original photo before uploading may help the model distinguish the subject better.</p>
+                                <h4 className="font-bold text-slate-700">What if the cutout has rough edges?</h4>
+                                <p className="mt-1">Use the <strong>Edge Feather</strong> slider to soften the boundary edges. If contrast between subject and background is low, adjusting the brightness or contrast of the original photo before uploading can help subject separation.</p>
                             </div>
                         </div>
                     </div>
