@@ -18,44 +18,38 @@ import { blogPosts } from './blogData.js';
 const BASE_URL = 'https://imgtool.in';
 const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
-// ── Priority map: give high-traffic & protected tools higher priority ──────────
+// ── Priority map: give specific slugs a higher priority ───────────────────────
 const HIGH_PRIORITY_SLUGS = new Set([
-    'pdf-crop',
-    'aadhaar-card-print-setting-a4',
-    'pan-card-photo',
-    'passport-size-photo',
-    'image-compressor',
     'image-resizer',
-    'bg-remover',
+    'image-compressor',
     'crop-image',
+    'bg-remover',
+    'passport-size-photo',
+    'pan-card-photo',
+    'aadhaar-card-print-setting-a4',
     'signature-to-transparent-png',
+    'government-photo-resizer',
+    'ssc-photo-date-adder',
+    'pdf-crop',
+    'merge-pdf',
     'split-pdf',
     'image-dpi-converter',
     'image-metadata-viewer',
-    'government-photo-resizer',
-    'signature-resize-140x60',
-    'ssc-photo-date-adder',
-    'merge-pdf',
-    'pdf-to-jpg',
-    'jpg-to-pdf',
     'heic-to-jpg',
     'webp-to-jpg',
-    'png-to-jpg',
-    'jpg-to-png',
-    'qr-code-generator',
     'favicon-generator',
+    'qr-code-generator',
     '3d-text-to-stl-generator',
+    'svg-to-stl',
 ])
 
 // Auto-generate tool entries from toolsData ───────────────────────────────────
-const toolRoutes = tools
-    .filter(tool => tool.slug !== 'all-image-converters') // all-image-converters handled or included
-    .map(tool => ({
-        loc: `/${tool.slug}`,
-        lastmod: TODAY,
-        changefreq: 'weekly',
-        priority: HIGH_PRIORITY_SLUGS.has(tool.slug) ? 0.9 : 0.8,
-    }))
+const toolRoutes = tools.map(tool => ({
+    loc: `/${tool.slug}`,
+    lastmod: TODAY,
+    changefreq: 'weekly',
+    priority: HIGH_PRIORITY_SLUGS.has(tool.slug) ? 0.9 : 0.8,
+}))
 
 const routes = [
 
@@ -67,12 +61,6 @@ const routes = [
         lastmod: TODAY,
         changefreq: 'daily',
         priority: 1.0,
-    },
-    {
-        loc: '/all-image-converters',
-        lastmod: TODAY,
-        changefreq: 'weekly',
-        priority: 0.85,
     },
     // ──────────────────────────────────────────────────────────────────
     // ALL TOOLS — auto-generated from toolsData.js
@@ -86,7 +74,7 @@ const routes = [
         loc: '/blog',
         lastmod: TODAY,
         changefreq: 'weekly',
-        priority: 0.7,
+        priority: 0.6,
     },
     ...blogPosts.map(post => ({
         loc: `/blog/${post.slug}`,
@@ -100,7 +88,7 @@ const routes = [
     })),
 
     // ──────────────────────────────────────────────────────────────────
-    // LEGAL / TRUST PAGES
+    // LEGAL / STATIC PAGES
     // ──────────────────────────────────────────────────────────────────
     { loc: '/about-us', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: '/contact-us', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
