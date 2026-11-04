@@ -3,14 +3,42 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-surface: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --bg-elevated: #F1F5F9;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --border-subtle: #E2E8F0;
+    --border-medium: #CBD5E1;
+    --brand-primary: #2563EB;
+    --brand-focus: rgba(37, 99, 235, 0.25);
+  }
+
+  .dark {
+    --bg-surface: #070A11;
+    --bg-card: #0B0F19;
+    --bg-elevated: #111726;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-medium: rgba(255, 255, 255, 0.15);
+    --brand-primary: #3B82F6;
+    --brand-focus: rgba(59, 130, 246, 0.35);
+  }
+
   * {
     box-sizing: border-box;
   }
 
   body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    overflow-x: hidden;
   }
 
   html {
@@ -19,45 +47,92 @@
 }
 
 @layer components {
-  .tool-card {
-    @apply transition-all duration-300 cursor-pointer;
+  /* Workstation Card */
+  .workstation-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .tool-card:hover {
-    @apply -translate-y-1;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  .workstation-card:hover {
+    border-color: var(--border-medium);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12);
   }
 
-  .gradient-text {
-    background: linear-gradient(135deg, #4f46e5, #9333ea);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .dark .workstation-card:hover {
+    box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5);
   }
 
+  /* Interactive Buttons */
   .btn-primary {
-    @apply px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-full shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:shadow-blue-500/50 transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
   }
 
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-workstation-850 dark:hover:bg-workstation-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 transition-all duration-200 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-slate-400/40;
+  }
+
+  .btn-success {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 hover:shadow-lg hover:shadow-emerald-600/30 active:scale-[0.98] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50;
+  }
+
+  /* Universal Dropzone */
   .drop-zone {
-    @apply border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center transition-all duration-200 cursor-pointer;
+    border: 2px dashed var(--border-medium);
+    border-radius: 1.25rem;
+    background-color: var(--bg-card);
+    transition: all 0.2s ease;
   }
 
   .drop-zone:hover,
   .drop-zone.active {
-    @apply border-blue-500 bg-blue-50;
+    border-color: #3B82F6;
+    background-color: rgba(59, 130, 246, 0.04);
   }
 
+  /* Sliders */
   .slider-range {
-    @apply w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer;
+    @apply w-full h-2 rounded-lg appearance-none cursor-pointer bg-slate-200 dark:bg-workstation-800 transition-all outline-none;
   }
 
   .slider-range::-webkit-slider-thumb {
-    @apply appearance-none w-5 h-5 rounded-full bg-blue-600 cursor-pointer shadow-md;
+    @apply appearance-none w-4 h-4 rounded-full bg-blue-600 dark:bg-blue-500 cursor-pointer shadow-md hover:scale-110 active:scale-95 transition-transform;
+  }
+
+  .slider-range::-moz-range-thumb {
+    @apply w-4 h-4 rounded-full bg-blue-600 dark:bg-blue-500 cursor-pointer shadow-md border-0 hover:scale-110 active:scale-95 transition-transform;
   }
 }
 
-/* Scrollbar hide utility */
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -65,13 +140,6 @@
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Custom comparison slider */
-.compare-slider {
-  position: relative;
-  overflow: hidden;
-  user-select: none;
 }
 
 /* Hide Google Translate Default UI */
@@ -98,11 +166,6 @@ body {
 }
 
 .goog-text-highlight {
-  background-color: transparent !important;
   background: none !important;
   box-shadow: none !important;
-}
-
-.goog-te-spinner-pos {
-  display: none !important;
 }

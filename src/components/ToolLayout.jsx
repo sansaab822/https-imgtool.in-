@@ -1,146 +1,202 @@
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { tools } from '../data/toolsData'
 import { lightweightContentData } from '../data/lightweightContentData'
+import Badge from './ui/Badge'
 
-// These tools carry their own corrected inline seo-content block.
-// Skip the auto-injected lightweightContentData card for them to avoid duplicate sections.
-const BATCH1_SLUGS = ['image-resizer', 'image-compressor', 'crop-image', 'bg-remover', 'image-enhancer', 'signature-to-transparent-png']
-
-const colorMap = {
-    indigo: 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white',
-    blue: 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white',
-    green: 'bg-green-50 text-green-600 group-hover:bg-green-600 group-hover:text-white',
-    orange: 'bg-orange-50 text-orange-600 group-hover:bg-orange-600 group-hover:text-white',
-    purple: 'bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white',
-    red: 'bg-red-50 text-red-600 group-hover:bg-red-600 group-hover:text-white',
-    pink: 'bg-pink-50 text-pink-600 group-hover:bg-pink-600 group-hover:text-white',
-    cyan: 'bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white',
-    yellow: 'bg-yellow-50 text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white',
-    teal: 'bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white',
-    violet: 'bg-violet-50 text-violet-600 group-hover:bg-violet-600 group-hover:text-white',
-    slate: 'bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white',
-}
+// Slugs that carry their own inline rich editorial content block
+const CUSTOM_CONTENT_SLUGS = [
+    'batch-watermark-images',
+    'image-resizer',
+    'image-compressor',
+    'crop-image',
+    'bg-remover',
+    'image-enhancer',
+    'signature-to-transparent-png',
+    'split-pdf',
+    'government-photo-resizer',
+    'image-dpi-converter',
+    'image-metadata-viewer',
+    'passport-size-photo',
+    'pan-card-photo',
+    'aadhaar-card-print-setting-a4',
+    'pdf-crop'
+]
 
 export default function ToolLayout({ children, toolSlug, title, description, breadcrumb }) {
+    const [faqOpen, setFaqOpen] = useState(null)
     const tool = toolSlug ? tools.find(t => t.slug === toolSlug) : null
+    
+    // Find related tools within the same category
     const relatedTools = tool
-        ? tools.filter(t => t.slug !== toolSlug && (t.from === tool.from || t.to === tool.to || t.category === tool.category)).slice(0, 8)
+        ? tools.filter(t => t.slug !== toolSlug && (t.category === tool.category)).slice(0, 6)
         : []
 
-    return (
-        <div className="min-h-screen bg-slate-50">
-            {/* Breadcrumb */}
-            <div className="bg-white border-b border-slate-200">
-                <div className="max-w-5xl mx-auto px-4 py-3">
-                    <nav className="flex items-center gap-2 text-sm text-slate-500">
-                        <Link to="/" className="hover:text-blue-600 transition-colors flex items-center gap-1">
-                            <i className="fas fa-home text-xs"></i> Home
-                        </Link>
-                        <i className="fas fa-chevron-right text-xs"></i>
-                        <Link to="/all-image-converters" className="hover:text-blue-600 transition-colors">Tools</Link>
-                        {breadcrumb && (
-                            <>
-                                <i className="fas fa-chevron-right text-xs"></i>
-                                <span className="text-slate-700 font-medium">{breadcrumb}</span>
-                            </>
-                        )}
-                    </nav>
-                </div>
-            </div>
+    const fallbackContent = toolSlug && lightweightContentData[toolSlug] && !CUSTOM_CONTENT_SLUGS.includes(toolSlug)
+        ? lightweightContentData[toolSlug]
+        : null
 
-            {/* Tool Header */}
-            <div className="bg-white border-b border-slate-200 py-8">
-                <div className="max-w-5xl mx-auto px-4 text-center">
-                    {tool && (
-                        <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ${colorMap[tool.color] || colorMap.blue} text-2xl mb-4 transition-colors`}>
-                            <i className={`fas ${tool.icon}`}></i>
+    return (
+        <div className="min-h-screen bg-slate-50 dark:bg-workstation-950 transition-colors">
+            {/* ── COMPACT WORKSTATION SUB-HEADER ───────────────────────────── */}
+            <div className="border-b border-slate-200/80 dark:border-workstation-750 bg-white dark:bg-workstation-900 transition-colors">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        {/* Breadcrumbs & Title summary */}
+                        <div className="flex items-center gap-3">
+                            <Link
+                                to="/"
+                                className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-workstation-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-center transition-colors text-xs"
+                                aria-label="Return to Homepage"
+                                title="Back to Home"
+                            >
+                                <i className="fas fa-chevron-left" aria-hidden="true"></i>
+                            </Link>
+
+                            {tool && (
+                                <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm flex-shrink-0 border border-blue-100 dark:border-blue-900/30">
+                                    <i className={`fas ${tool.icon || 'fa-wrench'}`}></i>
+                                </div>
+                            )}
+
+                            <div>
+                                <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 leading-tight flex items-center gap-2">
+                                    {title}
+                                    <span className="hidden md:inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" title="Operational"></span>
+                                </h1>
+                                {description && (
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block truncate max-w-xl">
+                                        {description}
+                                    </p>
+                                )}
+                            </div>
                         </div>
-                    )}
-                    <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3">{title}</h1>
-                    <p className="text-slate-500 text-lg max-w-2xl mx-auto">{description}</p>
-                    <div className="flex flex-wrap justify-center gap-3 mt-4">
-                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-green-50 text-green-700 rounded-full">
-                            <i className="fas fa-shield-alt"></i> Local Processing
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full">
-                            <i className="fas fa-bolt"></i> No Server Upload
-                        </span>
-                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full">
-                            <i className="fas fa-check-circle"></i> Free Utility
-                        </span>
+
+                        {/* Privacy & Engine Badges */}
+                        <div className="flex items-center gap-2 flex-wrap">
+                            <Badge variant="emerald" icon="fa-shield-halved" size="sm">
+                                100% In-Browser RAM
+                            </Badge>
+                            <Badge variant="primary" icon="fa-bolt" size="sm">
+                                Instant Client-Side
+                            </Badge>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Tool Content */}
-            <div className="max-w-5xl mx-auto px-4 py-8">
-                {children}
+            {/* ── MAIN WORKSTATION WORKSPACE ─────────────────────────────── */}
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+                {/* Tool interactive area (Canvas, Dropzone, Controls) */}
+                <div className="mb-12">
+                    {children}
+                </div>
 
-                {/* Lightweight Tool SEO Content (auto-injected, skipped for Batch 1 tools) */}
-                {toolSlug && lightweightContentData[toolSlug] && !BATCH1_SLUGS.includes(toolSlug) && (
-                    <div className="seo-content mt-12 bg-white rounded-xl border border-slate-200 p-8 shadow-sm">
-                        <div className="prose prose-slate max-w-none text-sm text-slate-600 space-y-4">
-                            <h2 className="text-2xl font-bold text-slate-800">{lightweightContentData[toolSlug].title}</h2>
-                            
-                            {lightweightContentData[toolSlug].whatItDoes && (
-                                <>
-                                    <h3 className="text-lg font-bold text-slate-800 mt-4">What it does</h3>
-                                    <p>{lightweightContentData[toolSlug].whatItDoes}</p>
-                                </>
-                            )}
-                            
-                            {lightweightContentData[toolSlug].whenToUse && (
-                                <>
-                                    <h3 className="text-lg font-bold text-slate-800 mt-4">When to use it</h3>
-                                    <p>{lightweightContentData[toolSlug].whenToUse}</p>
-                                </>
-                            )}
-                            
-                            {lightweightContentData[toolSlug].howToUse && (
-                                <>
-                                    <h3 className="text-lg font-bold text-slate-800 mt-4">How to use</h3>
-                                    <p>{lightweightContentData[toolSlug].howToUse}</p>
-                                </>
-                            )}
-                            
-                            {lightweightContentData[toolSlug].tips && (
-                                <>
-                                    <h3 className="text-lg font-bold text-slate-800 mt-4">Practical Tips</h3>
-                                    <p>{lightweightContentData[toolSlug].tips}</p>
-                                </>
+                {/* ── AUTO-INJECTED FALLBACK CONTENT FOR SIMPLE CONVERTERS ──── */}
+                {fallbackContent && (
+                    <div className="mt-12 bg-white dark:bg-workstation-900 rounded-2xl border border-slate-200 dark:border-workstation-750 p-6 sm:p-8 shadow-sm">
+                        <div className="max-w-4xl mx-auto space-y-6 text-slate-600 dark:text-slate-300">
+                            <div>
+                                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                                    {fallbackContent.title}
+                                </h2>
+                                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                                    {fallbackContent.whatItDoes}
+                                </p>
+                            </div>
+
+                            {fallbackContent.whenToUse && (
+                                <div className="border-t border-slate-100 dark:border-workstation-800 pt-5">
+                                    <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                        When to Use This Tool
+                                    </h3>
+                                    <p className="text-sm leading-relaxed">
+                                        {fallbackContent.whenToUse}
+                                    </p>
+                                </div>
                             )}
 
-                            {lightweightContentData[toolSlug].limitations && (
-                                <>
-                                    <h3 className="text-lg font-bold text-slate-800 mt-4">Limitations & Considerations</h3>
-                                    <p>{lightweightContentData[toolSlug].limitations}</p>
-                                </>
+                            {fallbackContent.howToUse && (
+                                <div className="border-t border-slate-100 dark:border-workstation-800 pt-5">
+                                    <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                        Step-by-Step Instructions
+                                    </h3>
+                                    <p className="text-sm leading-relaxed">
+                                        {fallbackContent.howToUse}
+                                    </p>
+                                </div>
+                            )}
+
+                            {fallbackContent.tips && (
+                                <div className="border-t border-slate-100 dark:border-workstation-800 pt-5">
+                                    <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                        Practical Tips
+                                    </h3>
+                                    <p className="text-sm leading-relaxed">
+                                        {fallbackContent.tips}
+                                    </p>
+                                </div>
+                            )}
+
+                            {fallbackContent.limitations && (
+                                <div className="border-t border-slate-100 dark:border-workstation-800 pt-5">
+                                    <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 mb-2">
+                                        Limitations & Considerations
+                                    </h3>
+                                    <p className="text-sm leading-relaxed">
+                                        {fallbackContent.limitations}
+                                    </p>
+                                </div>
                             )}
                         </div>
                     </div>
                 )}
-            </div>
 
-            {/* Related Tools */}
-            {relatedTools.length > 0 && (
-                <div className="bg-white border-t border-slate-200 py-12 mt-4">
-                    <div className="max-w-5xl mx-auto px-4">
-                        <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                            <i className="fas fa-th-large text-blue-500"></i> Related Tools
-                        </h2>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {relatedTools.map(t => (
-                                <Link key={t.slug} to={`/${t.slug}`} className="group flex items-center gap-3 p-3 bg-slate-50 hover:bg-white rounded-xl border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all duration-200">
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm flex-shrink-0 transition-colors ${colorMap[t.color] || colorMap.blue}`}>
-                                        <i className={`fas ${t.icon}`}></i>
+                {/* ── RELATED WORKSTATIONS / TOOLS ─────────────────────────── */}
+                {relatedTools.length > 0 && (
+                    <section className="mt-16 pt-8 border-t border-slate-200/80 dark:border-workstation-800" aria-labelledby="related-tools-title">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 id="related-tools-title" className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                    <i className="fas fa-layer-group text-blue-500 text-sm"></i>
+                                    Related Workstation Utilities
+                                </h3>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                                    Complementary client-side tools in the same category.
+                                </p>
+                            </div>
+                            <Link
+                                to="/all-image-converters"
+                                className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
+                            >
+                                All 30+ Tools →
+                            </Link>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            {relatedTools.map((t) => (
+                                <Link
+                                    key={t.slug}
+                                    to={`/${t.slug}`}
+                                    className="p-4 rounded-xl border border-slate-200 dark:border-workstation-800 bg-white dark:bg-workstation-900 hover:border-blue-400 dark:hover:border-blue-600 hover:shadow-md transition-all duration-200 group flex items-start gap-3"
+                                >
+                                    <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm flex-shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                        <i className={`fas ${t.icon || 'fa-wrench'}`}></i>
                                     </div>
-                                    <span className="text-sm font-medium text-slate-700 group-hover:text-blue-600 transition-colors leading-tight">{t.name}</span>
+                                    <div className="min-w-0">
+                                        <h4 className="font-semibold text-sm text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
+                                            {t.name}
+                                        </h4>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5 leading-relaxed">
+                                            {t.description}
+                                        </p>
+                                    </div>
                                 </Link>
                             ))}
                         </div>
-                    </div>
-                </div>
-            )}
+                    </section>
+                )}
+            </main>
         </div>
     )
 }

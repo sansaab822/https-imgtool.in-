@@ -15,6 +15,7 @@ const BlogPost = lazy(() => import('./pages/BlogPost'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Core Image Editors
+const BatchWatermarkStudio = lazy(() => import('./tools/BatchWatermarkStudio'))
 const ImageConverter = lazy(() => import('./tools/ImageConverter'))
 const ImageResizer = lazy(() => import('./tools/ImageResizer'))
 const ImageCompressor = lazy(() => import('./tools/ImageCompressor'))
@@ -77,6 +78,7 @@ export default function App() {
           <Route path="/blog.html" element={<BlogPage />} />
 
           {/* ── Core Image Editors ── */}
+          <Route path="/batch-watermark-images" element={<BatchWatermarkStudio />} />
           <Route path="/image-resizer" element={<ImageResizer />} />
           <Route path="/image-compressor" element={<ImageCompressor />} />
           <Route path="/crop-image" element={<CropImage />} />

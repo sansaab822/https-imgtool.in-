@@ -1,117 +1,135 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { tools } from '../data/toolsData'
 
-// ── All tools flat list for search ───────────────────────────────────────────
-const ALL_TOOLS = tools.map(t => ({ name: t.name, slug: t.slug, icon: t.icon, color: t.color, category: t.category }))
+// ── Search Keyword Index ───────────────────────────────────────────────────────
+// Maps user keywords to exact existing tool routes
+const SEARCH_ENTRIES = [
+    ...tools.map(t => ({
+        name: t.name,
+        slug: t.slug,
+        icon: t.icon,
+        category: t.category,
+        keywords: `${t.name} ${t.slug} ${t.description || ''}`
+    })),
+    // Task synonyms mapping directly to verified tools
+    { name: 'Batch Watermark Photos', slug: 'batch-watermark-images', icon: 'fa-stamp', category: 'editors', keywords: 'watermark batch copyright logo text photos protect' },
+    { name: 'Compress Image to 20KB–50KB', slug: 'government-photo-resizer', icon: 'fa-graduation-cap', category: 'document-id-tools', keywords: '50kb 20kb exam ssc upsc photo signature resize compress' },
+    { name: 'Extract Transparent Signature', slug: 'signature-to-transparent-png', icon: 'fa-file-signature', category: 'document-id-tools', keywords: 'signature transparent png paper ink remove white background' },
+    { name: 'Split & Extract PDF Pages', slug: 'split-pdf', icon: 'fa-scissors', category: 'pdf-tools', keywords: 'split pdf delete page extract page separate' },
+    { name: 'Convert to 300 DPI Lossless', slug: 'image-dpi-converter', icon: 'fa-print', category: 'utility', keywords: '300 dpi 600 dpi resolution print photo patch' },
+    { name: 'Aadhaar Card A4 Print Setting', slug: 'aadhaar-card-print-setting-a4', icon: 'fa-print', category: 'document-id-tools', keywords: 'aadhaar print a4 card id front back' },
+    { name: 'PAN Card Photo & Signature 213x213', slug: 'pan-card-photo', icon: 'fa-id-card', category: 'document-id-tools', keywords: 'pan card nsdl utiitsl 213 213 photo signature' },
+    { name: 'Passport Size Photo Maker', slug: 'passport-size-photo', icon: 'fa-id-card', category: 'document-id-tools', keywords: 'passport photo visa 35x45 2x2 a4 print sheet' },
+    { name: 'Crop PDF Margins', slug: 'pdf-crop', icon: 'fa-crop', category: 'pdf-tools', keywords: 'pdf crop margin trim white border' },
+    { name: 'Strip EXIF & GPS Metadata', slug: 'image-metadata-viewer', icon: 'fa-shield-halved', category: 'utility', keywords: 'exif metadata gps remove camera privacy' },
+]
 
-// ── Quick highlight matching text ─────────────────────────────────────────────
-function highlight(text, query) {
-    if (!query) return text
-    const idx = text.toLowerCase().indexOf(query.toLowerCase())
-    if (idx === -1) return text
-    return (
-        <>
-            {text.slice(0, idx)}
-            <mark className="bg-blue-100 text-blue-700 rounded px-0.5">{text.slice(idx, idx + query.length)}</mark>
-            {text.slice(idx + query.length)}
-        </>
-    )
-}
+// ── MegaMenu Workstation Categories ───────────────────────────────────────────
+const MEGA_WORKSTATIONS = [
+    {
+        id: 'official-id',
+        title: 'Official Forms & ID',
+        icon: 'fa-id-badge',
+        color: 'text-indigo-500',
+        tools: [
+            { slug: 'passport-size-photo', label: 'Passport Size Photo Maker', icon: 'fa-id-card' },
+            { slug: 'aadhaar-card-print-setting-a4', label: 'Aadhaar Card A4 Print Setting', icon: 'fa-print' },
+            { slug: 'pan-card-photo', label: 'PAN Card Photo Resizer', icon: 'fa-id-card' },
+            { slug: 'signature-to-transparent-png', label: 'Signature to Transparent PNG', icon: 'fa-file-signature' },
+            { slug: 'government-photo-resizer', label: 'Govt & Exam Photo Resizer', icon: 'fa-graduation-cap' },
+            { slug: 'ssc-photo-date-adder', label: 'SSC Photo & Date Adder', icon: 'fa-calendar-alt' },
+        ]
+    },
+    {
+        id: 'pdf-studio',
+        title: 'PDF Studio',
+        icon: 'fa-file-pdf',
+        color: 'text-red-500',
+        tools: [
+            { slug: 'split-pdf', label: 'Split PDF & Extract Pages', icon: 'fa-scissors' },
+            { slug: 'merge-pdf', label: 'Merge Multiple PDFs', icon: 'fa-object-group' },
+            { slug: 'pdf-crop', label: 'Crop PDF Margins', icon: 'fa-crop' },
+            { slug: 'pdf-to-jpg', label: 'PDF to High-Res JPG', icon: 'fa-file-image' },
+            { slug: 'jpg-to-pdf', label: 'Images to Printable PDF', icon: 'fa-file-pdf' },
+            { slug: 'pdf-password-remover', label: 'PDF Password Remover', icon: 'fa-unlock' },
+        ]
+    },
+    {
+        id: 'image-lab',
+        title: 'Image Processing Lab',
+        icon: 'fa-wand-magic-sparkles',
+        color: 'text-blue-500',
+        tools: [
+            { slug: 'batch-watermark-images', label: 'Batch Watermark Studio', icon: 'fa-stamp', badge: 'NEW' },
+            { slug: 'image-compressor', label: 'Image Compressor (Target KB)', icon: 'fa-compress-arrows-alt' },
+            { slug: 'image-resizer', label: 'Image Resizer & Dimensions', icon: 'fa-expand' },
+            { slug: 'crop-image', label: 'Crop Image & Composition', icon: 'fa-crop' },
+            { slug: 'bg-remover', label: 'Background Remover', icon: 'fa-eraser' },
+            { slug: 'image-enhancer', label: 'Clarity & Contrast Enhancer', icon: 'fa-sliders-h' },
+        ]
+    },
+    {
+        id: 'developer-privacy',
+        title: 'Developer & Privacy',
+        icon: 'fa-shield-halved',
+        color: 'text-teal-500',
+        tools: [
+            { slug: 'image-dpi-converter', label: 'Lossless 300/600 DPI Converter', icon: 'fa-print' },
+            { slug: 'image-metadata-viewer', label: 'EXIF Viewer & Privacy Stripper', icon: 'fa-info-circle' },
+            { slug: 'favicon-generator', label: 'Favicon & PWA Icon Generator', icon: 'fa-star' },
+            { slug: 'qr-code-generator', label: 'High-Res QR Code Generator', icon: 'fa-qrcode' },
+            { slug: '3d-text-to-stl-generator', label: '3D Text to STL (3D Printing)', icon: 'fa-cube' },
+            { slug: 'image-converter', label: 'Universal Format Converter', icon: 'fa-exchange-alt' },
+        ]
+    }
+]
 
-// ── Mega menu data ─────────────────────────────────────────────────────────────
-const megaMenuItems = {
-    editors: [
-        { href: '/image-resizer', icon: 'fa-expand', label: 'Resize Image' },
-        { href: '/image-compressor', icon: 'fa-compress-alt', label: 'Compress Image' },
-        { href: '/crop-image', icon: 'fa-crop-alt', label: 'Crop Image' },
-        { href: '/bg-remover', icon: 'fa-eraser', label: 'Background Remover' },
-        { href: '/image-enhancer', icon: 'fa-sliders-h', label: 'Image Enhancer' },
-        { href: '/image-to-art', icon: 'fa-palette', label: 'Image to Art' },
-    ],
-    documents: [
-        { href: '/aadhaar-card-print-setting-a4', icon: 'fa-print', label: 'Aadhaar A4 Print' },
-        { href: '/signature-to-transparent-png', icon: 'fa-file-signature', label: 'Signature PNG' },
-        { href: '/government-photo-resizer', icon: 'fa-graduation-cap', label: 'Govt Exam Resizer' },
-        { href: '/passport-size-photo', icon: 'fa-id-card', label: 'Passport Photo' },
-        { href: '/pan-card-photo', icon: 'fa-id-card', label: 'PAN Card Photo' },
-        { href: '/ssc-photo-date-adder', icon: 'fa-calendar-alt', label: 'SSC Photo Date' },
-    ],
-    pdf: [
-        { href: '/pdf-crop', icon: 'fa-crop', label: 'PDF Crop' },
-        { href: '/merge-pdf', icon: 'fa-object-group', label: 'Merge PDF' },
-        { href: '/split-pdf', icon: 'fa-scissors', label: 'Split & Extract PDF' },
-        { href: '/pdf-to-jpg', icon: 'fa-file-image', label: 'PDF to JPG' },
-        { href: '/jpg-to-pdf', icon: 'fa-file-pdf', label: 'JPG to PDF' },
-        { href: '/pdf-to-excel', icon: 'fa-table', label: 'PDF to Excel' },
-    ],
-    utilities: [
-        { href: '/image-dpi-converter', icon: 'fa-print', label: 'Image DPI (300/600)' },
-        { href: '/image-metadata-viewer', icon: 'fa-info-circle', label: 'EXIF & Privacy' },
-        { href: '/favicon-generator', icon: 'fa-star', label: 'Favicon Generator' },
-        { href: '/qr-code-generator', icon: 'fa-qrcode', label: 'QR Generator' },
-        { href: '/3d-text-to-stl-generator', icon: 'fa-cube', label: '3D Text to STL' },
-        { href: '/svg-to-stl', icon: 'fa-cube', label: 'SVG to STL' },
-    ],
-    converters: [
-        { href: '/image-converter', icon: 'fa-exchange-alt', label: 'Universal Converter' },
-        { href: '/heic-to-jpg', icon: 'fa-mobile-alt', label: 'HEIC to JPG' },
-        { href: '/webp-to-jpg', icon: 'fa-file-code', label: 'WebP to JPG' },
-        { href: '/png-to-jpg', icon: 'fa-image', label: 'PNG to JPG' },
-        { href: '/jpg-to-png', icon: 'fa-image', label: 'JPG to PNG' },
-        { href: '/avif-to-jpg', icon: 'fa-bolt', label: 'AVIF to JPG' },
-    ],
-}
-
-// ── Dark mode helpers ─────────────────────────────────────────────────────────
-function getInitialDark() {
+// ── Theme State Helper ────────────────────────────────────────────────────────
+function getInitialTheme() {
     try {
         const stored = localStorage.getItem('imgtool-theme')
         if (stored) return stored === 'dark'
         return window.matchMedia('(prefers-color-scheme: dark)').matches
-    } catch { return false }
-}
-function applyDark(dark) {
-    document.documentElement.classList.toggle('dark', dark)
-    try { localStorage.setItem('imgtool-theme', dark ? 'dark' : 'light') } catch { }
+    } catch {
+        return false
+    }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
 export default function Header() {
+    const [isDark, setIsDark] = useState(getInitialTheme)
+    const [megaOpen, setMegaOpen] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
-    const [mobileToolsOpen, setMobileToolsOpen] = useState(false)
-    const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
-    const [desktopToolsOpen, setDesktopToolsOpen] = useState(false)
-    const [darkMode, setDarkMode] = useState(getInitialDark)
-
-    // Search state
-    const [query, setQuery] = useState('')
     const [searchOpen, setSearchOpen] = useState(false)
-    const [activeIdx, setActiveIdx] = useState(0)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [activeResultIdx, setActiveResultIdx] = useState(0)
+    const [privacyModalOpen, setPrivacyModalOpen] = useState(false)
 
     const searchRef = useRef(null)
-    const megaMenuRef = useRef(null)
+    const megaRef = useRef(null)
     const inputRef = useRef(null)
-    const mobileInputRef = useRef(null)
     const location = useLocation()
     const navigate = useNavigate()
 
-    // Close everything on route change
+    // Apply dark class
     useEffect(() => {
+        document.documentElement.classList.toggle('dark', isDark)
+        try {
+            localStorage.setItem('imgtool-theme', isDark ? 'dark' : 'light')
+        } catch {}
+    }, [isDark])
+
+    // Close on navigation
+    useEffect(() => {
+        setMegaOpen(false)
         setMobileOpen(false)
-        setMobileToolsOpen(false)
-        setMobileSearchOpen(false)
-        setDesktopToolsOpen(false)
-        setQuery('')
         setSearchOpen(false)
-    }, [location])
+        setSearchQuery('')
+    }, [location.pathname])
 
-    // Dark mode on mount + change
-    useEffect(() => { applyDark(darkMode) }, [darkMode])
-
-    // Ctrl+K / Cmd+K shortcut
+    // Ctrl+K / Cmd+K listener
     useEffect(() => {
-        const handler = (e) => {
+        const handleKeyDown = (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
                 e.preventDefault()
                 inputRef.current?.focus()
@@ -119,365 +137,430 @@ export default function Header() {
             }
             if (e.key === 'Escape') {
                 setSearchOpen(false)
-                setQuery('')
-                inputRef.current?.blur()
+                setMegaOpen(false)
+                setPrivacyModalOpen(false)
+                setSearchQuery('')
             }
         }
-        window.addEventListener('keydown', handler)
-        return () => window.removeEventListener('keydown', handler)
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
     }, [])
 
-    // Close search dropdown and desktop tools menu on outside click
+    // Click outside listeners
     useEffect(() => {
-        const handler = (e) => {
+        const handleOutside = (e) => {
             if (searchRef.current && !searchRef.current.contains(e.target)) {
                 setSearchOpen(false)
             }
-            if (megaMenuRef.current && !megaMenuRef.current.contains(e.target)) {
-                setDesktopToolsOpen(false)
+            if (megaRef.current && !megaRef.current.contains(e.target)) {
+                setMegaOpen(false)
             }
         }
-        document.addEventListener('mousedown', handler)
-        return () => document.removeEventListener('mousedown', handler)
+        document.addEventListener('mousedown', handleOutside)
+        return () => document.removeEventListener('mousedown', handleOutside)
     }, [])
 
     // Filter results
-    const results = query.trim().length > 0
-        ? ALL_TOOLS.filter(t => t.name.toLowerCase().includes(query.toLowerCase())).slice(0, 8)
-        : []
+    const filteredResults = useMemo(() => {
+        const q = searchQuery.toLowerCase().trim()
+        if (!q) return []
+        const seen = new Set()
+        const matches = []
+        for (const item of SEARCH_ENTRIES) {
+            if (item.keywords.toLowerCase().includes(q) && !seen.has(item.slug)) {
+                seen.add(item.slug)
+                matches.push(item)
+                if (matches.length >= 8) break
+            }
+        }
+        return matches
+    }, [searchQuery])
 
-    // Navigate to selected result
-    const handleSelect = useCallback((slug) => {
-        navigate('/' + slug)
-        setQuery('')
+    const handleSelectResult = useCallback((slug) => {
+        navigate(`/${slug}`)
         setSearchOpen(false)
-        inputRef.current?.blur()
+        setSearchQuery('')
     }, [navigate])
 
-    // Keyboard navigation in dropdown
-    const handleKeyDown = (e) => {
-        if (!results.length) return
-        if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i + 1, results.length - 1)) }
-        if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i - 1, 0)) }
-        if (e.key === 'Enter' && results[activeIdx]) handleSelect(results[activeIdx].slug)
+    const handleSearchKeyDown = (e) => {
+        if (!filteredResults.length) return
+        if (e.key === 'ArrowDown') {
+            e.preventDefault()
+            setActiveResultIdx((i) => Math.min(i + 1, filteredResults.length - 1))
+        }
+        if (e.key === 'ArrowUp') {
+            e.preventDefault()
+            setActiveResultIdx((i) => Math.max(i - 1, 0))
+        }
+        if (e.key === 'Enter' && filteredResults[activeResultIdx]) {
+            e.preventDefault()
+            handleSelectResult(filteredResults[activeResultIdx].slug)
+        }
     }
-
-    useEffect(() => { setActiveIdx(0) }, [query])
 
     return (
         <>
-            {/* ── NAVBAR ─────────────────────────────────────────────────── */}
-            <nav
-                className="fixed w-full z-[1000] top-0 bg-white dark:bg-slate-900 border-b border-slate-200/70 dark:border-slate-700/70"
-                style={{ height: 60, boxShadow: '0 1px 12px 0 rgba(0,0,0,0.07)' }}
-            >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center gap-3">
-
-                    {/* ── LEFT: Logo ─────────────────────────────────────── */}
-                    <Link to="/" className="flex items-center gap-2 flex-shrink-0 group" aria-label="IMG Tool Home">
-                        <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 text-white rounded-lg flex items-center justify-center text-lg shadow-lg shadow-indigo-900/20">
-                            <i className="fas fa-layer-group" aria-hidden="true"></i>
-                        </div>
-                        <span className="text-[17px] font-black text-slate-800 dark:text-white tracking-tight leading-none">
-                            IMG <span className="text-blue-600">Tool</span>
-                        </span>
-                    </Link>
-
-                    {/* ── CENTER: Search Bar (desktop) ───────────────────── */}
-                    <div ref={searchRef} className="hidden md:flex flex-1 max-w-xl relative mx-2">
-                        <div className="relative w-full">
-                            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="text-slate-400">
-                                    <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-                                </svg>
+            {/* ── TOP WORKSTATION NAVBAR ────────────────────────────────────── */}
+            <header className="fixed top-0 left-0 right-0 z-40 h-14 bg-white/90 dark:bg-workstation-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-workstation-750 transition-colors">
+                <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-3">
+                    
+                    {/* Brand Mark & Logo */}
+                    <div className="flex items-center gap-6">
+                        <Link to="/" className="flex items-center gap-2.5 group select-none" aria-label="imgtool.in home">
+                            {/* Layered Workstation Mark */}
+                            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 text-white flex items-center justify-center text-sm shadow-md shadow-blue-600/20 group-hover:shadow-blue-600/30 group-hover:scale-105 transition-all duration-200">
+                                <i className="fas fa-layer-group text-xs" aria-hidden="true"></i>
                             </div>
+                            <div className="flex flex-col">
+                                <div className="flex items-center gap-1.5 leading-none">
+                                    <span className="text-base font-extrabold tracking-tight text-slate-900 dark:text-white">
+                                        img<span className="text-blue-600 dark:text-blue-400">tool</span>
+                                    </span>
+                                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200/60 dark:border-blue-900/50">
+                                        STUDIO
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+
+                        {/* Desktop Workstations Dropdown */}
+                        <div ref={megaRef} className="hidden lg:block relative">
+                            <button
+                                type="button"
+                                onClick={() => setMegaOpen(!megaOpen)}
+                                className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
+                                    megaOpen
+                                        ? 'bg-blue-50 text-blue-600 dark:bg-blue-950/50 dark:text-blue-400'
+                                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-workstation-800'
+                                }`}
+                                aria-expanded={megaOpen}
+                            >
+                                <i className="fas fa-grid-2 text-xs opacity-70"></i>
+                                <span>Workstations</span>
+                                <i className={`fas fa-chevron-down text-[9px] transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`}></i>
+                            </button>
+
+                            {/* Workstation Mega Menu */}
+                            {megaOpen && (
+                                <div className="absolute top-full left-0 mt-2 w-[780px] bg-white dark:bg-workstation-900 rounded-2xl shadow-workstation-lg border border-slate-200 dark:border-workstation-750 p-6 z-50 animate-fadeIn">
+                                    <div className="grid grid-cols-2 gap-6">
+                                        {MEGA_WORKSTATIONS.map((ws) => (
+                                            <div key={ws.id} className="space-y-3">
+                                                <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-workstation-800">
+                                                    <i className={`fas ${ws.icon} ${ws.color} text-xs`}></i>
+                                                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
+                                                        {ws.title}
+                                                    </h3>
+                                                </div>
+                                                <ul className="space-y-1">
+                                                    {ws.tools.map((t) => (
+                                                        <li key={t.slug}>
+                                                            <Link
+                                                                to={`/${t.slug}`}
+                                                                className="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-workstation-800 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group"
+                                                            >
+                                                                <span className="flex items-center gap-2 truncate">
+                                                                    <i className={`fas ${t.icon} text-slate-400 group-hover:text-blue-500 text-[11px] w-4 text-center`}></i>
+                                                                    <span className="truncate">{t.label}</span>
+                                                                </span>
+                                                                {t.badge && (
+                                                                    <span className="px-1.5 py-0.2 text-[9px] font-bold rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">
+                                                                        {t.badge}
+                                                                    </span>
+                                                                )}
+                                                            </Link>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="mt-5 pt-4 border-t border-slate-100 dark:border-workstation-800 flex items-center justify-between text-xs">
+                                        <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
+                                            <i className="fas fa-shield-halved"></i>
+                                            <span>Zero Server Uploads · 100% In-Browser Execution</span>
+                                        </div>
+                                        <Link to="/all-image-converters" className="font-bold text-blue-600 dark:text-blue-400 hover:underline">
+                                            Explore all 30+ tools →
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Universal Task Search Bar */}
+                    <div ref={searchRef} className="flex-1 max-w-md relative mx-2">
+                        <div className="relative">
+                            <i className="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-400"></i>
                             <input
                                 ref={inputRef}
-                                id="navbar-search"
                                 type="text"
-                                value={query}
-                                onChange={e => { setQuery(e.target.value); setSearchOpen(true) }}
+                                value={searchQuery}
+                                onChange={(e) => {
+                                    setSearchQuery(e.target.value)
+                                    setSearchOpen(true)
+                                }}
                                 onFocus={() => setSearchOpen(true)}
-                                onKeyDown={handleKeyDown}
-                                placeholder="Search 150+ image tools..."
-                                aria-label="Search tools"
+                                onKeyDown={handleSearchKeyDown}
+                                placeholder="Search tasks (e.g. watermark, 50kb photo, split pdf)..."
+                                className="w-full h-9 pl-9 pr-14 text-xs rounded-xl bg-slate-100/80 dark:bg-workstation-850 border border-slate-200/80 dark:border-workstation-750 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white dark:focus:bg-workstation-900 focus:ring-2 focus:ring-blue-500/20 transition-all"
                                 autoComplete="off"
-                                className="w-full h-9 pl-9 pr-20 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all"
                             />
-                            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-0.5 text-[10px] font-bold text-slate-400 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded px-1.5 py-0.5 pointer-events-none select-none">
-                                <span className="text-xs">⌘</span>K
+                            <kbd className="hidden sm:inline-flex items-center gap-0.5 absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-white dark:bg-workstation-800 border border-slate-200 dark:border-workstation-700 rounded select-none">
+                                ⌘K
                             </kbd>
                         </div>
 
                         {/* Search Dropdown */}
-                        {searchOpen && results.length > 0 && (
-                            <div
-                                className="absolute top-full mt-2 left-0 right-0 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden z-[2000]"
-                                style={{ maxHeight: 340 }}
-                            >
-                                <div className="px-3 pt-2 pb-1 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    {results.length} result{results.length !== 1 ? 's' : ''}
+                        {searchOpen && filteredResults.length > 0 && (
+                            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-workstation-900 rounded-xl border border-slate-200 dark:border-workstation-750 shadow-xl overflow-hidden z-50 animate-fadeIn">
+                                <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-workstation-800">
+                                    Tools & Matching Tasks
                                 </div>
-                                <ul role="listbox">
-                                    {results.map((tool, i) => (
-                                        <li key={tool.slug} role="option" aria-selected={i === activeIdx}>
+                                <ul className="max-h-64 overflow-y-auto py-1">
+                                    {filteredResults.map((item, idx) => (
+                                        <li key={`${item.slug}-${idx}`}>
                                             <button
-                                                className={`w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${i === activeIdx ? 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300' : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
-                                                onMouseDown={() => handleSelect(tool.slug)}
-                                                onMouseEnter={() => setActiveIdx(i)}
+                                                type="button"
+                                                onClick={() => handleSelectResult(item.slug)}
+                                                onMouseEnter={() => setActiveResultIdx(idx)}
+                                                className={`w-full flex items-center justify-between px-3.5 py-2 text-xs transition-colors text-left ${
+                                                    idx === activeResultIdx
+                                                        ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
+                                                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-workstation-850'
+                                                }`}
                                             >
-                                                <span className={`w-7 h-7 rounded-md flex items-center justify-center text-xs flex-shrink-0 bg-${tool.color || 'blue'}-50 text-${tool.color || 'blue'}-600`}>
-                                                    <i className={`fas ${tool.icon || 'fa-image'}`}></i>
+                                                <span className="flex items-center gap-2.5">
+                                                    <i className={`fas ${item.icon || 'fa-wrench'} text-slate-400 text-xs w-4 text-center`}></i>
+                                                    <span className="font-semibold">{item.name}</span>
                                                 </span>
-                                                <span className="flex-1 font-medium truncate">{highlight(tool.name, query)}</span>
-                                                <span className="text-[10px] text-slate-400 capitalize hidden sm:block">{tool.category?.replace(/-/g, ' ')}</span>
+                                                <span className="text-[10px] font-mono text-slate-400">/{item.slug}</span>
                                             </button>
                                         </li>
                                     ))}
                                 </ul>
-                                <div className="px-4 py-2 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                                    <span className="text-[10px] text-slate-400">↑↓ navigate · Enter select · Esc close</span>
-                                    <Link
-                                        to="/all-image-converters"
-                                        className="text-[10px] font-bold text-blue-600 hover:text-blue-700"
-                                        onMouseDown={e => e.preventDefault()}
-                                    >
-                                        View all tools →
-                                    </Link>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* No results */}
-                        {searchOpen && query.trim().length > 1 && results.length === 0 && (
-                            <div className="absolute top-full mt-2 left-0 right-0 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 px-5 py-4 text-sm text-slate-500 text-center z-[2000]">
-                                No tools found for "<strong>{query}</strong>"
                             </div>
                         )}
                     </div>
 
-                    {/* ── RIGHT: Desktop nav ─────────────────────────────── */}
-                    <div className="hidden lg:flex items-center gap-1 flex-shrink-0">
-                        {/* Tools mega-menu trigger */}
-                        <div ref={megaMenuRef} className="relative px-3 py-1">
-                            <button 
-                                onClick={() => setDesktopToolsOpen(!desktopToolsOpen)}
-                                className={`flex items-center gap-1 text-sm font-semibold transition-colors ${desktopToolsOpen ? 'text-blue-600' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600'}`}>
-                                Tools <i className={`fas fa-chevron-down text-[9px] opacity-50 transition-transform duration-300 ${desktopToolsOpen ? 'rotate-180' : ''}`}></i>
-                            </button>
-                            {/* Mega menu */}
-                            <div className={`fixed top-[60px] left-0 w-full transition-all duration-250 ease-out flex justify-center z-[999] ${desktopToolsOpen ? 'opacity-100 visible translate-y-0 pointer-events-auto' : 'opacity-0 invisible translate-y-2 pointer-events-none'}`}>
-                                <div className="mt-1 w-full max-w-5xl px-4">
-                                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden ring-1 ring-black/5 p-7 max-h-[75vh] overflow-y-auto">
-                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                            <MegaMenuCol title="Image Editors" icon="fa-crop-simple" iconColor="text-blue-500" items={megaMenuItems.editors} hoverColor="blue" />
-                                            <MegaMenuCol title="ID & Exam Resizers" icon="fa-id-badge" iconColor="text-indigo-500" items={megaMenuItems.documents} hoverColor="indigo" />
-                                            <MegaMenuCol title="PDF Tools" icon="fa-file-pdf" iconColor="text-red-500" items={megaMenuItems.pdf} hoverColor="red" />
-                                            <MegaMenuCol title="Utilities & 3D" icon="fa-shield-halved" iconColor="text-teal-500" items={megaMenuItems.utilities} hoverColor="teal" />
-                                            <MegaMenuCol title="Converters" icon="fa-exchange-alt" iconColor="text-emerald-500" items={megaMenuItems.converters} hoverColor="green" />
-                                        </div>
-                                        <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center">
-                                            <span className="text-xs text-slate-400"><i className="fas fa-shield-alt text-emerald-500 mr-1"></i>100% Client-Side Privacy — Zero Server Uploads</span>
-                                            <Link to="/all-image-converters" className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
-                                                View All 30+ Tools <i className="fas fa-arrow-right"></i>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    {/* Right Action Icons & Privacy Pill */}
+                    <div className="flex items-center gap-2">
+                        {/* Verified Privacy Pill */}
+                        <button
+                            type="button"
+                            onClick={() => setPrivacyModalOpen(true)}
+                            className="hidden md:inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 px-2.5 py-1 rounded-full border border-emerald-200/60 dark:border-emerald-800/50 transition-colors select-none"
+                            title="Click to view local privacy details"
+                        >
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>Zero Server Uploads</span>
+                        </button>
 
-                        <NavLink to="/all-image-converters" className={({ isActive }) => `px-3 py-1.5 text-sm font-semibold rounded-lg transition-all ${isActive ? 'text-blue-600 bg-blue-50 dark:bg-blue-950' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
+                        {/* Navigation Links */}
+                        <NavLink
+                            to="/all-image-converters"
+                            className={({ isActive }) => `hidden sm:inline-block text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors ${
+                                isActive ? 'text-blue-600 bg-blue-50 dark:bg-blue-950/50' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                            }`}
+                        >
                             All Tools
                         </NavLink>
-                        <NavLink to="/blog" className={({ isActive }) => `px-3 py-1.5 text-sm font-semibold rounded-lg transition-all ${isActive ? 'text-blue-600 bg-blue-50 dark:bg-blue-950' : 'text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-slate-800'}`}>
-                            Blog
+
+                        <NavLink
+                            to="/blog"
+                            className={({ isActive }) => `hidden sm:inline-block text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors ${
+                                isActive ? 'text-blue-600 bg-blue-50 dark:bg-blue-950/50' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                            }`}
+                        >
+                            Guides
                         </NavLink>
 
-                        {/* Dark mode toggle */}
+                        {/* Theme Toggle */}
                         <button
-                            onClick={() => setDarkMode(d => !d)}
-                            aria-label="Toggle dark mode"
-                            className="ml-1 w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                            title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                            type="button"
+                            onClick={() => setIsDark(!isDark)}
+                            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+                            className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-workstation-800 transition-colors"
                         >
-                            {darkMode
-                                ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>
-                                : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
-                            }
-                        </button>
-                    </div>
-
-                    {/* ── RIGHT: Mobile icons ─────────────────────────────── */}
-                    <div className="flex lg:hidden items-center gap-1 ml-auto flex-shrink-0">
-                        {/* Mobile search icon */}
-                        <button
-                            onClick={() => { setMobileSearchOpen(s => !s); setTimeout(() => mobileInputRef.current?.focus(), 80) }}
-                            aria-label="Open search"
-                            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                        >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                                <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-                            </svg>
+                            {isDark ? (
+                                <i className="fas fa-sun text-xs text-amber-400"></i>
+                            ) : (
+                                <i className="fas fa-moon text-xs"></i>
+                            )}
                         </button>
 
-                        {/* Dark mode (mobile) */}
+                        {/* Mobile Menu Hamburger */}
                         <button
-                            onClick={() => setDarkMode(d => !d)}
-                            aria-label="Toggle dark mode"
-                            className="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                        >
-                            {darkMode
-                                ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>
-                                : <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
-                            }
-                        </button>
-
-                        {/* Hamburger */}
-                        <button
+                            type="button"
                             onClick={() => setMobileOpen(true)}
-                            aria-label="Open menu"
-                            className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            aria-label="Open mobile menu"
+                            className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-workstation-800"
                         >
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                                <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
-                            </svg>
+                            <i className="fas fa-bars text-sm"></i>
                         </button>
                     </div>
                 </div>
+            </header>
 
-                {/* ── Mobile expanding search bar ───────────────────────── */}
-                {mobileSearchOpen && (
-                    <div className="md:hidden border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-900 px-4 py-2.5">
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="text-slate-400">
-                                    <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
-                                </svg>
-                            </div>
-                            <input
-                                ref={mobileInputRef}
-                                type="text"
-                                value={query}
-                                onChange={e => setQuery(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' && results[0]) handleSelect(results[0].slug)
-                                    if (e.key === 'Escape') { setMobileSearchOpen(false); setQuery('') }
-                                }}
-                                placeholder="Search 150+ image tools..."
-                                className="w-full h-9 pl-9 pr-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
-                                autoComplete="off"
-                            />
-                        </div>
-                        {results.length > 0 && (
-                            <ul className="mt-1 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden shadow-lg max-h-56 overflow-y-auto">
-                                {results.map((tool, i) => (
-                                    <li key={tool.slug}>
-                                        <button
-                                            className="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
-                                            onMouseDown={() => { handleSelect(tool.slug); setMobileSearchOpen(false) }}
-                                        >
-                                            <span className={`w-6 h-6 rounded flex items-center justify-center text-[11px] bg-${tool.color || 'blue'}-50 text-${tool.color || 'blue'}-600`}>
-                                                <i className={`fas ${tool.icon || 'fa-image'}`}></i>
-                                            </span>
-                                            <span className="font-medium">{highlight(tool.name, query)}</span>
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                )}
-            </nav>
+            {/* Spacer for 56px fixed navbar */}
+            <div className="h-14"></div>
 
-            {/* ── MOBILE SIDEBAR ───────────────────────────────────────────── */}
-            <div className={`fixed inset-y-0 left-0 w-[85vw] max-w-sm bg-white dark:bg-slate-900 shadow-2xl transform transition-transform duration-300 ease-in-out z-[1001] lg:hidden flex flex-col ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <div className="px-5 py-3.5 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900 z-10">
-                    <span className="font-bold text-lg text-slate-800 dark:text-white">Menu</span>
-                    <button onClick={() => setMobileOpen(false)} aria-label="Close menu" className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-                    </button>
-                </div>
-                <div className="flex-1 overflow-y-auto p-4 space-y-1.5 pb-24">
-                    <Link to="/" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 text-slate-700 dark:text-slate-200 font-semibold transition-colors">
-                        <i className="fas fa-home w-5 text-center text-slate-400"></i> Home
-                    </Link>
-                    {/* Mobile Tools Accordion */}
-                    <div className="border border-slate-100 dark:border-slate-700 rounded-xl overflow-hidden">
-                        <button onClick={() => setMobileToolsOpen(!mobileToolsOpen)} className="w-full flex items-center justify-between px-4 py-3 bg-slate-50/70 dark:bg-slate-800/50 text-slate-800 dark:text-slate-200 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                            <div className="flex items-center gap-3"><i className="fas fa-layer-group w-5 text-center text-blue-500"></i> Tools</div>
-                            <i className={`fas fa-chevron-down text-xs text-slate-400 transition-transform duration-300 ${mobileToolsOpen ? 'rotate-180' : ''}`}></i>
-                        </button>
-                        {mobileToolsOpen && (
-                            <div className="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700 py-1">
-                                <MobileMenuSection title="Image Editors" items={megaMenuItems.editors} />
-                                <MobileMenuSection title="ID & Exam Resizers" items={megaMenuItems.documents} />
-                                <MobileMenuSection title="PDF Tools" items={megaMenuItems.pdf} />
-                                <MobileMenuSection title="Utilities & 3D" items={megaMenuItems.utilities} />
-                                <MobileMenuSection title="Image Converters" items={megaMenuItems.converters} />
-                            </div>
-                        )}
-                    </div>
-                    <Link to="/blog" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 text-slate-700 dark:text-slate-200 font-semibold transition-colors">
-                        <i className="fas fa-rss w-5 text-center text-slate-400"></i> Blog
-                    </Link>
-                    <Link to="/about-us" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 text-slate-700 dark:text-slate-200 font-semibold transition-colors">
-                        <i className="fas fa-info-circle w-5 text-center text-slate-400"></i> About
-                    </Link>
-                    <Link to="/contact-us" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 text-slate-700 dark:text-slate-200 font-semibold transition-colors">
-                        <i className="fas fa-envelope w-5 text-center text-slate-400"></i> Contact
-                    </Link>
-                    <div className="pt-3 mt-2 border-t border-slate-100 dark:border-slate-700">
-                        <Link to="/all-image-converters" className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 hover:bg-blue-700 transition-all">
-                            View All Tools <i className="fas fa-arrow-right"></i>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            {/* Overlay */}
+            {/* ── MOBILE WORKSTATION DRAWER ─────────────────────────────────── */}
             {mobileOpen && (
-                <div onClick={() => setMobileOpen(false)} className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[1000] lg:hidden" />
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div
+                        onClick={() => setMobileOpen(false)}
+                        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+                    />
+                    <div className="fixed inset-y-0 right-0 w-80 max-w-[85vw] bg-white dark:bg-workstation-900 shadow-2xl border-l border-slate-200 dark:border-workstation-750 flex flex-col p-5 overflow-y-auto">
+                        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-workstation-800">
+                            <span className="text-sm font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                <i className="fas fa-layer-group text-blue-500"></i>
+                                Workstation Menu
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setMobileOpen(false)}
+                                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white"
+                                aria-label="Close menu"
+                            >
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        {/* Mobile Quick Links */}
+                        <div className="py-4 space-y-1">
+                            <Link
+                                to="/"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-workstation-850"
+                            >
+                                <i className="fas fa-house text-slate-400 w-4 text-center"></i> Home
+                            </Link>
+                            <Link
+                                to="/batch-watermark-images"
+                                className="flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-50/70 dark:bg-blue-950/40"
+                            >
+                                <span className="flex items-center gap-3">
+                                    <i className="fas fa-stamp w-4 text-center"></i> Batch Watermark
+                                </span>
+                                <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-600 text-white font-bold">NEW</span>
+                            </Link>
+                            <Link
+                                to="/all-image-converters"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-workstation-850"
+                            >
+                                <i className="fas fa-grid-2 text-slate-400 w-4 text-center"></i> All Tools Directory
+                            </Link>
+                            <Link
+                                to="/blog"
+                                className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-workstation-850"
+                            >
+                                <i className="fas fa-book-open text-slate-400 w-4 text-center"></i> Guides & Benchmarks
+                            </Link>
+                        </div>
+
+                        {/* Workstation Sections */}
+                        <div className="pt-2 border-t border-slate-100 dark:border-workstation-800 space-y-4">
+                            {MEGA_WORKSTATIONS.map((ws) => (
+                                <div key={ws.id} className="space-y-1.5">
+                                    <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3">
+                                        {ws.title}
+                                    </h4>
+                                    <div className="space-y-0.5">
+                                        {ws.tools.slice(0, 3).map((t) => (
+                                            <Link
+                                                key={t.slug}
+                                                to={`/${t.slug}`}
+                                                className="block px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 truncate"
+                                            >
+                                                {t.label}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Trust & Privacy Card */}
+                        <div className="mt-auto pt-6">
+                            <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/50 text-xs">
+                                <div className="font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5 mb-1">
+                                    <i className="fas fa-shield-halved"></i>
+                                    100% Client-Side Privacy
+                                </div>
+                                <p className="text-emerald-700 dark:text-emerald-400 text-[11px] leading-relaxed">
+                                    Your files never touch a remote server. All conversions happen entirely in your local browser RAM.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
 
-            {/* Spacer (60px to match navbar height) */}
-            <div className="h-[60px]"></div>
-        </>
-    )
-}
-
-// ── Sub-components ─────────────────────────────────────────────────────────────
-function MegaMenuCol({ title, icon, iconColor, items, hoverColor }) {
-    return (
-        <div className="space-y-3">
-            <h4 className={`text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-2`}>
-                <i className={`fas ${icon} ${iconColor}`}></i> {title}
-            </h4>
-            <ul className="space-y-0.5">
-                {items.map(item => (
-                    <li key={item.href}>
-                        <Link to={item.href} className={`flex items-center gap-2.5 p-1.5 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors group/link`}>
-                            <div className={`w-6 h-6 rounded-md bg-${hoverColor}-50 text-${hoverColor}-600 flex items-center justify-center text-[11px] group-hover/link:bg-${hoverColor}-600 group-hover/link:text-white transition-all flex-shrink-0`}>
-                                <i className={`fas ${item.icon}`}></i>
+            {/* ── PRIVACY VERIFICATION MODAL ─────────────────────────────────── */}
+            {privacyModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div
+                        onClick={() => setPrivacyModalOpen(false)}
+                        className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm"
+                    />
+                    <div className="relative w-full max-w-lg bg-white dark:bg-workstation-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-workstation-750 p-6 z-10 animate-fadeIn">
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
+                                    <i className="fas fa-shield-check"></i>
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-base text-slate-900 dark:text-white">
+                                        Client-Side Architectural Privacy
+                                    </h3>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                                        How imgtool.in safeguards your sensitive documents
+                                    </p>
+                                </div>
                             </div>
-                            <span className={`text-[13px] font-medium text-slate-600 dark:text-slate-300 group-hover/link:text-${hoverColor}-600 leading-tight`}>{item.label}</span>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    )
-}
+                            <button
+                                type="button"
+                                onClick={() => setPrivacyModalOpen(false)}
+                                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                            >
+                                <i className="fas fa-times"></i>
+                            </button>
+                        </div>
 
-function MobileMenuSection({ title, items }) {
-    return (
-        <>
-            <div className="px-4 py-1.5 text-[10px] font-bold text-slate-400 uppercase bg-slate-50 dark:bg-slate-800 mt-1">{title}</div>
-            {items.map(item => (
-                <Link key={item.href} to={item.href} className="block px-7 py-2 text-sm text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors">
-                    {item.label}
-                </Link>
-            ))}
+                        <div className="space-y-3 text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                            <p>
+                                Unlike typical SaaS conversion platforms, <strong>imgtool.in executes 100% of image, PDF, and watermark processing inside your device's browser memory</strong> using HTML5 Canvas 2D and WebAssembly.
+                            </p>
+                            <div className="p-3 rounded-xl bg-slate-50 dark:bg-workstation-850 border border-slate-200 dark:border-workstation-800 space-y-2">
+                                <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-100">
+                                    <i className="fas fa-check text-emerald-500"></i>
+                                    Zero cloud file uploads or disk storage
+                                </div>
+                                <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-100">
+                                    <i className="fas fa-check text-emerald-500"></i>
+                                    Works offline once the page assets load
+                                </div>
+                                <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-100">
+                                    <i className="fas fa-check text-emerald-500"></i>
+                                    Inspect via DevTools Network tab — 0 file POST requests
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end">
+                            <button
+                                type="button"
+                                onClick={() => setPrivacyModalOpen(false)}
+                                className="btn-primary text-xs px-4 py-2"
+                            >
+                                Got it, thanks!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

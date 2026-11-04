@@ -20,6 +20,7 @@ const TODAY = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
 // ── Priority map: give specific slugs a higher priority ───────────────────────
 const HIGH_PRIORITY_SLUGS = new Set([
+    'batch-watermark-images',
     'image-resizer',
     'image-compressor',
     'crop-image',

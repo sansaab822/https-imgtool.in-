@@ -1,5 +1,6 @@
 export const tools = [
     // ── Core Image Editors ──────────────────────────────────────
+    { slug: 'batch-watermark-images', name: 'Batch Image Watermark Studio', category: 'editors', icon: 'fa-stamp', color: 'blue', description: 'Apply custom text, copyright presets, or PNG logo watermarks across multiple photos in batch. 100% in-browser.' },
     { slug: 'image-resizer', name: 'Image Resizer', category: 'editors', icon: 'fa-expand', color: 'blue', description: 'Resize images to custom dimensions, social media presets, or exact pixel sizes.' },
     { slug: 'image-compressor', name: 'Image Compressor', category: 'editors', icon: 'fa-compress-arrows-alt', color: 'orange', description: 'Reduce image file size with visual quality control or target exact KB limits.' },
     { slug: 'crop-image', name: 'Crop Image', category: 'editors', icon: 'fa-crop', color: 'pink', description: 'Crop images with aspect ratio presets and Rule of Thirds composition grid.' },
