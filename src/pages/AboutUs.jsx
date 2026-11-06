@@ -1,104 +1,165 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 
 export default function AboutUs() {
+    const today = 'November 7, 2026'
+
+    const schema = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'AboutPage',
+            'name': 'About imgtool.in',
+            'url': 'https://imgtool.in/about',
+            'description': 'imgtool.in is a free image and PDF toolkit built by Sandeep Singh. Every tool runs in your browser — your files never leave your device. Learn our story.',
+            'dateModified': '2026-11-07',
+            'mainEntity': {
+                '@type': 'Person',
+                'name': 'Sandeep Singh',
+                'jobTitle': 'Founder & Developer',
+                'worksFor': {
+                    '@type': 'Organization',
+                    'name': 'imgtool.in',
+                    'url': 'https://imgtool.in'
+                }
+            }
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            'name': 'Sandeep Singh',
+            'url': 'https://imgtool.in/about',
+            'jobTitle': 'Founder & Developer',
+            'nationality': 'Indian'
+        }
+    ]
+
     return (
-        <>
-            <SEO 
-                title="About Us | ImgTool — Privacy-First Client-Side Utilities" 
-                description="Learn about ImgTool: our engineering approach, 100% in-browser client-side architecture, and mission to deliver free, private image and PDF utilities." 
-                canonical="/about-us" 
+        <article className="min-h-screen bg-white dark:bg-workstation-950 transition-colors">
+            <SEO
+                title="About imgtool.in — Built by Sandeep Singh in India"
+                description="imgtool.in is a free image and PDF toolkit built by Sandeep Singh. Every tool runs in your browser — your files never leave your device. Learn our story."
+                canonical="/about"
+                schema={schema}
             />
-            <div className="max-w-4xl mx-auto px-4 py-16">
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold">
-                        <i className="fas fa-shield-alt text-emerald-500"></i> Client-Side Engineering & Privacy
-                    </div>
-                    <h1 className="text-4xl font-extrabold text-slate-800 dark:text-white mb-4">About ImgTool</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Fast, private, and subscription-free utilities engineered for the modern web.</p>
+
+            <main className="max-w-[720px] mx-auto px-4 sm:px-6 py-10 md:py-16 text-[17px] md:text-[18px] text-slate-800 dark:text-slate-200 leading-[1.7]">
+                {/* Breadcrumb */}
+                <nav className="mb-8 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+                    <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
+                    <span aria-hidden="true">/</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-medium">About</span>
+                </nav>
+
+                {/* H1 Heading */}
+                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-8">
+                    About imgtool.in
+                </h1>
+
+                {/* Body Content */}
+                <div className="space-y-6">
+                    <p>
+                        Hi, I'm Sandeep Singh. I built imgtool.in.
+                    </p>
+                    <p>
+                        I didn't start this website because I wanted to become a "tech entrepreneur". I started it because I got frustrated. In 2024, I was helping my father submit an online application for a government scheme. The form needed a photograph smaller than 50KB. Simple, right?
+                    </p>
+                    <p>
+                        I spent the next forty minutes trying different "free online image compressors." Most of them asked me to upload the photo to their servers first — a photo of my father's ID document, sent to a company I'd never heard of. Some hit me with four pop-ups before letting me click anything. One asked for my phone number before letting me download the file. And at the end, not a single one got the file size right on the first try.
+                    </p>
+                    <p>
+                        That evening, I opened my laptop and started building what would eventually become imgtool.in.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        What we do
+                    </h2>
+                    <p>
+                        imgtool.in is a collection of free image and PDF tools — compressors, resizers, converters, croppers, and a few niche tools you won't find on other sites. Every tool runs entirely inside your browser. There is no "server" that receives your files. There is no database storing your images. There is no queue where your PDFs sit waiting to be deleted "within 24 hours."
+                    </p>
+                    <p>
+                        Here's a test you can do yourself. Open imgtool.in in Chrome. Press F12 to open Developer Tools. Click the "Network" tab. Now use the Image Compressor. You'll see the page loading, but you will not see your image being uploaded anywhere. That's not a marketing claim — it's just what's happening under the hood.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Why we reduced our tools from 100+ to 32
+                    </h2>
+                    <p>
+                        You might notice that imgtool.in doesn't have a hundred tools like some sites. That was a deliberate choice. In the early months, I built over a hundred tools, most of them because the keyword data said "high volume". What I learned was that half of those tools were barely usable, half were duplicates, and almost none were tested properly.
+                    </p>
+                    <p>
+                        So I deleted them. I kept the thirty-two that real people actually use, tested each one on a slow phone with a bad connection, and rewrote the pages so a first-time visitor can figure them out without help.
+                    </p>
+                    <p>
+                        Quality over quantity isn't a slogan here. It's the only reason anyone returns.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Why privacy matters to us
+                    </h2>
+                    <p>
+                        Most "free online tools" websites make money by serving you ads. Some of them also collect your files, scan them, and use them for other purposes. I'm not accusing anyone — I'm just saying that most people don't know where their photos and PDFs go after clicking "Upload."
+                    </p>
+                    <p>
+                        At imgtool.in, the answer is simple: nowhere. Your files stay on your device. That's the whole architecture. This is not a "feature" I turned on — it's the only way the site could work.
+                    </p>
+                    <p>
+                        We do earn from ads. We do use analytics to understand which tools people actually use. But we never touch your files. You can verify this yourself by watching the Network tab in your browser as I described above.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Who's behind this
+                    </h2>
+                    <p>
+                        This is a one-person project. I'm Sandeep Singh, based in India. I handle the development, testing, writing, and support. There's no team, no company behind this, no funding. Just me, my laptop, and a lot of coffee.
+                    </p>
+                    <p>
+                        I reply to emails myself. If you write to me at contact@imgtool.in, I'll read it and respond — usually within 48 hours. If you're reporting a bug, tell me which tool and what device you're on, and I'll try to fix it.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        What's next
+                    </h2>
+                    <p>
+                        Over the next year, I'm focusing on three things:
+                    </p>
+                    <ol className="list-decimal pl-6 space-y-2">
+                        <li>
+                            <strong>Depth over breadth</strong> — every existing tool page will get a proper guide (how to use it, when to use it, when not to). No more "Choose File" pages with two lines of text.
+                        </li>
+                        <li>
+                            <strong>Real content</strong> — articles that solve actual problems people have with images and PDFs, written by me after testing, not pulled from Google.
+                        </li>
+                        <li>
+                            <strong>Speed</strong> — everything should load in under 2 seconds on 4G.
+                        </li>
+                    </ol>
+                    <p>
+                        If you've used imgtool.in before and something didn't work, I want to know. If you have a tool you wish existed, I want to know that too.
+                    </p>
+                    <p>
+                        Thanks for reading this far. Now go use the tools.
+                    </p>
+                    <p className="pt-2">
+                        — Sandeep Singh<br />
+                        <span className="text-slate-500 dark:text-slate-400 text-sm">Founder, imgtool.in</span>
+                    </p>
                 </div>
 
-                <div className="space-y-8">
-                    {/* Story & Background */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm">
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-3">
-                            <i className="fas fa-layer-group text-blue-600 dark:text-blue-400"></i> Who We Are & Why We Built This
-                        </h2>
-                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                            ImgTool was founded by Sanjeev, an independent web developer, out of frustration with online utility websites. Most traditional image and PDF tools require uploading personal photos and sensitive government identity cards (such as Aadhaar, PAN cards, or signatures) to unknown remote servers, only to hit users with paywalls, watermarks, or invasive sign-up requirements.
-                        </p>
-                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed mt-4">
-                            We believe basic document preparation and media formatting should be private, instantaneous, and accessible to everyone. By re-engineering these tools to execute <strong>100% locally inside your web browser</strong>, your documents and photos never leave your device.
-                        </p>
-                    </div>
-
-                    {/* Core Pillars */}
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {[
-                            { 
-                                icon: 'fa-shield-halved', 
-                                color: 'text-indigo-600 dark:text-indigo-400', 
-                                bg: 'bg-indigo-50 dark:bg-indigo-950/50', 
-                                title: 'Zero Cloud Storage', 
-                                desc: 'All transformations execute locally in browser RAM using WebAssembly and HTML5 Canvas. Your files are never uploaded or stored.' 
-                            },
-                            { 
-                                icon: 'fa-bolt', 
-                                color: 'text-amber-600 dark:text-amber-400', 
-                                bg: 'bg-amber-50 dark:bg-amber-950/50', 
-                                title: 'Instant Processing', 
-                                desc: 'Eliminate network latency and cloud queues. Operations complete immediately using the multi-core processing power of your device.' 
-                            },
-                            { 
-                                icon: 'fa-circle-check', 
-                                color: 'text-emerald-600 dark:text-emerald-400', 
-                                bg: 'bg-emerald-50 dark:bg-emerald-950/50', 
-                                title: '100% Free & Open', 
-                                desc: 'No forced account registrations, no premium paywalls, and no hidden watermarks stamped on your downloaded files.' 
-                            },
-                        ].map(f => (
-                            <div key={f.title} className={`${f.bg} rounded-2xl p-6 text-center border border-slate-100 dark:border-slate-800/80`}>
-                                <div className={`${f.color} text-4xl mb-3`}><i className={`fas ${f.icon}`}></i></div>
-                                <h3 className="font-bold text-slate-800 dark:text-white mb-2">{f.title}</h3>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{f.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Technical Architecture */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm">
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-3">
-                            <i className="fas fa-microchip text-indigo-600 dark:text-indigo-400"></i> Our Engineering Architecture
-                        </h2>
-                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Rather than running expensive, privacy-invasive backend server clusters, ImgTool leverages modern browser APIs:
-                        </p>
-                        <ul className="mt-4 space-y-3 text-slate-600 dark:text-slate-300 text-sm">
-                            <li className="flex items-start gap-3">
-                                <i className="fas fa-check-circle text-blue-500 mt-1 flex-shrink-0"></i>
-                                <span><strong>Lossless Binary Header Patching:</strong> Our DPI converter and EXIF stripper manipulate raw binary byte arrays (JFIF segments in JPEG and pHYs chunks in PNG) directly via JavaScript <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono">Uint8Array</code>, altering metadata in milliseconds without re-encoding image pixels.</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <i className="fas fa-check-circle text-blue-500 mt-1 flex-shrink-0"></i>
-                                <span><strong>High-Performance In-Memory PDF Engine:</strong> PDF splitting, extraction, and merging are performed entirely within browser memory using <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono">pdf-lib</code> and <code className="text-xs bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded font-mono">jszip</code>, preventing sensitive legal or financial paperwork from touching cloud servers.</span>
-                            </li>
-                            <li className="flex items-start gap-3">
-                                <i className="fas fa-check-circle text-blue-500 mt-1 flex-shrink-0"></i>
-                                <span><strong>Hardware-Accelerated Canvas & 3D:</strong> Image resizing, custom color thresholding for signatures, and 3D mesh extrusion utilize the GPU via HTML5 Canvas 2D and Three.js.</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    {/* Editorial Standards */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 shadow-sm">
-                        <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-3">
-                            <i className="fas fa-book-open text-emerald-600 dark:text-emerald-400"></i> Editorial Standards & Guides
-                        </h2>
-                        <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                            Alongside our utility suite, our blog publishes original, thoroughly researched technical guides. We verify official examination notifications (such as SSC, UPSC, and IBPS guidelines), conduct compression algorithm benchmarks (MozJPEG vs WebP vs AVIF), and explain technical concepts like DPI vs PPI to help candidates, designers, and developers make informed decisions.
-                        </p>
-                    </div>
+                {/* Footer Bar: Last updated & Back to tools */}
+                <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                        Last updated: {today}
+                    </span>
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm"
+                    >
+                        <i className="fas fa-arrow-left text-xs" aria-hidden="true"></i>
+                        <span>Back to tools</span>
+                    </Link>
                 </div>
-            </div>
-        </>
+            </main>
+        </article>
     )
 }

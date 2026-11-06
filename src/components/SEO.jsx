@@ -44,7 +44,7 @@ export default function SEO({
     noIndex = false,
     schema = null, // optional per-page schema (WebApplication, HowTo, etc.)
 }) {
-    const fullTitle = title.includes('IMG Tool') ? title : `${title} | IMG Tool`
+    const fullTitle = (title.includes('IMG Tool') || title.includes('imgtool.in') || title.includes('imgtool')) ? title : `${title} | IMG Tool`
     const url = canonical ? `${SITE_URL}${canonical}` : `${SITE_URL}/`
 
     return (

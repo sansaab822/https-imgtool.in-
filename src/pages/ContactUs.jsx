@@ -1,137 +1,143 @@
-import { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 
 export default function ContactUs() {
-    const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
-    const [copied, setCopied] = useState(false)
+    const today = 'November 7, 2026'
 
-    const handleCopyEmail = () => {
-        navigator.clipboard.writeText('info@imgtool.in')
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2500)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const mailtoSubject = encodeURIComponent(form.subject || 'Contact from ImgTool')
-        const mailtoBody = encodeURIComponent(
-            `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`
-        )
-        window.location.href = `mailto:info@imgtool.in?subject=${mailtoSubject}&body=${mailtoBody}`
-    }
+    const schema = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'ContactPage',
+            'name': 'Contact imgtool.in',
+            'url': 'https://imgtool.in/contact',
+            'description': 'Questions, bug reports, or tool requests? Email us at contact@imgtool.in. A real person reads every message and replies within 48 hours.',
+            'dateModified': '2026-11-07',
+            'mainEntity': {
+                '@type': 'Organization',
+                'name': 'imgtool.in',
+                'url': 'https://imgtool.in',
+                'contactPoint': {
+                    '@type': 'ContactPoint',
+                    'email': 'contact@imgtool.in',
+                    'contactType': 'customer support',
+                    'availableLanguage': ['en', 'hi'],
+                    'hoursAvailable': 'Mo-Sa 09:00-18:00'
+                }
+            }
+        }
+    ]
 
     return (
-        <>
-            <SEO 
-                title="Contact Us | ImgTool" 
-                description="Get in touch with the ImgTool engineering and editorial team for technical support, feature suggestions, or feedback." 
-                canonical="/contact-us" 
+        <article className="min-h-screen bg-white dark:bg-workstation-950 transition-colors">
+            <SEO
+                title="Contact imgtool.in — We Reply Within 48 Hours"
+                description="Questions, bug reports, or tool requests? Email us at contact@imgtool.in. A real person reads every message and replies within 48 hours."
+                canonical="/contact"
+                schema={schema}
             />
-            <div className="max-w-3xl mx-auto px-4 py-16">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-extrabold text-slate-800 dark:text-white mb-4">Contact Us</h1>
-                    <p className="text-slate-500 dark:text-slate-400 text-lg">Have a bug report, new tool suggestion, or feedback? We reply directly to every inquiry.</p>
-                </div>
 
-                <div className="grid md:grid-cols-3 gap-4 mb-8">
-                    {[
-                        { 
-                            icon: 'fa-envelope', 
-                            color: 'text-blue-600 dark:text-blue-400', 
-                            bg: 'bg-blue-50 dark:bg-blue-950/50', 
-                            title: 'Email Us', 
-                            info: 'info@imgtool.in', 
-                            action: handleCopyEmail,
-                            actionLabel: copied ? 'Copied!' : 'Copy Address'
-                        },
-                        { 
-                            icon: 'fa-telegram-plane fab', 
-                            color: 'text-sky-500', 
-                            bg: 'bg-sky-50 dark:bg-sky-950/50', 
-                            title: 'Community Telegram', 
-                            info: '@sarkarijobinformation24', 
-                            href: 'https://t.me/sarkarijobinformation24' 
-                        },
-                        { 
-                            icon: 'fa-clock', 
-                            color: 'text-emerald-600 dark:text-emerald-400', 
-                            bg: 'bg-emerald-50 dark:bg-emerald-950/50', 
-                            title: 'Response Time', 
-                            info: 'Typically within 24 hours' 
-                        },
-                    ].map(c => (
-                        <div key={c.title} className={`${c.bg} rounded-2xl p-5 text-center border border-slate-100 dark:border-slate-800`}>
-                            <div className={`${c.color} text-3xl mb-2`}><i className={`fas ${c.icon}`}></i></div>
-                            <div className="font-semibold text-slate-800 dark:text-white text-sm">{c.title}</div>
-                            {c.href ? (
-                                <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1 block font-mono">
-                                    {c.info}
-                                </a>
-                            ) : c.action ? (
-                                <button onClick={c.action} className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1 block font-mono mx-auto">
-                                    {c.info} <span className="text-[10px] bg-blue-100 dark:bg-blue-900 px-1.5 py-0.5 rounded text-blue-700 dark:text-blue-200 ml-1">{c.actionLabel}</span>
-                                </button>
-                            ) : (
-                                <div className="text-xs text-slate-600 dark:text-slate-400 mt-1">{c.info}</div>
-                            )}
-                        </div>
-                    ))}
-                </div>
+            <main className="max-w-[720px] mx-auto px-4 sm:px-6 py-10 md:py-16 text-[17px] md:text-[18px] text-slate-800 dark:text-slate-200 leading-[1.7]">
+                {/* Breadcrumb */}
+                <nav className="mb-8 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+                    <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
+                    <span aria-hidden="true">/</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-medium">Contact</span>
+                </nav>
 
-                <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 space-y-5 shadow-sm">
-                    <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-2">Send Us a Direct Message</h2>
-                    <div className="grid sm:grid-cols-2 gap-5">
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Your Name</label>
-                            <input 
-                                required 
-                                value={form.name} 
-                                onChange={e => setForm({ ...form, name: e.target.value })} 
-                                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm" 
-                                placeholder="e.g. Rahul Sharma" 
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email Address</label>
-                            <input 
-                                required 
-                                type="email" 
-                                value={form.email} 
-                                onChange={e => setForm({ ...form, email: e.target.value })} 
-                                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm" 
-                                placeholder="you@example.com" 
-                            />
-                        </div>
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Subject</label>
-                        <input 
-                            required 
-                            value={form.subject} 
-                            onChange={e => setForm({ ...form, subject: e.target.value })} 
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-sm" 
-                            placeholder="e.g., Tool suggestion / Bug report / Inquiry" 
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Message</label>
-                        <textarea 
-                            required 
-                            rows={5} 
-                            value={form.message} 
-                            onChange={e => setForm({ ...form, message: e.target.value })} 
-                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none text-sm" 
-                            placeholder="Please provide details about the tool or issue..."
-                        ></textarea>
-                    </div>
-                    <button type="submit" className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2">
-                        <i className="fas fa-paper-plane"></i> Send Message (via Email)
-                    </button>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 text-center">
-                        This form pre-fills your email client with your message for immediate delivery to <code className="text-blue-500">info@imgtool.in</code>.
+                {/* H1 Heading */}
+                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-8">
+                    Contact Us
+                </h1>
+
+                {/* Body Content */}
+                <div className="space-y-6">
+                    <p>
+                        The fastest way to reach us is email. A real person reads every message.
                     </p>
-                </form>
-            </div>
-        </>
+
+                    <div className="p-6 rounded-2xl bg-slate-50 dark:bg-workstation-900 border border-slate-200 dark:border-workstation-800 space-y-3">
+                        <p className="font-semibold text-slate-900 dark:text-white">
+                            <strong>Email:</strong>{' '}
+                            <a
+                                href="mailto:contact@imgtool.in"
+                                className="text-blue-600 dark:text-blue-400 hover:underline break-all"
+                            >
+                                contact@imgtool.in
+                            </a>
+                        </p>
+                        <p className="text-slate-600 dark:text-slate-300">
+                            <strong>Response time:</strong> Within 48 hours, Monday to Saturday. (India Standard Time)
+                        </p>
+                        <div className="pt-2">
+                            <a
+                                href="mailto:contact@imgtool.in"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm"
+                            >
+                                <i className="fas fa-envelope text-xs" aria-hidden="true"></i>
+                                <span>Send an email to contact@imgtool.in</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        What you can email us about
+                    </h2>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>
+                            <strong>Bug reports</strong> — Something not working? Tell us the tool name, your phone or laptop model, and what went wrong. Screenshots help.
+                        </li>
+                        <li>
+                            <strong>Tool requests</strong> — A tool you wish existed? Describe what you'd use it for.
+                        </li>
+                        <li>
+                            <strong>Content corrections</strong> — Spotted an error in one of our guides? We'll fix it and credit you if you'd like.
+                        </li>
+                        <li>
+                            <strong>Business inquiries</strong> — For partnerships or advertising, use the same email with "Business" in the subject line.
+                        </li>
+                        <li>
+                            <strong>Privacy concerns</strong> — If you think a tool is doing something it shouldn't, tell us. We'll investigate.
+                        </li>
+                    </ul>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        What we can't help with
+                    </h2>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Recovering files you deleted</li>
+                        <li>Legal advice about government forms or document sizes</li>
+                        <li>Anything that requires access to your device or account</li>
+                    </ul>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Before you email
+                    </h2>
+                    <p>
+                        Please check our FAQs on tool pages first — most "not working" issues are browser cache or file-size related.
+                    </p>
+                    <p>
+                        If you haven't received a reply within 72 hours, check your spam folder, then email again. It's not you — it's probably my inbox filter.
+                    </p>
+                    <p className="pt-2">
+                        — Sandeep
+                    </p>
+                </div>
+
+                {/* Footer Bar: Last updated & Back to tools */}
+                <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                        Last updated: {today}
+                    </span>
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm"
+                    >
+                        <i className="fas fa-arrow-left text-xs" aria-hidden="true"></i>
+                        <span>Back to tools</span>
+                    </Link>
+                </div>
+            </main>
+        </article>
     )
 }

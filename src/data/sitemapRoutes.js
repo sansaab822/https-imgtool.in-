@@ -91,11 +91,12 @@ const routes = [
     // ──────────────────────────────────────────────────────────────────
     // LEGAL / STATIC PAGES
     // ──────────────────────────────────────────────────────────────────
-    { loc: '/about-us', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: '/contact-us', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    { loc: '/about', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    { loc: '/contact', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: '/privacy-policy', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: '/terms-of-service', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    { loc: '/terms', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
     { loc: '/disclaimer', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    { loc: '/editorial-policy', lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
 ]
 
 // ─── Exports ──────────────────────────────────────────────────────────────────

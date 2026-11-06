@@ -10,6 +10,7 @@ const ContactUs = lazy(() => import('./pages/ContactUs'))
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
 const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 const Disclaimer = lazy(() => import('./pages/Disclaimer'))
+const EditorialPolicy = lazy(() => import('./pages/EditorialPolicy'))
 const BlogPage = lazy(() => import('./pages/BlogPage'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
 const NotFound = lazy(() => import('./pages/NotFound'))
@@ -68,11 +69,15 @@ export default function App() {
           {/* Static & Content Pages */}
           <Route path="/" element={<HomePage />} />
           <Route path="/all-image-converters" element={<AllToolsPage />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/about-us" element={<Navigate to="/about" replace />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/contact-us" element={<Navigate to="/contact" replace />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/editorial-policy" element={<EditorialPolicy />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/blog.html" element={<BlogPage />} />

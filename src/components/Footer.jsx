@@ -104,26 +104,27 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Trust & Company */}
+                    {/* Company Column */}
                     <div>
                         <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200 mb-4 flex items-center gap-2">
-                            <i className="fas fa-shield-halved text-emerald-500 text-xs"></i>
-                            Trust & Transparency
+                            <i className="fas fa-building text-blue-500 text-xs"></i>
+                            Company
                         </h4>
                         <ul className="space-y-2 text-xs">
-                            <li><Link to="/about-us" className="hover:text-blue-400 transition-colors">About imgtool.in</Link></li>
-                            <li><Link to="/contact-us" className="hover:text-blue-400 transition-colors">Contact Engineering Team</Link></li>
-                            <li><Link to="/privacy-policy" className="hover:text-blue-400 transition-colors font-medium text-emerald-400">Privacy Policy (Zero-Upload)</Link></li>
-                            <li><Link to="/terms-of-service" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                            <li><Link to="/disclaimer" className="hover:text-blue-400 transition-colors">Disclaimer & Limitations</Link></li>
-                            <li><a href="/sitemap.xml" className="hover:text-blue-400 transition-colors">XML Sitemap</a></li>
+                            <li><Link to="/about" className="hover:text-blue-400 transition-colors">About</Link></li>
+                            <li><Link to="/contact" className="hover:text-blue-400 transition-colors">Contact</Link></li>
+                            <li><Link to="/privacy-policy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+                            <li><Link to="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
+                            <li><Link to="/disclaimer" className="hover:text-blue-400 transition-colors">Disclaimer</Link></li>
+                            <li><Link to="/editorial-policy" className="hover:text-blue-400 transition-colors">Editorial Policy</Link></li>
+                            <li><Link to="/blog" className="hover:text-blue-400 transition-colors">Blog</Link></li>
                         </ul>
                     </div>
                 </div>
 
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-slate-800 dark:border-workstation-850 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-                    <p>&copy; {year} imgtool.in. All browser utilities run locally on your device.</p>
+                    <p>&copy; 2025 imgtool.in — Made in India by Sandeep Singh</p>
                     <div className="flex items-center gap-6">
                         <span className="text-slate-500">Fast · Private · Free</span>
                         <LanguageSelector />

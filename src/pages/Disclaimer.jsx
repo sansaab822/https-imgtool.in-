@@ -1,60 +1,132 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 
 export default function Disclaimer() {
+    const today = 'November 7, 2026'
+
+    const schema = [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'WebPage',
+            'name': 'Disclaimer — imgtool.in',
+            'url': 'https://imgtool.in/disclaimer',
+            'description': "Important notes about imgtool.in's tools, accuracy, and limitations. Read before using our tools for official documents.",
+            'dateModified': '2026-11-07'
+        }
+    ]
+
     return (
-        <>
-            <SEO title="Disclaimer - IMG Tool" description="Read the disclaimer regarding the use of IMG Tool, image copyright, and tool accuracy." canonical="/disclaimer" />
-            <div className="max-w-4xl mx-auto px-4 py-16">
-                <h1 className="text-4xl font-extrabold text-slate-800 mb-2">Disclaimer</h1>
-                <p className="text-slate-500 mb-10">Last updated: March 13, 2026</p>
+        <article className="min-h-screen bg-white dark:bg-workstation-950 transition-colors">
+            <SEO
+                title="Disclaimer — imgtool.in"
+                description="Important notes about imgtool.in's tools, accuracy, and limitations. Read before using our tools for official documents."
+                canonical="/disclaimer"
+                schema={schema}
+            />
 
-                <div className="space-y-8 text-slate-600">
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-3">1. General Information</h2>
-                        <p className="leading-relaxed mb-4">
-                            The information and tools provided by IMG Tool (https://imgtool.in) are for general informational purposes and personal use only. All information on the site is provided in good faith, however, we make no representation or warranty of any kind, express or implied, regarding the accuracy, adequacy, validity, reliability, availability, or completeness of any information or tool on the site.
-                        </p>
-                    </div>
+            <main className="max-w-[720px] mx-auto px-4 sm:px-6 py-10 md:py-16 text-[17px] md:text-[18px] text-slate-800 dark:text-slate-200 leading-[1.7]">
+                {/* Breadcrumb */}
+                <nav className="mb-8 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">
+                    <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
+                    <span aria-hidden="true">/</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-medium">Disclaimer</span>
+                </nav>
 
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-3">2. Image Copyright Disclaimer</h2>
-                        <p className="leading-relaxed mb-4">
-                            IMG Tool strictly acts as a client-side processing utility. We do not host, store, or index any user media. You retain full ownership of any original files you process. Furthermore, it is solely your responsibility to ensure you have the legal right, license, and authorization to use, modify, edit, or convert any image or document uploaded into your browser via our platform. 
-                        </p>
-                        <p className="leading-relaxed text-red-600 font-semibold bg-red-50 p-4 rounded-lg">
-                            Warning: Do not use IMG Tool to infringe upon intellectual property rights, remove valid watermarks, or misappropriate copyrighted material. IMG Tool assumes no liability for user-generated copyright disputes.
-                        </p>
-                    </div>
+                {/* H1 Heading */}
+                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-8">
+                    Disclaimer
+                </h1>
 
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-3">3. Tool Accuracy & Limitations</h2>
-                        <p className="leading-relaxed mb-4">
-                            While we strive for precise functionality, the result of image compression, file conversion, and resizing may vary depending on the original file\'s metadata, format, and browser capabilities. The "Target KB" compression tools provide close approximations but cannot guarantee exact byte-level matches due to how JPEG/WebP compression algorithms function. consistently review your processed files before using them for official or critical purposes, such as government exam applications.
-                        </p>
-                    </div>
+                {/* Body Content */}
+                <div className="space-y-6">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                        Last updated: {today}
+                    </p>
 
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-3">4. External Links & Affiliates Disclaimer</h2>
-                        <p className="leading-relaxed mb-4">
-                            The site may contain links to other websites or content belonging to or originating from third parties, or links to websites and features in banners or other advertising. Such external links are not investigated, monitored, or checked for accuracy by us. We use Google AdSense to monetize our free tools. AdSense uses cookies to serve ads based on a user\'s prior visits to our website or other websites. We do not endorse the products or services advertised through these network ads.
-                        </p>
-                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        General information
+                    </h2>
+                    <p>
+                        The tools and content on imgtool.in are provided for general informational and practical use. While we test each tool carefully, we make no representations or warranties about the completeness, accuracy, or reliability of any tool's output.
+                    </p>
 
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-3">5. Professional Advice</h2>
-                        <p className="leading-relaxed mb-4">
-                            The use or reliance of any information contained on this site is solely at your own risk. The site cannot and does not contain legal or professional photography/design advice.
-                        </p>
-                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Not professional advice
+                    </h2>
+                    <p>
+                        Nothing on imgtool.in constitutes legal, financial, medical, or professional advice. If you're processing a document for an official application (passport, visa, government form, etc.), always verify the requirements with the official authority. Requirements change — sometimes without warning — and our tool cannot guarantee compliance with any specific format, size, or standard.
+                    </p>
 
-                    <div className="bg-white rounded-2xl border border-slate-200 p-6">
-                        <h2 className="text-xl font-bold text-slate-800 mb-3">Contact Us</h2>
-                        <p className="leading-relaxed text-slate-600">
-                            Should you have any feedback, comments, requests for technical support or other inquiries, please contact us by email: <strong>info@imgtool.in</strong>.
-                        </p>
-                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Government and official documents
+                    </h2>
+                    <p>
+                        Our tools can help you resize, compress, or convert files. But <strong>we are not connected to any government body, embassy, or official authority</strong>. If your application gets rejected because a photo doesn't meet requirements, we cannot be held responsible. Always check the official guidelines.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        No guarantee of results
+                    </h2>
+                    <p>
+                        We cannot guarantee that any file processed through imgtool.in will:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                        <li>Meet the requirements of a specific application or portal</li>
+                        <li>Preserve quality exactly as it was originally</li>
+                        <li>Work on every browser or device</li>
+                        <li>Be free of all errors in every edge case</li>
+                    </ul>
+                    <p>
+                        Please keep a backup of your original file before processing.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        External links
+                    </h2>
+                    <p>
+                        imgtool.in may link to external websites (like Google's privacy tools, Mozilla's documentation, or government portals). We don't control those sites and are not responsible for their content or accuracy.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Advertising
+                    </h2>
+                    <p>
+                        imgtool.in displays advertisements through Google AdSense. The presence of an ad does not constitute an endorsement of the advertised product or service. We do not personally verify the ads shown.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Privacy
+                    </h2>
+                    <p>
+                        Please refer to our <Link to="/privacy-policy" className="text-blue-600 dark:text-blue-400 hover:underline">Privacy Policy</Link> for details on how we handle data. To be clear: your files stay on your device. We never see them.
+                    </p>
+
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 tracking-tight">
+                        Contact
+                    </h2>
+                    <p>
+                        If you spot anything incorrect or misleading on this site, please let us know.
+                    </p>
+                    <p className="p-4 rounded-xl bg-slate-50 dark:bg-workstation-900 border border-slate-200 dark:border-workstation-800 space-y-1 text-base">
+                        <strong>Email:</strong> <a href="mailto:contact@imgtool.in" className="text-blue-600 dark:text-blue-400 hover:underline">contact@imgtool.in</a>
+                    </p>
                 </div>
-            </div>
-        </>
+
+                {/* Footer Bar: Last updated & Back to tools */}
+                <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                        Last updated: {today}
+                    </span>
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm transition-colors shadow-sm"
+                    >
+                        <i className="fas fa-arrow-left text-xs" aria-hidden="true"></i>
+                        <span>Back to tools</span>
+                    </Link>
+                </div>
+            </main>
+        </article>
     )
 }

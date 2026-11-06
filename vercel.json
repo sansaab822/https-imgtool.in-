@@ -1,5 +1,8 @@
 {
     "redirects": [
+        { "source": "/terms-of-service", "destination": "/terms", "permanent": true },
+        { "source": "/contact-us", "destination": "/contact", "permanent": true },
+        { "source": "/about-us", "destination": "/about", "permanent": true },
         { "source": "/ai-denoiser", "destination": "/image-enhancer", "permanent": true },
         { "source": "/ai-old-photo-restorer", "destination": "/image-enhancer", "permanent": true },
         { "source": "/ai-colorizer", "destination": "/image-to-art", "permanent": true },
